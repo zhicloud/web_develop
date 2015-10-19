@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.TerminalInformationPushMapper"> 
+	
+	 <resultMap type="com.zhicloud.ms.vo.TerminalInformationPushVO" id="TerminalInformationPushVO">
+		<id     column="id"           property="id" />
+		<result column="group_id"      property="groupId" />
+		<result column="group_name"      property="groupName" />
+ 		<result column="title"       property="title" />
+		<result column="content"      property="content" />
+ 		<result column="create_time"        property="createTime" />
+ 		<result column="region"        property="region" />
+ 		<result column="industry"        property="industry" />
+	</resultMap>
+	 <!-- ********************* -->
+	<select id="getAll" resultMap="TerminalInformationPushVO">
+		select
+		     a.id,
+		     a.group_id,
+		     b.group_name,
+		     a.title,
+		     a.content,
+		     a.create_time,
+		     a.region,
+		     a.industry
+		from terminal_information_push a
+		left join sys_group b on a.group_id = b.id
+		order by a.create_time desc
+	</select>
+	
+	<select id="getAllByTime" resultMap="TerminalInformationPushVO">
+		select
+		     a.id,
+		     a.group_id,
+		     b.group_name,
+		     a.title,
+		     a.content,
+		     a.create_time,
+		     a.region,
+		     a.industry		     
+		from terminal_information_push a
+		left join sys_group b on a.group_id = b.id
+		where 1=1
+		<if test="startTime!=null">
+		   <![CDATA[
+		  and a.create_time > #{startTime}
+		]]>
+		</if>
+		<if test="endTime!=null">
+		   <![CDATA[
+		  and a.create_time < #{endTime}
+		]]>
+		</if>
+		order by a.create_time desc
+	</select>
+	
+	<select id="queryInfomationBygroupIdAndTime" resultMap="TerminalInformationPushVO">
+		select
+		     a.id,
+		     a.group_id,
+		     b.group_name,
+		     a.title,
+		     a.content,
+		     a.create_time,
+		     a.region,
+		     a.industry
+		from terminal_information_push a
+		left join sys_group b on a.group_id = b.id
+		where 
+		<![CDATA[
+		  a.create_time > #{time}
+		]]>
+		and (a.group_id = 'all' or a.group_id = #{groupId})
+	    <if test="region!=null and region!=''">
+        	and a.region = #{region}
+        </if>
+	    <if test="industry!=null and industry!=''">
+        	and a.industry = #{industry}
+        </if>        
+		order by a.create_time desc
+	</select>
+	
+	 
+	
+	<insert id="insertInfomation">
+		insert into terminal_information_push (id,group_id,title,content,create_time,region,industry) 
+		values (#{id}, #{groupId},#{title},#{content},#{createTime},#{region},#{industry})
+	</insert>
+	
+	<!-- ********************* --> 
+	
+	<delete id="deleteInfomationByIds">
+		delete
+		from terminal_information_push
+		where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	 
+</mapper>

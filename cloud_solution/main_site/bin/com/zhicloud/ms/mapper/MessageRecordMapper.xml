@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.MessageRecordMapper">
+
+
+	<resultMap type="com.zhicloud.ms.vo.MessageRecordVO" id="MessageRecordVO">
+		<id     column="id"         property="id" />
+		<result column="sender_address" property="senderAddress" />
+		<result column="recipient_address" property="recipientAddress" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+	
+	<!-- ********************* -->
+	
+	<insert id="insertRecord">
+		insert into message_record (id, type, sender_address, recipient_address, content, create_time,sms_state)
+		values (#{id}, #{type}, #{sender_address}, #{recipient_address}, #{content}, #{create_time},#{sms_state})
+	</insert>
+	
+	<!-- ********************* -->
+
+	<select id="queryAllRecord" resultMap="MessageRecordVO">
+		select 
+			id,
+            type,
+			sender_address,
+			recipient_address,
+			content,
+			create_time,
+			sms_state
+		from message_record
+		WHERE type = #{type}
+		order by create_time desc
+	</select>
+	
+	<!-- ********************* -->
+	<select id="queryRecordById" resultMap="MessageRecordVO">
+		select
+			id,
+            type,
+			sender_address,
+			recipient_address,
+			content,
+			create_time,
+			sms_state
+		from message_record
+		<where>
+			id = #{id}
+		</where>
+	</select>
+	
+	<!-- ********************* -->
+
+	<delete id="deleteRecordByIds">
+		delete
+		from message_record
+		where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<!-- ********************* -->
+
+</mapper>

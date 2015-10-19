@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.CloudHostOpenPortMapper">
+	
+	
+	<resultMap type="com.zhicloud.ms.vo.CloudHostOpenPortVO" id="CloudHostOpenPortVO">
+		<id     column="id"             property="id" />
+		<result column="host_id"        property="hostId" />
+		<result column="server_port"    property="serverPort" />
+		<result column="outer_port"     property="outerPort" />
+	</resultMap>
+	
+	<!-- ***************** -->
+	
+	<select id="getByHostId" resultMap="CloudHostOpenPortVO">
+		select
+			p.id,
+			p.host_id,
+			p.name,
+			p.port,
+			p.protocol,
+			p.server_port,
+			p.outer_port
+		from cloud_host_open_port p
+		where host_id = #{hostId}
+		order by name, port
+	</select>
+	
+	<select id="getOneRecordByCondition" resultMap="CloudHostOpenPortVO">
+		select
+			p.id,
+			p.host_id,
+			p.name,
+			p.port,
+			p.protocol,
+			p.server_port,
+			p.outer_port
+		from cloud_host_open_port p
+		<where>
+			<if test="hostId!=null">
+				and p.host_id = #{hostId}
+			</if>
+			<if test="protocol!=null">
+				and p.protocol = #{protocol}
+			</if>
+			<if test="port!=null">
+				and p.port = #{port}
+			</if>
+		</where>
+		order by p.host_id, p.port, p.protocol
+	</select>
+
+	<!-- ***************** -->
+	
+	<insert id="addCloudHostOpenPort">
+		insert into cloud_host_open_port 
+		       (  id,    host_id,   name,  protocol,    port,    server_port,   outer_port) 
+		values (#{id}, #{hostId}, #{name}, #{protocol}, #{port}, #{serverPort}, #{outerPort})
+	</insert>
+	
+	<!-- ***************** -->
+	
+	<update id="updateMappingPortsById">
+		update cloud_host_open_port
+		<set>
+			name = #{name},
+			server_port = #{serverPort},
+			outer_port  = #{outerPort},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<!-- ***************** -->
+	
+	<delete id="deleteById">
+		delete
+		from cloud_host_open_port
+		where id = #{id}
+	</delete>
+	
+	<delete id="deleteByHostId">
+		delete
+		from cloud_host_open_port
+		where host_id = #{hostId}
+	</delete>
+
+</mapper>
