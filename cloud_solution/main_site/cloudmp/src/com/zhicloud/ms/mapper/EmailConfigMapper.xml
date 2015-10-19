@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.EmailConfigMapper">
+
+
+	<resultMap type="com.zhicloud.ms.vo.EmailConfigVO" id="EmailConfigVO">
+		<id     column="id"         property="id" />
+		<result column="is_auth" property="isAuth" />
+        <result column="sender_address" property="senderAddress" />
+        <result column="create_time" property="createTime" />
+		<result column="modified_time" property="modifiedTime" />
+	</resultMap>
+
+	<!-- ********************* -->
+
+	<insert id="insertConfig">
+		insert into email_config (id, name, protocol, host, port, is_auth, sender, sender_address, password, create_time, modified_time)
+		values (#{id},#{name}, #{protocol}, #{host}, #{port}, #{is_auth}, #{sender}, #{sender_address}, #{password}, #{create_time}, #{modified_time})
+	</insert>
+
+	<!-- ********************* -->
+
+
+	<select id="queryAllConfig" resultMap="EmailConfigVO">
+		select
+			id,
+			name,
+			protocol,
+            host,
+            port,
+            is_auth,
+			sender,
+			sender_address,
+			password,
+			create_time,
+			modified_time
+		from email_config
+		order by modified_time desc
+	</select>
+
+    <!-- ********************* -->
+
+	<select id="queryConfigByName" resultMap="EmailConfigVO">
+		select
+		id,
+		name,
+        protocol,
+        host,
+        port,
+        is_auth,
+		sender,
+		sender_address,
+		password,
+		create_time,
+		modified_time
+		from email_config
+		<where>
+			name = #{name}
+		</where>
+	</select>
+
+	<!-- ********************* -->
+	<select id="queryConfigById" resultMap="EmailConfigVO">
+		select
+			id,
+			name,
+            protocol,
+            host,
+            port,
+            is_auth,
+			sender,
+			sender_address,
+			password,
+			create_time,
+			modified_time
+		from email_config
+		<where>
+			id = #{id}
+		</where>
+	</select>
+
+	<!-- ********************* -->
+
+	<update id="updateConfig" >
+		update email_config set
+			name = #{name},
+            protocol = #{protocol},
+            host = #{host},
+            port = #{port},
+            is_auth = #{is_auth},
+			sender = #{sender},
+			sender_address = #{sender_address},
+			password = #{password},
+			modified_time = #{modified_time}
+		<where>
+			id = #{id}
+		</where>
+	</update>
+
+	<!-- ********************* -->
+
+	<delete id="deleteConfigByIds">
+		delete
+		from email_config
+		where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

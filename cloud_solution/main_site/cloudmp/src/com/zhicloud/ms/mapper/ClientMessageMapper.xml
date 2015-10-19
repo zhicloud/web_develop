@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.ClientMessageMapper"> 
+	
+	 <resultMap type="com.zhicloud.ms.vo.ClientMessageVO" id="ClientMessageVO">
+		<id     column="id"           property="id" />
+		<result column="user_name"    property="userName" />
+		<result column="create_time"  property="createTime" />
+		<result column="content"      property="content" />
+		<result column="status"       property="status" />
+		<result column="type"         property="type" />
+	</resultMap>
+	 <!-- ********************* -->
+	<select id="getAll" resultMap="ClientMessageVO">
+		select c.id,
+			c.user_name,
+			c.content,
+			c.create_time,
+			c.status,
+			c.type
+		from client_message c
+		<where>
+			c.status != 0
+			<if test="status!=null and status!=''">
+				and c.status = #{status}
+			</if>
+			<if test="type!=null and type!=''">
+				and c.type = #{type}
+			</if>
+		</where>
+		order by c.create_time desc
+	</select>
+	
+	<insert id="add">
+		insert into client_message (id,user_name,create_time,content,status,type) 
+		values (#{id}, #{userName},#{createTime}, #{content}, #{status}, #{type})
+	</insert>
+	
+	<!-- ********************* -->
+	
+	<delete id="deleteIds">
+		delete
+		from client_message
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<update id="markRead">
+		update client_message
+			<set>
+				status = 1
+			</set>
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>	
+	</update>
+	 
+</mapper>

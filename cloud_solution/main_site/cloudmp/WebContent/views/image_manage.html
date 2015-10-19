@@ -1,0 +1,230 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="css/style.default.css" type="text/css" />
+<script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery.cookie.js"></script>
+
+<script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
+<script type="text/javascript" src="js/custom/general.js"></script>
+<script type="text/javascript" src="js/custom/tables.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	  //默认选中
+    var select = '<a href="image.html" class="btn btn_search radius50"><span>新增镜像</span></a>';
+      jQuery("#dyntable2_length").append(select);
+
+});
+</script>
+<div class="pageheader">
+            <h1 class="pagetitle">镜像管理</h1> 
+        </div><!--pageheader--> 
+         
+        <div id="contentwrapper" class="contentwrapper"> 
+                <table cellpadding="0" cellspacing="0" border="0" class="stdtable" id="dyntable2">
+                    <colgroup>
+                        <col class="con0" style="width: 4%" />
+                        <col class="con1" />
+                        <col class="con0" />
+                        <col class="con1" />
+                        <col class="con0" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                          <th class="head0 nosort"><input type="checkbox" /></th>
+                            <th class="head0">镜像名称</th>
+                            <th class="head1">显示名称</th>
+                            <th class="head0">类型</th>
+                            <th class="head1">创建时间</th> 
+                            <th class="head1">操作</th>
+                        </tr>
+                    </thead> 
+                    <tbody>
+                        <tr class="gradeX">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Win7高配行政专用</td>
+                            <td>4核/4G/100G/4M</td>
+                            <td>Clean_Window</td>
+                            <td class="center">2015-01-01 10:00:00</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeC">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Trident</td>
+                            <td>Internet Explorer 5.0</td>
+                            <td>Win 95+</td>
+                            <td class="center">5</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Trident</td>
+                            <td>Internet Explorer 5.5</td>
+                            <td>Win 95+</td>
+                            <td class="center">5.5</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Trident</td>
+                            <td>Internet Explorer 6</td>
+                            <td>Win 98+</td>
+                            <td class="center">6</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Trident</td>
+                            <td>Internet Explorer 7</td>
+                            <td>Win XP SP2+</td>
+                            <td class="center">7</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Trident</td>
+                            <td>AOL browser (AOL desktop)</td>
+                            <td>Win XP</td>
+                            <td class="center">9</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Gecko</td>
+                            <td>Firefox 1.0</td>
+                            <td>Win 98+ / OSX.2+</td>
+                            <td class="center">1.7</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Gecko</td>
+                            <td>Firefox 1.5</td>
+                            <td>Win 98+ / OSX.2+</td>
+                            <td class="center">1.8</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Gecko</td>
+                            <td>Firefox 2.0</td>
+                            <td>Win 98+ / OSX.2+</td>
+                            <td class="center">1.8</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Gecko</td>
+                            <td>Firefox 3.0</td>
+                            <td>Win 2k+ / OSX.3+</td>
+                            <td class="center">1.9</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Gecko</td>
+                            <td>Camino 1.0</td>
+                            <td>OSX.2+</td>
+                            <td class="center">1.8</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Gecko</td>
+                            <td>Camino 1.5</td>
+                            <td>OSX.3+</td>
+                            <td class="center">1.8</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Gecko</td>
+                            <td>Netscape 7.2</td>
+                            <td>Win 95+ / Mac OS 8.6-9.2</td>
+                            <td class="center">1.7</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Gecko</td>
+                            <td>Netscape Browser 8</td>
+                            <td>Win 98SE+</td>
+                            <td class="center">1.7</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Gecko</td>
+                            <td>Netscape Navigator 9</td>
+                            <td>Win 98+ / OSX.2+</td>
+                            <td class="center">1.8</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Gecko</td>
+                            <td>Mozilla 1.0</td>
+                            <td>Win 95+ / OSX.1+</td>
+                            <td class="center">1</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Gecko</td>
+                            <td>Mozilla 1.1</td>
+                            <td>Win 95+ / OSX.1+</td>
+                            <td class="center">1.1</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                        <tr class="gradeA">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>Gecko</td>
+                            <td>Mozilla 1.2</td>
+                            <td>Win 95+ / OSX.1+</td>
+                            <td class="center">1.2</td> 
+                            <td class="center">修改 删除</td>
+                        </tr>
+                         
+                    </tbody>
+                </table>
+        	 
+        
+        </div><!--contentwrapper-->
+        
+        <br clear="all" />
