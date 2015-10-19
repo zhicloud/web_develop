@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="op.makewar" default="makewar" basedir=".">
+	
+	<property name="WebDir" location="WebContent" />
+	<property name="fileName" value="op.war" />
+	
+	<target name="makewar">
+		<war warfile="${fileName}" basedir="${WebDir}" />
+	</target>
+	
+</project>

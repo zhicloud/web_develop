@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.VersionRecordMapper">
+	
+	<resultMap id="VersionRecordVO" type="com.zhicloud.ms.vo.VersionRecordVO">
+		<id     column="id"            property="id" />
+		<result column="version_number" property="versionNumber" />
+		<result column="download_url"  property="downloadUrl" />
+		<result column="update_info"      property="updateInfo" /> 
+		<result column="create_time"  property="createTime" />
+ 		<result column="status"  property="status" /> 
+ 	    <result column="fsize"  property="fsize" />
+	</resultMap>
+	
+	<!-- ********************* -->
+	
+	<select id="getAll" resultMap="VersionRecordVO">
+		select 
+		      id,
+		      version_number, 
+		      update_info,
+		      name,
+		      fsize,
+		      create_time 
+		from version_record	
+		order by create_time desc 
+	</select>
+	<select id="getLatestVersion" resultMap="VersionRecordVO">
+		select 
+		      id,
+		      version_number,
+		      update_info,
+		      name,
+		      fsize,
+		      create_time
+		from version_record	
+		order by create_time desc 
+		limit 1
+	</select>
+	<select id="getVersionById" resultMap="VersionRecordVO">
+		select 
+		      id,
+		      version_number,
+		      update_info,
+		      name,
+		      fsize,
+		      create_time
+		from version_record	
+		where id = #{id}
+	</select>
+	
+	 
+	
+	<!-- ********************* -->
+	
+	<insert id="addVersion">
+		insert into version_record (id, version_number,name, update_info, fsize, create_time) 
+		values (#{id}, #{versionNumber},#{name}, #{updateInfo}, #{fsize}, #{createTime})
+	</insert>
+	
+	<update id="updateTerminalUserById">
+		update terminal_user set 
+			name = #{name},
+			email = #{email},
+			phone = #{phone},
+			fsize = #{fsize},
+			modified_time = #{modified_time}
+		where id = #{id}
+	</update>
+	
+	 
+	
+	<!-- ********************* -->
+	
+	
+	<delete id="deleteVersion">
+		delete 
+		from version_record 
+		where 
+          id in
+       <foreach collection="array" item="id" open="(" close=")" separator=", ">
+			#{id}
+		</foreach>
+	</delete>
+	 
+	
+	
+</mapper>

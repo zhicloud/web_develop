@@ -1,0 +1,907 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+ 
+<mapper namespace="com.zhicloud.ms.mapper.CloudHostMapper">
+
+	<resultMap type="com.zhicloud.ms.vo.CloudHostVO" id="CloudHostVO">
+		<id     column="id"               property="id" />
+		<result column="real_host_id"     property="realHostId" /> 
+		<result column="type"             property="type" /> 
+		<result column="user_id"          property="userId" />
+		<result column="user_account"     property="userAccount" />
+		<result column="host_name"        property="hostName" />
+		<result column="display_name"     property="displayName" />
+		<result column="cpu_core"         property="cpuCore" />
+		<result column="sys_image_id"     property="sysImageId" />
+		<result column="sys_image_name"   property="sysImageName" />
+		<result column="sys_disk"         property="sysDisk" />
+		<result column="data_disk"        property="dataDisk" />
+		<result column="is_auto_start"    property="isAutoStartup" />
+		<result column="running_status"   property="runningStatus" />
+		<result column="inner_ip"         property="innerIp" />
+		<result column="inner_port"       property="innerPort" />
+		<result column="outer_ip"         property="outerIp" />
+		<result column="outer_port"       property="outerPort" />
+		<result column="monthly_price"    property="monthlyPrice" />
+		<result column="password"         property="password" />
+		<result column="process_status"   property="processStatus" />
+		<result column="region"           property="region" />
+		<result column="create_time"      property="createTime" />
+		<result column="bandwidth"        property="bandwidth"/>
+		<result column="region"           property="region"/>
+		<result column="display_name"     property="displayName"/>
+		<result column="package_id"     property="packageId"/>
+		<result column="username"     property="userName"/>
+		<result column="warehouse_id"     property="warehouseId"/>
+		<result column="assign_time"     property="assignTime"/>
+		<result column="pool_id"     property="poolId"/>
+		<result column="tenant_id"     property="tenantId"/>
+		<result column="tenant_name"     property="tenantName"/>
+	</resultMap>
+	
+	
+	<select id="getCloudHost" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port,
+			ch.type,
+			u.username userAccount
+		from cloud_host ch 
+		left join sys_user u
+			on ch.user_id = u.id
+		<if test="userId!=null">
+		where ch.user_id = #{userId}
+		and ch.type = 1
+		</if>
+		
+	</select>
+	
+	<select id="getAllAallocateDesktopHost" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port,
+			ch.type,
+			u.username userAccount
+		from cloud_host ch 
+		left join sys_user u
+			on ch.user_id = u.id
+ 		where ch.user_id is not null
+		and ch.type = 1
+ 		
+	</select>
+	
+	<select id="getByWarehouseId" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port,
+			u.username userAccount,
+			ch.type,
+			m.name modelName,
+			ch.assign_time
+		from cloud_host ch 
+		left join sys_user u on ch.user_id = u.id
+		left join cloud_host_warehouse chw on ch.warehouse_id = chw.id
+		left join cloud_host_config_model m on chw.cloud_host_config_model_id = m.id
+		where ch.type = 1 and ch.warehouse_id = #{warehouseId}
+	</select>
+
+    <select id="queryByWarehouseIdAndParams" resultMap="CloudHostVO">
+        SELECT
+        ch.id id,
+        ch.real_host_id,
+        ch.warehouse_id,
+        ch.user_id,
+        ch.account,
+        ch.password,
+        ch.display_name,
+        ch.sys_image_name,
+        ch.host_name,
+        ch.cpu_core,
+        ch.memory,
+        ch.sys_disk,
+        ch.data_disk,
+        ch.bandwidth,
+        ch.running_status,
+        ch.status,
+        ch.inner_ip,
+        ch.inner_port,
+        ch.outer_ip,
+        ch.outer_port,
+        u.username userAccount,
+        ch.type,
+        m.name modelName,
+        ch.assign_time
+        FROM cloud_host ch
+        LEFT JOIN sys_user u ON ch.user_id = u.id
+        LEFT JOIN cloud_host_warehouse chw ON ch.warehouse_id = chw.id
+        LEFT JOIN cloud_host_config_model m ON chw.cloud_host_config_model_id = m.id
+        <where>
+            ch.type = 1 AND ch.warehouse_id = #{warehouse_id}
+            <if test="param!=null and param!=''">
+                AND (u.username LIKE #{param} OR ch.display_name LIKE #{param})
+            </if>
+            <if test="flag!=null and flag == 0">
+                AND ch.user_id IS NULL
+            </if>
+            <if test="flag!=null and flag == 1">
+                AND ch.user_id IS NOT NULL
+            </if>
+            <if test="running_status!=null">
+                AND ch.running_status = #{running_status}
+            </if>
+        </where>
+    </select>
+	
+	<select id="getCloudHostById" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port,
+			u.username userAccount,
+			ch.assign_time,
+			ch.type,
+			ch.create_time
+		from cloud_host ch 
+		left join sys_user u
+			on ch.user_id = u.id
+		where ch.id = #{id} 
+	</select>
+	
+	
+	<select id="getByRealHostId" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port,
+			ch.assign_time,
+			ch.type,
+			ch.create_time 
+		from cloud_host ch 
+		where ch.real_host_id = #{realHostId} 
+	</select>
+	
+	
+	<select id="getByHostName" resultMap="CloudHostVO">
+		select 
+			ch.id,
+			ch.real_host_id, 
+			ch.warehouse_id,
+			ch.host_name, 
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_image_id,
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.running_status, 
+			ch.status,  
+			ch.type,
+			ch.inner_ip,
+			ch.is_auto_start
+		from cloud_host ch
+		where  ch.host_name = #{hostName} 
+	</select>
+	
+	<select id="getCloudHostByWareId" resultMap="CloudHostVO">
+		select 
+			ch.id,
+			ch.real_host_id, 
+			ch.warehouse_id,
+			ch.host_name,
+			ch.user_id,
+			su.username,
+			ch.display_name,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_image_id,
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.running_status, 
+			ch.status,  
+			ch.type,
+			ch.inner_ip 
+		from cloud_host ch
+		left join sys_user su on ch.user_id = su.id
+		where  ch.warehouse_id = #{warehouseId} 
+		and ch.type = 1
+	</select>
+	<select id="getOneUncreatedCloudHost" resultMap="CloudHostVO">
+		select 
+			ch.id,
+			ch.real_host_id, 
+			ch.warehouse_id,
+			ch.host_name,
+			ch.user_id,
+ 			ch.display_name,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_image_id,
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.running_status, 
+			ch.status,
+			ch.password,
+			ch.type,
+			ch.account,
+			ch.pool_id
+		from cloud_host ch
+		where ch.status = 0 
+		and real_host_id is null
+		limit 1
+	</select>
+	<select id="getHostNotDispatchByWarehouseId" resultMap="CloudHostVO">
+		select 
+			ch.id,
+			ch.real_host_id, 
+			ch.warehouse_id,
+			ch.host_name,
+			ch.user_id,
+ 			ch.display_name,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_image_id,
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.running_status, 
+			ch.type,
+			ch.status 
+		from cloud_host ch
+		where ch.user_id is null 
+		and real_host_id is not null 
+		and warehouse_id = #{warehouseId}
+		and ch.type = 1
+	</select>
+	
+	<select id="getAllCloudHost" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port, 
+			ch.outer_ip,
+			ch.outer_port,
+			ch.type
+		from cloud_host ch  
+	</select>
+	<select id="getCloudHostByUserId" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port,
+			ch.type,
+ 			ch.assign_time
+		from cloud_host ch  
+		where ch.user_id = #{userId}
+	</select>
+	
+	<select id="getCloudHostInTenant" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port,
+			ch.type,
+ 			ch.assign_time,
+ 			ch.sys_image_id
+		from cloud_host ch  
+		join host_tenant_relationship a on ch.id = a.host_id
+		join sys_tenant b on a.tenant_id = b.id
+		where b.id= #{tenantId}
+	</select>
+	
+	<select id="getDesktopCloudHostNotInTimerBackUp" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port,
+			u.username userAccount,
+			ch.type,
+			m.name modelName,
+			ch.assign_time
+		from cloud_host ch 
+		left join sys_user u on ch.user_id = u.id
+		left join cloud_host_warehouse chw on ch.warehouse_id = chw.id
+		left join cloud_host_config_model m on chw.cloud_host_config_model_id = m.id
+		where ch.user_id is not null 
+		      and ch.type = 1 
+		      and ch.id not in (select host_id from host_timer_relationship)
+	</select>
+	
+	<select id="getDesktopCloudHostInTimerBackUp" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port,
+			u.username userAccount,
+			ch.type,
+			m.name modelName,
+			ch.assign_time
+		from cloud_host ch 
+		left join sys_user u on ch.user_id = u.id
+		left join cloud_host_warehouse chw on ch.warehouse_id = chw.id
+		left join cloud_host_config_model m on chw.cloud_host_config_model_id = m.id
+		join host_timer_relationship ship on ch.id = ship.host_id
+		where ch.user_id is not null and ch.type = 1 
+	</select>
+	
+	<select id="getDesktopCloudHostInTimerBackUpStart" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port,
+			u.username userAccount,
+			ch.type,
+			m.name modelName,
+			ch.assign_time
+		from cloud_host ch 
+		left join sys_user u on ch.user_id = u.id
+		left join cloud_host_warehouse chw on ch.warehouse_id = chw.id
+		left join cloud_host_config_model m on chw.cloud_host_config_model_id = m.id
+		join host_timer_relationship ship on ch.id = ship.host_id
+		where ch.user_id is not null and running_status = 2 and ship.timer_key = #{timerKey} 
+	</select>
+	
+	<select id="getDesktopCloudHostInTimerBackUpStop" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port,
+			u.username userAccount,
+			ch.type,
+			m.name modelName,
+			ch.assign_time
+		from cloud_host ch 
+		left join sys_user u on ch.user_id = u.id
+		left join cloud_host_warehouse chw on ch.warehouse_id = chw.id
+		left join cloud_host_config_model m on chw.cloud_host_config_model_id = m.id
+		join host_timer_relationship ship on ch.id = ship.host_id
+		where ch.user_id is not null and running_status = 1 and ship.timer_key = #{timerKey} 
+		<![CDATA[
+		and (ship.last_back_up_time is null or ship.last_back_up_time < #{now})
+		]]>
+		limit #{limit}
+	</select>
+	
+	
+	
+	<update id="updateRunningStatusByRealHostId">
+		update cloud_host
+		<set>
+			running_status = #{runningStatus}
+		</set>
+		where real_host_id = #{realHostId}
+	</update>
+	
+	<update id="updateStautsById">
+		update cloud_host
+		<set>
+			status = #{status}
+			<if test="createTime!=null">
+			,create_time = #{createTime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	<update id="updateStautsByName">
+		update cloud_host
+		<set>
+			status = #{status}
+ 		</set>
+		where host_name = #{hostName}
+	</update>
+	<update id="updateCloudHostUserIdById">
+		update cloud_host
+		<set>
+			user_id = #{userId} ,
+			assign_time = #{assignTime}
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateRealHostIdById">
+		update cloud_host
+		<set>
+			real_host_id = #{realHostId},
+			<if test="sysDisk!=null">
+				sys_disk = #{sysDisk},
+			</if>
+			<if test="dataDisk!=null">
+				data_disk = #{dataDisk},
+			</if>
+			<if test="innerIp!=null">
+				inner_ip = #{innerIp},
+			</if>
+			<if test="innerPort!=null">
+				inner_port = #{innerPort},
+			</if>
+			<if test="outerIp!=null">
+				outer_ip = #{outerIp},
+			</if>
+			<if test="outerPort!=null">
+				outer_port = #{outerPort},
+			</if>
+			<if test="createTime!=null">
+				create_time = #{createTime},
+			</if>
+			<if test="runningStatus!=null">
+				running_status = #{runningStatus},
+			</if>
+			<if test="status!=null">
+				status = #{status}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateInnerIpByRealHostId">
+		update cloud_host
+		<set>
+			  
+				inner_port = #{innerPort}, 
+				outer_ip = #{outerIp} 
+		</set>
+		where real_host_id = #{realHostId}
+	</update>
+	
+	<update id="updateBackUpTimeByHostId">
+		update host_timer_relationship
+		<set>
+			last_back_up_time = #{lastBackUpTime}
+		</set>
+		where host_id = #{hostId}
+	</update>
+	 
+	<insert id="insertCloudHost">
+		insert into cloud_host (id,real_host_id,user_id,warehouse_id,host_name,display_name,account,password,cpu_core,memory,sys_image_id,sys_disk,data_disk,bandwidth,running_status,status,inner_ip,inner_port,sys_image_name,create_time,modified_time,outer_ip,outer_port,type,pool_id) 
+			values (#{id},#{realHostId},#{userId},#{warehouseId},#{hostName},#{displayName},#{account},#{password},#{cpuCore},#{memory},#{sysImageId},#{sysDisk},#{dataDisk},#{bandwidth},#{runningStatus},#{status},#{innerIp},#{innerPort},#{sysImageName},#{createTime},#{modifiedTime},#{outerIp},#{outerPort},#{type},#{poolId})
+	</insert>
+	
+	<insert id="addHostIntoTimer">
+		insert into host_timer_relationship (id, host_id,last_back_up_time, timer_key) values (#{id}, #{hostId}, #{lastBackUpTime}, #{key})
+	</insert>
+	<insert id="bindHostToTenant">
+		insert into host_tenant_relationship (host_id,tenant_id) values (#{hostId}, #{tenantId})
+	</insert>
+	
+	<delete id="deleteAllCloudHostInTimer">
+		DELETE ship.* FROM host_timer_relationship ship WHERE ship.timer_key = #{key}
+	</delete>
+
+	
+	
+	<delete id="deleteById">
+		delete from cloud_host
+		where id = #{id}
+	</delete>
+	
+	<delete id="unboundHostInTenant">
+		delete from host_tenant_relationship
+		where host_id = #{hostId}
+	</delete>
+	
+	<delete id="deleteByRealId">
+		delete from cloud_host
+		where real_host_id = #{id}
+	</delete>
+	<select id="getAllServer" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.sys_image_id,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port,
+			ch.type,
+			c.id tenant_id,
+			c.name tenant_name
+		from cloud_host ch 
+		left join host_tenant_relationship b
+		on ch.id = b.host_id
+		left join sys_tenant c
+		on b.tenant_id = c.id
+		where type = 2
+		order by ch.create_time desc
+	</select>
+	
+	<select id="getById" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port,
+			ch.type
+		from cloud_host ch 
+		where ch.id = #{id}
+		order by ch.create_time desc
+	</select>
+	
+	<update id="updateById">
+		update cloud_host 
+			<set>
+				cpu_core = #{cpuCore},
+				memory = #{memory},
+			</set>
+		where id = #{id}
+	</update>
+
+    <select id="queryCloudHostNotInTimer" resultMap="CloudHostVO">
+        SELECT
+        ch.id id,
+        ch.real_host_id,
+        ch.warehouse_id,
+        ch.user_id,
+        ch.account,
+        ch.password,
+        ch.display_name,
+        ch.sys_image_name,
+        ch.host_name,
+        ch.cpu_core,
+        ch.memory,
+        ch.sys_disk,
+        ch.data_disk,
+        ch.bandwidth,
+        ch.running_status,
+        ch.status,
+        ch.inner_ip,
+        ch.inner_port,
+        ch.outer_ip,
+        ch.outer_port,
+        u.username userAccount,
+        ch.type,
+        m.name modelName,
+        ch.assign_time
+        FROM cloud_host ch
+        LEFT JOIN sys_user u ON ch.user_id = u.id
+        LEFT JOIN cloud_host_warehouse chw ON ch.warehouse_id = chw.id
+        LEFT JOIN cloud_host_config_model m ON chw.cloud_host_config_model_id = m.id
+        WHERE 
+        ch.id NOT IN (SELECT ship.host_id FROM host_timer_relationship ship WHERE ship.timer_key = #{key})
+        <if test="_parameter =='shutdown_timer' or _parameter == 'startup_timer' or _parameter == 'desktop_back_up'">
+	        AND ch.user_id IS NOT NULL
+	        AND ch.type = 1 
+        </if>
+        <if test="_parameter == 'server_back_up'">
+ 	        AND ch.type = 2
+        </if>
+    </select>
+
+    <select id="queryCloudHostInTimer" resultMap="CloudHostVO">
+        SELECT
+        ch.id id,
+        ch.real_host_id,
+        ch.warehouse_id,
+        ch.user_id,
+        ch.account,
+        ch.password,
+        ch.display_name,
+        ch.sys_image_name,
+        ch.host_name,
+        ch.cpu_core,
+        ch.memory,
+        ch.sys_disk,
+        ch.data_disk,
+        ch.bandwidth,
+        ch.running_status,
+        ch.status,
+        ch.inner_ip,
+        ch.inner_port,
+        ch.outer_ip,
+        ch.outer_port,
+        u.username userAccount,
+        ch.type,
+        m.name modelName,
+        ch.assign_time
+        FROM cloud_host ch
+        LEFT JOIN sys_user u ON ch.user_id = u.id
+        LEFT JOIN cloud_host_warehouse chw ON ch.warehouse_id = chw.id
+        LEFT JOIN cloud_host_config_model m ON chw.cloud_host_config_model_id = m.id
+        JOIN host_timer_relationship ship ON ch.id = ship.host_id
+        WHERE ship.timer_key = #{key}
+        <if test="_parameter =='shutdown_timer' or _parameter == 'startup_timer' or _parameter == 'desktop_back_up'">
+	        AND ch.user_id IS NOT NULL
+	        AND ch.type = 1 
+        </if>
+        <if test="_parameter == 'server_back_up'">
+ 	        AND ch.type = 2
+        </if> 
+    </select>
+	
+	
+	<select id="getAllHostByVpcId" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.user_id,
+			ch.host_name, 
+			ch.display_name, 
+			ch.type,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.running_status, 
+			ch.status status, 
+			ch.inner_ip, 
+			ch.inner_port, 
+			ch.outer_ip,
+			ch.outer_port,
+			ch.sys_image_name,
+			ch.create_time createTime
+		from cloud_host ch  
+		join vpc_bind_host vbh
+		    on ch.id = vbh.host_id and vbh.flag = 0 and vbh.vpc_id = #{vpcId}
+		where  ch.status!=4 
+	   	order by ch.create_time desc
+	   
+	</select>
+	
+	<select id="getCloudHostInVpc" resultMap="CloudHostVO">
+		select 
+			ch.id,
+			ch.real_host_id,
+			ch.user_id,
+			ch.host_name, 
+			ch.display_name, 
+			ch.type,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.running_status, 
+			ch.status status, 
+			ch.inner_ip, 
+			ch.inner_port, 
+			ch.outer_ip,
+			ch.outer_port,
+			ch.password,
+			ch.sys_image_name,
+			ch.create_time,
+			ch.vpc_ip
+		from cloud_host ch  
+		join vpc_bind_host vbh
+		    on ch.id = vbh.host_id and vbh.flag = 0 and vbh.vpc_id = #{vpcId}
+		where  ch.status!=4 
+	   	order by ch.create_time desc
+	</select>
+	
+	<update id="updateVpcIpById">
+		update  cloud_host 
+		<set>
+		     vpc_ip = #{vpcIp} 
+		</set>
+		where id  = #{id}
+	</update>
+</mapper>
