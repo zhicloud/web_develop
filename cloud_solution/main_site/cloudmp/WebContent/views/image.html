@@ -1,0 +1,116 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+<link rel="stylesheet" href="css/style.default.css" type="text/css" />
+<script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery.cookie.js"></script>
+<script type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery.validate.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery.tagsinput.min.js"></script>
+<script type="text/javascript" src="js/plugins/charCount.js"></script>
+<script type="text/javascript" src="js/plugins/ui.spinner.min.js"></script>
+<script type="text/javascript" src="js/plugins/chosen.jquery.min.js"></script> 
+<script type="text/javascript" src="js/custom/forms.js"></script> 
+<!--[if IE 9]>
+    <link rel="stylesheet" media="screen" href="css/style.ie9.css"/>
+<![endif]-->
+<!--[if IE 8]>
+    <link rel="stylesheet" media="screen" href="css/style.ie8.css"/>
+<![endif]-->
+<!--[if lt IE 9]>
+	<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<![endif]--> 
+
+<div class="bodywrapper"> 
+     
+    
+     
+    <div class="centercontent" style="margin-left:0">
+    
+        <div class="pageheader">
+            <h1 class="pagetitle">镜像管理</h1> 
+            
+            <ul class="hornav">
+                <li class="current"><a href="#basicform">新增镜像</a></li> 
+            </ul>
+        </div><!--pageheader-->
+        
+        <div id="contentwrapper" class="contentwrapper">
+        	
+        	<div id="basicform" class="subcontent"> 
+
+                    <form class="stdform" action="" method="post">
+                    	
+                        <p>
+                        	<label>镜像名称</label>
+                            <span class="field"><input type="text" name="email" class="smallinput" /></span>
+                            <small class="desc"></small>
+                        </p>
+                        <p>
+                        	<label>显示名称</label>
+                            <span class="field"><input type="text" name="input1" class="smallinput" /></span>
+                            <small class="desc"></small>
+                        </p>
+                        
+                        <p>
+                            <label>类型</label>
+                            <span class="formwrapper">  
+                                <select name="type" class="bigselect">
+                            	<option value="">从主机创建</option>  
+                                </select> 
+                                 
+                            </span>
+                            </p>
+                         
+                        <div id="diy" style="display:none;">
+                            <p>
+                            <label>CPU</label>
+                            <span class="formwrapper">  
+                                <select name="select" class="bigselect">
+                            	<option value="">选择主机类型</option> 
+                                <option value="">Win7</option>
+                                <option value="">Win8</option>
+                                </select> 
+                                 
+                            </span>
+                                <label></label>
+                                <span class="formwrapper">  
+                                    <select name="select" class="bigselect">
+                                    <option value="">选择可用云主机</option> 
+                                    <option value="">host1</option>
+                                    <option value="">host2</option>
+                                    </select> 
+
+                                </span>
+                            </p>
+                             
+
+                        </div>
+                        
+                         
+                        
+                        <p>
+                        	<label>描述</label>
+                            <span class="field"><textarea cols="80" rows="5" class="longinput"></textarea></span> 
+                        </p>
+                        
+                        
+                        
+                        <p class="stdformbutton">
+                        	<button class="submit radius2">保存</button>
+                            <input type="reset" class="reset radius2" value="取消" />
+                        </p>
+                        
+                        
+                    </form>
+                    
+                    <br /> 
+
+            </div><!--subcontent-->
+        
+        </div><!--contentwrapper-->
+        
+	</div><!-- centercontent -->
+    
+    
+</div><!--bodywrapper-->
+ 
