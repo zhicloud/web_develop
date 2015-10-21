@@ -379,6 +379,9 @@ public class TransFormPrivilegeConstant {
     public static final String server_snapshot_delete = "server_snapshot_delete"; //快照删除
     public static final String server_snapshot_create = "server_snapshot_create"; //快照创建
     public static final String server_snapshot_resume = "server_snapshot_resume"; //快照恢复
+    
+    public static final String static_report_cloud_query = "static_report_cloud_query";// 云主机统计报表查询
+    public static final String static_report_server_query = "static_report_server_query";// 宿主机统计报表查询
 
 }
  

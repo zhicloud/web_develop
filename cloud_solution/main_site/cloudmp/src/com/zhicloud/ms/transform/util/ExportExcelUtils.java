@@ -19,6 +19,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -315,5 +318,95 @@ public class ExportExcelUtils {
         wb.close();
         file.delete();
 
+    }
+    
+    /**
+     * @Description:导出统计报表Excel
+     * @param request
+     * @param response
+     * @param datalist 数据集合
+     * @param titledata excel标题
+     * @param columns 字段二维数组
+     * @throws Exception
+     */
+    public static <T> void exportStaticData(HttpServletRequest request, HttpServletResponse response, JSONArray array,
+            String titledata, String[][] columns) throws Exception {
+        // 创建excel工作簿
+        Workbook wb = new HSSFWorkbook();
+        // 获取当前日期
+        SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyyMMdd");
+        Date currentTime = new java.util.Date();
+
+        HSSFCellStyle style = (HSSFCellStyle) wb.createCellStyle();
+        // 生成一个字体
+        HSSFFont font = (HSSFFont) wb.createFont();
+        // 设置这些样式
+        style.setFillForegroundColor(HSSFColor.GREY_25_PERCENT.index);
+        style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+        style.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+        // 生成一个字体
+        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+        // 把字体应用到当前的样式
+        style.setFont(font);
+        for (int k = 0; k < (array.size() / constant) + 1; k++) {
+            int tempcount = 0;
+            Sheet sheet = wb.createSheet(titledata /*+ formatter.format(currentTime)*/ + "(" + k + ")");
+            // 创建创建表头
+            Row row = sheet.createRow(0);
+            // 设置第一行表头
+            for (int i = 0; i < columns.length; i++) {
+                HSSFCell cell = (HSSFCell) row.createCell(i);
+                cell.setCellStyle(style);
+                cell.setCellValue(columns[i][0]);
+                sheet.setColumnWidth(i, columns[i][0].getBytes().length * 800);
+            }
+            String cellValue = "";
+            // 填充内容
+            for (int i = (k * constant); i < ((k + 1) * constant > array.size() ? array.size() : (k + 1) * constant); i++) {
+                tempcount++;
+                JSONObject json = array.getJSONObject(i);
+                row = sheet.createRow(tempcount);
+                for (int j = 0; j < columns.length; j++) {
+                    cellValue = json.getString(columns[j][1]);
+                    row.createCell(j).setCellValue(cellValue);
+                }
+            }
+        }
+        String fileName = titledata /*+ formatter.format(currentTime)*/ + ".xls";
+
+        String filePath = AppHelper.getServerHome() + "/projects/" + AppHelper.APP_NAME + "/"
+                + formatter.format(currentTime);
+
+        // 若无该文件夹自动创建
+        File fp = new File(filePath);
+
+        if (!fp.exists()) {
+            fp.mkdirs();
+        }
+
+        String path = filePath + "/" + fileName;
+
+        FileOutputStream fileOut = new FileOutputStream(path);
+        // 把上面创建的工作簿输出到文件中
+        wb.write(fileOut);
+        // 关闭输出流
+        fileOut.close();
+
+        File file = new File(path);
+
+        InputStream in = new FileInputStream(file);
+        OutputStream os = response.getOutputStream();
+        setFileDownloadHeader(request, response, file.getName());
+        response.addHeader("Content-Length", file.length() + "");
+        response.setCharacterEncoding("utf-8");
+        response.setContentType("application/vnd.ms-excel");
+        int data = 0;
+        while ((data = in.read()) != -1) {
+            os.write(data);
+        }
+        os.close();
+        in.close();
+        wb.close();
+        file.delete();
     }
 }

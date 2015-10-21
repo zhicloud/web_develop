@@ -3929,6 +3929,116 @@ public JSONObject hostMigrate(String uuid, String target, int type, String callb
         JSONObject json = HttpUtil.post(url, encryptParam, requestProperties, new DefaultResponseHanlder());
         return json;
     }
+    
+    public JSONObject query_service_detail(String target, int level, String begin, String end, String callback)
+            throws MalformedURLException, IOException {
+        String url = this.baseUrl + "statistics?";
+        url += "command=query_service_detail&";
+        url += "session_id=" + this.sessionId + "&";
+
+        if (logger.isDebugEnabled()) {
+            logger.info("query_service_detail() -> url=[" + url + "]");
+        }
+
+        // 参数
+        Map<String, String> postDataMap = new LinkedHashMap<String, String>();
+        postDataMap.put("target", String.valueOf(target));
+        postDataMap.put("level", String.valueOf(level));
+        postDataMap.put("begin", begin);
+        postDataMap.put("end", end);
+        postDataMap.put("callback", callback);
+
+        byte[] encryptParam = encrypt(postDataMap);
+
+        // 发送http消息，并取得返回的数据
+        Map<String, String> requestProperties = new LinkedHashMap<String, String>();
+        requestProperties.put("Content-type", "application/x-www-form-urlencoded/encryption");
+
+        JSONObject json = HttpUtil.post(url, encryptParam, requestProperties, new DefaultResponseHanlder());
+        return json;
+    }
+
+    public JSONObject query_service_summary(String[] target, String begin, String end, String callback)
+            throws MalformedURLException, IOException {
+        String url = this.baseUrl + "statistics?";
+        url += "command=query_service_summary&";
+        url += "session_id=" + this.sessionId + "&";
+
+        if (logger.isDebugEnabled()) {
+            logger.info("query_service_detail() -> url=[" + url + "]");
+        }
+
+        // 参数
+        Map<String, String> postDataMap = new LinkedHashMap<String, String>();
+        postDataMap.put("target", String.valueOf(target));
+        postDataMap.put("begin", begin);
+        postDataMap.put("end", end);
+        postDataMap.put("callback", callback);
+
+        byte[] encryptParam = encrypt(postDataMap);
+
+        // 发送http消息，并取得返回的数据
+        Map<String, String> requestProperties = new LinkedHashMap<String, String>();
+        requestProperties.put("Content-type", "application/x-www-form-urlencoded/encryption");
+
+        JSONObject json = HttpUtil.post(url, encryptParam, requestProperties, new DefaultResponseHanlder());
+        return json;
+    }
+    
+    public JSONObject query_operate_detail(String target, int level, String begin, String end, String callback)
+            throws MalformedURLException, IOException {
+        String url = this.baseUrl + "statistics?";
+        url += "command=query_operate_detail&";
+        url += "session_id=" + this.sessionId + "&";
+
+        if (logger.isDebugEnabled()) {
+            logger.info("query_service_detail() -> url=[" + url + "]");
+        }
+
+        // 参数
+        Map<String, String> postDataMap = new LinkedHashMap<String, String>();
+        postDataMap.put("target", String.valueOf(target));
+        postDataMap.put("level", String.valueOf(level));
+        postDataMap.put("begin", begin);
+        postDataMap.put("end", end);
+        postDataMap.put("callback", callback);
+
+        byte[] encryptParam = encrypt(postDataMap);
+
+        // 发送http消息，并取得返回的数据
+        Map<String, String> requestProperties = new LinkedHashMap<String, String>();
+        requestProperties.put("Content-type", "application/x-www-form-urlencoded/encryption");
+
+        JSONObject json = HttpUtil.post(url, encryptParam, requestProperties, new DefaultResponseHanlder());
+        return json;
+    }
+
+    public JSONObject query_operate_summary(String[] target, String begin, String end, String callback)
+            throws MalformedURLException, IOException {
+        String url = this.baseUrl + "statistics?";
+        url += "command=query_operate_summary&";
+        url += "session_id=" + this.sessionId + "&";
+
+        if (logger.isDebugEnabled()) {
+            logger.info("query_service_detail() -> url=[" + url + "]");
+        }
+
+        // 参数
+        Map<String, String> postDataMap = new LinkedHashMap<String, String>();
+        postDataMap.put("target", String.valueOf(target));
+        postDataMap.put("begin", begin);
+        postDataMap.put("end", end);
+        postDataMap.put("callback", callback);
+
+        byte[] encryptParam = encrypt(postDataMap);
+
+        // 发送http消息，并取得返回的数据
+        Map<String, String> requestProperties = new LinkedHashMap<String, String>();
+        requestProperties.put("Content-type", "application/x-www-form-urlencoded/encryption");
+
+        JSONObject json = HttpUtil.post(url, encryptParam, requestProperties, new DefaultResponseHanlder());
+        return json;
+    }
 }
 
 
