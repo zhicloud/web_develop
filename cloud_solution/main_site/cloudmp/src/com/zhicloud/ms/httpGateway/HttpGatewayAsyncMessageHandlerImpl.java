@@ -33,6 +33,7 @@ import com.zhicloud.ms.common.util.json.JSONLibUtil;
 import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.constant.AppInconstant;
 import com.zhicloud.ms.constant.MonitorConstant;
+import com.zhicloud.ms.constant.StaticReportHandle;
 import com.zhicloud.ms.service.IBackUpDetailService;
 import com.zhicloud.ms.util.CapacityUtil;
 import com.zhicloud.ms.util.StringUtil;
@@ -41,6 +42,7 @@ import com.zhicloud.ms.app.pool.snapshot.SnapshotManager;
 
  
  
+
 
 
 import net.sf.json.JSONArray;
@@ -1852,4 +1854,52 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         channel.release();
         logger.info(String.format("[%s]modify service response, data '%s'", sessionId, messageData));
     }   
+    
+    /**
+     * @Description:查询服务明细接口后的异步回调接收数据方法
+     * @param channel
+     * @param messageData
+     */
+    @HttpGatewayMessageHandler(messageType = "query_service_detail")
+    public void query_service_detail(HttpGatewayAsyncChannel channel, JSONObject messageData) {
+        logger.debug("recieve query_service_detail data.");
+        // 处理回调的数据
+        StaticReportHandle.updateDetailDataToMemory(messageData, 1);
+    }
+
+    /**
+     * @Description:查询服务概要接口后的异步回调接收数据方法
+     * @param channel
+     * @param messageData
+     */
+    @HttpGatewayMessageHandler(messageType = "query_service_summary")
+    public void query_service_summary(HttpGatewayAsyncChannel channel, JSONObject messageData) {
+        logger.debug("recieve query_service_summary data.");
+        // 处理回调的数据
+        StaticReportHandle.updateSummaryDataToMemory(messageData, 1);
+    }
+
+    /**
+     * @Description:查询操作明细接口后的异步回调接收数据方法
+     * @param channel
+     * @param messageData
+     */
+    @HttpGatewayMessageHandler(messageType = "query_operate_detail")
+    public void query_operate_detail(HttpGatewayAsyncChannel channel, JSONObject messageData) {
+        logger.debug("recieve query_operate_detail data.");
+        // 处理回调的数据
+        StaticReportHandle.updateDetailDataToMemory(messageData, 2);
+    }
+
+    /**
+     * @Description:查询操作概要接口后的异步回调接收数据方法
+     * @param channel
+     * @param messageData
+     */
+    @HttpGatewayMessageHandler(messageType = "query_operate_summary")
+    public void query_operate_summary(HttpGatewayAsyncChannel channel, JSONObject messageData) {
+        logger.debug("recieve query_operate_summary data.");
+        // 处理回调的数据
+        StaticReportHandle.updateSummaryDataToMemory(messageData, 2);
+    }
 }
