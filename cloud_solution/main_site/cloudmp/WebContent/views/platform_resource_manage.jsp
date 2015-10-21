@@ -27,13 +27,48 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen-bootstrap.css">
 
     <link href="<%=request.getContextPath()%>/assets/css/zhicloud.css" rel="stylesheet">
-
+	<script src="<%=request.getContextPath()%>/assets/js/jquery.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="<%=request.getContextPath()%>/assets/js/html5shiv.js"></script>
       <script src="<%=request.getContextPath()%>/assets/js/respond.min.js"></script>
     <![endif]-->
+    <script type="text/javascript">
+    	jQuery(function(){
+			jQuery.ajax({
+    	        url: '<%=request.getContextPath()%>/paltform/getdefault',
+    	        type: 'post', 
+    	        dataType: 'json',
+    	        async:false,
+    	        timeout: 10000,
+    	        error: function()
+    	        { 
+    	        },
+    	        success: function(result)	        
+    	        {
+    	        	$("#totalServer").attr("data-value",result.properties.totalServer);
+    	        	$("#totalTop").attr("data-value",result.properties.totalTop);
+    	        	$("#sCpuUsage").attr("data-value",result.properties.sCpuUsage);
+    	        	$("#sCpuUsage_p").attr("data-percentage",result.properties.sCpuUsage+"%");
+    	        	$("#sMemoryUsage").attr("data-value",result.properties.sMemoryUsage);
+    	        	$("#sMemoryUsage_p").attr("data-percentage",result.properties.sMemoryUsage+"%");
+    	        	$("#sDiskUsage").attr("data-value",result.properties.sDiskUsage);
+    	        	$("#sDiskUsage_p").attr("data-percentage",result.properties.sDiskUsage+"%");
+    	        	$("#tCpuUsage").attr("data-value",result.properties.tCpuUsage);
+    	        	$("#tCpuUsage_p").attr("data-percentage",result.properties.tCpuUsage+"%");
+    	        	$("#tMemoryUsage").attr("data-value",result.properties.tMemoryUsage);
+    	        	$("#tMemoryUsage_p").attr("data-percentage",result.properties.tMemoryUsage+"%");
+    	        	$("#tDiskUsage").attr("data-value",result.properties.tDiskUsage);
+    	        	$("#tDiskUsage_p").attr("data-percentage",result.properties.tDiskUsage+"%");
+    	        	$("#pDiskRemain_1").html("已使用"+result.properties.pDiskRemain+"GB");
+    	        	$("#pDisk").html(result.properties.pDisk+"GB");
+    	        	$("#pDiskUsage").attr("data-value",result.properties.pDiskUsage);
+    	        	$("#pDiskUsage_p").attr("data-percentage",result.properties.pDiskUsage+"%");
+    	        }
+    		});
+    	});
+    </script>
   </head>
   <body class="bg-1">
 
@@ -94,7 +129,7 @@
 
                       <div class="media-body">
                         <big>云服务器</big>
-                        <h2 class="media-heading animate-number" data-value="${totalServer }" data-animation-duration="1500">0</h2>
+                        <h2 id="totalServer" class="media-heading animate-number" data-value="0" data-animation-duration="1500">0</h2>
                       </div>
                     </div> 
 
@@ -103,11 +138,11 @@
                         <div class="title">CPU利用率</div>
                       </div>
                       <div class="status pull-right bg-transparent-black-1">
-                        <span class="animate-number" data-value="${sCpuUsage }" data-animation-duration="1500">0</span>%
+                        <span id="sCpuUsage" class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
                       </div>
                       <div class="clearfix"></div>
                       <div class="progress progress-little progress-transparent-black">
-                        <div class="progress-bar animate-progress-bar" data-percentage="${sCpuUsage }%"></div>
+                        <div id="sCpuUsage_p" class="progress-bar animate-progress-bar" data-percentage="0%"></div>
                       </div>
                     </div>
                     <div class="progress-list">
@@ -115,11 +150,11 @@
                         <div class="title">内存利用率</div>
                       </div>
                       <div class="status pull-right bg-transparent-black-1">
-                        <span class="animate-number" data-value="${sMemoryUsage }" data-animation-duration="1500">0</span>%
+                        <span id="sMemoryUsage" class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
                       </div>
                       <div class="clearfix"></div>
                       <div class="progress progress-little progress-transparent-black">
-                        <div class="progress-bar animate-progress-bar" data-percentage="${sMemoryUsage }%"></div>
+                        <div id="sMemoryUsage_p" class="progress-bar animate-progress-bar" data-percentage="0%"></div>
                       </div>
                     </div>
                     <div class="progress-list">
@@ -127,11 +162,11 @@
                         <div class="title">硬盘利用率</div>
                       </div>
                       <div class="status pull-right bg-transparent-black-1">
-                        <span class="animate-number" data-value="${sDiskUsage }" data-animation-duration="1500">0</span>%
+                        <span id="sDiskUsage" class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
                       </div>
                       <div class="clearfix"></div>
                       <div class="progress progress-little progress-transparent-black">
-                        <div class="progress-bar animate-progress-bar" data-percentage="${sDiskUsage }%"></div>
+                        <div id="sDiskUsage_p" class="progress-bar animate-progress-bar" data-percentage="0%"></div>
                       </div>
                     </div>
 
@@ -291,7 +326,7 @@
 
                       <div class="media-body">
                         <big>云桌面</big>
-                        <h2 class="media-heading animate-number" data-value="${totalTop }" data-animation-duration="1500">0</h2>
+                        <h2 id="totalTop" class="media-heading animate-number" data-value="0" data-animation-duration="1500">0</h2>
                       </div>
                     </div> 
 
@@ -300,11 +335,11 @@
                         <div class="title">CPU利用率</div>
                       </div>
                       <div class="status pull-right bg-transparent-black-1">
-                        <span class="animate-number" data-value="${tCpuUsage }" data-animation-duration="1500">0</span>%
+                        <span id="tCpuUsage" class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
                       </div>
                       <div class="clearfix"></div>
                       <div class="progress progress-little progress-transparent-black">
-                        <div class="progress-bar animate-progress-bar" data-percentage="${tCpuUsage }%"></div>
+                        <div id="tCpuUsage_p" class="progress-bar animate-progress-bar" data-percentage="0%"></div>
                       </div>
                     </div>
                     <div class="progress-list">
@@ -312,11 +347,11 @@
                         <div class="title">内存利用率</div>
                       </div>
                       <div class="status pull-right bg-transparent-black-1">
-                        <span class="animate-number" data-value="${tMemoryUsage }" data-animation-duration="1500">0</span>%
+                        <span id="tMemoryUsage" class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
                       </div>
                       <div class="clearfix"></div>
                       <div class="progress progress-little progress-transparent-black">
-                        <div class="progress-bar animate-progress-bar" data-percentage="${tMemoryUsage }%"></div>
+                        <div id="tMemoryUsage_p" class="progress-bar animate-progress-bar" data-percentage="0%"></div>
                       </div>
                     </div>
                     <div class="progress-list">
@@ -324,11 +359,11 @@
                         <div class="title">硬盘利用率</div>
                       </div>
                       <div class="status pull-right bg-transparent-black-1">
-                        <span class="animate-number" data-value="${tDiskUsage }" data-animation-duration="1500">0</span>%
+                        <span id="tDiskUsage" class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
                       </div>
                       <div class="clearfix"></div>
                       <div class="progress progress-little progress-transparent-black">
-                        <div class="progress-bar animate-progress-bar" data-percentage="${tDiskUsage }%"></div>
+                        <div id="tDiskUsage" class="progress-bar animate-progress-bar" data-percentage="0%"></div>
                       </div>
                     </div>
 
@@ -452,17 +487,17 @@
 
                     <div class="progress-list with-heading">
                       <div class="details">
-                        <div class="title"><h2><i class="fa fa-hdd-o"></i> <span class="animate-number" data-value="${pDiskRemain }" data-animation-duration="1600">0</span> GB</h2></div>
+                        <div class="title"><h2><i class="fa fa-hdd-o"></i> <span id="pDiskRemain" class="animate-number" data-value="0" data-animation-duration="1600">0</span> GB</h2></div>
                       </div>
                       <div class="status pull-right bg-transparent-black-1">
-                        <span class="animate-number" data-value="${pDiskUsage }" data-animation-duration="1500">0</span>%
+                        <span id="pDiskUsage" class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
                       </div>
                       <div class="clearfix"></div>
                       <div class="progress progress-little progress-transparent-black" style="margin-bottom: 5px">
-                        <div class="progress-bar animate-progress-bar" data-percentage="${pDiskUsage }%"></div>
+                        <div id="pDiskUsage_p" class="progress-bar animate-progress-bar" data-percentage="0%"></div>
                       </div>
                     </div>  
-                    <p class="description"><strong>已使用${pDiskRemain }GB</strong> 共 <strong class="white-text">${pDisk }GB</strong></p>
+                    <p class="description"><strong id="pDiskRemain_1">已使用0GB</strong> 共 <strong class="white-text" id="pDisk">0GB</strong></p>
                   </div>
                   <!-- /tile widget -->
 
@@ -605,12 +640,19 @@
     	        },
     	        success: function(result)	        
     	        {
-    	        	platform_cpu = result.cpuUsage;
-    	        	platform_memory = result.memoryUsage;
-    	        	read_speed = result.speed[0];
-    	        	write_speed = result.speed[1];
-    	        	receive_speed = result.speed[2];
-    	        	send_speed = result.speed[3];
+    	        	if(result.cpuUsage!=null){
+    	        		platform_cpu = result.cpuUsage;
+    	        	}
+    	        	if(result.memoryUsage!=null){
+    	        		platform_memory = result.memoryUsage;
+    	        	}
+    	        	if(result.speed!=null){
+    	        		read_speed = result.speed[0];
+    	        		write_speed = result.speed[1];
+    	        		receive_speed = result.speed[2];
+    	        		send_speed = result.speed[3];
+    	        	}
+    	        	
     	        }
     		});
     	}, 2000);
@@ -626,8 +668,13 @@
     	        },
     	        success: function(result)	        
     	        {
-    	        	compute_cpu = result.cpuUsage;
-    	        	compute_memory = result.memoryUsage;
+    	        	if(result.cpuUsage!=null){
+    	        		compute_cpu = result.cpuUsage;
+    	        	}
+    	        	if(result.memoryUsage!=null){
+    	        		compute_memory = result.memoryUsage;
+    	        	}
+    	        	
     	        }
     		});
     		jQuery.ajax({
@@ -641,8 +688,12 @@
     	        },
     	        success: function(result)	        
     	        {
-    	        	storage_cpu = result.cpuUsage;
-    	        	storage_memory = result.memoryUsage;
+    	        	if(result.cpuUsage!=null){
+    	        		storage_cpu = result.cpuUsage;
+    	        	}
+    	        	if(result.memoryUsage!=null){
+    	        		storage_memory = result.memoryUsage;
+    	        	}
     	        }
     		});
         }, 5000);
