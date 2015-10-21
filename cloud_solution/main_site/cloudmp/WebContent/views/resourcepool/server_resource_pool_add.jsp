@@ -172,7 +172,7 @@
                             <input type="radio" name="diskType" id="optionsRadios11" value="1" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');">
                             <label for="optionsRadios11">云存储</label>
                           </div>                          
-                          <div class="radio radio-transparent col-md-2">
+                          <div class="radio radio-transparent col-md-3">
                             <input type="radio" name="diskType" id="optionsRadios12" value="2" onclick="$('#divNas').removeAttr('hidden');$('#divNas').attr('class','show');">
                             <label for="optionsRadios12">nas磁盘</label>
                           </div>                          
@@ -396,14 +396,14 @@
       $("#ip_pool").hide();
       $("#input07").attr("disabled",true);
 	  $("#input007").attr("disabled",true);
-      $("#optionsRadios1").click(function(){
+      $("#optionsRadios1,#optionsRadios4").click(function(){
     	  $("#port_pool").hide();
      	  $("#ip_pool").hide();
      	  $("#no_pool").attr("disabled",false);
      	  $("#input07").attr("disabled",true);
   	      $("#input007").attr("disabled",true);
        });
-      $("#optionsRadios2,#optionsRadios4").click(function(){
+      $("#optionsRadios2").click(function(){
     	  $("#port_pool").hide();
      	  $("#ip_pool").show();
      	  $("#no_pool").attr("disabled",true);
