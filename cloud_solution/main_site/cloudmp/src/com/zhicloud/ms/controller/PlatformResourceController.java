@@ -15,8 +15,10 @@ import com.zhicloud.ms.service.SharedMemoryService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.vo.*;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -58,213 +61,6 @@ public class PlatformResourceController {
 	public String getAll(Model model,HttpServletRequest request){
 		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.plat_resource_manage)){
 			return "not_have_access";
-		}
-		try {
-			List<StoragePoolVO> sList = new ArrayList<>();
-			List<ComputerPoolVO> cList = new ArrayList<>();
-			HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-			if(channel!=null){
-				JSONObject result = channel.storagePoolQuery();
-			if (!"fail".equals(result.getString("status"))){
-//				logger.error("PlatformResourceController.getAll>>>获取资源池失败");
-//				return "not_responsed";
-				JSONArray storageList = result.getJSONArray("storagePools");
-				for (int i = 0; i < storageList.size(); i ++) {
-					JSONObject computerObject = storageList.getJSONObject(i);
-					String uuid = computerObject.getString("uuid");
-					String name = computerObject.getString("name");
-					int status = computerObject.getInt("status");
-					Integer cpuCount = computerObject.getInt("cpu_count");
-					BigDecimal cpuUsage = new BigDecimal(computerObject.getString("cpu_usage"));
-					BigDecimal memoryUsage = new BigDecimal(computerObject.getString("memory_usage"));
-					BigDecimal diskUsage = new BigDecimal(computerObject.getString("disk_usage"));
-					
-					JSONArray memoryList = computerObject.getJSONArray("memory");
-					BigInteger[] mcount = new BigInteger[memoryList.size()];
-					for(int j=0;j<memoryList.size();j++){
-						mcount[j] = new BigInteger(memoryList.getString(j));
-					}
-					
-					JSONArray diskList = computerObject.getJSONArray("disk_volume");
-					BigInteger[] dcount = new BigInteger[diskList.size()];
-					for(int j=0;j<diskList.size();j++){
-						dcount[j] = new BigInteger(diskList.getString(j));
-					}
-					
-					JSONArray nList = computerObject.getJSONArray("node");
-					Integer[] ncount = new Integer[nList.size()];
-					for(int j=0;j<nList.size();j++){
-						ncount[j] = nList.getInt(j);
-					}
-					
-					JSONArray hList = computerObject.getJSONArray("disk");
-					Integer[] hcount = new Integer[hList.size()];
-					for(int j=0;j<hList.size();j++){
-						hcount[j] = hList.getInt(j);
-					}
-					StoragePoolVO storage = new StoragePoolVO();
-					storage.setCpuCount(cpuCount);
-					storage.setCpuUsage(cpuUsage);
-					storage.setDiskUsage(diskUsage);
-					storage.setDiskVolume(dcount);
-					storage.setMemory(mcount);
-					storage.setMemoryUsage(memoryUsage);
-					storage.setName(name);
-					storage.setNode(ncount);
-					storage.setStatus(status);
-					storage.setUuid(uuid);
-					storage.setRegion(1);
-					storage.setDisk(hcount);
-					sList.add(storage);
-				}
-			}
-				//查询主机资源池
-				JSONObject cresult = channel.computePoolQuery();
-				if ("success".equals(cresult.getString("status"))) {
-					JSONArray computerList = cresult.getJSONArray("compute_pools");
-					for (int i = 0; i < computerList.size(); i ++) {
-						JSONObject computerObject = computerList.getJSONObject(i);
-						String uuid = computerObject.getString("uuid");
-						String name = computerObject.getString("name");
-						int status = computerObject.getInt("status");
-						Integer cpuCount = computerObject.getInt("cpu_count");
-						BigDecimal cpuUsage = new BigDecimal(computerObject.getString("cpu_usage"));
-						BigDecimal memoryUsage = new BigDecimal(computerObject.getString("memory_usage"));
-						BigDecimal diskUsage = new BigDecimal(computerObject.getString("disk_usage"));
-						
-						JSONArray memoryList = computerObject.getJSONArray("memory");
-						BigInteger[] mcount = new BigInteger[memoryList.size()];
-						for(int j=0;j<memoryList.size();j++){
-							mcount[j] = new BigInteger(memoryList.getString(j));
-						}
-						
-						JSONArray diskList = computerObject.getJSONArray("disk_volume");
-						BigInteger[] dcount = new BigInteger[diskList.size()];
-						for(int j=0;j<diskList.size();j++){
-							dcount[j] = new BigInteger(diskList.getString(j));
-						}
-						
-						JSONArray nList = computerObject.getJSONArray("node");
-						Integer[] ncount = new Integer[nList.size()];
-						for(int j=0;j<nList.size();j++){
-							ncount[j] = nList.getInt(j);
-						}
-						
-						JSONArray hList = computerObject.getJSONArray("host");
-						Integer[] hcount = new Integer[hList.size()];
-						for(int j=0;j<hList.size();j++){
-							hcount[j] = hList.getInt(j);
-						}
-						ComputerPoolVO computer = new ComputerPoolVO();
-						computer.setCpuCount(cpuCount);
-						computer.setCpuUsage(cpuUsage);
-						computer.setDiskUsage(diskUsage);
-						computer.setDiskVolume(dcount);
-						computer.setHost(hcount);
-						computer.setMemory(mcount);
-						computer.setMemoryUsage(memoryUsage);
-						computer.setName(name);
-						computer.setNode(ncount);
-						computer.setStatus(status);
-						computer.setUuid(uuid);
-						computer.setRegion(1);
-						cList.add(computer);
-					}
-				}
-			}
-			BigDecimal cpuCount = new BigDecimal(0);
-			BigDecimal cpuUsage = new BigDecimal(0);
-			BigDecimal memoryCount = new BigDecimal(0);
-			BigDecimal memoryUsage = new BigDecimal(0);
-			BigDecimal diskCount = new BigDecimal(0);
-			BigDecimal diskUsage = new BigDecimal(0);
-			Integer totalDisk = 0;
-			if(sList.size()>0){
-				for(StoragePoolVO s : sList){
-					cpuCount = cpuCount.add(new BigDecimal(s.getCpuCount()));
-					cpuUsage = cpuUsage.add(new BigDecimal(s.getCpuCount()).multiply(s.getCpuUsage().divide(new BigDecimal(100))));
-					memoryCount = memoryCount.add(new BigDecimal(s.getMemory()[1]));
-					memoryUsage = memoryUsage.add(new BigDecimal(s.getMemory()[1].subtract(s.getMemory()[0])));
-					diskCount = diskCount.add(new BigDecimal(s.getDiskVolume()[1]));
-					diskUsage = diskUsage.add(new BigDecimal(s.getDiskVolume()[1].subtract(s.getDiskVolume()[0])));
-					for(int i=0;i<s.getDisk().length;i++){
-						totalDisk += s.getDisk()[i];
-					}
-				}
-			}
-			PlatformResourceMonitorVO pr = AppInconstant.platformResourceMonitorData.get(1);
-			if(pr==null){
-				model.addAttribute("pDisk", 0);
-				model.addAttribute("pDiskRemain", 0);
-				model.addAttribute("pDiskUsage", 0);
-			}else{
-				JSONArray pDiskList = pr.getDiskVolume();
-				BigInteger[] pDCount = new BigInteger[pDiskList.size()];
-				for(int j=0;j<pDiskList.size();j++){
-					pDCount[j] = new BigInteger(pDiskList.getString(j));
-				}
-				BigDecimal pDiskUsage = new BigDecimal(pr.getDiskUsage().substring(0, pr.getDiskUsage().length()-2));
-				model.addAttribute("pDisk", pDCount[1]);
-				model.addAttribute("pDiskRemain", pDCount[1].subtract(pDCount[0]));
-				model.addAttribute("pDiskUsage", pDiskUsage);
-			}
-			model.addAttribute("dCpuUsage", cpuUsage.compareTo(new BigDecimal(0))==0?0.00:cpuUsage.divide(cpuCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
-			model.addAttribute("dMemoryUsage", memoryUsage.compareTo(new BigDecimal(0))==0?0.00:memoryUsage.divide(memoryCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
-			model.addAttribute("dDiskUsage", diskUsage.compareTo(new BigDecimal(0))==0?0.00:diskUsage.divide(diskCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
-			model.addAttribute("totalDisk", totalDisk);
-			//云服务器临时参数
-			BigDecimal sCpuCount = new BigDecimal(0);
-			BigDecimal sCpuUsage = new BigDecimal(0);
-			BigDecimal sMemoryCount = new BigDecimal(0);
-			BigDecimal sMemoryUsage = new BigDecimal(0);
-			BigDecimal sDiskCount = new BigDecimal(0);
-			BigDecimal sDiskUsage = new BigDecimal(0);
-			Integer totalServer = 0;
-			//云桌面临时参数
-			BigDecimal tCpuCount = new BigDecimal(0);
-			BigDecimal tCpuUsage = new BigDecimal(0);
-			BigDecimal tMemoryCount = new BigDecimal(0);
-			BigDecimal tMemoryUsage = new BigDecimal(0);
-			BigDecimal tDiskCount = new BigDecimal(0);
-			BigDecimal tDiskUsage = new BigDecimal(0);
-			Integer totalTop = 0;
-			if(cList.size()>0){
-				for(ComputerPoolVO c : cList){
-					if(c.getName().contains("desktop_pool")){
-						tCpuCount = tCpuCount.add(new BigDecimal(c.getCpuCount()));
-						tCpuUsage = tCpuUsage.add(new BigDecimal(c.getCpuCount()).multiply(c.getCpuUsage()));
-						tMemoryCount = tMemoryCount.add(new BigDecimal(c.getMemory()[1]));
-						tMemoryUsage = tMemoryUsage.add(new BigDecimal(c.getMemory()[1].subtract(c.getMemory()[0])));
-						tDiskCount = tDiskCount.add(new BigDecimal(c.getDiskVolume()[1]));
-						tDiskUsage = tDiskUsage.add(new BigDecimal(c.getDiskVolume()[1].subtract(c.getDiskVolume()[0])));
-						for(int i=0;i<c.getHost().length;i++){
-							totalTop += c.getHost()[i];
-						}
-					}else{
-						sCpuCount = sCpuCount.add(new BigDecimal(c.getCpuCount()));
-						sCpuUsage = sCpuUsage.add(new BigDecimal(c.getCpuCount()).multiply(c.getCpuUsage()));
-						sMemoryCount = sMemoryCount.add(new BigDecimal(c.getMemory()[1]));
-						sMemoryUsage = sMemoryUsage.add(new BigDecimal(c.getMemory()[1].subtract(c.getMemory()[0])));
-						sDiskCount = sDiskCount.add(new BigDecimal(c.getDiskVolume()[1]));
-						sDiskUsage = sDiskUsage.add(new BigDecimal(c.getDiskVolume()[1].subtract(c.getDiskVolume()[0])));
-						for(int i=0;i<c.getHost().length;i++){
-							totalServer += c.getHost()[i];
-						}
-					}
-				}
-			}
-			model.addAttribute("sCpuUsage",sCpuUsage.compareTo(new BigDecimal(0))==0?0.00:sCpuUsage.divide(sCpuCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
-			model.addAttribute("sMemoryUsage", sMemoryUsage.compareTo(new BigDecimal(0))==0?0.00:sMemoryUsage.divide(sMemoryCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
-			model.addAttribute("sDiskUsage", sDiskUsage.compareTo(new BigDecimal(0))==0?0.00:sDiskUsage.divide(sDiskCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
-			model.addAttribute("totalServer", totalServer);
-			model.addAttribute("tCpuUsage", tCpuUsage.compareTo(new BigDecimal(0))==0?0.00:tCpuUsage.divide(tCpuCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
-			model.addAttribute("tMemoryUsage", tMemoryUsage.compareTo(new BigDecimal(0))==0?0.00:tMemoryUsage.divide(tMemoryCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
-			model.addAttribute("tDiskUsage", tDiskUsage.compareTo(new BigDecimal(0))==0?0.00:tDiskUsage.divide(tDiskCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
-			model.addAttribute("totalTop", totalTop);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		return "platform_resource_manage";
 	}
@@ -606,6 +402,220 @@ public class PlatformResourceController {
 			String message = (String)AppInconstant.serviceDisableResult.get("message");
 			mr.status = status;
 			mr.message = message;
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return mr;
+	}
+	
+	@RequestMapping(value="/paltform/getdefault",method=RequestMethod.POST)
+	@ResponseBody
+	public MethodResult getDefault(){
+		MethodResult mr = new MethodResult();
+		try {
+			List<StoragePoolVO> sList = new ArrayList<>();
+			List<ComputerPoolVO> cList = new ArrayList<>();
+			HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
+			if(channel!=null){
+				JSONObject result = channel.storagePoolQuery();
+			if (!"fail".equals(result.getString("status"))){
+//				logger.error("PlatformResourceController.getAll>>>获取资源池失败");
+//				return "not_responsed";
+				JSONArray storageList = result.getJSONArray("storagePools");
+				for (int i = 0; i < storageList.size(); i ++) {
+					JSONObject computerObject = storageList.getJSONObject(i);
+					String uuid = computerObject.getString("uuid");
+					String name = computerObject.getString("name");
+					int status = computerObject.getInt("status");
+					Integer cpuCount = computerObject.getInt("cpu_count");
+					BigDecimal cpuUsage = new BigDecimal(computerObject.getString("cpu_usage"));
+					BigDecimal memoryUsage = new BigDecimal(computerObject.getString("memory_usage"));
+					BigDecimal diskUsage = new BigDecimal(computerObject.getString("disk_usage"));
+					
+					JSONArray memoryList = computerObject.getJSONArray("memory");
+					BigInteger[] mcount = new BigInteger[memoryList.size()];
+					for(int j=0;j<memoryList.size();j++){
+						mcount[j] = new BigInteger(memoryList.getString(j));
+					}
+					
+					JSONArray diskList = computerObject.getJSONArray("disk_volume");
+					BigInteger[] dcount = new BigInteger[diskList.size()];
+					for(int j=0;j<diskList.size();j++){
+						dcount[j] = new BigInteger(diskList.getString(j));
+					}
+					
+					JSONArray nList = computerObject.getJSONArray("node");
+					Integer[] ncount = new Integer[nList.size()];
+					for(int j=0;j<nList.size();j++){
+						ncount[j] = nList.getInt(j);
+					}
+					
+					JSONArray hList = computerObject.getJSONArray("disk");
+					Integer[] hcount = new Integer[hList.size()];
+					for(int j=0;j<hList.size();j++){
+						hcount[j] = hList.getInt(j);
+					}
+					StoragePoolVO storage = new StoragePoolVO();
+					storage.setCpuCount(cpuCount);
+					storage.setCpuUsage(cpuUsage);
+					storage.setDiskUsage(diskUsage);
+					storage.setDiskVolume(dcount);
+					storage.setMemory(mcount);
+					storage.setMemoryUsage(memoryUsage);
+					storage.setName(name);
+					storage.setNode(ncount);
+					storage.setStatus(status);
+					storage.setUuid(uuid);
+					storage.setRegion(1);
+					storage.setDisk(hcount);
+					sList.add(storage);
+				}
+			}
+				//查询主机资源池
+				JSONObject cresult = channel.computePoolQuery();
+				if ("success".equals(cresult.getString("status"))) {
+					JSONArray computerList = cresult.getJSONArray("compute_pools");
+					for (int i = 0; i < computerList.size(); i ++) {
+						JSONObject computerObject = computerList.getJSONObject(i);
+						String uuid = computerObject.getString("uuid");
+						String name = computerObject.getString("name");
+						int status = computerObject.getInt("status");
+						Integer cpuCount = computerObject.getInt("cpu_count");
+						BigDecimal cpuUsage = new BigDecimal(computerObject.getString("cpu_usage"));
+						BigDecimal memoryUsage = new BigDecimal(computerObject.getString("memory_usage"));
+						BigDecimal diskUsage = new BigDecimal(computerObject.getString("disk_usage"));
+						
+						JSONArray memoryList = computerObject.getJSONArray("memory");
+						BigInteger[] mcount = new BigInteger[memoryList.size()];
+						for(int j=0;j<memoryList.size();j++){
+							mcount[j] = new BigInteger(memoryList.getString(j));
+						}
+						
+						JSONArray diskList = computerObject.getJSONArray("disk_volume");
+						BigInteger[] dcount = new BigInteger[diskList.size()];
+						for(int j=0;j<diskList.size();j++){
+							dcount[j] = new BigInteger(diskList.getString(j));
+						}
+						
+						JSONArray nList = computerObject.getJSONArray("node");
+						Integer[] ncount = new Integer[nList.size()];
+						for(int j=0;j<nList.size();j++){
+							ncount[j] = nList.getInt(j);
+						}
+						
+						JSONArray hList = computerObject.getJSONArray("host");
+						Integer[] hcount = new Integer[hList.size()];
+						for(int j=0;j<hList.size();j++){
+							hcount[j] = hList.getInt(j);
+						}
+						ComputerPoolVO computer = new ComputerPoolVO();
+						computer.setCpuCount(cpuCount);
+						computer.setCpuUsage(cpuUsage);
+						computer.setDiskUsage(diskUsage);
+						computer.setDiskVolume(dcount);
+						computer.setHost(hcount);
+						computer.setMemory(mcount);
+						computer.setMemoryUsage(memoryUsage);
+						computer.setName(name);
+						computer.setNode(ncount);
+						computer.setStatus(status);
+						computer.setUuid(uuid);
+						computer.setRegion(1);
+						cList.add(computer);
+					}
+				}
+			}
+			BigDecimal cpuCount = new BigDecimal(0);
+			BigDecimal cpuUsage = new BigDecimal(0);
+			BigDecimal memoryCount = new BigDecimal(0);
+			BigDecimal memoryUsage = new BigDecimal(0);
+			BigDecimal diskCount = new BigDecimal(0);
+			BigDecimal diskUsage = new BigDecimal(0);
+			Integer totalDisk = 0;
+			if(sList.size()>0){
+				for(StoragePoolVO s : sList){
+					cpuCount = cpuCount.add(new BigDecimal(s.getCpuCount()));
+					cpuUsage = cpuUsage.add(new BigDecimal(s.getCpuCount()).multiply(s.getCpuUsage().divide(new BigDecimal(100))));
+					memoryCount = memoryCount.add(new BigDecimal(s.getMemory()[1]));
+					memoryUsage = memoryUsage.add(new BigDecimal(s.getMemory()[1].subtract(s.getMemory()[0])));
+					diskCount = diskCount.add(new BigDecimal(s.getDiskVolume()[1]));
+					diskUsage = diskUsage.add(new BigDecimal(s.getDiskVolume()[1].subtract(s.getDiskVolume()[0])));
+					for(int i=0;i<s.getDisk().length;i++){
+						totalDisk += s.getDisk()[i];
+					}
+				}
+			}
+			PlatformResourceMonitorVO pr = AppInconstant.platformResourceMonitorData.get(1);
+			if(pr==null){
+				mr.put("pDisk", 0);
+				mr.put("pDiskRemain", 0);
+				mr.put("pDiskUsage", 0);
+			}else{
+				JSONArray pDiskList = pr.getDiskVolume();
+				BigInteger[] pDCount = new BigInteger[pDiskList.size()];
+				for(int j=0;j<pDiskList.size();j++){
+					pDCount[j] = new BigInteger(pDiskList.getString(j));
+				}
+				BigDecimal pDiskUsage = new BigDecimal(pr.getDiskUsage().substring(0, pr.getDiskUsage().length()-2));
+				mr.put("pDisk", pDCount[1]);
+				mr.put("pDiskRemain", pDCount[1].subtract(pDCount[0]));
+				mr.put("pDiskUsage", pDiskUsage);
+			}
+			mr.put("dCpuUsage", cpuUsage.compareTo(new BigDecimal(0))==0?0.00:cpuUsage.divide(cpuCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
+			mr.put("dMemoryUsage", memoryUsage.compareTo(new BigDecimal(0))==0?0.00:memoryUsage.divide(memoryCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
+			mr.put("dDiskUsage", diskUsage.compareTo(new BigDecimal(0))==0?0.00:diskUsage.divide(diskCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
+			mr.put("totalDisk", totalDisk);
+			//云服务器临时参数
+			BigDecimal sCpuCount = new BigDecimal(0);
+			BigDecimal sCpuUsage = new BigDecimal(0);
+			BigDecimal sMemoryCount = new BigDecimal(0);
+			BigDecimal sMemoryUsage = new BigDecimal(0);
+			BigDecimal sDiskCount = new BigDecimal(0);
+			BigDecimal sDiskUsage = new BigDecimal(0);
+			Integer totalServer = 0;
+			//云桌面临时参数
+			BigDecimal tCpuCount = new BigDecimal(0);
+			BigDecimal tCpuUsage = new BigDecimal(0);
+			BigDecimal tMemoryCount = new BigDecimal(0);
+			BigDecimal tMemoryUsage = new BigDecimal(0);
+			BigDecimal tDiskCount = new BigDecimal(0);
+			BigDecimal tDiskUsage = new BigDecimal(0);
+			Integer totalTop = 0;
+			if(cList.size()>0){
+				for(ComputerPoolVO c : cList){
+					if(c.getName().contains("desktop_pool")){
+						tCpuCount = tCpuCount.add(new BigDecimal(c.getCpuCount()));
+						tCpuUsage = tCpuUsage.add(new BigDecimal(c.getCpuCount()).multiply(c.getCpuUsage()));
+						tMemoryCount = tMemoryCount.add(new BigDecimal(c.getMemory()[1]));
+						tMemoryUsage = tMemoryUsage.add(new BigDecimal(c.getMemory()[1].subtract(c.getMemory()[0])));
+						tDiskCount = tDiskCount.add(new BigDecimal(c.getDiskVolume()[1]));
+						tDiskUsage = tDiskUsage.add(new BigDecimal(c.getDiskVolume()[1].subtract(c.getDiskVolume()[0])));
+						for(int i=0;i<c.getHost().length;i++){
+							totalTop += c.getHost()[i];
+						}
+					}else{
+						sCpuCount = sCpuCount.add(new BigDecimal(c.getCpuCount()));
+						sCpuUsage = sCpuUsage.add(new BigDecimal(c.getCpuCount()).multiply(c.getCpuUsage()));
+						sMemoryCount = sMemoryCount.add(new BigDecimal(c.getMemory()[1]));
+						sMemoryUsage = sMemoryUsage.add(new BigDecimal(c.getMemory()[1].subtract(c.getMemory()[0])));
+						sDiskCount = sDiskCount.add(new BigDecimal(c.getDiskVolume()[1]));
+						sDiskUsage = sDiskUsage.add(new BigDecimal(c.getDiskVolume()[1].subtract(c.getDiskVolume()[0])));
+						for(int i=0;i<c.getHost().length;i++){
+							totalServer += c.getHost()[i];
+						}
+					}
+				}
+			}
+			mr.put("sCpuUsage",sCpuUsage.compareTo(new BigDecimal(0))==0?0.00:sCpuUsage.divide(sCpuCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
+			mr.put("sMemoryUsage", sMemoryUsage.compareTo(new BigDecimal(0))==0?0.00:sMemoryUsage.divide(sMemoryCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
+			mr.put("sDiskUsage", sDiskUsage.compareTo(new BigDecimal(0))==0?0.00:sDiskUsage.divide(sDiskCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
+			mr.put("totalServer", totalServer);
+			mr.put("tCpuUsage", tCpuUsage.compareTo(new BigDecimal(0))==0?0.00:tCpuUsage.divide(tCpuCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
+			mr.put("tMemoryUsage", tMemoryUsage.compareTo(new BigDecimal(0))==0?0.00:tMemoryUsage.divide(tMemoryCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
+			mr.put("tDiskUsage", tDiskUsage.compareTo(new BigDecimal(0))==0?0.00:tDiskUsage.divide(tDiskCount,2,BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)));
+			mr.put("totalTop", totalTop);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
