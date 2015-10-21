@@ -273,7 +273,7 @@
 							        		  $("#tipscontent").html(data.message);
 							     		      $("#dia").click();  		        							
  		        						}else{  		        							
-	   		        						location.href = path+"/computeresourcepool/"+poolId+"/nc";
+ 		        							location.href = path+"/cdrpm/"+poolId+"/rd";
  		        						}
  		        					},
  		        					dataType:'json',
