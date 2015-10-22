@@ -103,7 +103,7 @@
                                         <label for="config_id" class="col-sm-2 control-label">邮件服务器</label>
                                         <div class="col-sm-4">
                                             <div class="col-sm-16" id="selectbox">
-                                            <select class="chosen-select chosen-transparent form-control" id = "config_id" name="config_id" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
+                                            <select class="chosen-select chosen-transparent form-control" id = "config_id" name="configId" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
                                                 <option value="">请选择邮件服务器</option>
                                                 <c:forEach items="${email_config_list }" var="email_configs">
                                                     <option value="${email_configs.id}">${email_configs.name}</option>
@@ -161,6 +161,22 @@
 
 
                                 </form>
+
+                                <a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>
+
+                                <div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content" style="width:60%;margin-left:20%;">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                                                <h3 class="modal-title" id="modalDialogLabel"><strong>提示</strong></h3>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p id="tipscontent"></p>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
 
                             </div>
                             <!-- /tile body -->
@@ -274,7 +290,7 @@
                     var options = {
                         success:function result(data){
                             if(data.status == "fail"){
-                                $("#tipscontent").html("添加失败");
+                                $("#tipscontent").html(data.message);
                                 $("#dia").click();
                             }else{
                                 location.href = path + "/message/email/template/list";
@@ -288,6 +304,7 @@
                     if(form.parsley('isValid')){
                         $("#email_content_check").val($(".note-editable")[0].innerHTML);
                         jQuery("#email_template_form").ajaxSubmit(options);
+
                     }
                 }
             }
