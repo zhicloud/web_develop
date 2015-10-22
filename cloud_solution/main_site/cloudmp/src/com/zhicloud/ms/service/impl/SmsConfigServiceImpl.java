@@ -160,7 +160,7 @@ public class SmsConfigServiceImpl implements ISmsConfigService {
 
             return new MethodResult(MethodResult.FAIL, "修改失败");
         } catch( Exception e ) {
-//            e.printStackTrace();
+            e.printStackTrace();
             logger.error(e);
             throw new AppException("修改失败");
         }
