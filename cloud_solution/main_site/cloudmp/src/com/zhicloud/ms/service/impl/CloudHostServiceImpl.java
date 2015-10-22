@@ -1600,7 +1600,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             if(server.getDataDisk().compareTo(BigInteger.ZERO)==0){
                 isUseDataDisk = 0;
             }
-            if(server.getIsAutoStartup()!=1){
+            if(server.getIsAutoStartup()==null || server.getIsAutoStartup()!=1){
                 isAutoStart = 0;
             } 
             options = new Integer[] { 1, isUseDataDisk, isAutoStart,1,1 }; 
