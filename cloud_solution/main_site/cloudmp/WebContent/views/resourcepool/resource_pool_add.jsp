@@ -442,7 +442,7 @@
 							        		  $("#tipscontent").html(data.message);
 							     		      $("#dia").click();  		        							
  		        						}else{ 
- 		        							$("#tipscontent").html("创建成功，将在5秒后刷新结果，请稍等...");
+ 		        							$("#tipscontent").html("创建成功，将在5秒后刷新结果，请稍等...<br/>(若结果未刷新，请手动刷新页面)");
  		        			     		    $("#dia").click();
  		        			     		    window.setTimeout("window.history.go(-1);", 5000);
 // 	   		        						location.href = path + "/cdrpm/all";
