@@ -123,4 +123,10 @@ public class SharedMemoryServiceImpl implements SharedMemoryService {
 		 }
 		 return new MethodResult(MethodResult.FAIL,"设置失败");
 	}
+
+	@Override
+	public SharedMemoryVO queryAvailable() {
+		 SharedMemoryMapper mapper = sqlSession.getMapper(SharedMemoryMapper.class);
+		 return mapper.queryAvailable();
+	}
 }
