@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.ImageHostApplicationMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.ImageHostApplicationVO" id="ImageHostApplicationVO">
+		<id     column="id"       property="id" />
+		<result column="name" property="name" />
+		<result column="contacts" property="contacts" />
+		<result column="contacts_position" property="contactsPosition" />
+		<result column="contacts_phone" property="contactsPhone" />
+		<result column="qq_or_weixin" property="qqOrWeixin" />
+		<result column="summary" property="summary" />
+		<result column="status" property="status" />
+		<result column="handle_user_id" property="handleUserId" />
+		<result column="crteate_time" property="crteateTime" />
+		<result column="handle_time" property="handleTime" />
+		<result column="handle_user_name" property="handleUserName" />
+	</resultMap>
+	
+
+	<select id="queryImageHostApplication" resultMap="ImageHostApplicationVO">
+		select 
+			e.id,
+			e.name,
+			e.contacts,
+			e.contacts_position,
+			e.contacts_phone,
+			e.qq_or_weixin,
+			e.summary,
+			e.status,
+			e.handle_user_id,
+			e.create_time,
+			e.handle_time,
+			o.email 'handle_user_name'
+		from image_host_application e
+		left join operator o
+		on e.handle_user_id = o.id 
+		where 1=1
+			<if test="status!=null">
+				and e.status = #{status}
+			</if>
+			<if test="name!=null">
+				and e.name like #{name}
+			</if>
+		order by e.create_time desc
+		limit #{start_row}, #{row_count}
+		
+	</select>
+	<select id="queryImageHostApplicationById" resultMap="ImageHostApplicationVO">
+		select 
+			e.id,
+			e.name,
+			e.contacts,
+			e.contacts_position,
+			e.contacts_phone,
+			e.qq_or_weixin,
+			e.summary,
+			e.status,
+			e.handle_user_id,
+			e.create_time,
+			e.handle_time,
+			o.email 'handle_user_name'
+		from image_host_application e
+		left join operator o
+		on e.handle_user_id = o.id 
+		where  e.id=#{id}
+		
+	</select>
+	
+	<select id="queryImageHostApplicationCount"  resultType="int">
+		select 
+			count(1)
+		from image_host_application e
+		left join operator o
+		on e.handle_user_id = o.id 
+		where 1=1
+			<if test="status!=null">
+				and e.status = #{status}
+			</if>
+			<if test="name!=null">
+				and e.name like #{name}
+			</if>
+ 	</select>
+
+	 
+	<!-- ***************** -->
+	
+
+	<insert id="addImageHostApplication">
+		insert into image_host_application (id, name, contacts, contacts_position, contacts_phone,qq_or_weixin,summary,status,handle_user_id,create_time,handle_time) 
+		values (#{id}, #{name}, #{contacts}, #{contactsPosition},#{contactsPhone},#{qqOrWeixin},#{summary}, #{status},#{handleUserId}, #{createTime},#{handleTime})
+	</insert>
+
+	<!-- ***************** -->
+	
+	<update id="updateImageHostApplication">
+		update image_host_application 
+		<set>
+			status               = #{status}, 
+			handle_user_id       = #{handleUserId},
+			handle_time          = #{handleTime}
+		</set> 
+		where id in
+		<foreach collection="ids" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</update>
+	
+	 
+
+</mapper>

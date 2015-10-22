@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.CashCouponMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.CashCouponVO" id="CashCouponVO">
+		<id     column="id"                property="id" />
+		<result column="creater_id"        property="createrId" />
+		<result column="user_id"           property="userId" />
+		<result column="cash_code"         property="cashCode" />
+		<result column="money"             property="money"/>
+		<result column="deadline"          property="deadline"/>
+		<result column="create_time"       property="createTime" />
+		<result column="send_time"         property="sendTime" />
+		<result column="phone"             property="phone" />
+		<result column="email"             property="email" />
+		<result column="status"            property="status" />
+	</resultMap>
+	
+	<!-- **************** -->
+	
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from cash_coupon c
+		<where>
+		c.creater_id = #{createrId}
+		</where>
+	</select>
+	
+	<select id="queryPage" resultMap="CashCouponVO">
+		select 
+			c.id, 
+			c.creater_id, 
+			c.user_id, 
+			c.cash_code, 
+			c.money, c.deadline,
+			c.create_time, 
+			c.send_time,
+			c.phone,
+			c.email, 
+			c.status
+		from cash_coupon c
+		<where>
+			c.creater_id = #{createrId}
+		</where>
+		order by c.create_time desc
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	
+	<select id="getCashCouponById" resultMap="CashCouponVO">
+		select 
+			c.id, 
+			c.creater_id, 
+			c.user_id, 
+			c.cash_code, 
+			c.money, 
+			c.deadline,
+			c.create_time, 
+			c.send_time,
+			c.phone,
+			c.email, 
+			c.status
+		from cash_coupon  c
+		<where>
+		c.id = #{id}	
+		</where>
+	</select>
+	
+	<select id="getCashCouponByCode" resultMap="CashCouponVO">
+		select 
+			c.id, 
+			c.creater_id, 
+			c.user_id, 
+			c.cash_code, 
+			c.money, 
+			c.deadline,
+			c.create_time, 
+			c.send_time,
+			c.phone,
+			c.email, 
+			c.status
+		from cash_coupon c 
+		<where>
+		c.cash_code = #{cashCode}	
+		and c.status=2
+		</where>
+	</select>
+	
+	<!-- ********************** -->
+	
+	<update id="updateSendTimeAndStatus">
+		update cash_coupon set 
+			send_time = #{sendTime},
+			status    = #{status}
+			<where>
+		    id = #{id} 
+			</where>
+	</update>
+	
+	<update id="updateStatusOther">
+		update cash_coupon set 
+			user_id   = #{userId},
+			phone     = #{phone},
+			email     = #{email},
+			status    = #{status}
+			<where>
+		    id = #{id} 
+			</where>
+	</update>
+	
+	<!-- ********************* -->
+	
+	<insert id="addCashCoupon">
+		insert into cash_coupon (id, creater_id, user_id, cash_code, money, deadline,create_time, send_time,phone,email, status) 
+		values (#{id}, #{createrId}, #{userId}, #{cashCode},#{money},#{deadline}, #{createTime}, #{sendTime}, #{phone}, #{email}, #{status})
+	</insert>
+	
+	<!-- ********************* -->
+	<delete id="deleteCashCouponByIds">
+		delete
+		from cash_coupon
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>

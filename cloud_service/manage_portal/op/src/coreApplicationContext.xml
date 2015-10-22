@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p" 
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<tx:annotation-driven transaction-manager="txManager" mode="proxy" />
+
+	<!-- *************** -->
+	<!-- TODO:TEST --> 
+<!-- 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> -->
+<!-- 		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> -->
+<!-- 		<property name="url" value="jdbc:mysql://172.16.6.3:3306/zcop?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;autoReconnectForPools=true" /> -->
+<!--  		<property name="username" value="root" /> -->
+<!-- 		<property name="password" value="root" /> -->
+<!-- 	</bean> -->
+	
+<!--   	<bean id="dataSource" class="com.zhicloud.op.app.AppDataSource" destroy-method="close"> -->
+<!-- 		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> -->
+<!-- 		<property name="url" value="jdbc:mysql://172.18.10.8:3306/test_op?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;autoReconnectForPools=true" /> -->
+<!--  		<property name="minEvictableIdleTimeMillis" value="3600000" /> -->
+<!-- 		<property name="timeBetweenEvictionRunsMillis" value="60000" /> -->
+<!-- 		<property name="username" value="zcop" /> -->
+<!-- 		<property name="password" value="N8R6D+HwXU15+DwVVAVdVA==" /> -->
+<!-- 	</bean> -->
+ 
+
+  	<bean id="dataSource" class="com.zhicloud.op.app.AppDataSource" destroy-method="close">
+ 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+ 		<property name="url" value="jdbc:mysql://127.0.0.1:3306/zcop?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;autoReconnectForPools=true" />
+ 		<property name="minEvictableIdleTimeMillis" value="3600000" />
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<property name="username" value="zcop" />
+		<property name="password" value="N8R6D+HwXU15+DwVVAVdVA==" />
+	</bean>
+
+<!--   	<bean id="dataSource" class="com.zhicloud.op.app.AppDataSource" destroy-method="close">
+ 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+ 		<property name="url" value="jdbc:mysql://127.0.0.1:3306/zcop?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;autoReconnectForPools=true" />
+ 		<property name="minEvictableIdleTimeMillis" value="3600000" />
+ 		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+ 		<property name="username" value="zcop" />
+ 		<property name="password" value="N8R6D+HwXU15+DwVVAVdVA==" />
+ 	</bean> -->
+	
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- *************** -->
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath*:com/zhicloud/op/mybatis/mapper/*Mapper.xml" />
+	</bean>
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+	<!-- ***************** -->
+
+	<bean id="testService" class="com.zhicloud.op.service.impl.TestServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+
+	<bean id="privilegeService" class="com.zhicloud.op.service.impl.PrivilegeServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+
+	<bean id="clientService" class="com.zhicloud.op.service.impl.ClientServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+
+	<bean id="sysUserService" class="com.zhicloud.op.service.impl.SysUserServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+
+	<bean id="sysRoleService" class="com.zhicloud.op.service.impl.SysRoleServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+
+	<bean id="sysPrivilegeService" class="com.zhicloud.op.service.impl.SysPrivilegeServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+
+	<bean id="sysGroupService" class="com.zhicloud.op.service.impl.SysGroupServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+
+	<bean id="operatorService" class="com.zhicloud.op.service.impl.OperatorServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+
+	<bean id="agentService" class="com.zhicloud.op.service.impl.AgentServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+
+	<bean id="cloudHostService" class="com.zhicloud.op.service.impl.CloudHostServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="cloudHostBillDetailService" class="com.zhicloud.op.service.impl.CloudHostBillDetailServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="terminalUserService" class="com.zhicloud.op.service.impl.TerminalUserServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="sysDiskImageService" class="com.zhicloud.op.service.impl.SysDiskImageServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="packageOptionService" class="com.zhicloud.op.service.impl.PackageOptionServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="billService" class="com.zhicloud.op.service.impl.BillServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="orderInfoService" class="com.zhicloud.op.service.impl.OrderInfoServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<!-- 用户 -->
+	<bean id="cloudUserService" class="com.zhicloud.op.service.impl.CloudUserServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="paymentService" class="com.zhicloud.op.service.impl.PaymentServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="statementService" class="com.zhicloud.op.service.impl.StatementServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="appPropertyService" class="com.zhicloud.op.service.impl.AppPropertyServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="suggestionService" class="com.zhicloud.op.service.impl.SuggestionServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="inviteCodeService" class="com.zhicloud.op.service.impl.InviteCodeServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="cloudHostWarehouseService" class="com.zhicloud.op.service.impl.CloudHostWarehouseServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="accountBalanceService" class="com.zhicloud.op.service.impl.AccountBalanceServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="invoiceService" class="com.zhicloud.op.service.impl.InvoiceServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="invoiceAddressService" class="com.zhicloud.op.service.impl.InvoiceAddressServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="operLogService" class="com.zhicloud.op.service.impl.OperLogServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="cloudDiskService" class="com.zhicloud.op.service.impl.CloudDiskServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="userMessageService" class="com.zhicloud.op.service.impl.UserMessageServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="cashCouponService" class="com.zhicloud.op.service.impl.CashCouponServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="agentAPIService" class="com.zhicloud.op.service.impl.AgentAPIServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="businessStatisticsService" class="com.zhicloud.op.service.impl.BusinessStatisticsServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="vpcService" class="com.zhicloud.op.service.impl.VpcServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="isoImageService" class="com.zhicloud.op.service.impl.IsoImageServiceImpl" />
+	<bean id="alertServiceProcessor" class="com.zhicloud.op.service.impl.AlertServiceProcessor" />
+	
+	<bean id="networkService" class="com.zhicloud.op.service.impl.NetworkServiceImpl" />
+	
+	<bean id="deviceService" class="com.zhicloud.op.service.impl.DeviceServiceImpl" />
+	<bean id="vpcBillService" class="com.zhicloud.op.service.impl.VpcBillServiceImpl" >
+	   <property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="cloudDiskBillService" class="com.zhicloud.op.service.impl.CloudDiskBillServiceImpl" >
+	   <property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="markService" class="com.zhicloud.op.service.impl.MarkServiceImpl" >
+	   <property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="platformResourceMonitorService" class="com.zhicloud.op.service.impl.PlatformResourceMonitorServiceImpl" >
+ 	</bean>
+	<bean id="resourcePoolService" class="com.zhicloud.op.service.impl.ResourcePoolServiceImpl" >
+ 	</bean>
+ 	<bean id="monitorService" class="com.zhicloud.op.service.impl.MonitorServiceImpl" >
+		<property name="sqlSession" ref="sqlSession"></property>
+ 	</bean> 	
+   	<bean id="intelligentRouterService" class="com.zhicloud.op.service.impl.IntelligentRouterServiceImpl" >
+ 	</bean>
+   	<bean id="serviceService" class="com.zhicloud.op.service.impl.ServiceServiceImpl" >
+ 	</bean>
+  	<bean id="eggPlanService" class="com.zhicloud.op.service.impl.EggPlanServiceImpl" >
+	   <property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="imageHostApplicationService" class="com.zhicloud.op.service.impl.ImageHostApplicationServiceImpl" >
+	   <property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+  	<bean id="emailConfigService" class="com.zhicloud.op.service.impl.EmailConfigServiceImpl" >
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="emailTemplateService" class="com.zhicloud.op.service.impl.EmailTemplateServiceImpl" >
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+    <bean id="smsConfigService" class="com.zhicloud.op.service.impl.SmsConfigServiceImpl" >
+        <property name="sqlSession" ref="sqlSession"></property>
+    </bean>
+    <bean id="smsTemplateService" class="com.zhicloud.op.service.impl.SmsTemplateServiceImpl" >
+        <property name="sqlSession" ref="sqlSession"></property>
+    </bean>
+	<bean id="messageRecordService" class="com.zhicloud.op.service.impl.MessageRecordServiceImpl" >
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="sysWarnService" class="com.zhicloud.op.service.impl.SysWarnServiceImpl" >
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>	
+	<!--**************-->
+
+</beans>

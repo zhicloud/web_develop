@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.PriceUpdateMapper">
+
+   <resultMap type="com.zhicloud.op.vo.PriceUpdateVO" id="PriceUpdateVO">
+		<id     column="id"            property="id" /> 
+	</resultMap>
+	<insert id="addPriceUpdate">
+		insert into price_update (id, item, item_id, before_price,price,update_time ) 
+		values (#{id}, #{item}, #{itemId}, #{beforePrice}, #{price}, #{updateTime})
+	</insert> 
+</mapper>

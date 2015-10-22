@@ -1,0 +1,35 @@
+<div class="con_list">
+	<div class="iteam">
+		<h3>连接云主机</h3>
+		<dl>
+			<dt>1.致云客户端</dt>
+			<dd>下载并运行“致云客户端”，输入用户名和密码登录，选择一个云主机，点击<i>“进入”</i>即可。</dd>
+			<dt>2.windows远程桌面连接（RDP）</dt>
+			<dd>打开Windows自带<i>“远程桌面连接”</i>，输入云主机公网IP连接，默认用户名：administrator，默认密码：<i>zhicloud@123</i>。</dd>
+			<dt>3.Linux SSH远程连接</dt>
+			<dd>打开SSH工具，如<i>“SSH Secure Shell”</i>，输入云主机公网IP、用户名（默认root）、密码（默认zhicloud@123）后进入云主机系统。</dd>
+		</dl>
+	</div>
+	<div class="iteam">
+		<h3>使用数据盘</h3>
+		<dl>
+			<dt>1.windows系统</dt>
+			<dd>以win2003系统参考，进入云主机后，右键<i>“我的电脑”>“管理”>“磁盘管理”</i>,系统会提示需初始化磁盘，根据向导提示初始化及格式化数据盘。</dd>
+			<dt>2.Linux系统</dt>
+			<dd>通过ssh登录后，执行命令<i>“fdisk -l”</i>查看数据盘信息；然后格式化数据盘，如sdb，执行命令<i>“mkfs.ext4 /dev/sdb”</i>；再新建一个目录用于挂载数据盘，如:<i>“mkdir /data”</i>；最后挂载数据盘，如:<i>“mount /dev/sdb /data”</i>。</dd>
+		</dl>
+	</div>
+	<div class="iteam">
+		<h3>上传文件</h3>
+		<dl>
+			<dt>1.FTP上传</dt>
+			<dd>云主机默认开启<i>FTP</i>服务，可以通过FTP客户端上传或下载，默认用户名/密码：<i>admin/zhicloud123</i>。</dd>
+			<dt>2.RDP/SSH上传</dt>
+			<dd>通过<i>windows RDP</i>【直接映射本地磁盘/文件拖拽方式】或者<i>linux SSH</i>【ssh文件传输工具】连接主机后，上传文件。</dd>
+			<dt>3.主机面板</dt>
+			<dd>每个Linux云主机默认已打开，通过访问<i>http://IP:10000</i>来访问，输入用户名/密码：<i>root/zhicloud@123</i>。</dd>
+			<dt>4.zhicloud.com官网</dt>
+			<dd>登录进入<i>“我的云端”>“文件夹”</i>上传/下载所需文件（每位用户有<i>300M</i>存储空间）。</dd>
+		</dl>
+	</div>
+</div>

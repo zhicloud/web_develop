@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.CloudHostShoppingConfigMapper">
+
+	
+	
+	<resultMap type="com.zhicloud.op.vo.CloudHostShoppingConfigVO" id="CloudHostShoppingConfigVO">
+		<id     column="id"               property="id" />
+		<result column="user_id"          property="userId" />
+		<result column="host_id"          property="hostId" />
+		<result column="cpu_core"         property="cpuCore" />
+		<result column="sys_image_id"     property="sysImageId" />
+		<result column="sys_disk"         property="sysDisk" />
+		<result column="data_disk"        property="dataDisk" />
+		<result column="start_time"       property="startTime" />
+		<result column="end_time"         property="endTime" />
+		<result column="create_time"      property="createTime" />
+		<result column="c.process_status" property="c.processStatus" />
+		<result column="host_name"        property="hostName" />
+	</resultMap>
+	
+	
+	<select id="getOneUncreatedCloudHostConfigByOrderIdAndRegion" resultMap="CloudHostShoppingConfigVO">
+		select 
+			c.id             ,
+			c.user_id        ,
+			c.host_id        ,
+			c.type           ,
+			c.cpu_core       ,
+			c.memory         ,
+			c.sys_image_id   ,
+			c.sys_disk       ,
+			c.data_disk      ,
+			c.bandwidth      ,
+			c.duration       ,
+			c.start_time     ,
+			c.end_time       ,
+			c.price          ,
+			c.create_time    ,
+			c.process_status ,
+			c.process_message,
+			c.host_name      ,
+			c.region      
+		from order_info o
+		join order_detail od
+			on o.id = od.order_id
+		join cloud_host_shopping_config c
+			on od.item_type = 1
+			and od.item_id = c.id
+		where o.is_paid = 2
+		and c.process_status = 0
+		and o.id = #{orderId}
+		and c.region = #{region}
+	</select>
+	
+	
+	<insert id="addCloudHostShoppingConfig"  >
+		insert into cloud_host_shopping_config 
+		       (  id,    host_id,  user_id,  type,   cpu_core,  memory,   sys_image_id, sys_disk,  data_disk,  bandwidth,   start_time,  end_time,  price,     create_time,  duration,   process_status,  process_message, host_name,   region) 
+		values (#{id}, #{hostId}, #{userId},#{type},#{cpuCore},#{memory},#{sysImageId},#{sysDisk},#{dataDisk},#{bandwidth},#{startTime},#{endTime},#{price}, #{createTime},#{duration},#{processStatus},#{processMessage},#{hostName},#{region})
+	</insert>
+	
+	
+	<update id="updateProcessStatusById"  >
+		update cloud_host_shopping_config
+		<set>
+			process_status = #{processStatus}, 
+			process_message = #{processMessage}
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateProcessStatusByHostId"  >
+		update cloud_host_shopping_config
+		<set>
+			process_status = #{processStatus}, 
+			process_message = #{processMessage}
+		</set>
+		where host_id = #{hostId}
+	</update>
+	
+	
+	<update id="updateProcessStatusByHostName"  >
+		update cloud_host_shopping_config
+		<set>
+			process_status  = #{processStatus}, 
+			process_message = #{processMessage}
+		</set>
+		where host_name = #{hostName}
+	</update>
+	
+	<delete id="deleteByHostId">
+		delete 
+		from cloud_host_shopping_config 
+		where host_id = #{hostId}
+	</delete>
+	 
+
+</mapper>

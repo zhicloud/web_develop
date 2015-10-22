@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.MarkMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.MarkVO" id="MarkVO">
+		<id     column="id"          property="id" />
+		<result column="name"        property="name" />
+		<result column="description" property="description" />
+	</resultMap>
+	
+	<!-- ********************* --> 
+
+	<select id="queryPageCount" resultType="int">
+		select  count(1)
+		from mark 
+		<if test="markName!=null and markName!='%%'">
+			where name like #{markName}
+		</if>
+	</select> 
+ 
+	<select id="queryPage" resultMap="MarkVO">
+		select 
+			m.id, 
+			m.name,  
+			m.description 
+		from mark m
+		<if test="markName!=null and markName!='%%'">
+			where m.name like #{markName}
+		</if>
+		limit #{start_row}, #{row_count}
+	</select> 
+	
+	<select id="getMarkByName" resultMap="MarkVO">
+		select 
+			m.id, 
+			m.name,  
+			m.description 
+		from mark m
+		where m.name = #{name}
+	</select>
+	
+	<select id="getMarkById" resultMap="MarkVO">
+		select 
+			m.id, 
+			m.name,  
+			m.description 
+		from mark m
+		where m.id = #{id}
+	</select> 
+	<!-- ********************* -->
+	
+	<insert id="addMark">
+		insert into mark (id, name, description) 
+		values (#{id}, #{name}, #{description})
+	</insert>
+	
+	<!-- ********************* -->
+	<update id="updateMarkById">
+		update mark
+		<set>
+			name = #{name},
+			description = #{description}
+		</set>
+		where id = #{id}
+	</update>
+	 
+	 <delete id="deleteByMarkIds">
+	 	delete from mark
+	 	where id in
+	 	<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	 </delete>
+	<select id="getAll" resultMap="MarkVO">
+		select m.id,
+			m.name,
+			m.description
+		from mark m
+	</select>
+</mapper>

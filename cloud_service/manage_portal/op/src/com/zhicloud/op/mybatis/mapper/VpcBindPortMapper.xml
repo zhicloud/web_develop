@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.VpcBindPortMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.VpcBindPortVO" id="VpcBindPortVO">
+		<id     column="id"           property="id" />
+		<result column="vpc_id"       property="vpcId" />
+		<result column="host_id"      property="hostId" />
+		<result column="outer_ip"     property="outerIp" />
+		<result column="outer_port"   property="outerPort" />
+		<result column="host_port"    property="hostPort" /> 
+		<result column="create_time"  property="createTime" /> 
+		<result column="protocol"     property="protocol"/> 
+		<result column="display_name"     property="displayName"/> 
+		<result column="flag"     property="flag"/> 
+ 	</resultMap> 
+	
+	<!-- ***************** -->
+
+	<select id="queryByVpcId" resultMap="VpcBindPortVO">
+		select  
+		  vbp.id,
+		  vbp.outer_ip,
+		  vbp.outer_port,
+		  vbp.host_port,
+		  vbp.host_id,
+		  vbp.protocol,
+		  vbp.create_time,
+		  ch.display_name
+		from vpc_bind_port vbp
+		left join cloud_host ch
+		on ch.id = vbp.host_id
+		where vbp.flag = 0 and vbp.vpc_id = #{vpcId}		 
+		order by vbp.create_time desc
+		<if test="start_row!=null">
+			limit #{start_row}, #{row_count}
+		</if>
+ 	</select>
+ 	<select id="queryById" resultMap="VpcBindPortVO">
+		select  
+		  vbp.id,
+		  vbp.outer_ip,
+		  vbp.outer_port,
+		  vbp.host_port,
+		  vbp.host_id,
+		  vbp.protocol,
+		  ch.display_name
+		from vpc_bind_port vbp
+		left join cloud_host ch
+		on ch.id = vbp.host_id
+		where vbp.id = #{id}		 
+ 	</select>
+	<select id="queryCountByVpcId" resultType="int">
+		select count(1) 
+		from vpc_bind_port vbp
+		left join cloud_host ch
+		on ch.id = vbp.host_id
+		where vbp.vpc_id = #{vpcId}
+ 	</select>
+	<select id="checkIpAndPortAndProtocol" resultMap="VpcBindPortVO">
+		select 
+			vbp.id,
+		    vbp.outer_ip,
+		    vbp.outer_port,
+		    vbp.host_port,
+		    vbp.host_id,
+		    vbp.protocol,
+		    ch.display_name
+		from vpc_bind_port vbp
+		left join cloud_host ch
+		on ch.id = vbp.host_id
+		where vbp.outer_ip = #{outerIp}
+		and vbp.outer_port = #{outerPort}
+		and vbp.protocol = #{protocol}
+	</select> 
+	<select id="checkHostAndPortAndProtocol" resultMap="VpcBindPortVO">
+		select 
+			vbp.id,
+		    vbp.outer_ip,
+		    vbp.outer_port,
+		    vbp.host_port,
+		    vbp.host_id,
+		    vbp.protocol,
+		    ch.display_name
+		from vpc_bind_port vbp
+		left join cloud_host ch
+		on ch.id = vbp.host_id
+		where vbp.host_id = #{hostId}
+		and vbp.host_port = #{hostPort}
+		and vbp.protocol = #{protocol}
+	</select> 
+	 <!-- ********************* -->
+	
+	<insert id="add">
+		insert into vpc_bind_port  (id,vpc_id,host_id,outer_ip,outer_port,host_port,protocol,create_time,flag) 
+		values (#{id}, #{vpc_id},#{host_id},#{outer_ip},#{outer_port},#{host_port},#{protocol}, #{createTime},#{flag})
+	</insert>
+	
+	<!-- ********************* --> 
+	
+	
+ 	<delete id="delete">
+		delete from vpc_bind_port
+		where  id = #{id}
+	</delete> 
+
+	<delete id="deleteByIds">
+		delete
+		from vpc_bind_port
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	<delete id="deleteByHostIds">
+		delete
+		from vpc_bind_port
+		where host_id in
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByOuterIp">
+		delete from vpc_bind_port
+		where outer_ip = #{ip}
+	</delete>
+</mapper>

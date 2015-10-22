@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.UserMapper">
+	<resultMap type="com.zhicloud.ms.vo.UserVO" id="user">
+		<id column="id"                 property="id"/>
+		<result column="username"           property="username"/>
+		<result column="password"       property="password"/>
+		<result column="createtime"       property="createtime"/>
+	</resultMap>
+	
+	<select id="queryPage" resultMap="user">
+		select  id,
+				username,
+				password,
+				date_format(createtime,'%Y-%m-%d %H:%I:%S') createtime
+		from server_user 
+		<where>
+			1=1
+			<if test="username!=null and username!=''">
+				and username = #{username}							
+			</if>	
+			<if test="password!=null and password!=''">
+				and password = #{password}							
+			</if>	
+		</where>
+	</select>
+	
+	<select id="queryPageCount" resultType="int">
+		select  count(1)
+		from server_user 
+		<where>
+			1=1
+			<if test="username!=null and username!=''">
+				and username = #{username}							
+			</if>	
+			<if test="password!=null and password!=''">
+				and password = #{password}							
+			</if>	
+		</where>
+		order by createtime desc
+		limit #{start_row}, #{row_count}
+	</select>
+	
+</mapper>

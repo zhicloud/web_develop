@@ -1,0 +1,70 @@
+.header{
+	padding: 0;
+}
+.main {
+	width: 920px;
+	margin: 0 auto;
+	padding: 0;
+}
+.wrap{
+	overflow: hidden;
+}
+.left_nav{
+	position: relative;
+	float: left;
+	width: 68px;
+	margin-right: -68px;
+	padding-top: 60px;
+}
+.left_nav ul li{
+	margin-bottom: 30px;
+}
+.left_nav ul li a{
+	display: block;
+	line-height: 33px;
+	color: #969696;
+	font-size: 18px;
+	
+}
+.left_nav ul li a:hover{
+	color: #323232;
+}
+.left_nav ul li a.current{
+	color: #323232;
+	border-right: 2px solid #007bff;
+}
+.right_content{
+	float:right;
+	width:100%;
+	
+}
+.right_content .contents{
+	margin-left: 68px;
+	border-left: 1px solid #b5b5b5;
+	padding: 60px 0 100px 30px;
+	color: #000;
+	min-height: 300px;
+}
+.right_content .contents .iteam h3{
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 33px;
+	margin-bottom: 2px;
+}
+.right_content .contents .iteam dl{
+	margin-bottom: 20px;
+}
+.right_content .contents .iteam dl dt{
+	font-size: 16px;
+}
+.right_content .contents .iteam dl dd{
+	font-size: 14px;
+	margin-bottom: 5px;
+	margin-left: 14px;
+	line-height: 24px;
+}
+.right_content .contents .iteam dl dd i{
+	color: #187fff;
+	font-weight: bold;
+	font-style: normal;
+}

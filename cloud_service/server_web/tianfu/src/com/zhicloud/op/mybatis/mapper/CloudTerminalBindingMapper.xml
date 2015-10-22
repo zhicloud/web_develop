@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.CloudTerminalBindingMapper">
+	
+	
+	<resultMap type="com.zhicloud.op.vo.CloudTerminalBindingVO" id="CloudTerminalBindingVO">
+		<id     column="id"             property="id" />
+		<result column="host_id"        property="hostId" />
+		<result column="user_id"    property="userId" />
+		<result column="cloud_terminal_id"     property="cloudTerminalId" />
+	</resultMap>
+	
+	<!-- ***************** -->
+	
+	<select id="getCloudTerminalId" resultMap="CloudTerminalBindingVO">
+		select
+			c.id,
+			c.host_id,
+			c.user_id,
+			c.cloud_terminal_id
+		from cloud_terminal_binding c
+		where host_id = #{hostId} and user_id = #{userId}
+	</select>
+	<select id="getCloudTerminalBycloudTerminalId" resultMap="CloudTerminalBindingVO">
+		select
+			c.id,
+			c.host_id,
+			c.user_id,
+			c.cloud_terminal_id
+		from cloud_terminal_binding c
+		where cloud_terminal_id = #{cloudTerminalId} and user_id = #{userId}
+	</select>
+
+	<!-- ***************** -->
+	
+	<insert id="addCloudTerminalBinding">
+		insert into cloud_terminal_binding 
+		       (  id,    host_id,   user_id,    cloud_terminal_id) 
+		values (#{id}, #{hostId}, #{userId}, #{cloudTerminalId})
+	</insert>
+	
+	<!-- ***************** -->
+	
+	
+	
+	<delete id="deleteByUserIdAndHostId">
+		delete
+		from cloud_terminal_binding
+		where host_id = #{hostId} and user_id = #{userId}
+	</delete>
+
+</mapper>

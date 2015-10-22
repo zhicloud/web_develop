@@ -1,0 +1,967 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.CloudHostMapper">
+
+	<resultMap type="com.zhicloud.op.vo.CloudHostVO" id="CloudHostVO">
+		<id     column="id"               property="id" />
+		<result column="real_host_id"     property="realHostId" />
+		<result column="type"             property="type" />
+		<result column="user_id"          property="userId" />
+		<result column="user_account"     property="userAccount" />
+		<result column="host_name"        property="hostName" />
+		<result column="cpu_core"         property="cpuCore" />
+		<result column="sys_image_id"     property="sysImageId" />
+		<result column="sys_image_name"   property="sysImageNameOld" />
+		<result column="sys_disk"         property="sysDisk" />
+		<result column="data_disk"        property="dataDisk" />
+		<result column="is_auto_startup"  property="isAutoStartup" />
+		<result column="running_status"   property="runningStatus" />
+		<result column="inner_ip"         property="innerIp" />
+		<result column="inner_port"       property="innerPort" />
+		<result column="outer_ip"         property="outerIp" />
+		<result column="outer_port"       property="outerPort" />
+		<result column="monthly_price"    property="monthlyPrice" />
+		<result column="password"         property="password" />
+		<result column="process_status"   property="processStatus" />
+		<result column="region"           property="region" />
+		<result column="create_time"      property="createTime" />
+		<result column="bandwidth"        property="bandwidth"/>
+		<result column="region"           property="region"/>
+		<result column="display_name"     property="displayName"/>
+		<result column="package_id"     property="packageId"/>
+		<result column="account"     property="account"/>
+		<result column="vpc_ip"     property="vpcIp"/>
+	</resultMap>
+	
+	
+	<select id="getAllCloudHost" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.host_name, 
+			ch.account,
+			ch.type,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.is_auto_startup, 
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port, 
+			ch.outer_ip,
+			ch.outer_port,
+			ch.region
+		from cloud_host ch 
+		
+		where ch.status!=4
+	</select>
+	<select id="getAllCloudHostCount" resultType="int">
+	<![CDATA[ 
+		select count(1)			 
+		from cloud_host ch 
+		left join cloud_host_shopping_config config 
+			on ch.id=config.host_id
+		where ch.user_id=#{userId} and  (ch.inactivate_time is null or (ch.inactivate_time > #{time} and ch.status =2) or ch.status!=2)
+		and ch.type!=5
+		and ch.type!=6
+		and ch.status!=4
+    ]]>
+	</select>
+	
+	<select id="getByUserId" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.host_name, 
+			ch.display_name,
+			ch.type,
+			ch.account,
+			ch.password,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.is_auto_startup, 
+			ch.running_status, 
+			ch.status status, 
+			ch.inner_ip, 
+			ch.inner_port, 
+			ch.outer_ip,
+			ch.outer_port,
+			config.process_status,
+			ch.monthly_price,
+			ch.region,
+			ch.inactivate_time inactivateTime,
+			ch.create_time createTime,
+			ch.sys_image_name,
+			sd.name sysImageName
+		from cloud_host ch 
+		left join cloud_host_shopping_config config 
+			on ch.id=config.host_id
+		left join sys_disk_image sd
+			on ch.sys_image_id = sd.id
+		where ch.user_id = #{userId}
+		and ch.status!=4
+		order by ch.create_time desc
+	</select>
+	<select id="queryHostCount" resultType="int">
+		select count(1)
+		from cloud_host ch
+		left join cloud_host_shopping_config config 
+			on ch.id=config.host_id
+		left join sys_disk_image sd
+			on ch.sys_image_id = sd.id
+		where ch.user_id = #{userId}
+		and ch.status!=4
+		and ch.type !=5
+		and ch.type !=6
+		<if test="time!=null">
+			and	(ch.inactivate_time is null or (ch.inactivate_time > #{time} and ch.status =2) or ch.status!=2)
+		</if>
+	</select>
+	<select id="getByTerminalUserId" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.host_name, 
+			ch.display_name,
+			ch.type,
+			ch.account,
+			ch.password,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.is_auto_startup, 
+			ch.running_status, 
+			ch.status status, 
+			ch.inner_ip, 
+			ch.inner_port, 
+			ch.outer_ip,
+			ch.outer_port,
+			config.process_status,
+			ch.monthly_price,
+			ch.region,
+			ch.inactivate_time inactivateTime,
+			ch.create_time createTime,
+			ch.sys_image_name,
+			sd.name sysImageName
+		from cloud_host ch 
+		left join cloud_host_shopping_config config 
+			on ch.id=config.host_id
+		left join sys_disk_image sd
+			on ch.sys_image_id = sd.id
+		where ch.user_id = #{userId}
+		and ch.status!=4
+		and ch.type !=5
+		and ch.type !=6
+		<if test="time!=null">
+			and	(ch.inactivate_time is null or (ch.inactivate_time > #{time} and ch.status =2) or ch.status!=2)
+		</if>
+		order by ch.create_time desc
+		<if test="start_row!=null">
+			limit #{start_row}, #{row_count}
+		</if>
+		
+	</select>
+	<select id="getByAgentId" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.host_name, 
+			ch.type,
+			ch.account,
+			ch.password,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.is_auto_startup, 
+			ch.running_status, 
+			ch.status status, 
+			ch.inner_ip, 
+			ch.inner_port, 
+			ch.outer_ip,
+			ch.outer_port,
+			config.process_status,
+			ch.monthly_price,
+			ch.region,
+			ch.inactivate_time inactivateTime,
+			ch.create_time createTime,
+			sd.name sysImageName
+		from cloud_host ch 
+		 left join cloud_host_shopping_config config 
+			on ch.id=config.host_id
+		 left join sys_disk_image sd
+			on ch.sys_image_id = sd.id
+		 left join terminal_user tu 
+		    on ch.user_id = tu.id
+		  join agent a
+		    on a.id = tu.belonging_id
+		where a.id = #{userId}
+		and ch.status!=4
+		order by ch.host_name
+	</select>
+	
+	<select id="getByUserIdAndRegion" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.host_name, 
+			ch.display_name, 
+			ch.type,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.is_auto_startup, 
+			ch.running_status, 
+			ch.status status, 
+			ch.inner_ip, 
+			ch.inner_port, 
+			ch.outer_ip,
+			ch.outer_port,
+			ch.password,
+			ch.region region,
+			config.process_status, 	
+			sd.name sysImageName,
+			ch.sys_image_name,
+			ch.inactivate_time inactivateTime,
+			ch.create_time createTime
+		from cloud_host ch 
+		left join cloud_host_shopping_config config 
+			on ch.id=config.host_id
+		left join sys_disk_image sd
+			on ch.sys_image_id = sd.id
+		where ch.user_id = #{userId}
+		and ch.status!=4
+		<if test="region!=null">
+			and ch.region = #{region}
+	   	</if>
+	   	order by ch.create_time desc
+	</select>
+	
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from cloud_host ch
+		join sys_user u
+			on ch.user_id = u.id
+		<where>
+			<if test="hostName!=null and hostName!='%%'">
+				ch.host_name like #{hostName}
+			</if>
+			<if test="hostName!=null and hostName!='%%' and queryStatus!=null and queryStatus!=''">
+				and
+			</if>
+			<if test="queryStatus==2">
+				(ch.inactivate_time is null or (ch.inactivate_time > #{time} and ch.status =2) or ch.status!=2)
+			</if>
+			<if test="queryStatus==3">
+				(ch.status=2 and #{time} > ch.inactivate_time)
+			</if>
+			and u.type = 4
+			and ch.status!=4
+		</where>
+	</select>
+
+	<select id="cloudHostCount" resultType="int">
+		select count(1)
+		from cloud_host ch
+		join terminal_user t
+			on ch.user_id = t.id
+		where t.belonging_id in (select a.id from agent a where a.belonging_id = #{userId})
+		and ch.status!=4
+	</select>
+	
+	<select id="cloudHostCountForAgent" resultType="int">
+		select count(1)
+		from cloud_host ch
+		where ch.user_id = #{userId} 
+		and ch.status!=4
+	</select>
+	
+	<select id="cloudHostCountForAgentTwo" resultType="int">
+		select count(1)
+		from cloud_host ch
+		join terminal_user t
+			on ch.user_id = t.id
+		where t.belonging_id = #{userId}
+		and ch.status!=4
+	</select>
+	
+	<select id="getCloudHostForRegion" resultMap="CloudHostVO">
+		select 
+            ch.id id,
+			ch.real_host_id,
+			ch.host_name, 
+			ch.type,
+			ch.account,
+			ch.password,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.is_auto_startup, 
+			ch.running_status, 
+			ch.status status, 
+			ch.inner_ip, 
+			ch.inner_port, 
+			ch.outer_ip,
+			ch.outer_port, 
+			ch.monthly_price
+		from cloud_host ch
+		where ch.user_id = #{userId} and ch.region = #{region}
+		and ch.status!=4
+	</select>
+	<select id="cloudHostCountForOperator" resultType="int">
+		select count(1)
+		from cloud_host ch
+		where ch.user_id = #{userId}
+		and ch.status!=4
+	</select>
+	
+	<select id="getCountByVpcId" resultType="int">
+		select count(1)
+		from cloud_host ch  
+		join vpc_bind_host vbh
+		    on ch.id = vbh.host_id and vbh.flag = 0 and vbh.vpc_id = #{vpcId}
+		left join cloud_host_shopping_config config 
+			on ch.id=config.host_id
+		left join sys_disk_image sd
+			on ch.sys_image_id = sd.id
+		where  ch.status!=4 
+	</select>
+	
+	<select id="queryPageCountForAgent" resultType="int">
+		select count(1)
+		from cloud_host ch
+		join terminal_user t
+			on ch.user_id = t.id
+		<where>
+			t.belonging_id = #{agentId}
+			<if test="hostName!=null and hostName!='%%'">
+				and ch.host_name like #{hostName}
+			</if>
+			and ch.status!=4
+		</where>
+	</select>
+	
+	<select id="queryPage" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			u.account user_account, 
+			ch.host_name, 
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.running_status, 
+			ch.status status, 
+			ch.is_auto_startup, 
+			ch.inner_ip, 
+			ch.outer_ip 	
+		from cloud_host ch
+		join sys_user u
+			on ch.user_id = u.id
+		<where>
+			u.type = 4
+			<if test="hostName!=null and hostName!='%%'">
+				 and ch.host_name like #{hostName}
+			</if>
+			<if test="queryStatus==2">
+				and (ch.inactivate_time is null or (ch.inactivate_time > #{time} and ch.status =2) or ch.status!=2)
+			</if>
+			<if test="queryStatus==3">
+				and (ch.status=2 and #{time} > ch.inactivate_time)
+			</if>
+			and ch.status!=4
+		</where>
+		order by ch.host_name
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	<select id="queryPageForAgent" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			u.account user_account, 
+			ch.host_name, 
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk, 
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.running_status, 
+			ch.status, 
+			ch.is_auto_startup, 
+			ch.inner_ip, 
+			ch.outer_ip 	
+		from cloud_host ch
+		join sys_user u
+			on ch.user_id = u.id
+		join terminal_user t
+			on t.id = u.id
+		<where>
+			t.belonging_id = #{agentId}
+			<if test="hostName!=null and hostName!='%%'">
+				and ch.host_name like #{hostName}
+			</if>
+			and ch.status!=4
+		</where>
+		order by ch.host_name
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	<select id="getById" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.type,
+			u.id user_id, 
+			u.account user_account, 
+			ch.host_name, 
+			ch.display_name,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_image_id, 
+			ch.sys_image_name sysImageName,
+			ch.sys_disk, 
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.running_status, 
+			ch.status, 
+			ch.is_auto_startup, 
+			ch.inner_ip,
+			ch.inner_port, 
+			ch.outer_ip, 
+			ch.monthly_price,
+			ch.region,
+			ch.create_time,
+			config.process_status,
+			ch.password,
+			ch.package_id
+		from cloud_host ch
+		left join sys_user u
+			on ch.user_id = u.id 
+		left join cloud_host_shopping_config config 
+			on ch.id = config.host_id
+		where ch.id = #{id}
+		and ch.status!=4
+	</select>
+	
+	<select id="getByUserIds" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.user_id user_id,  
+			ch.host_name, 
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk, 
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.running_status, 
+			ch.status, 
+			ch.is_auto_startup, 
+			ch.inner_ip, 
+			ch.outer_ip,
+			ch.region 	
+		from cloud_host ch 
+		where ch.user_id  in
+		<foreach collection="list" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+		and ch.status!=4
+	</select>
+	
+	
+	<select id="getByRealHostId" resultMap="CloudHostVO">
+		select 
+			h.id id,
+			u.id user_id, 
+			u.account user_account, 
+			h.host_name, 
+			h.cpu_core,
+			h.memory, 
+			h.sys_disk, 
+			h.data_disk, 
+			h.bandwidth, 
+			h.running_status, 
+			h.status, 
+			h.is_auto_startup, 
+			h.inner_ip, 
+			h.outer_ip 	
+		from cloud_host h
+		left join sys_user u
+			on h.user_id = u.id
+		where h.real_host_id = #{realHostId}
+		and h.status!=4
+	</select>
+	
+	<select id="getByHostName" resultMap="CloudHostVO">
+		select 
+			ch.id,
+			ch.real_host_id,
+			ch.type,
+			ch.host_name, 
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_image_id,
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.running_status, 
+			ch.status, 
+			ch.is_auto_startup, 
+			ch.inner_ip, 
+			ch.outer_ip, 
+			ch.region
+		from cloud_host ch
+		where ch.host_name = #{hostName}
+		and ch.status!=4
+	</select>
+	
+	<select id="getByRegionAndHostName" resultMap="CloudHostVO">
+		select 
+			ch.id,
+			ch.real_host_id,
+			ch.type,
+			ch.host_name, 
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_image_id,
+			ch.sys_image_name,
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.running_status, 
+			ch.status, 
+			ch.is_auto_startup, 
+			ch.inner_ip, 
+			ch.outer_ip, 
+			ch.region
+		from cloud_host ch
+		where ch.region  = #{region}
+		and ch.host_name = #{hostName}
+		and ch.status!=4
+	</select>
+	
+	<select id="getByUserIdAndCloudTerminalId" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.host_name,
+			ch.display_name, 
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.running_status, 
+			ch.status status, 
+			ch.is_auto_startup, 
+			ch.inner_ip, 
+			ch.outer_ip,
+			ch.inner_port,
+			ch.outer_port,
+			ch.password
+		from cloud_terminal_binding ctb
+		join cloud_host ch
+			on ctb.host_id = ch.id
+		<where>
+			ctb.user_id = #{userId}
+			and ch.status!=4
+			<if test="cloudTerminalId!=null and cloudTerminalId!=''">
+				and ctb.cloud_terminal_id = #{cloudTerminalId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getOneUndistributedCloudHostFromWarehouse" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.host_name,
+			ch.account,
+			ch.password,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.running_status, 
+			ch.status status, 
+			ch.is_auto_startup, 
+			ch.inner_ip, 
+			ch.outer_ip,
+			ch.inner_port,
+			ch.outer_port
+		from cloud_host ch
+		where ch.type = 4				<!-- warehouse cloud host -->
+		and ch.real_host_id is not null	<!-- created already -->
+		and ch.sys_image_id = #{sysImageId}
+		and ch.sys_disk = #{sysDisk}
+		and ch.status!=4
+		limit 1
+	</select>
+	
+	<select id="queryOperatorSelfUseCloudHost" resultMap="CloudHostVO">
+		select
+			ch.id             ,
+			ch.real_host_id   ,
+			ch.type           ,
+			ch.user_id        ,
+			ch.host_name      ,
+			ch.account        ,
+			ch.password       ,
+			ch.cpu_core       ,
+			ch.memory         ,
+			ch.sys_image_id   ,
+			ch.sys_disk       ,
+			ch.data_disk      ,
+			ch.bandwidth      ,
+			ch.is_auto_startup,
+			ch.running_status ,
+			ch.status         ,
+			ch.inner_ip       ,
+			ch.inner_port     ,
+			ch.outer_ip       ,
+			ch.outer_port
+		from cloud_host ch
+		where ch.type = 1				<!-- 运营商自用 -->
+		<if test="cloudHostName!=null and cloudHostName!='%%'">
+			and ch.host_name like #{cloudHostName}
+		</if>
+		and ch.status!=4
+	</select>
+	
+	<select id="getCloudHostForUserByTime" resultType="int">
+		select count(1)
+		from cloud_host ch
+		join terminal_user t
+			on ch.user_id = t.id
+		where t.belonging_id = #{userId}
+				and ch.type=2
+				and ch.create_time like #{time}
+				and ch.status!=4
+	</select>
+	
+	<select id="getCloudForVpc" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+ 			ch.display_name,
+ 			ch.real_host_id,
+			ch.region,
+			ch.memory,
+			ch.bandwidth,
+			ch.data_disk,
+			ch.cpu_core
+ 		from cloud_host ch  
+		where ch.user_id = #{userId}
+		and ch.status = 1
+		and (ch.type = 2 or ch.type = 3)
+		and real_host_id is not null
+		order by ch.create_time desc
+	</select>
+	
+	
+	<select id="getCloudHostInVpc" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.user_id,
+			ch.host_name, 
+			ch.display_name, 
+			ch.type,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.is_auto_startup, 
+			ch.running_status, 
+			ch.status status, 
+			ch.inner_ip, 
+			ch.inner_port, 
+			ch.outer_ip,
+			ch.outer_port,
+			ch.password,
+			ch.region region,
+			config.process_status, 	
+			sd.name sysImageName,
+			ch.sys_image_name,
+			ch.inactivate_time inactivateTime,
+			ch.create_time createTime,
+			ch.monthly_price,
+			ch.vpc_ip
+		from cloud_host ch  
+		join vpc_bind_host vbh
+		    on ch.id = vbh.host_id and vbh.flag = 0 and vbh.vpc_id = #{vpcId}
+		left join cloud_host_shopping_config config 
+			on ch.id=config.host_id
+		left join sys_disk_image sd
+			on ch.sys_image_id = sd.id
+		where  ch.status!=4 
+	   	order by ch.create_time desc
+	</select>
+	
+	<select id="getAllHostByVpcId" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.user_id,
+			ch.host_name, 
+			ch.display_name, 
+			ch.type,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.is_auto_startup, 
+			ch.running_status, 
+			ch.status status, 
+			ch.inner_ip, 
+			ch.inner_port, 
+			ch.outer_ip,
+			ch.outer_port,
+			ch.password,
+			ch.region region,
+			config.process_status, 	
+			sd.name sysImageName,
+			ch.sys_image_name,
+			ch.inactivate_time inactivateTime,
+			ch.create_time createTime,
+			ch.monthly_price
+		from cloud_host ch  
+		join vpc_bind_host vbh
+		    on ch.id = vbh.host_id and vbh.flag = 0 and vbh.vpc_id = #{vpcId}
+		left join cloud_host_shopping_config config 
+			on ch.id=config.host_id
+		left join sys_disk_image sd
+			on ch.sys_image_id = sd.id
+		where  ch.status!=4 
+	   	order by ch.create_time desc
+	   	limit #{start_row}, #{row_count}
+	</select>
+	
+	<!-- *********************** -->
+	
+	<insert id="addCloudHost">
+		insert into cloud_host
+		      (  id,    type,    user_id,   host_name,   account,    password,    cpu_core,   memory,    sys_image_id,  sys_disk,   data_disk,   bandwidth,    running_status,   status,    is_auto_startup,  inner_ip,   inner_port,   outer_ip,   outer_port,   real_host_id,  monthly_price,  region, sys_image_name,display_name,package_id)
+		values(#{id}, #{type}, #{userId}, #{hostName}, #{account}, #{password}, #{cpuCore}, #{memory}, #{sysImageId}, #{sysDisk}, #{dataDisk}, #{bandwidth}, #{runningStatus}, #{status}, #{isAutoStartup}, #{innerIp}, #{innerPort}, #{outerIp}, #{outerPort}, #{realHostId}, #{monthlyPrice},#{region},#{sysImageName},#{displayName},#{package_id})
+	</insert>
+	
+	
+	<!-- *********************** -->
+	
+	<update id="updateRealHostIdById">
+		update cloud_host
+		<set>
+			real_host_id = #{realHostId},
+			<if test="sysDisk!=null">
+				sys_disk = #{sysDisk},
+			</if>
+			<if test="dataDisk!=null">
+				data_disk = #{dataDisk},
+			</if>
+			<if test="innerIp!=null">
+				inner_ip = #{innerIp},
+			</if>
+			<if test="innerPort!=null">
+				inner_port = #{innerPort},
+			</if>
+			<if test="outerIp!=null">
+				outer_ip = #{outerIp},
+			</if>
+			<if test="outerPort!=null">
+				outer_port = #{outerPort},
+			</if>
+			<if test="createTime!=null">
+				create_time = #{createTime},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateStatusById">
+		update cloud_host
+		<set>
+			status = #{status},
+			<if test="inactivateTime!=null">
+				inactivate_time = #{inactivateTime},
+			</if>
+			<if test="reactivateTime!=null">
+				reactivate_time = #{reactivateTime},
+			</if>
+		</set>
+		where id = #{id}
+		and status!=4
+	</update>
+	
+	<update id="updatePackageIdById">
+		update cloud_host
+		<set>
+			package_id = NULL
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateCreateTimeById">
+		update cloud_host
+		<set>
+			create_time = #{createTime},
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateStatusByUserId">
+		update cloud_host
+		<set>
+			status = #{status},		
+			inactivate_time = #{inactivateTime}
+		</set>
+		where user_id = #{userId}
+		and status!=4
+	</update> 
+	<update id="updateUserHostStatusByUserId">
+		update cloud_host
+		<set>
+			status = #{status},		
+			inactivate_time = #{inactivateTime}
+		</set>
+		where user_id = #{userId} and type = #{type} and status !=2 and status!=4
+	</update> 
+	
+	<update id="updateRunningStatusByRealHostId">
+		update cloud_host
+		<set>
+			running_status = #{runningStatus}
+		</set>
+		where real_host_id = #{realHostId}
+	</update>
+	
+	<update id="distributeWarehouseCloudHostToUser">
+		update cloud_host
+		<set>
+			type = #{type},
+			user_id = #{userId},
+			host_name = #{hostName},
+			display_name = #{displayName},
+			account = #{account},
+			password = #{password},
+			cpu_core = #{cpuCore},
+			memory = #{memory},
+			bandwidth = #{bandwidth},
+			data_disk = #{dataDisk},
+			is_auto_startup = #{isAutoStartup},
+			monthly_price = #{monthlyPrice},
+			package_id = #{package_id}
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updatePasswordById">
+		update cloud_host
+		<set> 
+			password = #{password} 
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateHostNameById">
+		update cloud_host
+		<set> 
+			host_name = #{hostName} 
+		</set>
+		where id = #{id}
+	</update>
+	<update id="updateDisplayNameById">
+		update cloud_host
+		<set> 
+			display_name = #{hostName} 
+		</set>
+		where id = #{id}
+	</update>
+	<update id="updatePriceById">
+		update cloud_host
+		<set> 
+			monthly_price = #{monthlyPrice} 
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateClientCloudHostById">
+		update cloud_host
+		<set>
+			cpu_core = #{cpuCore},
+			memory = #{memory},
+			bandwidth = #{bandwidth},
+			monthly_price = #{price}
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateForDeleteByIds">
+		update  cloud_host 
+		<set>
+		     status = 4 
+		</set>
+		where id in 
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</update>
+	<update id="updateHostTypeById">
+		update  cloud_host 
+		<set>
+		     type = #{type} 
+		</set>
+		where id  = #{id}
+	</update>
+	<update id="updateVpcIpById">
+		update  cloud_host 
+		<set>
+		     vpc_ip = #{vpcIp} 
+		</set>
+		where id  = #{id}
+	</update>
+	<!-- ***************** -->
+	
+	<delete id="deleteByIds">
+		delete 
+		from cloud_host 
+		where id in 
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteUselessWarehouseCloudHosts">
+		<!-- 删除云主机仓库中的一些还没有创建成功的云主机 -->
+		delete from cloud_host
+		where type = 4
+		and real_host_id is null
+		and id in (
+			select w_detail.host_id
+			from cloud_host_warehouse_detail w_detail
+			<where>
+				and w_detail.warehouse_id in
+				<foreach collection="warehouseIds" item="item" open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+				and w_detail.status != #{warehouseDetailStatus}
+			</where>
+		)
+	</delete>
+	
+</mapper>

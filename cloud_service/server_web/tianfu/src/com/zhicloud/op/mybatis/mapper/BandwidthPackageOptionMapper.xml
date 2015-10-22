@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.BandwidthPackageOptionMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.BandwidthPackageOptionVO" id="BandwidthPackageOptionVO">
+		<id     column="id"   property="id" />
+	</resultMap>
+	
+	<!-- ******************* -->
+	
+	<select id="getOne" resultMap="BandwidthPackageOptionVO">
+		select
+			t.id,
+			t.min,
+			t.max
+		from bandwidth_package_option t
+		limit 1
+	</select>
+	
+	<!-- ******************* -->
+	
+	<insert id="addBandwidthPackageOption">
+		insert into bandwidth_package_option (id, min, max)
+		values (#{id}, #{min}, #{max})
+	</insert>
+	
+	<!-- ******************* -->
+	
+	<update id="updateBandwidthPackageOption">
+		update bandwidth_package_option set
+			min = #{min},
+			max = #{max}
+	</update>
+	
+	<!-- ******************* -->
+	
+</mapper>

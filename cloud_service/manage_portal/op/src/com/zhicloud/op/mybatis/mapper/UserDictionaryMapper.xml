@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.UserDictionaryMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.UserDictionaryVO" id="UserDictionaryVO">
+		<id     column="id"   property="id" />
+		<result column="user_id" property="userId" />
+		<result column="dictionary_key" property="dictionaryKey" />
+		<result column="dictionary_value" property="dictionaryValue" />
+	</resultMap>
+	
+	<!-- ******************* -->
+	 <select id="getUserDictionaryByKey" resultMap="UserDictionaryVO">
+		select 
+			u.id,
+			u.user_id,
+			u.dictionary_key,
+			u.dictionary_value 
+		from user_dictionary u
+		where u.user_id = #{userId} and u.dictionary_key = #{key} and u.dictionary_value = #{value}
+	    limit 1
+	</select>
+	
+	<select id="getByUserId" resultType="int">
+		select count(1)
+		from user_dictionary u
+		where u.user_id = #{userId}
+		and u.dictionary_key = #{key}
+	</select>
+	
+	<!-- ******************* -->
+	
+	<insert id="addUserDictionary">
+		insert into user_dictionary (id, user_id,dictionary_key, dictionary_value)
+		values (#{id}, #{userId}, #{key},#{value})
+	</insert> 
+	
+	<delete id="deleteDictionaryByUserId">
+		delete 
+		from user_dictionary
+		where user_id = #{userId}
+		and dictionary_key = #{key}
+	</delete>
+</mapper>

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	
+	<listener>
+		<description>用于加载系统属性</description>
+		<listener-class>com.zhicloud.op.app.propeties.AppPropertiesListener</listener-class>
+	</listener>
+	
+	<listener>
+		<description>用于初始化系统权限</description>
+		<listener-class>com.zhicloud.op.app.authorization.PrivilegeInitializeListener</listener-class>
+	</listener>
+	
+	<listener>
+		<description>初始化地域信息，地域对应数据中心，然后向对应数据中心的http gateway消息推送接口，然后保持连接</description>
+		<listener-class>com.zhicloud.op.app.listener.RegionInitializerListener</listener-class>
+	</listener>
+	
+	
+	<!-- ***************** -->
+	
+	
+	<filter>
+		<filter-name>ProcessTimeLogFilter</filter-name>
+		<filter-class>com.zhicloud.op.filter.ProcessTimeLogFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ExceptionLogFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>ExceptionLogFilter</filter-name>
+		<filter-class>com.zhicloud.op.filter.ExceptionLogFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ExceptionLogFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>ThreadRequestFilter</filter-name>
+		<filter-class>com.zhicloud.op.request.ThreadRequestFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ThreadRequestFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<filter>
+		<filter-name>SecurityFilter</filter-name>
+		<filter-class>com.zhicloud.op.filter.SecurityFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>SecurityFilter</filter-name>
+		<url-pattern>/security/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- ***************** -->
+	
+	
+	
+	<!-- spring mvc servlet -->
+	<servlet>
+		<servlet-name>springDipatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/webApplicationContext.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>springDipatcher</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+	
+	<welcome-file-list>
+		<welcome-file>/main.do</welcome-file>
+	</welcome-file-list>  
+	<!-- spring mvc servlet end -->
+	
+	<!-- **************************************************** -->
+	
+	<!-- listener servlet -->
+	
+<!-- 	<servlet> -->
+<!-- 		<description>从http gateway读取光盘镜像</description> -->
+<!-- 		<servlet-name>IsoImageInitializerListener</servlet-name> -->
+<!-- 		<servlet-class>com.zhicloud.op.app.listener.IsoImageInitializerListener</servlet-class> -->
+<!-- 		<init-param> -->
+<!-- 			<description>两次同步动作的间隔时长，单位秒</description> -->
+<!-- 			<param-name>interval_time</param-name> -->
+<!-- 			<param-value>600</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<load-on-startup>2</load-on-startup> -->
+<!-- 	</servlet> -->
+	
+<!-- 	<servlet> -->
+<!-- 		<description>从http gateway读取磁盘镜像，然后写进数据库</description> -->
+<!-- 		<servlet-name>SysDataInitializerListener</servlet-name> -->
+<!-- 		<servlet-class>com.zhicloud.op.app.listener.SysDataInitializerListener</servlet-class> -->
+<!-- 		<init-param> -->
+<!-- 			<description>两次同步动作的间隔时长，单位秒</description> -->
+<!-- 			<param-name>interval_time</param-name> -->
+<!-- 			<param-value>100</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<load-on-startup>2</load-on-startup> -->
+<!-- 	</servlet> -->
+	
+	<servlet>
+		<description>从http gateway查询出最新的云主机，然后更新至mysql的云主机表,并启动云主机资源监控</description>
+		<servlet-name>RealCloudHostFetcherListener</servlet-name>
+		<servlet-class>com.zhicloud.op.app.listener.RealCloudHostFetcherListener</servlet-class>
+		<init-param>
+			<description>两次同步云主机动作的间隔时长，单位秒</description>
+			<param-name>fetch_host_interval_time</param-name>
+			<param-value>60</param-value>
+		</init-param>
+		<init-param>
+			<description>两次资源监控信息扫描动作的间隔时长，单位秒</description>
+			<param-name>scan_monitor_info_interval_time</param-name>
+			<param-value>10</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	
+<!-- 	<servlet> -->
+<!-- 		<description>fetch physical machine information from http_gateway</description> -->
+<!-- 		<servlet-name>ServerFetcherListener</servlet-name> -->
+<!-- 		<servlet-class>com.zhicloud.op.app.listener.ServerFetcherListener</servlet-class> -->
+<!-- 		<init-param> -->
+<!-- 			<description>interval time for fetching server information, units : seconds</description> -->
+<!-- 			<param-name>fetch_server_interval_time</param-name> -->
+<!-- 			<param-value>10</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<load-on-startup>2</load-on-startup> -->
+<!-- 	</servlet> -->
+	
+<!-- 	<servlet> -->
+<!-- 		<description>fetch service information from http_gateway</description> -->
+<!-- 		<servlet-name>ServiceFetcherListener</servlet-name> -->
+<!-- 		<servlet-class>com.zhicloud.op.app.listener.ServiceFetcherListener</servlet-class> -->
+<!-- 		<init-param> -->
+<!-- 			<description>interval time for fetching service information, units : seconds</description> -->
+<!-- 			<param-name>fetch_service_interval_time</param-name> -->
+<!-- 			<param-value>10</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<load-on-startup>2</load-on-startup> -->
+<!-- 	</servlet> -->
+	
+	<!-- **************************************************** -->
+	
+	<servlet>
+		<description>从未处理的用户订单取出一个云主机配置并创建云主机</description>
+		<servlet-name>UserOrderedCloudHostCreationListener</servlet-name>
+		<servlet-class>com.zhicloud.op.app.listener.UserOrderedCloudHostCreationListener</servlet-class>
+		<init-param>
+			<description>两次创建动作的间隔时长，单位秒</description>
+			<param-name>interval_time</param-name>
+			<param-value>3</param-value>
+		</init-param>
+		<init-param>
+			<description>成功发送一个创建消息之后，等待一段时间再开始一次新的动作，单位秒</description>
+			<param-name>wait_time_after_sending_creation</param-name>
+			<param-value>10</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	
+	<servlet>
+		<description>读取云主机仓库的配置，然后创建仓库里的云主机</description>
+		<servlet-name>WarehouseCloudHostCreationListener</servlet-name>
+		<servlet-class>com.zhicloud.op.app.listener.WarehouseCloudHostCreationListener</servlet-class>
+		<init-param>
+			<description>两次创建动作的间隔时长，单位秒</description>
+			<param-name>interval_time</param-name>
+			<param-value>180</param-value>
+		</init-param>
+		<init-param>
+			<description>创建时间段的开始时间，格式为"HH:mm:ss"</description>
+			<param-name>action_start_time</param-name>
+			<param-value>02:00:00</param-value>
+		</init-param>
+		<init-param>
+			<description>创建时间段的结束时间，格式为"HH:mm:ss"</description>
+			<param-name>action_end_time</param-name>
+			<param-value>07:00:00</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	
+	<!-- ********************* -->
+	
+	
+<!-- 	<servlet> -->
+<!-- 		<description>云主机计费</description> -->
+<!-- 		<servlet-name>CloudHostBillingListener</servlet-name> -->
+<!-- 		<servlet-class>com.zhicloud.op.app.listener.CloudHostBillingListener</servlet-class> -->
+<!-- 		<init-param> -->
+<!-- 			<description>开始计费的时间点</description> -->
+<!-- 			<param-name>start_billing_time</param-name> -->
+<!-- 			<param-value>03:00:00</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<load-on-startup>2</load-on-startup> -->
+<!-- 	</servlet> -->
+	
+	
+	<!-- **************************************************** -->
+	
+	<!-- 配置定时任务监听器 -->
+	<listener>
+	    <listener-class>com.zhicloud.op.app.listener.LogFileListener</listener-class>
+	</listener>
+	
+	<!-- 配置定时任务监听器-检查停用的云主机是否关机 -->
+	<listener>
+	    <listener-class>com.zhicloud.op.app.listener.CheckHostListener</listener-class>
+	</listener>
+	
+	<!-- 配置定时任务监听器-检查代理商的余额并给相应提示 -->
+<!-- 	<listener> -->
+<!-- 	    <listener-class>com.zhicloud.op.app.listener.CheckBalanceForAgentListener</listener-class> -->
+<!-- 	</listener> -->
+	
+</web-app>

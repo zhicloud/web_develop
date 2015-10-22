@@ -3,6 +3,7 @@ package com.zhicloud.ms.httpGateway;
 import com.zhicloud.ms.app.listener.SysDataInitializerListener;
 import com.zhicloud.ms.app.propeties.AppProperties;
 import com.zhicloud.ms.common.util.StringUtil;  
+
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
@@ -2930,4 +2931,64 @@ public class HttpGatewayChannel
             throw e;
         }
     } 
+	
+    public synchronized JSONObject query_service_detail(String target, int level, String begin, String end,
+            String callback) throws MalformedURLException, IOException {
+        try {
+            checkSessionRefresh();
+            JSONObject result = helper.query_service_detail(target, level, begin, end, callback);
+            if (HttpGatewayReturnCode.SESSION_NOT_FOUND.equals(HttpGatewayResponseHelper.getReturnCode(result))) {
+                helper = null;
+            }
+            return result;
+        } catch (IOException e) {
+            helper = null;
+            throw e;
+        }
+    }
+    
+    public synchronized JSONObject query_service_summary(String[] target, String begin, String end, String callback)
+            throws MalformedURLException, IOException {
+        try {
+            checkSessionRefresh();
+            JSONObject result = helper.query_service_summary(target, begin, end, callback);
+            if (HttpGatewayReturnCode.SESSION_NOT_FOUND.equals(HttpGatewayResponseHelper.getReturnCode(result))) {
+                helper = null;
+            }
+            return result;
+        } catch (IOException e) {
+            helper = null;
+            throw e;
+        }
+    }
+    
+    public synchronized JSONObject query_operate_detail(String target, int level, String begin, String end,
+            String callback) throws MalformedURLException, IOException {
+        try {
+            checkSessionRefresh();
+            JSONObject result = helper.query_operate_detail(target, level, begin, end, callback);
+            if (HttpGatewayReturnCode.SESSION_NOT_FOUND.equals(HttpGatewayResponseHelper.getReturnCode(result))) {
+                helper = null;
+            }
+            return result;
+        } catch (IOException e) {
+            helper = null;
+            throw e;
+        }
+    }
+
+    public synchronized JSONObject query_operate_summary(String[] target, String begin, String end, String callback)
+            throws MalformedURLException, IOException {
+        try {
+            checkSessionRefresh();
+            JSONObject result = helper.query_operate_summary(target, begin, end, callback);
+            if (HttpGatewayReturnCode.SESSION_NOT_FOUND.equals(HttpGatewayResponseHelper.getReturnCode(result))) {
+                helper = null;
+            }
+            return result;
+        } catch (IOException e) {
+            helper = null;
+            throw e;
+        }
+    }
 }

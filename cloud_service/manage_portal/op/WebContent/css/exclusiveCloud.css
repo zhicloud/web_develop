@@ -1,0 +1,100 @@
+.floor_one{
+	height: 740px;
+	background: #207de7 url("../image/floor_one_bg.jpg") no-repeat center top;
+}
+.floor_one .cont{
+	padding: 195px 0 0 125px;
+	width: 390px;
+}
+.floor_one .cont h3{
+	color: #fff;
+	font-size: 36px;
+}
+.floor_one .cont p{
+	color: #fff;
+	font-size: 14px;
+	margin: 12px 0;
+}
+.floor_one .cont a{
+	display: block;
+	border: 2px solid #fff;
+	text-align: center;
+	line-height: 50px;
+	height: 50px;
+	width: 180px;
+	color: #fff;
+	font-size: 18px;
+	text-decoration: none;
+}
+
+.main .cont{
+	position: relative;
+}
+.cont h4.title{
+	position: absolute;
+	top: 90px;
+	left: 0;
+	font-size: 26px;
+	color: #fff;
+	text-align: center;
+	width: 100%;
+}
+
+.floor_two,.floor_four{
+	background: #2cd577;
+}
+.floor_three,.floor_five{
+	background: #2ccf74;
+}
+
+.floor_two .cont img,.floor_three .cont img{
+	display: block;
+}
+.floor_six .cont{
+	padding: 60px 0 200px;
+}
+.floor_six h4.s_title{
+	color: #53595d;
+	font-size: 40px;
+	line-height: 60px;
+	width: 100%;
+	text-align: center;
+	margin-bottom: 90px;
+}
+.floor_six .cont ul{
+	overflow: hidden;
+	padding: 0 55px;
+}
+.floor_six .cont ul li {
+	float: left;
+	margin: 0 70px;
+}
+.floor_six .cont ul li p.line{
+	height: 1px;
+	width: 200px;
+	background: #979797;
+}
+.floor_six .cont ul li h5{
+	color: #475156;
+	font-size: 24px;
+	line-height: 40px;
+	margin: 8px 0;
+}
+.floor_six .cont ul li p.c{
+	color: #4f595e;
+	font-size: 14px;
+	line-height: 20px;
+	width: 220px;
+}
+
+
+
+
+
+
+
+
+
+
+
+

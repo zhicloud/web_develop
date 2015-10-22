@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.ShoppingCartMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.ShoppingCartVO" id="ShoppingCartVO">
+		<id     column="id"       property="id" /> 
+		<result column="user_id"      property="userId" /> 
+		<result column="create_time"      property="createTime" /> 
+		<result column="total_price"      property="totalPrice" /> 
+		<result column="type"      property="type" /> 
+		<result column="cpu_core"      property="cpuCore" /> 
+		<result column="memory"      property="memory" /> 
+		<result column="sys_image_id"      property="sysImageId" /> 
+		<result column="sys_disk"      property="sysDisk" /> 
+		<result column="data_disk"      property="dataDisk" /> 
+		<result column="bandwidth"      property="bandwidth" /> 
+		<result column="start_time"      property="startTime" /> 
+		<result column="end_time"      property="endTime" /> 
+		<result column="price"      property="price" />  
+		<result column="item_id"      property="itemId" />  
+		<result column="item_type"      property="itemType" />  
+		<result column="order_id"      property="orderId" />  
+		<result column="is_processed"      property="isProcessed" />  
+		
+	</resultMap>
+	
+	<!-- ******************* -->
+	
+	 
+	<select id="getCartByUserId" resultMap="ShoppingCartVO">
+		select a.*
+		from shopping_cart a 
+		 where a.user_id = #{userId} 
+	</select>
+	<select id="getCartDetailByCartId" resultMap="ShoppingCartVO">
+		select b.*
+		from shopping_cart_detail a
+		join cloud_host_shopping_config b
+		on a.item_type = 1 and   a.item_id=b.id
+		 where a.cart_id = #{cartId} 
+	</select>
+	<insert id="inserIntoCart"  >
+		insert into shopping_cart (id, user_id, create_time, total_price) 
+		values (#{id}, #{userId}, #{createTime}, #{totalPrice})
+	</insert>
+	<update id="updateCart">
+		update shopping_cart set 
+			total_price = total_price + #{price} 
+		where id = #{id} 
+	</update>
+	<insert id="inserIntoCartDetail"  >
+		insert into shopping_cart_detail (id, cart_id, item_type, item_id) 
+		values (#{id}, #{cartId}, #{itemType}, #{itemId})
+	</insert>
+	<insert id="inserIntoConfig"  >
+		insert into cloud_host_shopping_config (id, user_id, type, cpu_core,memory,sys_image_id,sys_disk,data_disk,bandwidth,start_time,end_time,price,create_time,duration,host_name) 
+		values (#{id}, #{userId},#{type},#{cpuCore},#{memory},#{sysImageId},#{sysDisk},#{dataDisk},#{bandwidth},#{startTime},#{endTime},#{price}, #{createTime},#{duration},#{name})
+	</insert>
+	<delete id="deleteDetailByItemId"  >
+		delete from shopping_cart_detail 
+		where item_id in
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	<delete id="deleteConfigById"  >
+		delete from cloud_host_shopping_config 
+		where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete> 
+	<delete id="deleteCartDetail"  >
+		delete from shopping_cart_detail 
+		where cart_id = (select id  from shopping_cart where user_id=#{userId})
+	</delete>
+	<delete id="deleteAllCart"  >
+		delete from shopping_cart
+		where user_id = #{userId}
+	</delete>
+	<insert id="inserIntoConfigPort"  >
+		insert into cloud_host_shopping_port_config (id, config_id, port) 
+		values (#{id}, #{config_id},#{port})
+	</insert> 
+	<select id="getConfigByIds" resultMap="ShoppingCartVO">
+		select b.*
+		from  cloud_host_shopping_config b
+		where b.id in 
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</select>
+	<delete id="deleteCartDetailByIds"  >
+		delete from shopping_cart_detail 
+		where item_id in  
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	<delete id="deletePortByIds"  >
+		delete from cloud_host_shopping_port_config
+		where config_id in  
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	
+	
+	 
+
+</mapper>

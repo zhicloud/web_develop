@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.BillMapper">
+
+	<resultMap type="com.zhicloud.op.vo.BillVO" id="BillVO">
+		<id     column="id"           property="id" />
+		<result column="user_id"      property="userId" />
+		<result column="is_paid"      property="isPaid" />
+		<result column="payable_time" property="payableTime" />
+		<result column="payment_time" property="paymentTime" />
+		<result column="create_time"  property="createTime" />
+	</resultMap>
+
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from bill b
+		join sys_user u
+		on b.user_id = u.id
+		<where>
+			<if test="userName!=null and userName!='%%'">
+				and u.account like #{userName}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryPage" resultMap="BillVO">
+		select 
+			b.id                 ,
+			u.account userAccount, 
+			b.fee                ,
+			b.payable_time       , 
+			b.payment_time        
+		from bill b
+		join sys_user u
+			on b.user_id = u.id
+		<where>
+			<if test="account!=null and account!='%%'">
+				u.account like #{account}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryPageForAgent" resultMap="BillVO">
+		select 
+			b.id                 ,
+			u.account userAccount, 
+			b.fee                ,
+			b.payable_time       , 
+			b.payment_time        
+		from bill b
+		join sys_user u
+			on b.user_id = u.id
+		join terminal_user t
+			on t.belonging_id = #{agentId}
+		<where>
+			u.id = t.id
+			<if test="account!=null and account!='%%'">
+				and u.account like #{account}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryPageForTerminal" resultMap="BillVO">
+		select 
+			b.id                 ,
+			u.account userAccount, 
+			b.fee                ,
+			b.payable_time       , 
+			b.payment_time        
+		from bill b
+		join sys_user u
+			on b.user_id = u.id
+		<where>
+			b.user_id = #{userId}
+			<if test="account!=null and account!='%%'">
+				and u.account like #{account}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getByUserId" resultMap="BillVO">
+		select
+			b.id                 ,
+			b.fee                ,
+			b.payable_time       , 
+			b.payment_time        
+		from bill b
+		where b.user_id = #{userId}
+	</select>
+	
+	<!-- *********************** -->
+	
+	<insert id="addBill">
+		insert into bill
+		       (  id,    user_id,   fee,    is_paid,   payable_time,   payment_time,   create_time )
+		values (#{id}, #{userId}, #{fee}, #{isPaid}, #{payableTime}, #{paymentTime}, #{createTime} )
+	</insert>
+	
+	<delete id="deleteByIds">
+		delete from bill b
+		where b.id in 
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

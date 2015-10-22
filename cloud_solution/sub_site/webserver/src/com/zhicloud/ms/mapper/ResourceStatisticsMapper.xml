@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhicloud.ms.mapper.ResourceStatisticsMapper" >
+	<resultMap id="resourceStatistics" type="com.zhicloud.ms.vo.ResourceStatisticsVO" >
+		<id 	column="id" 			property="id" />
+		<result column="cpu_usage" 		property="cpuUsage" />
+		<result column="memory_usage" 	property="memoryUsage" />
+		<result column="disk_usage" 	property="diskUsage" />
+		<result column="Throughput" 	property="throughput" />
+		<result column="create_time" 	property="createTime" />
+		<result column="data_date" 		property="dataDate" />
+		<result column="data_hours" 	property="dataHours" />
+	</resultMap>
+  
+	<insert id="addResourceStatistics">
+		insert into resource_statistics (cpu_usage,memory_usage,disk_usage,Throughput,create_time, data_date,data_hours ) 
+		values (#{cpu_usage},#{memory_usage},#{disk_usage},#{Throughput},#{create_time},#{data_date},#{data_hours})
+	</insert>
+	
+	<select id="queryPage" resultMap="resourceStatistics">
+		select  id,		
+				cpu_usage,
+				memory_usage,
+				disk_usage,
+				Throughput,
+				create_time,
+				data_date,
+				data_hours
+		from resource_statistics a
+		<where>
+			1=1
+			<if test="data_date!=null and data_date!=''">
+				and a.data_date = #{data_date}							
+			</if>	
+		</where>
+		order by a.data_hours asc
+	</select>
+</mapper>

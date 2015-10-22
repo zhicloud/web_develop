@@ -1,0 +1,1981 @@
+﻿版本号：1.1
+
+说明：
+	1、更换操作日志管理页面
+
+修改时间：
+	2014/9/21
+
+修改人：
+	张翔
+
+修改文件： 
+	WebContent/security/user/oper_log_manage.jsp
+
+
+************************************
+
+版本号：1.1
+
+说明：
+	1、增加用户云硬盘管理
+
+修改时间：
+	2014/9/19
+
+修改人：
+	张翔
+
+修改文件： 
+	src/com/zhicloud/op/core/CoreSpringContextManager.java
+	src/com/zhicloud/op/mybatis/mapper/InvoiceMapper.xml
+	src/com/zhicloud/op/service/constant/AppConstant.java
+	src/com/zhicloud/op/service/constant/ServiceConstant.java
+	src/com/zhicloud/op/service/impl/InvoiceAddressServiceImpl.java
+	src/com/zhicloud/op/service/impl/InvoiceServiceImpl.java
+	src/coreApplicationContext.xml
+	WebContent/security/user/main.jsp
+
+
+新增文件：
+	src/com/zhicloud/op/vo/CloudDiskShoppingConfigVO.java
+	src/com/zhicloud/op/vo/CloudDiskVO.java
+	src/com/zhicloud/op/mybatis/mapper/CloudDiskMapper.java
+	src/com/zhicloud/op/mybatis/mapper/CloudDiskMapper.xml
+	src/com/zhicloud/op/mybatis/mapper/CloudDiskShoppingConfigMapper.java
+	src/com/zhicloud/op/mybatis/mapper/CloudDiskShoppingConfigMapper.xml
+	src/com/zhicloud/op/service/CloudDiskService.java
+	src/com/zhicloud/op/service/impl/CloudDiskServiceImpl.java
+	WebContent/security/user/my_cloud_disk_add.jsp
+	WebContent/security/user/my_cloud_disk_manage.jsp
+	WebContent/security/user/my_cloud_disk_mod.jsp
+
+
+************************************
+
+版本号：1.1
+
+说明：
+	1、增加用户发票邮寄地址管理功能
+
+修改时间：
+	2014/9/17
+
+修改人：
+	张翔
+
+修改文件： 
+	src/com/zhicloud/op/mybatis/mapper/InvoiceAddressMapper.java
+	src/com/zhicloud/op/mybatis/mapper/InvoiceAddressMapper.xml
+	src/com/zhicloud/op/mybatis/mapper/InvoiceMapper.xml
+	src/com/zhicloud/op/service/impl/InvoiceAddressServiceImpl.java
+	src/com/zhicloud/op/service/InvoiceAddressService.java
+	WebContent/security/user/invoice_add.jsp
+	WebContent/security/user/invoice_manage.jsp
+
+新增文件：
+	WebContent/security/user/invoice_address_add.jsp
+	WebContent/security/user/invoice_address_manage.jsp
+	WebContent/security/user/invoice_address_mod.jsp
+
+
+
+************************************
+
+
+版本号：1.1
+
+说明：
+	1、增加云主机库存马上创建的功能
+
+修改时间：
+	2014/9/16
+
+修改人：
+	陈鸿圳
+
+修改文件： 
+	src/com/zhicloud/op/app/helper/CloudHostWarehouseHelper.java
+	src/com/zhicloud/op/app/listener/task/WarehouseCloudHostCreationRunnable.java
+	src/com/zhicloud/op/app/listener/WarehouseCloudHostCreationListener.java
+	src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDetailMapper.java
+	src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDetailMapper.xml
+	src/com/zhicloud/op/service/CloudHostWarehouseService.java
+	src/com/zhicloud/op/service/impl/CloudHostWarehouseServiceImpl.java
+	WebContent/security/operator/warehouse_mod.jsp
+
+
+************************************
+
+版本号：1.1
+
+说明：
+	1、修复iframe的大小不正确的问题
+
+修改时间：
+	2014/9/15
+
+修改人：
+	陈鸿圳
+
+修改文件： 
+	src/com/zhicloud/op/httpGateway/HttpGatewayManager.java
+	src/com/zhicloud/op/service/impl/AccountBalanceServiceImpl.java
+	src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	src/com/zhicloud/op/service/impl/OperatorServiceImpl.java
+	WebContent/css/control2.css
+	WebContent/security/admin/main.jsp
+	WebContent/security/admin/operator_manage.jsp
+	WebContent/security/admin/sys_group_manage.jsp
+	WebContent/security/admin/sys_role_manage.jsp
+	WebContent/security/agent/cloud_host_manage.jsp
+	WebContent/security/agent/main.jsp
+	WebContent/security/agent/terminal_user_manage.jsp
+	WebContent/security/operator/agent_manage.jsp
+	WebContent/security/operator/cloud_host_manage.jsp
+	WebContent/security/operator/main.jsp
+	WebContent/security/operator/self_use_cloud_host.jsp
+	WebContent/security/operator/suggestion_manage.jsp
+	WebContent/security/operator/sys_disk_image_manage.jsp
+	WebContent/security/operator/terminal_user_manage.jsp
+	WebContent/security/operator/warehouse_manage.jsp
+	WebContent/security/user/bill_manage.jsp
+	WebContent/security/user/invoice_manage.jsp
+	WebContent/security/user/main.jsp
+	WebContent/security/user/my_cloud_host.jsp
+	WebContent/security/user/my_history_order.jsp
+	WebContent/security/user/recharge_record_manage.jsp
+	WebContent/security/user/suggestion_manage.jsp
+	WebContent/security/user/uploaded_file_manage.jsp
+
+
+添加文件：
+	WebContent/css/control2.css
+
+
+********************************
+
+版本号：1.1
+
+说明：
+	1、增加开据发票
+
+修改时间：
+	2014/9/15
+
+修改人：
+	张翔
+
+修改文件： 
+	1.1/src/com/zhicloud/op/core/CoreSpringContextManager.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/AccountBalanceDetailMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/AccountBalanceDetailMapper.xml
+	1.1/src/com/zhicloud/op/service/constant/AppConstant.java
+	1.1/src/com/zhicloud/op/service/constant/ServiceConstant.java
+	1.1/src/coreApplicationContext.xml
+	1.1/WebContent/security/user/main.jsp
+	1.1/src/com/zhicloud/op/service/AccountBalanceService.java
+	1.1/src/com/zhicloud/op/service/impl/AccountBalanceServiceImpl.java
+
+
+
+添加文件：
+	1.1/src/com/zhicloud/op/mybatis/mapper/InvoiceAddressMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/InvoiceAddressMapper.xml
+	1.1/src/com/zhicloud/op/mybatis/mapper/InvoiceMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/InvoiceMapper.xml
+	1.1/src/com/zhicloud/op/service/InvoiceAddressService.java
+	1.1/src/com/zhicloud/op/service/InvoiceService.java
+	1.1/src/com/zhicloud/op/vo/InvoiceAddressVO.java
+	1.1/src/com/zhicloud/op/vo/InvoiceVO.java
+	1.1/WebContent/security/user/invoice_add.jsp
+	1.1/WebContent/security/user/invoice_manage.jsp
+	1.1/src/com/zhicloud/op/service/impl/InvoiceAddressServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/InvoiceServiceImpl.java
+
+
+
+
+******************************
+
+版本号：1.1
+
+说明：
+	1、增加绑定前检查
+
+修改时间：
+	2014/9/12
+
+修改人：
+	吴莉莎
+
+修改文件： 
+	1.1/src/com/zhicloud/op/mybatis/mapper/AgentMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostTerminalBindingMapper.xml
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostTerminalBindingMapper.java
+	1.1/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java 
+	1.1/WebContent/security/user/main.jsp 
+
+
+******************************
+
+
+
+
+版本号：1.1
+
+说明：
+	1、增加了修改云主机开放端口同步到真实云主机的功能
+
+修改时间：
+	2014/9/14
+
+修改人：
+	陈鸿圳
+
+修改文件：
+	1.1/src/com/zhicloud/op/httpGateway/HttpGatewayChannel.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostBillDetailMapper.xml
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostOpenPortMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostOpenPortMapper.xml
+	1.1/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.1/WebContent/security/operator/self_use_cloud_host.jsp
+	1.1/WebContent/security/user/add_port.jsp
+
+
+******************************
+
+版本号：1.1
+
+说明：
+	1、修改了云主机仓库库存的功能，增加了库存属性‘地域’。
+	2、修复了修改云主机监控密码时没有同步修改云平台云主机监控密码的bug。(用户‘我的云主机’页面)
+
+修改时间：
+	2014/9/11
+
+修改人：
+	陈鸿圳
+
+修改文件：
+	1.1/src/com/zhicloud/op/app/helper/CloudHostWarehouseHelper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDefinitionMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDefinitionMapper.xml
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDetailMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDetailMapper.xml
+	1.1/src/com/zhicloud/op/service/constant/AppConstant.java
+	1.1/src/com/zhicloud/op/service/impl/AccountBalanceServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/CloudHostWarehouseServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/OrderInfoServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/PaymentServiceImpl.java
+	1.1/WebContent/META-INF/regions.xml
+	1.1/WebContent/security/operator/cloud_update_password.jsp
+	1.1/WebContent/security/operator/start_cloud_host_dlg.jsp
+	1.1/WebContent/security/operator/warehouse_add.jsp
+	1.1/WebContent/security/operator/warehouse_detail.jsp
+	1.1/WebContent/security/operator/warehouse_manage.jsp
+	1.1/WebContent/security/user/cloud_host_buy_page.jsp
+	1.1/WebContent/security/user/my_cloud_host_query_part.jsp
+			
+***********************
+
+版本号：1.1
+
+说明：
+	1、修改了后台与云主机分数据中心存储的功能。
+	2、增加了文件regions.xml做为地域相关信息配置文件。
+	3、修改运营商创建云主机的功能 、增加了地域的选择项。
+
+修改时间：
+	2014/9/10
+
+修改人：
+	陈鸿圳
+
+修改文件：
+	1.1/src/com/zhicloud/op/app/helper/CloudHostWarehouseHelper.java
+	1.1/src/com/zhicloud/op/app/pool/IsoImagePool.java
+	1.1/src/com/zhicloud/op/app/pool/IsoImagePoolManager.java
+	1.1/src/com/zhicloud/op/httpGateway/HttpGatewayChannel.java
+	1.1/src/com/zhicloud/op/httpGateway/HttpGatewayChannelExt.java
+	1.1/src/com/zhicloud/op/httpGateway/HttpGatewayHelper.java
+	1.1/src/com/zhicloud/op/httpGateway/HttpGatewayManager.java
+	1.1/src/com/zhicloud/op/httpGateway/HttpGatewayTest.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostShoppingConfigMapper.xml
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDetailMapper.xml
+	1.1/src/com/zhicloud/op/mybatis/mapper/SysDiskImageMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/SysDiskImageMapper.xml
+	1.1/src/com/zhicloud/op/service/constant/AppConstant.java
+	1.1/src/com/zhicloud/op/service/impl/AppPropertyServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/BillServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/ClientServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/CloudHostWarehouseServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/CloudUserServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/OrderInfoServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/SysDiskImageServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/TerminalUserServiceImpl.java
+	1.1/src/com/zhicloud/op/vo/AccountBalanceDetailVO.java
+	1.1/src/com/zhicloud/op/vo/CloudHostShoppingConfigVO.java
+	1.1/src/com/zhicloud/op/vo/CloudHostVO.java
+	1.1/src/com/zhicloud/op/vo/CloudHostWarehouseDetailVO.java
+	1.1/src/com/zhicloud/op/vo/SysDiskImageVO.java
+	1.1/WebContent/META-INF/app-properties.xml
+	1.1/WebContent/META-INF/readme.txt
+	1.1/WebContent/security/admin/app_properties_manage.jsp
+	1.1/WebContent/security/operator/cloud_host_create.jsp
+	1.1/WebContent/security/operator/cloud_host_view_detail.jsp
+	1.1/WebContent/security/operator/start_cloud_host_dlg.jsp
+	1.1/WebContent/security/user/bill_manage.jsp
+	1.1/WebContent/WEB-INF/web.xml
+		
+新增文件：
+	1.1/src/com/zhicloud/op/app/helper/RegionHelper.java
+	1.1/src/com/zhicloud/op/app/listener/RegionInitializerListener.java
+	1.1/src/com/zhicloud/op/httpGateway/HttpGatewayChannelPool.java
+	1.1/WebContent/META-INF/regions.xml
+		
+
+***********************************
+
+版本号：1.1
+
+说明：
+	1、编辑云主机，修改云平台真实信息
+	2、注册使用邮箱注册，以及相关问题
+
+修改时间：
+	2014/9/10
+
+修改人：
+	杨委
+
+修改文件：
+	1.1/src/com/zhicloud/op/httpGateway/HttpGatewayChannel.java
+	1.1/src/com/zhicloud/op/httpGateway/HttpGatewayHelper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	1.1/src/com/zhicloud/op/service/impl/ClientServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/TerminalUserServiceImpl.java
+	1.1/WebContent/public/user/forget_password.jsp
+	1.1/WebContent/public/user/login.jsp
+	1.1/WebContent/public/user/register.jsp
+	1.1/WebContent/public/user/reset_password_phone.jsp
+	1.1/WebContent/security/agent/terminal_user_add.jsp
+	1.1/WebContent/security/agent/terminal_user_manage.jsp
+	1.1/WebContent/security/agent/terminal_user_mod.jsp
+	1.1/WebContent/security/operator/terminal_user_add.jsp
+	1.1/WebContent/security/operator/terminal_user_manage.jsp
+	1.1/WebContent/security/operator/terminal_user_mod.jsp
+	1.1/WebContent/security/user/terminal_user_base_info.jsp
+	1.1/WebContent/security/user/terminaluser_baseinfo_phonedit.jsp
+	
+
+************************************************
+版本号：1.1
+
+说明：
+	1、修改云主机详情的图表数据为真实数据，并实时更新。
+
+修改时间：
+	2014/9/4
+
+修改人：
+	周亚锋
+
+修改文件：
+	1.1/src/com/zhicloud/op/app/pool/CloudHostPool.java
+	1.1/src/com/zhicloud/op/app/controller/MainController.java
+	WebContent/security/agent/cloud_host_view_detail.jsp
+	WebContent/security/operator/cloud_host_view_detail.jsp
+	WebContent/security/operator/cloud_host_manage.jsp
+
+*********************************************
+
+
+
+版本号：1.1
+
+说明：
+	1、增加了用户在“我的云主机”页面申请云主机停机时的云主机计费结算功能。
+	2、增加了用户在“我的云主机”页面申请云主机复机时，重新启动云主机计费的功能。
+
+修改时间：
+	2014/9/4
+
+修改人：
+	陈鸿圳
+
+修改文件：
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostBillDetailMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostBillDetailMapper.xml
+	1.1/src/com/zhicloud/op/remote/RemoteCallController.java
+	1.1/src/com/zhicloud/op/service/AccountBalanceService.java
+	1.1/src/com/zhicloud/op/service/constant/AppConstant.java
+	1.1/src/com/zhicloud/op/service/impl/CloudHostBillDetailServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/CloudHostWarehouseServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/PaymentServiceImpl.java
+	1.1/src/com/zhicloud/op/vo/CloudHostVO.java
+		
+新增文件：
+	1.1/src/com/zhicloud/op/app/helper/CloudHostBillingHelper.java
+	
+
+*********************************************
+
+版本号：1.1
+
+说明：
+	1、当费用不够支付一定天数的时候，短信和邮件通知
+	2、云主机操作和编辑接口
+
+修改时间：
+	2014/9/4
+
+修改人：
+	杨委
+
+修改文件：
+	1.1/src/com/zhicloud/op/common/util/SendMail.java
+	1.1src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	1.1/src/com/zhicloud/op/service/constant/AppConstant.java
+	1.1/src/com/zhicloud/op/service/impl/ClientServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/TerminalUserServiceImpl.java
+	1.1/src/com/zhicloud/op/service/TerminalUserService.java
+	
+***************************************************
+
+版本号：1.1
+
+说明：
+	1、增加了到达指定时间点（凌晨3点）云主机计费的功能。
+
+修改时间：
+	2014/9/3
+
+修改人：
+	陈鸿圳
+
+修改文件：
+	1.1/src/com/zhicloud/op/app/helper/CloudHostPrice.java
+	1.1/src/com/zhicloud/op/app/helper/CloudHostWarehouseHelper.java
+	1.1/src/com/zhicloud/op/app/listener/RealCloudHostFetcherListener.java
+	1.1/src/com/zhicloud/op/app/listener/task/RealCloudHostFetcherRunnable.java
+	1.1/src/com/zhicloud/op/common/util/CapacityUtil.java
+	1.1/src/com/zhicloud/op/common/util/DateUtil.java
+	1.1/src/com/zhicloud/op/common/util/FlowUtil.java
+	1.1/src/com/zhicloud/op/core/CoreSpringContextManager.java
+	1.1/src/com/zhicloud/op/httpGateway/HttpGatewayHelper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/AccountBalanceDetailMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/AccountBalanceDetailMapper.xml
+	1.1/src/com/zhicloud/op/mybatis/mapper/BillMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/BillMapper.xml
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostBillDetailMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostBillDetailMapper.xml
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostShoppingConfigMapper.xml
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostShoppingPortConfigMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostShoppingPortConfigMapper.xml
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDetailMapper.xml
+	1.1/src/com/zhicloud/op/mybatis/mapper/TerminalUserMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/TerminalUserMapper.xml
+	1.1/src/com/zhicloud/op/service/constant/AppConstant.java
+	1.1/src/com/zhicloud/op/service/constant/ServiceConstant.java
+	1.1/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/CloudHostWarehouseServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/OrderInfoServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/PaymentServiceImpl.java
+	1.1/src/com/zhicloud/op/service/impl/TerminalUserServiceImpl.java
+	1.1/src/com/zhicloud/op/vo/AccountBalanceDetailVO.java
+	1.1/src/com/zhicloud/op/vo/CloudHostBillDetailVO.java
+	1.1/src/com/zhicloud/op/vo/CloudHostVO.java
+	1.1/src/com/zhicloud/op/vo/TerminalUserVO.java
+	1.1/src/coreApplicationContext.xml
+	1.1/WebContent/META-INF/update_list.txt
+	1.1/WebContent/security/user/my_cloud_host.jsp
+	1.1/WebContent/WEB-INF/web.xml
+		
+新增文件：
+	1.1/src/com/zhicloud/op/app/listener/CloudHostBillingListener.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/BillDetailMapper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/BillDetailMapper.xml
+	1.1/src/com/zhicloud/op/service/CloudHostBillDetailService.java
+	1.1/src/com/zhicloud/op/service/impl/CloudHostBillDetailServiceImpl.java
+	1.1/src/com/zhicloud/op/vo/BillDetailVO.java
+
+***************************************************
+
+
+版本号：1.1
+
+说明：
+	1、支付及支付之后的验签
+
+修改时间：2014/9/1
+
+修改人：杨委
+
+修改文件：
+	src/com/zhicloud/op/controller/TerminalUserController.java
+	src/com/zhicloud/op/core/CoreSpringContextManager.java
+	src/com/zhicloud/op/mabatis/mapper/TerminalUserMapper.java
+	src/com/zhicloud/op/mabatis/mapper/TerminalUserMapper.xml
+	src/com/zhicloud/op/pay/unionpay/QuikPayConfig.java
+	src/com/zhicloud/op/pay/unionpay/QuikPaySampleServlet.java
+	src/com/zhicloud/op/service/constant/ServiceConstant.java
+	src/com/zhicloud/op/vo/TerminalUserVO.java
+	WebContent/public/user/notify_url.jsp
+	WebContent/security/operator/cloud_host_create.jsp
+	WebContent/security/user/alipayapi.jsp
+	WebContent/security/user/main.jsp
+	WebContent/security/user/unionpayapi.jsp
+新增文件：
+	src/com/zhicloud/op/mabatis/mapper/AccountBalanceDetailMapper.java
+	src/com/zhicloud/op/mabatis/mapper/AccountBalanceDetailMapper.xml
+	src/com/zhicloud/op/service/AccountBalanceService.java
+	src/com/zhicloud/op/service/impl/AccountBalanceServiceImpl.java
+	src/com/zhicloud/op/vo/AccountBalanceServiceVo.java
+	WebContent/security/user/recharge_record_manage.jsp
+	WebContent/security/user/recharge.jsp 
+	
+
+***************************************************
+
+版本号：1.1
+
+说明：
+	1、注册发送手机验证码，先对用户名、验证码等做判断
+
+修改时间：2014/9/1
+
+修改人：杨委
+
+修改文件：
+	src/com/zhicloud/op/service/impl/TerminalUserServiceImpl.java
+	WebContent/public/user/login.jsp
+	WebContent/public/user/register.jsp
+	
+
+***************************************************
+版本号：1.1
+
+说明：
+	1、修改 修改库存类型的库存总量的时候，cloud_host_warehouse_detail的记录条数没有相应的改变
+	2、修改当删除库存类型的时候，表cloud_host_warehouse_detail的对记录没有对应做删除
+	3、修改弹出修改对话框时里面的内容没有自动填上正确的值
+	4、修改磁盘容量格式化的问题
+
+修改时间：
+	2014/8/29
+
+修改人：
+	周亚锋
+
+修改文件：  
+	src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDetailMapper.java
+	src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDetailMapper.xml
+	src/com/zhicloud/op/service/impl/CloudHostWarehouseServiceImpl.java
+	src/com/zhicloud/op/vo/CloudHostWarehouseDetailVO.java
+	WebContent/security/operator/warehouse_detail.jsp
+	WebContent/security/operator/warehouse_manage.jsp
+	WebContent/security/operator/warehouse_mod.jsp
+
+
+*****************************************
+
+
+版本号：1.1
+
+说明：
+	1、终端用户“我的云主机”页面增加了“申请停机”和“申请停机恢复”的功能
+
+修改时间：
+	2014/8/29
+
+修改人：
+	陈鸿圳
+
+修改文件：  
+	src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.java
+	src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	src/com/zhicloud/op/service/CloudHostService.java
+	src/com/zhicloud/op/service/constant/AppConstant.java
+	src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	WebContent/security/user/my_cloud_host.jsp
+	WebContent/security/user/my_cloud_host_query_part.jsp
+	WebContent/WEB-INF/web.xml
+
+
+*****************************************
+
+版本号：1.1
+
+说明：
+	1、增加了运营商自用云主机显示云主机创建进度的功能：
+		当云主机在创建的过程中点击云主机的'查看详情'，会显示云主机的创建进度并动态变化。
+
+修改时间：
+	2014/8/27
+
+修改人：
+	陈鸿圳
+
+修改文件：  
+	1.1/src/com/zhicloud/op/common/util/json/JSONLibUtil.java
+	1.1/src/com/zhicloud/op/httpGateway/HttpGatewayChannel.java
+	1.1/src/com/zhicloud/op/httpGateway/HttpGatewayHelper.java
+	1.1/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	1.1/src/com/zhicloud/op/service/CloudHostService.java
+	1.1/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.1/WebContent/js/jquery.ext.js
+	1.1/WebContent/security/operator/self_use_cloud_host.jsp
+	1.1/WebContent/security/operator/self_use_cloud_host_query_part.jsp
+	
+新增的文件：
+	1.1/WebContent/security/operator/cloud_host_creation_progress.jsp
+
+
+*****************************************
+版本号：1.0
+
+说明：
+	1、修改云主机密码
+
+修改时间：
+	2014/8/26
+
+修改人：吴莉莎
+
+修改文件：  
+	1.0/src/com/zhicloud/op/app/authorization/PrivilegeConstant.java
+ 	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.java
+ 	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	1.0/src/com/zhicloud/op/service/CloudHostService.java
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/WebContent/META-INF/privilege-config.xml
+	1.0/WebContent/security/agent/agent_update_password.jsp
+	1.0/WebContent/security/operator/self_use_cloud_host.jsp
+	1.0/WebContent/security/operator/self_use_cloud_host_query_part.jsp 
+	1.0/WebContent/security/user/my_cloud_host_query_part.jsp
+	1.0/WebContent/security/user/my_cloud_host.jsp
+新增的文件：
+	1.0/src/com/zhicloud/op/app/listener/LogFileListener.java
+	1.0/src/com/zhicloud/op/thread/LogFileManager.java
+	1.0/WebContent/security/operator/cloud_update_password.jsp
+	1.0/WebContent/security/user/cloud_update_password.jsp
+
+***************************************** 
+版本号：1.0
+
+说明：
+	1、admin operator agent 修改密码添加原密码
+
+修改时间：
+	2014/8/26
+
+修改人：杨委
+
+修改文件：  
+	1.0/src/com/zhicloud/op/service/impl/AgentServiceImpl.java
+ 	1.0/src/com/zhicloud/op/service/impl/OperatorServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/SysUserServiceImpl.java
+	1.0/WebContent/security/admin/admin_update_password.jsp
+	1.0/WebContent/security/agent/agent_update_password.jsp
+	1.0/WebContent/security/operator/operator_update_password.jsp
+
+*****************************************
+版本号：1.0
+
+说明：
+	1、页面验证
+
+修改时间：
+	2014/8/19
+
+修改人：吴莉莎
+
+修改文件：  
+	1.0/WebContent/security/operator/cloud_host_create.jsp
+	1.0/src/com/zhicloud/op/service/impl/PaymentServiceImpl.java  
+
+***************************************
+版本号：
+	1.0
+
+说明：
+	1、终端用户购买云主机时从云主机仓库获取云主机分配给用户。
+	
+修改时间：
+	2014/8/25
+
+修改人：
+	陈鸿圳
+
+修改文件：
+	1.0/src/com/zhicloud/op/app/listener/task/WarehouseCloudHostCreationRunnable.java
+	1.0/src/com/zhicloud/op/common/util/CapacityUtil.java
+	1.0/src/com/zhicloud/op/core/CoreSpringContextManager.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/OrderInfoMapper.xml
+	1.0/src/com/zhicloud/op/service/constant/ServiceConstant.java
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/OrderInfoServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/PaymentServiceImpl.java
+	1.0/src/com/zhicloud/op/service/OrderInfoService.java
+	1.0/src/com/zhicloud/op/vo/CloudHostVO.java
+	1.0/src/coreApplicationContext.xml
+	
+新增文件：
+	1.0/src/com/zhicloud/op/app/helper/CloudHostWarehouseHelper.java
+	1.0/src/com/zhicloud/op/service/CloudHostWarehouseService.java
+	1.0/src/com/zhicloud/op/service/impl/CloudHostWarehouseServiceImpl.java
+	
+
+************************************
+
+版本号：
+	1.0
+
+说明：
+	1、运营商创建云主机时从云主机仓库获取
+	2、云主机仓库没有合适的云主机的时候，直接创建
+	
+修改时间：
+	2014/8/22
+
+修改人：
+	陈鸿圳
+
+修改文件：
+	1.0/src/com/zhicloud/op/app/listener/IsoImageInitializerListener.java
+	1.0/src/com/zhicloud/op/app/listener/RealCloudHostFetcherListener.java
+	1.0/src/com/zhicloud/op/app/listener/SysDataInitializerListener.java
+	1.0/src/com/zhicloud/op/app/listener/task/DiskImageInitializer.java
+	1.0/src/com/zhicloud/op/app/listener/task/IsoImageInitializer.java
+	1.0/src/com/zhicloud/op/app/listener/task/RealCloudHostFetcherRunnable.java
+	1.0/src/com/zhicloud/op/app/listener/task/UserOrderedCloudHostCreationRunnable.java
+	1.0/src/com/zhicloud/op/app/listener/task/WarehouseCloudHostCreationRunnable.java
+	1.0/src/com/zhicloud/op/app/listener/UserOrderedCloudHostCreationListener.java
+	1.0/src/com/zhicloud/op/app/listener/WarehouseCloudHostCreationListener.java
+	1.0/src/com/zhicloud/op/common/util/CapacityUtil.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayChannel.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayHelper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDefinitionMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDefinitionMapper.xml
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDetailMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDetailMapper.xml
+	1.0/src/com/zhicloud/op/remote/BeanDirectCallController.java
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/OrderInfoServiceImpl.java
+	1.0/src/com/zhicloud/op/vo/CloudHostWarehouseDetailVO.java
+	1.0/WebContent/public/top_reload.jsp
+	1.0/WebContent/public/top_to_index.jsp
+	1.0/WebContent/security/operator/cloud_host_create.jsp
+	1.0/WebContent/WEB-INF/web.xml
+
+***********************************
+
+版本号：1.0
+
+说明：
+	1、注册用户生成邀请码
+	2、运营商邀请码功能
+修改时间：2014/8/20
+修改人：杨委
+修改文件：
+	1.0/src/com/zhicloud/op/app/authorization/PrivilegeConstan.java
+	1.0/src/com/zhicloud/op/common/util/SendMail.java
+	1.0/src/com/zhicloud/op/core/CoreSpringContextManager.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/InviteCodeMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/InviteCodeMapper.xml
+	1.0/src/com/zhicloud/op/service/constant/AppConstan.java
+	1.0/src/com/zhicloud/op/service/constant/ServiceConstant.java
+	1.0/src/com/zhicloud/op/service/impl/InviteCodeServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/InviteCodeServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/TerminalUserServiceImpl.java
+	1.0/src/com/zhicloud/op/service/InviteCodeService.java
+	1.0/WebContent/META-INF/privilege-config.xml
+	1.0/WebContent/public/user/register.jsp
+	1.0/WebContent/security/agent/agent_invite_code.jsp
+	1.0/WebContent/security/agent/agent_invite_add.jsp
+	1.0/WebContent/security/agent/main.jsp
+	1.0/WebContent/security/operator/main.jsp
+	1.0/WebContent/security/user/main.jsp
+	
+增加文件：
+	1.0/WebContent/security/agent/agent_invite_code_send_phone.jsp
+	1.0/WebContent/security/agent/agent_invite_code_send_email.jsp
+	1.0/WebContent/security/operator/operator_invite_code.jsp
+	1.0/WebContent/security/operator/operator_invite_code_add.jsp
+	1.0/WebContent/security/operator/operator_invite_code_send_email.jsp
+	1.0/WebContent/security/operator/operator_invite_phone.jsp
+	1.0/WebContent/security/user/terminal_user_invite_code.jsp
+	
+***********************************
+
+版本号：1.0
+
+说明：
+	1、增加了后台创建云主机仓库的云主机的功能
+
+修改时间：
+	2014/8/19
+
+修改人：
+	陈鸿圳
+
+添加文件：
+	1.0/src/com/zhicloud/op/app/listener/task/DiskImageInitializer.java
+	1.0/src/com/zhicloud/op/app/listener/task/IsoImageInitializer.java
+	1.0/src/com/zhicloud/op/app/listener/task/RealCloudHostFetcherRunnable.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostShoppingConfigMapper.xml
+	1.0/src/com/zhicloud/op/service/constant/AppConstant.java
+	1.0/src/com/zhicloud/op/service/impl/OrderInfoServiceImpl.java
+	1.0/src/com/zhicloud/op/service/OrderInfoService.java
+	1.0/WebContent/WEB-INF/web.xml
+
+修改文件：  
+	1.0/src/com/zhicloud/op/app/listener/task/WarehouseCloudHostCreationRunnable.java
+	1.0/src/com/zhicloud/op/app/listener/WarehouseCloudHostCreationListener.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDefinitionMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDefinitionMapper.xml
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDetailMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostWarehouseDetailMapper.xml
+	1.0/src/com/zhicloud/op/vo/CloudHostWarehouseDefinitionVO.java
+	1.0/src/com/zhicloud/op/vo/CloudHostWarehouseDetailVO.java
+		
+
+**************************
+
+版本号：1.0
+
+说明：
+	1、验证码
+
+修改时间：
+	2014/8/19
+
+修改人：吴莉莎
+
+修改文件：  
+	1.0/src/com/zhicloud/op/controller/VerificationCodeController.java  
+	1.0/src/com/zhicloud/op/mabatis/mapper/UserOrderMapper.xml  
+	1.0/src/com/zhicloud/op/service/impl/PaymentServiceImpl.java  
+
+版本号：1.0
+
+说明：
+	1、终端用户文件上传下载
+
+修改时间：
+	2014/8/19
+
+修改人：张翔
+
+添加文件：
+	1.0/src/com/zhicloud/op/mybatis/mapper/MyFileMapper.java
+	1.0/src/com/zhicloud/op/vo/MyFileVO.java
+	1.0/WebContent/uploadify/jquery.uploadify.min.js
+	1.0/WebContent/security/user/upload_file.jsp
+	1.0/WebContent/security/user/uploaded_file_detail.jsp
+	1.0/WebContent/security/user/uploaded_file_manage.jsp
+	1.0/WebContent/img/uploadify-cancel.png
+	1.0/WebContent/uploadify/uploadify-cancel.png
+	1.0/WebContent/uploadify/uploadify.swf
+	1.0/src/com/zhicloud/op/mybatis/mapper/MyFileMapper.xml
+	1.0/WebContent/uploadify/uploadify.css
+
+
+修改文件：  
+	1.0/WebContent/META-INF/app-properties.xml
+	1.0/WebContent/WEB-INF/webApplicationContext.xml
+	1.0/WebContent/security/user/main.jsp
+	1.0/WebContent/security/admin/app_properties_manage.jsp
+	1.0/src/com/zhicloud/op/service/impl/CloudUserServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/AppPropertyServiceImpl.java
+	1.0/src/com/zhicloud/op/service/CloudUserService.java
+	1.0/src/com/zhicloud/op/core/CoreSpringContextManager.java
+	1.0/src/com/zhicloud/op/controller/TerminalUserController.java
+	1.0/src/com/zhicloud/op/common/util/FileUtil.java
+
+
+***********************
+
+版本号：1.0
+
+说明：
+	1、页面js报错
+
+修改时间：
+	2014/8/15
+
+修改人：吴莉莎
+
+修改文件：  
+	1.0/WebContent/security/operator/self_use_cloud_host.jsp
+	1.0/WebContent/security/operator/cloud_host_create.jsp 
+
+***********************
+版本号：1.0
+
+说明：
+	1、创建下级用户密码生成方式
+
+修改时间：
+	2014/8/14
+
+修改人：吴莉莎
+
+修改文件：
+	1.0/src/com/zhicloud/op/common/util/SenMail.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	1.0/src/com/zhicloud/op/service/impl/AgentServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/OperatorServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/TerminalUserServiceImpl.java 
+	1.0/WebContent/security/operator/agent_add.jsp
+	1.0/WebContent/security/operator/terminal_user_add.jsp
+	1.0/WebContent/security/operator/terminal_user_manage.jsp
+	1.0/WebContent/security/admin/operator_add.jsp
+	1.0/WebContent/security/agent/terminal_user_add.jsp 
+
+***********************
+版本号：1.0
+
+说明：
+	1、运营商添加端口开放和终端绑定功能 
+
+修改时间：
+	2014/8/14
+
+修改人：
+	张翔
+
+修改文件：
+	1.0/src/com/zhicloud/op/app/authorization/PrivilegeConstant.java
+	1.0/src/com/zhicloud/op/service/constant/ServiceConstant.java
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/WebContent/META-INF/privilege-config.xml
+	1.0/WebContent/security/operator/package_option_manage.jsp
+	1.0/WebContent/security/operator/self_use_cloud_host.jsp
+	1.0/WebContent/security/operator/self_use_cloud_host_query_part.jsp
+	1.0/WebContent/security/user/add_port.jsp
+	1.0/WebContent/security/user/cloud_terminal_binding.jsp
+
+***********************
+
+版本号：1.0
+
+说明：
+	1、修改easyInterface/client.do?command=get_cloud_host接口，返回数据增加监控账号和监控密码。 
+
+修改时间：
+	2014/8/14
+
+修改人：
+	陈鸿圳
+
+修改文件：
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	1.0/src/com/zhicloud/op/service/impl/ClientServiceImpl.java
+
+***********************
+
+版本号：1.0
+
+说明：
+	1、修改镜像。
+	2、修改基本信息的邮箱修改 
+
+修改时间：2014/8/13
+
+修改人：吴莉莎
+
+修改文件：
+	1.0/WebContent/security/operator/sys_disk_image_add.jsp
+	1.0/WebContent/security/operator/sys_disk_image_mod.jsp
+	1.0/WebContent/security/user/terminal_baseinfo_emailedit.jsp
+	1.0/WebContent/security/user/my_cloud_host.jsp
+	1.0/src/com/zhicloud/op/mybatis/mapper/SysDiskImageMapper.xml
+	1.0/src/com/zhicloud/op/service/impl/SysDiskImageServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/TerminalUserServiceImpl.java
+	1.0/src/com/zhicloud/op/service/TerminalUserService.java
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/src/com/zhicloud/op/vo/SysDiskImageVO.java
+	 
+***********************
+
+版本号：1.0
+
+说明：
+	1、修改运营商的用户云主机管理只能看到终端用户的云主机
+
+修改时间：2014/8/13
+
+修改人：周亚锋
+
+修改文件：
+	
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+
+***********************
+
+版本号：1.0
+
+说明：
+	1、增加了从云主机创建真实磁盘镜像的功能。
+	2、增加了运营商从磁盘镜像创建云主机的功能。
+
+修改时间：2014/8/13
+
+修改人：陈鸿圳
+
+修改文件：
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayChannel.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/SysDiskImageMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/SysDiskImageMapper.xml
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/SysDiskImageServiceImpl.java
+	1.0/src/com/zhicloud/op/service/SysDiskImageService.java
+	1.0/WebContent/security/operator/cloud_host_create.jsp
+	1.0/WebContent/security/operator/self_use_cloud_host.jsp
+	1.0/WebContent/security/operator/sys_disk_image_add.jsp
+
+
+***********************
+
+版本号：1.0
+
+说明：
+	1、修改自用云主机启动、停止、重启功能
+	2、修改对话框拖动的问题
+修改时间：2014/8/12
+
+修改人：周亚锋
+
+修改文件：
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/WebContent/security/admin/operator_add.jsp
+	1.0/WebContent/security/admin/operator_mod.jsp
+	1.0/WebContent/security/admin/operator_reset_password.jsp
+	1.0/WebContent/security/admin/sys_group_add.jsp
+	1.0/WebContent/security/admin/sys_group_mod.jsp
+	1.0/WebContent/security/admin/sys_group_set_member.jsp
+	1.0/WebContent/security/admin/sys_group_set_role.jsp
+	1.0/WebContent/security/admin/sys_role_add.jsp
+	1.0/WebContent/security/admin/sys_role_mod.jsp
+	1.0/WebContent/security/admin/sys_role_set_privilege.jsp
+	1.0/WebContent/security/operator/agent_add.jsp
+	1.0/WebContent/security/operator/agent_mod.jsp
+	1.0/WebContent/security/operator/cloud_host_create.jsp
+	1.0/WebContent/security/operator/cloud_host_view_detail.jsp
+	1.0/WebContent/security/operator/agent_reset_password.jsp
+	1.0/WebContent/security/operator/bill_detail.jsp
+	1.0/WebContent/security/operator/bill_detail_for_cloud_host.jsp
+	1.0/WebContent/security/operator/order_cloud_host_manage_detail.jsp
+	1.0/WebContent/security/operator/suggestion_manage_reply.jsp
+	1.0/WebContent/security/operator/sys_disk_image_add.jsp
+	1.0/WebContent/security/operator/sys_disk_image_mod.jsp
+	1.0/WebContent/security/operator/terminal_user_add.jsp
+	1.0/WebContent/security/operator/terminal_user_mod.jsp
+	1.0/WebContent/security/operator/terminal_user_reset_password.jsp
+
+	1.0/WebContent/security/agent/agent_invite_code_add.jsp
+	1.0/WebContent/security/agent/bill_detail.jsp
+	1.0/WebContent/security/agent/bill_detail_for_cloud_host.jsp
+	1.0/WebContent/security/agent/cloud_host_view_detail.jsp
+	1.0/WebContent/security/agent/terminal_user_add.jsp
+	1.0/WebContent/security/agent/terminal_user_mod.jsp
+
+	1.0/WebContent/security/user/bill_detail.jsp
+	1.0/WebContent/security/user/bill_detail_for_cloud_host.jsp
+	1.0/WebContent/security/user/suggestion_manage_add.jsp
+	1.0/WebContent/security/user/suggestion_manage_mod.jsp
+	1.0/WebContent/security/user/terminaluser_baseinfo_accountedit.jsp
+	1.0/WebContent/security/user/terminaluser_baseinfo_emailedit.jsp
+	1.0/WebContent/security/user/terminaluser_baseinfo_phonedit.jsp
+	1.0/WebContent/security/user/user_order_detail.jsp
+
+
+********************************************
+
+版本号：1.0
+
+说明：
+	1、增加了加载光盘的功能
+	2、增加了弹出光盘的功能
+	3、修改了云主机启动的机制，重启时可以选择从硬盘启动和从光盘启动
+	4、修复了在创建云主机时，对应名字的真实云主机已经存在的情况下出现的bug
+
+修改时间：2014/8/12
+
+修改人：陈鸿圳
+
+修改文件：
+	1.0/src/com/zhicloud/op/app/authorization/PrivilegeConstant.java
+	1.0/src/com/zhicloud/op/app/listener/task/IsoImageInitializer.java
+	1.0/src/com/zhicloud/op/filter/ExceptionLogFilter.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayChannel.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayHelper.java
+	1.0/src/com/zhicloud/op/service/CloudHostService.java
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/TerminalUserServiceImpl.java
+	1.0/WebContent/META-INF/privilege-config.xml
+	1.0/WebContent/security/operator/cloud_host_create.jsp
+	1.0/WebContent/security/operator/self_use_cloud_host.jsp
+	1.0/WebContent/security/operator/self_use_cloud_host_query_part.jsp
+	1.0/WebContent/security/user/terminal_user_change_password.jsp
+	1.0/WebContent/test/jeasyui-icons.jsp
+
+增加文件：
+	1.0/WebContent/security/operator/insert_iso_image.jsp
+	1.0/WebContent/security/operator/start_cloud_host_dlg.jsp
+
+********************************************
+版本号：1.0
+
+说明：
+	终端用户基本信息编辑
+	代理商邀请码
+修改时间：2014/8/11
+	
+修改人：杨委
+
+修改文件：
+	1.0/WebContent/security/user/terminal_user_base_info.java
+	1.0/WebContent/security/user/terminal_baseinfo_ameiledit.jsp
+	1.0/WebContent/public/user/forget_password_option.jsp
+	1.0/WebContent/public/user/register.jsp
+	1.0/src/com/zhicloud/op/service/impl/TerminalUserServiceImpl.java
+	
+新增文件：
+	1.0/WebContent/images/image_reg_success.gif
+	1.0/WebContent/public/user/reset_password_phone.jsp
+	1.0/WebContent/public/user/success.jsp
+	1.0/WebContent/security/agent/agent_invite_code.jsp
+	1.0/WebContent/security/agent/agent_invite_add.jsp
+	1.0/WebContent/security/user/terminal_baseinfo_accountedit.jsp
+	1.0/WebContent/security/user/terminal_baseinfo_ameiledit.jsp
+	1.0/WebContent/security/user/terminal_baseinfo_phonedit.jsp
+	1.0/src/com/zhicloud/op/commom/util/constant/SmsConstan.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/InviteCodeMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/InviteCodeMapper.xml
+	1.0/src/com/zhicloud/op/service/InviteCodeService.java
+	1.0/src/com/zhicloud/op/vo/InviteCode.java
+********************************************
+版本号：1.0
+
+说明：
+	简化注册页面
+	终端用户基本信息
+修改时间：2014/8/10
+
+修改人：杨委
+
+修改文件：
+	1.0/WebContent/public/user/register.jsp
+	1.0/src/com/zhicloud/op/service/constant/AppConstant.java
+	1.0/WebContent/security/agent/terminal_user_add.jsp
+	1.0/WebContent/public/user/longin.jsp
+	1.0/WebContent/security/agent/main.jsp
+	1.0/src/com/zhicloud/op/mybatis/mapper/TerminalUserMapper.xml
+	1.0/src/com/zhicloud/op/service/impl/TerminalUserServiceImpl.java
+	1.0/WebContent/security/user/terminal_user_change_password.jsp
+	1.0/WebContent/security/user/terminal_user_base_info.jsp
+	1.0/src/com/zhicloud/op/commom/util/SendMail.java
+	1.0/src/coreApplicationContext.xml
+	1.0/WebContent/css/style.css
+	1.0/WebContent/public/user/forget_password.jsp
+	1.0/WebContent/public/user/reset_password.jsp
+	1.0/src/com/zhicloud/op/mybatis/mapper/TerminalUserMapper.java
+	1.0/src/com/zhicloud/op/service/TerminalUser.Service.java
+新增文件：
+	1.0/WebContent/images/image_forget_password.gif
+	1.0/WebContent/public/user/forget_password_option.jsp
+	1.0/WebContent/public/user/reset_password_email.jsp
+	1.0/src/com/zhicloud/op/commom/util/SendSms.java
+	1.0/src/com/zhicloud/op/service/impl/InviteCodeServiceImpl.java
+	
+********************************************
+
+版本号：1.0
+
+说明：
+	修复端口绑定保留隐藏字段数据
+
+修改时间：2014/8/8
+
+修改人：张翔
+修改文件：
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+
+********************************************
+
+版本号：1.0
+
+说明：
+	修改页面显示
+
+修改时间：2014/8/7
+
+修改人：吴莉莎
+修改文件：
+	1.0/WebContent/image/3.jpg
+	1.0/WebContent/security/operator/cloud_host_create.jsp 
+	1.0/WebContent/security/operator/cloud_host_view_detail.jsp 
+	1.0/WebContent/security/operator/self_use_cloud_host.jsp  
+	1.0/src/com/zhicloud/op/vo/CloudHostVo.java 
+	
+	
+******************************************************
+
+
+版本号：1.0
+
+说明：
+	1、添加了运营商自用云主机“启动”、“关机”、“重启”的功能。
+
+修改时间：2014/8/6
+
+修改人：陈鸿圳
+
+修改文件：
+	1.0/src/com/zhicloud/op/app/pool/CloudHostPool.java
+	1.0/src/com/zhicloud/op/common/util/ObjectUtil.java
+	1.0/src/com/zhicloud/op/exception/ErrorCode.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayChannel.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayHelper.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayResponseHelper.java
+	1.0/src/com/zhicloud/op/remote/BeanDirectCallable.java
+	1.0/src/com/zhicloud/op/remote/BeanDirectCallableDefaultImpl.java
+	1.0/src/com/zhicloud/op/remote/BeanDirectCallController.java
+	1.0/src/com/zhicloud/op/service/CloudHostService.java
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/WebContent/js/jquery.util.js
+	1.0/WebContent/security/operator/self_use_cloud_host.jsp
+		
+新增文件：
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayReturnCode.java
+	
+
+************************
+
+版本号：1.0
+
+说明：
+	1、运营商创建自用云主机的时候，同时发消息到http gateway创建真正的云主机
+	2、运营商删除自用云主机的时候，同时发消息到http gateway删除真正的云主机
+
+修改时间：2014/8/5
+
+修改人：陈鸿圳
+
+修改文件：
+	1.0/src/com/zhicloud/op/app/pool/CloudHostPool.java
+	1.0/src/com/zhicloud/op/app/pool/CloudHostPoolManager.java
+	1.0/src/com/zhicloud/op/exception/AppException.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayChannel.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayResponseHelper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	1.0/src/com/zhicloud/op/service/constant/AppConstant.java
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/WebContent/public/user/register.jsp
+	1.0/WebContent/security/operator/cloud_host_create.jsp
+	1.0/WebContent/security/operator/self_use_cloud_host.jsp
+	1.0/WebContent/security/user/my_cloud_host.jsp
+	1.0/WebContent/WEB-INF/web.xml
+
+*******************************
+
+版本号：1.0
+
+说明：
+	新增意见反馈功能
+
+修改时间：2014/8/5
+
+修改人：吴莉莎
+修改文件：
+	1.0/WebContent/META_INFO/privilege-config.xml
+	1.0/WebContent/security/operator/main.jsp
+	1.0/WebContent/security/user/main.jsp
+	1.0/src/com/zhicloud/op/app/authoriaztion/PrivilegeConstant.xml
+新增文件：	
+	1.0/WebContent/security/operator/suggestion_manage.jsp
+	1.0/WebContent/security/operator/suggestion_manage_reply.jsp
+	1.0/WebContent/security/user/suggestion_manage_add.jsp
+	1.0/WebContent/security/user/suggestion_manage_mod.jsp
+	1.0/WebContent/security/user/suggestion_manage.jsp 
+	1.0/src/com/zhicloud/op/service/SuggestionService.java
+	1.0/src/com/zhicloud/op/service/impl/SuggestionServiceImpl.java
+	1.0/src/com/zhicloud/op/vo/SuggestionVO.java
+	
+	
+******************************************************
+版本号：1.0
+
+说明：
+	添加检查浏览器版本，并且跟给出提示
+
+修改时间：2014/8/5
+
+修改人：杨委
+修改文件：
+	1.0/op/WebContent/public/admin/login.jsp
+	1.0/op/WebContent/public/agent/login.jsp
+	1.0/op/WebContent/public/index.jsp
+	1.0/op/WebContent/public/user/login.jsp
+	1.0/op/WebContent/security/admin/main.jsp
+	1.0/op/WebContent/security/agent/main.jsp
+	1.0/op/WebContent/security/operator/main.jsp
+	1.0/op/WebContent/security/user/main.jsp 
+
+******************************************************
+
+版本号：1.0
+
+说明：
+	修复用户端口开放添加删除问题
+
+修改时间：2014/8/5
+
+修改人：张翔
+修改文件：
+	1.0/WebContent/public/user/login.jsp
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostOpenPortMapper.java
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/WebContent/security/user/add_port.jsp
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostOpenPortMapper.xml
+
+******************************************************
+
+版本号：1.0
+
+说明：
+	修改账户
+
+修改时间：2014/8/4
+
+修改人：吴莉莎
+修改文件：
+	1.0/WebContent/public/user/login.jsp
+	1.0/WebContent/public/operator/login.jsp
+	1.0/WebContent/public/agent/login.jsp
+	1.0/WebContent/public/admin/login.jsp 
+	1.0/WebContent/security/admin/operator_add.jsp
+	1.0/WebContent/security/admin/operator_mod.jsp 
+	1.0/WebContent/security/operator/agent_mod.jsp
+	1.0/WebContent/security/operator/agent_add.jsp 
+	1.0/src/com/zhicloud/op/mybatis/mapper/OperatorMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/AgentMapper.java
+	
+	
+******************************************************
+版本号：1.0
+
+说明：
+	运营商和代理商对终端用户管理的相关页面
+
+修改时间：2014/8/4
+
+修改人：杨委
+修改文件：
+	1.0/op/WebContent/security/agent/terminal_user_add.jsp
+	1.0/op/WebContent/security/agent/terminal_user_manage.jsp
+	1.0/op/WebContent/security/agent/terminal_user_mod.jsp
+	1.0/op/WebContent/security/operator/terminal_user_add.jsp
+	1.0/op/WebContent/security/operator/terminal_user_manage.jsp
+	1.0/op/WebContent/security/operator/terminal_user_mod.jsp
+	1.0/src/com/zhicloud/op/service/impl/TerminalUserServiceImpl.java
+******************************************************
+版本号：
+	1.0
+
+说明：
+	1、修改了新创建云主机主机名的格式为如"T4_chenhz_1"的格式
+	2、修改了新创建的云主机与mysql数据库内记录的关联方式，只要云主机名相同既表示为同一个云主机。
+
+修改时间：
+	2014/08/04
+
+修改人：
+	陈鸿圳
+
+修改文件：	
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostShoppingConfigMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostShoppingConfigMapper.xml
+	1.0/src/com/zhicloud/op/mybatis/mapper/UserOrderMapper.java
+	1.0/src/com/zhicloud/op/service/impl/ClientServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/CloudUserServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/OrderInfoServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/PaymentServiceImpl.java
+	1.0/WebContent/public/user/login.jsp
+
+
+
+************************
+
+版本号：
+	1.0
+
+说明：
+	1、增加云主机缓冲池，用于缓存云主机的实时数据和状态
+	2、修改了client.do?command=get_cloud_host接口，在返回数据里增加了云主机的实时状态数据
+
+修改时间：
+	2014/7/31
+
+修改人：
+	陈鸿圳
+
+修改文件：	
+	1.0/src/com/zhicloud/op/common/util/json/JSONLibUtil.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayChannelExt.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	1.0/src/com/zhicloud/op/service/CloudHostService.java
+	1.0/src/com/zhicloud/op/service/constant/AppConstant.java
+	1.0/src/com/zhicloud/op/service/impl/ClientServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/WebContent/WEB-INF/web.xml
+
+删除文件：
+	1.0/src/com/zhicloud/op/app/filter/ExceptionLogFilter.java
+	
+增加文件：
+	1.0/src/com/zhicloud/op/app/pool/CloudHostPool.java
+	1.0/src/com/zhicloud/op/app/pool/CloudHostPoolManager.java
+	1.0/src/com/zhicloud/op/common/util/NumberUtil.java
+	
+文件改名：
+	1.0/src/com/zhicloud/op/app/listener/ReadCloudHostFetcherListener.java	-> RealCloudHostFetcherListener.java
+	1.0/src/com/zhicloud/op/app/listener/task/ReadCloudHostFetcherRunnable.java -> RealCloudHostFetcherRunnable.java
+	
+	
+************************
+
+版本号：
+	1.0
+
+说明：
+	增加接口功能：http://ip:port/op/easyInterface/client.do?command=get_cloud_host
+
+修改时间：
+	2014/7/30
+
+修改人：
+	陈鸿圳
+
+修改文件：	
+	1.0/src/com/zhicloud/op/controller/EasyInterfaceController.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostOpenPortMapper.xml
+	1.0/src/com/zhicloud/op/service/ClientService.java
+	1.0/src/com/zhicloud/op/service/impl/ClientServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/CloudUserServiceImpl.java
+	1.0/src/com/zhicloud/op/vo/CloudHostOpenPortVO.java
+	1.0/src/com/zhicloud/op/vo/CloudHostVO.java
+
+
+************************
+
+版本号：1.0
+
+说明：
+	修复http gateway返回超大数据时，json字符串解析出错的问题
+
+修改时间：2014/7/29
+
+修改人：陈鸿圳
+
+修改文件：
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayHelper.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayResponseHelper.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayTest.java
+	1.0/src/com/zhicloud/op/remote/BeanDirectCallController.java
+	1.0/src/com/zhicloud/op/remote/RemoteCallController.java
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/OrderInfoServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/PaymentServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/SysDiskImageServiceImpl.java
+	1.0/src/com/zhicloud/op/vo/CloudHostVO.java
+
+删除文件：
+	1.0/WebContent/WEB-INF/lib/json_simple-1.1.jar
+	
+新增文件：
+	1.0/src/com/zhicloud/op/common/util/json/JSONLibUtil.java
+	1.0/WebContent/WEB-INF/lib/commons-beanutils-1.9.2.jar
+	1.0/WebContent/WEB-INF/lib/commons-collections-3.2.1.jar
+	1.0/WebContent/WEB-INF/lib/commons-lang-2.6.jar
+	1.0/WebContent/WEB-INF/lib/ezmorph-1.0.6.jar
+	1.0/WebContent/WEB-INF/lib/json-lib-2.4-jdk15.jar
+
+		
+
+******************************************************
+
+版本号：1.0
+
+说明：
+	修改云主机状态
+
+修改时间：2014/7/24
+
+修改人：吴莉莎
+修改文件：
+	1.0/WebContent/security/admin/app_properties_manage.jsp
+	1.0/WebContent/security/agent/terminal_user_mod.jsp
+	1.0/WebContent/security/operator/agent_mod.jsp
+	1.0/WebContent/security/operator/main.jsp
+	1.0/WebContent/security/operator/package_option_manage.jsp
+	1.0/WebContent/security/operator/self_use_cloud_host.jsp
+	1.0/WebContent/security/operator/terminal_user_mod.jsp
+	1.0/WebContent/security/user/my_cloud_host.jsp
+	1.0/WebContent/security/user/my_cloud_host_query_part.jsp
+	1.0/WebContent/security/user/trail.jsp
+	
+	
+******************************************************
+
+版本号：1.0
+
+说明：
+	增加用户订购云主机之后系统自动创建云主机的功能
+
+修改时间：2014/7/23
+
+修改人：陈鸿圳
+
+修改文件：
+	1.0/src/com/zhicloud/op/app/listener/SysDataInitializerListener.java
+	1.0/src/com/zhicloud/op/app/listener/task/DiskImageInitializer.java
+	1.0/src/com/zhicloud/op/common/util/json/JSONUtil.java
+	1.0/src/com/zhicloud/op/common/util/StringUtil.java
+	1.0/src/com/zhicloud/op/controller/TerminalUserController.java
+	1.0/src/com/zhicloud/op/core/CoreSpringContextManager.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayChannel.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayChannelExt.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayHelper.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayManager.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayResponseHelper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostOpenPortMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostOpenPortMapper.xml
+	1.0/src/com/zhicloud/op/mybatis/mapper/SysDiskImageMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/SysDiskImageMapper.xml
+	1.0/src/com/zhicloud/op/mybatis/mapper/SysUserMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/SysUserMapper.xml
+	1.0/src/com/zhicloud/op/mybatis/mapper/UserOrderMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/UserOrderMapper.xml
+	1.0/src/com/zhicloud/op/remote/MethodResult.java
+	1.0/src/com/zhicloud/op/remote/ro/TestRO.java
+	1.0/src/com/zhicloud/op/service/CloudHostService.java
+	1.0/src/com/zhicloud/op/service/constant/AppConstant.java
+	1.0/src/com/zhicloud/op/service/constant/ServiceConstant.java
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/PaymentServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/SysDiskImageServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/SysPrivilegeServiceImpl.java
+	1.0/src/com/zhicloud/op/service/PaymentService.java
+	1.0/src/com/zhicloud/op/service/SysDiskImageService.java
+	1.0/src/coreApplicationContext.xml
+	1.0/src/log4j.properties
+	1.0/WebContent/security/user/trail.jsp
+	1.0/WebContent/WEB-INF/web.xml
+
+新增文件：
+	1.0/src/com/zhicloud/op/app/filter
+	1.0/src/com/zhicloud/op/app/filter/ExceptionLogFilter.java
+	1.0/src/com/zhicloud/op/app/helper/CloudHostShoppingPortConfigHelper.java
+	1.0/src/com/zhicloud/op/app/listener/ReadCloudHostFetcherListener.java
+	1.0/src/com/zhicloud/op/app/listener/task/ReadCloudHostFetcherRunnable.java
+	1.0/src/com/zhicloud/op/app/listener/task/UserOrderedCloudHostCreationRunnable.java
+	1.0/src/com/zhicloud/op/app/listener/UserOrderedCloudHostCreationListener.java
+	1.0/src/com/zhicloud/op/common/util/ThreadUtil.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostShoppingConfigMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostShoppingConfigMapper.xml
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostShoppingPortConfigMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/CloudHostShoppingPortConfigMapper.xml
+	1.0/src/com/zhicloud/op/mybatis/mapper/OrderDetailMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/OrderDetailMapper.xml
+	1.0/src/com/zhicloud/op/mybatis/mapper/OrderInfoMapper.java
+	1.0/src/com/zhicloud/op/mybatis/mapper/OrderInfoMapper.xml
+	1.0/src/com/zhicloud/op/service/impl/OrderInfoServiceImpl.java
+	1.0/src/com/zhicloud/op/service/OrderInfoService.java
+	1.0/src/com/zhicloud/op/vo/CloudHostShoppingConfigVO.java
+	1.0/src/com/zhicloud/op/vo/CloudHostShoppingPortConfigVO.java
+	1.0/src/com/zhicloud/op/vo/OrderDetailVo.java
+	1.0/src/com/zhicloud/op/vo/OrderInfoVO.java
+
+删除文件：
+	
+
+******************************************************
+
+版本号：1.0
+
+说明：
+	重构session timeout检测的功能
+
+修改时间：2014/7/23
+
+修改人：陈鸿圳
+
+修改文件：
+	1.0/src/com/zhicloud/op/controller/MainController.java
+	1.0/src/com/zhicloud/op/remote/BeanDirectCallController.java
+	1.0/WebContent/security/admin/main.jsp
+	1.0/WebContent/security/admin/operator_manage.jsp
+	1.0/WebContent/security/admin/sys_group_manage.jsp
+	1.0/WebContent/security/admin/sys_group_set_member.jsp
+	1.0/WebContent/security/admin/sys_role_manage.jsp
+	1.0/WebContent/security/admin/sys_role_set_privilege.jsp
+	1.0/WebContent/security/agent/bill_detail.jsp
+	1.0/WebContent/security/agent/bill_manage.jsp
+	1.0/WebContent/security/agent/cloud_host_manage.jsp
+	1.0/WebContent/security/agent/main.jsp
+	1.0/WebContent/security/agent/terminal_user_manage.jsp
+	1.0/WebContent/security/operator/agent_manage.jsp
+	1.0/WebContent/security/operator/bill_detail.jsp
+	1.0/WebContent/security/operator/bill_manage.jsp
+	1.0/WebContent/security/operator/cloud_host_manage.jsp
+	1.0/WebContent/security/operator/main.jsp
+	1.0/WebContent/security/operator/order_cloud_host_manage.jsp
+	1.0/WebContent/security/operator/self_use_cloud_host.jsp
+	1.0/WebContent/security/operator/sys_disk_image_manage.jsp
+	1.0/WebContent/security/operator/terminal_user_manage.jsp
+	1.0/WebContent/security/user/bill_detail.jsp
+	1.0/WebContent/security/user/bill_manage.jsp
+	1.0/WebContent/security/user/main.jsp
+	1.0/WebContent/security/user/my_cloud_host.jsp
+	1.0/WebContent/security/user/my_history_order.jsp
+	1.0/src/coreApplicationContext.xml
+	1.0/WebContent/WEB-INF/web.xml
+	
+新增文件：
+	1.0/src/com/zhicloud/op/filter/ExceptionLogFilter.java
+	1.0/src/com/zhicloud/op/filter/ProcessTimeLogFilter.java
+	1.0/WebContent/public/top_reload.jsp
+
+	
+删除文件：
+	
+	
+
+
+
+******************************************************
+
+版本号：1.0
+修改时间：2014/7/13
+修改人：陈鸿圳
+修改文件：
+	1.0/src/com/zhicloud/op/app/helper/LoginHelper.java
+	1.0/src/com/zhicloud/op/app/helper/VerificationCodeHelper.java
+	1.0/src/com/zhicloud/op/app/listener/ExceptionLogFilter.java
+	1.0/src/com/zhicloud/op/controller/AdminController.java
+	1.0/src/com/zhicloud/op/controller/AgentController.java
+	1.0/src/com/zhicloud/op/controller/MainController.java
+	1.0/src/com/zhicloud/op/controller/OperatorController.java
+	1.0/src/com/zhicloud/op/controller/TerminalUserController.java
+	1.0/src/com/zhicloud/op/controller/VerificationCodeController.java
+	1.0/src/com/zhicloud/op/exception/ErrorCode.java
+	1.0/src/com/zhicloud/op/filter/SecurityFilter.java
+	1.0/src/com/zhicloud/op/httpGateway/HttpGatewayHelper.java
+	1.0/src/com/zhicloud/op/remote/BeanDirectCallController.java
+	1.0/src/com/zhicloud/op/remote/RemoteCallController.java
+	1.0/src/com/zhicloud/op/service/impl/AgentServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/AppPropertyServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/BillServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/CloudUserServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/OperatorServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/PackageOptionServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/PaymentServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/StatementServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/SysDiskImageServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/SysGroupServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/SysRoleServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/SysUserServiceImpl.java
+	1.0/src/com/zhicloud/op/service/impl/TerminalUserServiceImpl.java
+	1.0/src/com/zhicloud/op/service/SysUserService.java
+	1.0/WebContent/public/aboutus.jsp
+	1.0/WebContent/public/admin/login.jsp
+	1.0/WebContent/public/agent/login.jsp
+	1.0/WebContent/public/banancing.jsp
+	1.0/WebContent/public/cloudsever.jsp
+	1.0/WebContent/public/cloudstorage.jsp
+	1.0/WebContent/public/contactus.jsp
+	1.0/WebContent/public/database.jsp
+	1.0/WebContent/public/downloadPage.jsp
+	1.0/WebContent/public/index.jsp
+	1.0/WebContent/public/operator/login.jsp
+	1.0/WebContent/public/sdn.jsp
+	1.0/WebContent/public/user/forget_password.jsp
+	1.0/WebContent/public/user/login.jsp
+	1.0/WebContent/public/user/register.jsp
+	1.0/WebContent/public/user/reset_password.jsp
+	1.0/WebContent/security/admin/app_properties_manage.jsp
+	1.0/WebContent/security/admin/main.jsp
+	1.0/WebContent/security/admin/operator_add.jsp
+	1.0/WebContent/security/admin/operator_manage.jsp
+	1.0/WebContent/security/admin/operator_mod.jsp
+	1.0/WebContent/security/admin/operator_reset_password.jsp
+	1.0/WebContent/security/admin/sys_group_add.jsp
+	1.0/WebContent/security/admin/sys_group_manage.jsp
+	1.0/WebContent/security/admin/sys_group_mod.jsp
+	1.0/WebContent/security/admin/sys_group_set_member.jsp
+	1.0/WebContent/security/admin/sys_group_set_role.jsp
+	1.0/WebContent/security/admin/sys_role_add.jsp
+	1.0/WebContent/security/admin/sys_role_manage.jsp
+	1.0/WebContent/security/admin/sys_role_mod.jsp
+	1.0/WebContent/security/admin/sys_role_set_privilege.jsp
+	1.0/WebContent/security/agent/agent_basic_information.jsp
+	1.0/WebContent/security/agent/agent_update_password.jsp
+	1.0/WebContent/security/agent/bill_detail.jsp
+	1.0/WebContent/security/agent/bill_detail_for_cloud_host.jsp
+	1.0/WebContent/security/agent/bill_manage.jsp
+	1.0/WebContent/security/agent/bill_part.jsp
+	1.0/WebContent/security/agent/cloud_host_manage.jsp
+	1.0/WebContent/security/agent/cloud_host_view_detail.jsp
+	1.0/WebContent/security/agent/main.jsp
+	1.0/WebContent/security/agent/statement_manage.jsp
+	1.0/WebContent/security/agent/terminal_user_add.jsp
+	1.0/WebContent/security/agent/terminal_user_manage.jsp
+	1.0/WebContent/security/agent/terminal_user_mod.jsp
+	1.0/WebContent/security/operator/agent_add.jsp
+	1.0/WebContent/security/operator/agent_manage.jsp
+	1.0/WebContent/security/operator/agent_mod.jsp
+	1.0/WebContent/security/operator/agent_reset_password.jsp
+	1.0/WebContent/security/operator/bill_detail.jsp
+	1.0/WebContent/security/operator/bill_detail_for_cloud_host.jsp
+	1.0/WebContent/security/operator/bill_manage.jsp
+	1.0/WebContent/security/operator/bill_part.jsp
+	1.0/WebContent/security/operator/cloud_host_create.jsp
+	1.0/WebContent/security/operator/cloud_host_manage.jsp
+	1.0/WebContent/security/operator/cloud_host_view_detail.jsp
+	1.0/WebContent/security/operator/main.jsp
+	1.0/WebContent/security/operator/operator_basic_information.jsp
+	1.0/WebContent/security/operator/operator_update_password.jsp
+	1.0/WebContent/security/operator/order_cloud_host_manage.jsp
+	1.0/WebContent/security/operator/order_cloud_host_manage_detail.jsp
+	1.0/WebContent/security/operator/order_cloud_host_manage_modify.jsp
+	1.0/WebContent/security/operator/package_option_manage.jsp
+	1.0/WebContent/security/operator/self_use_cloud_host.jsp
+	1.0/WebContent/security/operator/self_use_cloud_host_query_part.jsp
+	1.0/WebContent/security/operator/statement_manage.jsp
+	1.0/WebContent/security/operator/sys_disk_image_add.jsp
+	1.0/WebContent/security/operator/sys_disk_image_manage.jsp
+	1.0/WebContent/security/operator/sys_disk_image_mod.jsp
+	1.0/WebContent/security/operator/terminal_user_add.jsp
+	1.0/WebContent/security/operator/terminal_user_manage.jsp
+	1.0/WebContent/security/operator/terminal_user_mod.jsp
+	1.0/WebContent/security/operator/terminal_user_reset_password.jsp
+	1.0/WebContent/security/user/bill_detail.jsp
+	1.0/WebContent/security/user/bill_manage.jsp
+	1.0/WebContent/security/user/main.jsp
+	1.0/WebContent/security/user/my_cloud_host.jsp
+	1.0/WebContent/security/user/my_history_order.jsp
+	1.0/WebContent/security/user/pay.jsp
+	1.0/WebContent/security/user/payasquantity.jsp
+	1.0/WebContent/security/user/paymonthly.jsp
+	1.0/WebContent/security/user/terminal_user_base_info.jsp
+	1.0/WebContent/security/user/terminal_user_change_password.jsp
+	1.0/WebContent/security/user/trail.jsp
+	1.0/src/com/zhicloud/op/mybatis/mapper/TerminalUserMapper.xml
+	
+新增文件：
+	1.0/src/com/zhicloud/op/exception/CodedException.java
+	1.0/WebContent/public/top_to_index.jsp
+	
+删除文件：
+	1.0/src/com/zhicloud/op/exception/BusinessException.java
+	
+说明：
+	修改的session分离的功能
+
+******************************************************
+
+******************************************************
+
+版本号：1.0
+修改时间：2014/7/10
+修改人：陈鸿圳
+修改文件：
+	1.0/WebContent/security/admin/main.jsp
+	1.0/WebContent/security/admin/operator_add.jsp
+	1.0/WebContent/security/admin/operator_mod.jsp
+	1.0/WebContent/security/admin/operator_reset_password.jsp
+	1.0/WebContent/security/admin/sys_group_add.jsp
+	1.0/WebContent/security/admin/sys_group_mod.jsp
+	1.0/WebContent/security/admin/sys_group_set_member.jsp
+	1.0/WebContent/security/admin/sys_group_set_role.jsp
+	1.0/WebContent/security/admin/sys_role_add.jsp
+	1.0/WebContent/security/admin/sys_role_mod.jsp
+	1.0/WebContent/security/admin/sys_role_set_privilege.jsp
+	1.0/WebContent/security/agent/main.jsp
+	1.0/WebContent/security/agent/terminal_user_add.jsp
+	1.0/WebContent/security/agent/terminal_user_mod.jsp
+	1.0/WebContent/security/operator/agent_add.jsp
+	1.0/WebContent/security/operator/agent_mod.jsp
+	1.0/WebContent/security/operator/agent_reset_password.jsp
+	1.0/WebContent/security/operator/cloud_host_create.jsp
+	1.0/WebContent/security/operator/main.jsp
+	1.0/WebContent/security/operator/order_cloud_host_manage_modify.jsp
+	1.0/WebContent/security/operator/package_option_manage.jsp
+	1.0/WebContent/security/operator/sys_disk_image_add.jsp
+	1.0/WebContent/security/operator/sys_disk_image_mod.jsp
+	1.0/WebContent/security/operator/terminal_user_add.jsp
+	1.0/WebContent/security/operator/terminal_user_mod.jsp
+	1.0/WebContent/security/user/main.jsp
+
+	
+
+******************************************************
+
+版本号：1.0
+修改时间：2014/7/8
+修改人：张翔
+修改文件：
+	operator/main.jsp
+	agent/main.jsp
+	user/main.jsp
+
+新增文件：
+	
+
+主要修改：
+	修改了一些按钮点击的时候出现的javascript错误。
+	
+******************************************************
+
+版本号：1.0
+修改时间：2014/7/8
+修改人：张翔
+修改文件：
+	app_properties_manage.jsp
+	AppPropertyService.java
+	AppPropertyServiceImpl.java
+	PackageOptionService.java
+	PackageOptionServiceImpl.java
+
+新增文件：
+	无
+
+主要修改：
+	1、全局属性中整合了http_gateway_address的配置功能
+
+******************************************************
+
+版本号：1.0
+修改时间：2014/7/7
+修改人：陈鸿圳
+修改文件：
+	app_properties_manage.jsp
+	coreApplicationContext.xml
+	StringUtil.java
+
+新增文件：
+	AppPropertyService.java
+	AppPropertyServiceImpl.java
+
+主要修改：
+	1、增加了全局属性http_gateway_address的配置
+
+
+
+******************************************************
+版本号：1.0
+修改时间：2014/7/7
+修改人：张翔
+修改文件：
+	operator_manage.jsp
+	sys_group_manage.jsp
+	sys_role_manage.jsp
+	cloud_host_manage.jsp
+	terminal_user_manage.jsp
+	agent_manage.jsp
+	cloud_host_manage.jsp
+	order_cloud_host_manage.jsp
+	terminal_user_manage.jsp
+	SysUserMapper.xml
+
+新增文件：
+	无
+
+主要修改：
+	1、修正不选择删除对象进行删除操作时无错误提示问题
+	2、修正设置权限组组员时，每页显示的信息是一样的，翻看下一页时信息未发生变化问题
+	3、修正选择组员后，“已选”中出现了该组员，但是“可选”中该组员没有消失，在“已选”中取消某一项后，“已选”中该项消失，但在“可选”中不出现问题
+
+******************************************************
+版本号：1.0
+修改时间：2014/7/4
+修改人：张翔
+修改文件：
+	operator_manage.jsp
+	sys_group_manage.jsp
+	sys_role_manage.jsp
+	cloud_host_manage.jsp
+	bill_part.jsp
+	terminal_user_manage.jsp
+	agent_manage.jsp
+	cloud_host_manage.jsp
+	order_cloud_host_manage.jsp
+	terminal_user_manage.jsp
+	my_cloud_host_query_part.jsp
+
+新增文件：
+	无
+
+主要修改：
+	1、修正不存在查询内容时，不能提示无查询结果问题
+
+******************************************************
+
+版本号：1.0
+修改时间：2014/7/3
+修改人：周亚锋
+修改文件：
+	LoginHelper.java
+	AdminController.java
+	AgentController.java
+	OperatorController.java
+	TerminalUserController.java
+	SecurityFiter.java
+	BeanDirectCallController.java
+	RemoteCallController.java
+	AgentServiceimpl.java
+	CloudHostServiceImpl.java
+	CloudUserServiceImpl.java
+	OperatorServiceImpl.java
+	PackageOptionServiceImpl.java
+	PaymentServiceImpl.java
+	SysDiskImageServiceImpl.java
+	SysGroupServiceImpl.java
+	SysRoleServiceImpl.java
+	SysUserServiceImpl.java
+	TerminalUserServiceImpl.java
+	所有页面
+
+新增文件：
+	无
+
+主要修改：
+	1、修正用户无法多登录(session分离)问题。
+
+******************************************************

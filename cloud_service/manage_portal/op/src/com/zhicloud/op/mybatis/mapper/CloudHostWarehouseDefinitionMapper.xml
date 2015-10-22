@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.CloudHostWarehouseDefinitionMapper">
+	
+	<resultMap type="com.zhicloud.op.vo.CloudHostWarehouseDefinitionVO" id="CloudHostWarehouseDefinitionVO">
+		<id     column="id"            property="id" />
+		<result column="sys_image_id"  property="sysImageId" />
+		<result column="total_amount"  property="totalAmount" />
+		<result column="remain_amount" property="remainAmount" />
+		<result column="region"        property="region" />
+	</resultMap>
+	
+	<!-- ******************* -->
+	
+	<select id="getById" resultMap="CloudHostWarehouseDefinitionVO">
+		select 
+			w_def.id           ,
+			w_def.sys_image_id ,
+			w_def.description  ,
+			w_def.total_amount ,
+			w_def.remain_amount,
+			w_def.region
+		from cloud_host_warehouse_definition w_def
+		where w_def.id = #{id}
+	</select>
+	
+	<update id="minusOneRemainAmountById">
+		update cloud_host_warehouse_definition
+		<set>
+			remain_amount = if(remain_amount>0, remain_amount -1, 0)
+		</set>
+		where id = #{id}
+	</update>
+	
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from cloud_host_warehouse_definition w
+		<where>
+			<if test="myDescription!=null and myDescription!='%%'">
+				w.description like #{myDescription}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryPage" resultMap="CloudHostWarehouseDefinitionVO">
+		select 
+			w.id, 
+			w.sys_image_id,
+			s.name sysImageName, 
+			w.description,
+			w.total_amount,
+			w.remain_amount,
+			w.region
+		from cloud_host_warehouse_definition w
+		left join sys_disk_image s
+			on w.sys_image_id = s.id
+		<where>
+			<if test="myDescription!=null and myDescription!='%%'">
+				s.name like #{myDescription}
+			</if>
+		</where>
+		limit #{start_row}, #{row_count}
+	</select>
+
+	<select id="getWarehouseById" resultMap="CloudHostWarehouseDefinitionVO">
+		select 
+			w.id, 
+			w.sys_image_id, 
+			w.description,
+			w.total_amount,
+			w.remain_amount
+		from cloud_host_warehouse_definition w
+		where w.id = #{warehouseId}
+	</select>
+	
+	<insert id="addWarehouse">
+		insert into cloud_host_warehouse_definition 
+		       (  id,   sys_image_id,   description,    total_amount,   remain_amount, region)
+		values (#{id}, #{sysImageId}, #{description}, #{totalAmount}, #{remainAmount}, #{region})
+	</insert>
+	
+	<delete id="deleteByIds">
+		delete 
+		from cloud_host_warehouse_definition 
+		where id in 
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<update id="updateWarehouseById">
+		update cloud_host_warehouse_definition set 
+			sys_image_id  = #{sysImageId},
+			description   = #{description},
+			total_amount  = #{totalAmount},
+			remain_amount = #{remainAmount}
+		where id = #{warehouseId}
+	</update>
+	
+	<update id="updateRemainAmountById">
+		update cloud_host_warehouse_definition set 
+			remain_amount = #{remainAmount}
+		where id = #{id}
+	</update>
+	
+	
+</mapper>

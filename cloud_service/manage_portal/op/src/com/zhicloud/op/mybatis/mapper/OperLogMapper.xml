@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.OperLogMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.OperLogVO" id="OperLogVO">
+		<id     column="id"         property="id" />
+		<result column="user_id"   property="userId" />
+		<result column="content" property="content" />
+		<result column="oper_time" property="operTime" />
+		<result column="oper_duration" property="operDuration" />
+		<result column="status" property="status" />
+		<result column="resource_name" property="resourceName" /> 
+		<result column="name" property="name" /> 
+	</resultMap>
+	
+	<!-- ********************* --> 
+
+	<select id="queryPageCount" resultType="int">
+		select  count(1)
+		from oper_log o
+		join (select id, case  when type=1 then x.account 
+when type=2 then x.operatorname 
+when type=3 then x.agentname
+when type=4 then x.username end name,type,account from (
+select a.id,a.type,a.account,b.name agentname,c.name operatorname,d.name username from sys_user a left join agent b on a.id = b.id
+left join operator c on a.id = c.id
+left join terminal_user d on a.id = d.id) x) u
+		on u.id = o.user_id 
+		<where>
+		    1=1
+			<if test="userId!=null">
+ 				and o.user_id = #{userId} 
+			</if>
+			<if test="type!=null">
+ 				and u.type = #{type} 
+			</if>
+			<if test="status!=null">
+ 				and o.status = #{status} 
+			</if>
+			<if test="content!=null">
+ 				and (o.content like #{content} or u.account like #{content})
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				and o.oper_time > #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				and #{endTime} > o.oper_time 
+			</if>
+		</where>
+	</select> 
+ 
+	<select id="queryPage" resultMap="OperLogVO">
+		select 
+			o.id, 
+			o.user_id,
+			u.account,
+			u.type  userType,  
+			o.content,
+			o.oper_time,
+			o.status, 
+			o.resource_name,
+			u.name
+		from oper_log o
+		join (select id, case  when type=1 then x.account 
+when type=2 then x.operatorname 
+when type=3 then x.agentname
+when type=4 then x.username end name,type,account from (
+select a.id,a.type,a.account,b.name agentname,c.name operatorname,d.name username from sys_user a left join agent b on a.id = b.id
+left join operator c on a.id = c.id
+left join terminal_user d on a.id = d.id) x) u
+			on u.id = o.user_id 
+		<where>
+		    1=1
+			<if test="userId!=null">
+ 				and o.user_id = #{userId} 
+			</if>
+			<if test="type!=null">
+ 				and u.type = #{type} 
+			</if>
+			<if test="status!=null">
+ 				and o.status = #{status} 
+			</if>
+			<if test="content!=null">
+ 				and (o.content like #{content} or u.account like #{content})
+			</if>
+			<if test="startTime!=null and startTime!=''">
+				and o.oper_time > #{startTime}
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				and #{endTime} > o.oper_time 
+			</if>
+		</where>
+		order by o.oper_time desc
+		limit #{start_row}, #{row_count}
+	</select> 
+	
+	<!-- ********************* -->
+	
+	<insert id="addOperLog">
+		insert into oper_log (id, user_id, content, oper_time, oper_duration, status, resource_name) 
+		values (#{id}, #{userId}, #{content}, #{operTime}, #{operDuration}, #{status}, #{resourceName})
+	</insert>
+	
+	<!-- ********************* -->
+	
+	 
+
+</mapper>
