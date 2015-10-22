@@ -53,5 +53,11 @@ public interface SharedMemoryMapper {
      * @return
      */
     public int setDisable();
+    
+    /**
+     * 查询可用的路径
+     * @return
+     */
+    public SharedMemoryVO queryAvailable();
 
 }

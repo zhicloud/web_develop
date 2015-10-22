@@ -102,14 +102,14 @@
                                     <div class="form-group">
                                         <label for="config_name" class="col-sm-2 control-label" >短信配置名称*</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="config_name" name="configName" value="${sms_config_vo.configName}" oldname="${sms_config_vo.configName}"  parsley-trigger="change" parsley-required="true" parsley-minlength="5" parsley-maxlength="50" parsley-checksmsconfigname="true">
+                                            <input type="text" class="form-control" id="config_name" name="configName" value="${sms_config_vo.configName}" oldname="${sms_config_vo.configName}"  parsley-trigger="change" parsley-required="true" parsley-minlength="2" parsley-maxlength="50" parsley-checksmsconfigname="true">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="sms_id" class="col-sm-2 control-label">短信配置ID*</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="sms_id" name="smsId" value="${sms_config_vo.smsId}" parsley-trigger="change" parsley-required="true" parsley-minlength="5" parsley-maxlength="50">
+                                            <input type="text" class="form-control" id="sms_id" name="smsId" value="${sms_config_vo.smsId}" parsley-trigger="change" parsley-required="true" parsley-minlength="2" parsley-maxlength="50">
                                         </div>
                                     </div>
 
@@ -152,6 +152,21 @@
 
 
                                 </form>
+
+                                <a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>
+                                <div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content" style="width:60%;margin-left:20%;">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                                                <h3 class="modal-title" id="modalDialogLabel"><strong>提示</strong></h3>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p id="tipscontent"></p>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
 
                             </div>
                             <!-- /tile body -->
@@ -226,7 +241,7 @@
                     var options = {
                         success:function result(data){
                             if(data.status == "fail"){
-                                $("#tipscontent").html("添加失败");
+                                $("#tipscontent").html(data.message);
                                 $("#dia").click();
                             }else{
                                 location.href = path + "/message/sms/config/list";

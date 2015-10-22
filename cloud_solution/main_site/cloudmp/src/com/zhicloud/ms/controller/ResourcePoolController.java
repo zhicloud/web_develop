@@ -409,14 +409,12 @@ public class ResourcePoolController {
         
         return "resourcepool/resource_pool_add";
     }
-    
+
     /**
-     * 创建资源池
-     * @param name
-     * @param networkType
-     * @param networkId
-     * @param diskType
-     * @param diskId
+     * @function 创建主机资源池
+     * @param computeInfoExt
+     * @param prefixion
+     * @param request
      * @return
      */
     @RequestMapping(value="/add",method=RequestMethod.POST)

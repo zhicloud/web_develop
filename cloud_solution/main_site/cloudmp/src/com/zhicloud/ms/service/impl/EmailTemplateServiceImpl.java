@@ -155,13 +155,14 @@ public class EmailTemplateServiceImpl implements IEmailTemplateService {
             int result = emailTemplateMapper.insertTemplate(data);
 
             if (result > 0) {
-                return new MethodResult(MethodResult.SUCCESS, "添加成功");
+                return new MethodResult(MethodResult.SUCCESS, "模板创建成功");
             }
 
-            return new MethodResult(MethodResult.FAIL, "添加失败");
+            return new MethodResult(MethodResult.FAIL, "模板创建失败");
         } catch( Exception e ) {
+            e.printStackTrace();
             logger.error(e);
-            throw new AppException("添加失败");
+            throw new AppException("模板创建失败");
         }
 
     }
@@ -213,15 +214,15 @@ public class EmailTemplateServiceImpl implements IEmailTemplateService {
             int result = this.sqlSession.getMapper(EmailTemplateMapper.class).updateTemplate(data);
 
             if (result > 0) {
-                return new MethodResult(MethodResult.SUCCESS, "修改成功");
+                return new MethodResult(MethodResult.SUCCESS, "修改模板成功");
             }
 
 
-            return new MethodResult(MethodResult.FAIL, "修改失败");
+            return new MethodResult(MethodResult.FAIL, "修改模板失败");
         } catch( Exception e ) {
             e.printStackTrace();
             logger.error(e);
-            throw new AppException("修改失败");
+            throw new AppException("修改模板失败");
         }
     }
 
@@ -244,15 +245,15 @@ public class EmailTemplateServiceImpl implements IEmailTemplateService {
 
             if( n > 0 )
             {
-                return new MethodResult(MethodResult.SUCCESS, "删除成功");
+                return new MethodResult(MethodResult.SUCCESS, "删除模板成功");
             }
             else
             {
-                return new MethodResult(MethodResult.FAIL, "删除失败");
+                return new MethodResult(MethodResult.FAIL, "删除模板失败");
             }
         } catch( Exception e ) {
             logger.error(e);
-            throw new AppException("删除失败");
+            throw new AppException("删除模板失败");
         }
     }
 }
