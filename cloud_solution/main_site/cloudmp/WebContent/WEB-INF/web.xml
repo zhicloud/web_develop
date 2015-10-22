@@ -225,9 +225,9 @@
 	</listener>	
 
 	<!-- 配置定时任务监听器-更新gw监控数据到内存 -->
-<!-- 	<listener>
+	<listener>
 	    <listener-class>com.zhicloud.ms.app.listener.CheckServerRoomsListener</listener-class>
-	</listener>	 -->	
+	</listener>		
 		
 	<!-- 检查定时器情况 -->
 	<listener>
