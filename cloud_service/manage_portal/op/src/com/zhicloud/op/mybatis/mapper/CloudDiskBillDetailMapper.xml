@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.CloudDiskBillDetailMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.CloudDiskBillDetailVO" id="CloudDiskBillDetailVO">
+		<id     column="id"            property="id" />
+ 		<result column="disk_id"        property="diskId" /> 
+		<result column="create_time"   property="createTime" />  
+		<result column="start_time"    property="startTime" />  
+		<result column="end_time"      property="endTime" />  
+		<result column="disk"   property="disk"/> 
+		<result column="fee"           property="fee"/>
+		<result column="is_paid"       property="isPaid"/>
+	</resultMap> 
+	
+	<!-- ***************** -->
+
+	<select id="getOneUndoneReocrdBeforeTime" resultMap="CloudDiskBillDetailVO">
+		<![CDATA[
+		select 
+			bd.id,              
+			bd.disk_id, 
+			bd.start_time,      
+			bd.end_time,        
+			bd.fee,             
+			bd.is_paid,         
+			bd.create_time     
+		from cloud_disk_bill_detail bd
+		where bd.end_time is null
+		and   bd.start_time < #{beforeTime}
+		limit 1
+		]]>
+ 	</select> 
+	<select id="getUndoneBillByUserId" resultMap="CloudDiskBillDetailVO">
+		<![CDATA[
+		select 
+			bd.id,              
+			bd.disk_id, 
+			bd.start_time,      
+			bd.end_time,        
+			bd.fee,             
+			bd.is_paid,         
+			bd.create_time     
+		from cloud_disk_bill_detail bd
+		join cloud_disk vbi
+		on bd.disk_id = vbi.id
+		where bd.end_time is null
+		and   bd.start_time < #{beforeTime} 
+		and   vbi.user_id = #{userId} 
+		]]>
+ 	</select> 
+	<select id="getOneUndoneReocrdByDiskId" resultMap="CloudDiskBillDetailVO">
+ 		select 
+			bd.id,              
+			bd.disk_id, 
+			bd.start_time,      
+			bd.end_time,        
+			bd.fee,             
+			bd.is_paid,         
+			bd.create_time     
+		from cloud_disk_bill_detail bd
+		where bd.end_time is null and bd.is_paid = 1
+        and bd.disk_id = #{diskId}
+		limit 1
+  	</select> 
+	 
+	 <!-- ********************* -->
+	
+	<insert id="addCloudDiskBillDetail">
+		insert into cloud_disk_bill_detail (id,disk_id,create_time,start_time,end_time,disk,fee,is_paid) 
+		values (#{id}, #{diskId},#{createTime},#{startTime},#{endTime},#{disk},#{fee},1)
+	</insert>
+	
+	<!-- ********************* -->
+	
+	
+	<update id="updateBillStatusBeforPay">
+		update cloud_disk_bill_detail
+		set 
+		    is_paid = 3
+		where  id = #{id}
+		and is_paid != 3
+	</update>
+	
+	<update id="updateBillAfterPay">
+		update cloud_disk_bill_detail
+		set 
+		    end_time = #{endTime},
+		    is_paid = 2 ,
+		    fee = #{fee}
+		where  id = #{id}
+	</update>
+	<delete id="deleteCloudDiskBillDetailById">
+		delete from  cloud_disk_bill_detail 
+		where  id = #{id}
+	</delete>
+	 
+
+</mapper>

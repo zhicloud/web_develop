@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.SysGroupMapper">
+	
+	<resultMap id="SysGroupVO" type="com.zhicloud.op.vo.SysGroupVO">
+		<id     property="id"        column="id" />
+		<result property="groupName" column="group_name" />
+	</resultMap>
+	
+	<!-- ********************* -->
+	
+	<select id="getAll" resultMap="SysGroupVO">
+		select g.*
+		from privilege_group g
+		order by g.Group_name
+	</select>
+	
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from privilege_group g
+		<where>
+			<if test="groupName!=null and groupName!='%%'">
+				g.group_name like #{groupName}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryPage" resultMap="SysGroupVO">
+		select g.*
+		from privilege_group g
+		<where>
+			<if test="groupName!=null and groupName!='%%'">
+				g.group_name like #{groupName}
+			</if>
+		</where>
+		order by g.group_name
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	<select id="getById" resultMap="SysGroupVO">
+		select g.*
+		from privilege_group g
+		where id=#{id}
+	</select>
+	
+	<select id="getByGroupName" resultMap="SysGroupVO">
+		select g.*
+		from privilege_group g
+		where g.group_name=#{groupName}
+	</select>
+	
+	<!-- ********************* -->
+	
+	<insert id="addSysGroup">
+		insert into privilege_group (id, group_name) values (#{id}, #{groupName})
+	</insert>
+	
+	<insert id="updateSysGroupById">
+		update privilege_group set 
+			group_name = #{groupName}
+		where id = #{id}
+	</insert>
+	
+	<!-- ********************* -->
+	
+	<delete id="deleteSysGroupById">
+		delete g.*
+		from privilege_group g
+		where id=#{id}
+	</delete>
+	
+	<delete id="deleteSysGroupByIds">
+		delete g.*
+		from privilege_group g
+		where id in 
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	
+	
+</mapper>

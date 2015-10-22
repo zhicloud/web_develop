@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.AccountBalanceDetailMapper">
+
+	<resultMap type="com.zhicloud.op.vo.AccountBalanceDetailVO" id="AccountBalanceDetailVO">
+		<id     column="id"                    property="id" />
+		<result column="user_id"               property="userId" />
+		<result column="balance_before_change" property="balanceBeforeChange" />
+		<result column="balance_after_change"  property="balanceAfterChange" />
+		<result column="pay_type"              property="payType" />
+		<result column="change_time"           property="changeTime" />
+		<result column="invoice_id"            property="invoiceId" />
+		<result column="bill_id"               property="billId" />
+		<result column="recharge_status"       property="rechargeStatus" />
+		<result column="user_account"          property="userAccount" />
+		<result column="gift_amount"           property="giftAmount" />
+		<result column="resource_name"         property="resourceName"/>
+	</resultMap>
+	
+	<!-- ******************* -->
+	
+	<insert id="addAccountBalanceDetail">
+		insert into account_balance_detail
+		(         id,    user_id,   type,    amount,    balance_before_change,  balance_after_change,  pay_type,   description,    change_time,   invoice_id, bill_id,     recharge_status,gift_amount,resource_name)
+		values (#{id}, #{userId}, #{type}, #{amount}, #{balanceBeforeChange}, #{balanceAfterChange}, #{payType}, #{description}, #{changeTime}, #{invoiceId}, #{billId}, #{rechargeStatus},#{giftAmount},#{resourceName})
+	</insert>
+
+	<!-- ******************* -->
+	
+	 <select id="getBalanceDetailById" resultMap="AccountBalanceDetailVO">
+	     select 
+	       id,
+	       user_id,
+	       type,
+	       amount,
+	       balance_before_change,
+	       balance_after_change,
+	       pay_type,
+	       description,
+	       change_time,
+	       invoice_id,
+	       bill_id,
+	       recharge_status,
+	       gift_amount
+         from  account_balance_detail
+	     where id = #{id}
+	 </select>
+	 
+	 <select id="getBalanceDetailByUserIdForInvoice" resultMap="AccountBalanceDetailVO">
+	     select 
+	       id,
+	       user_id,
+	       type,
+	       amount,
+	       balance_before_change,
+	       balance_after_change,
+	       pay_type,
+	       description,
+	       change_time,
+	       bill_id,
+	       recharge_status
+         from  account_balance_detail
+	     where user_id = #{userId} and type = 1 and pay_type in (1,2) and recharge_status = 2  and change_time like concat(year(now()),'%') and  invoice_id is null 
+	     order by change_time desc
+<!-- 		limit #{start_row}, #{row_count} -->
+	 </select>
+	 
+	 <select id="getBalanceDetailByUserIdForInvoiceForAgent" resultMap="AccountBalanceDetailVO">
+	     select 
+	       id,
+	       user_id,
+	       type,
+	       amount,
+	       balance_before_change,
+	       balance_after_change,
+	       pay_type,
+	       description,
+	       change_time,
+	       bill_id,
+	       recharge_status
+         from  account_balance_detail
+	     where user_id = #{userId} and type = 1 and pay_type in (1,2) and recharge_status = 2  and change_time like concat(year(now()),'%') and  invoice_id is null 
+	     order by change_time desc
+		limit #{start_row}, #{row_count}
+	 </select>
+	 
+	  <select id="getBalanceDetailByUserIdCountForInvoice" resultType="int">
+	     select  count(1)
+         from  account_balance_detail
+	     where user_id = #{userId} and type = 1 and pay_type in (1,2) and  recharge_status = 2  and change_time like concat(year(now()),'%') and invoice_id is null 
+	 </select>
+	 
+	 <select id="getRechargeDetailByUserId" resultMap="AccountBalanceDetailVO"> 
+	
+	     select 
+	       id,
+	       user_id,
+	       type,
+	       amount,
+	       balance_before_change,
+	       balance_after_change,
+	       pay_type,
+	       description,
+	       change_time,
+	       invoice_id,
+	       bill_id,
+	       resource_name,
+	       recharge_status
+         from  account_balance_detail
+	     where user_id = #{userId} 
+	        and type = #{type}
+			<if test="type==1"> 
+				  and recharge_status = 2 
+			</if> 
+			<if test="endTime!=null"> 
+	         <![CDATA[
+				  and change_time <= #{endTime}
+			 ]]>
+			</if> 
+			<if test="startTime!=null">  
+	         <![CDATA[
+				  and change_time >= #{startTime} 
+			 ]]>
+			</if> 
+			order by change_time desc
+			<if test="start_row!=null and row_count!=null"> 
+			limit #{start_row}, #{row_count}
+			</if>
+	 </select>
+	 <select id="getRechargeDetailById" resultMap="AccountBalanceDetailVO">
+	     select 
+	       id,
+	       user_id,
+	       type,
+	       amount,
+	       balance_before_change,
+	       balance_after_change,
+	       pay_type,
+	       description,
+	       change_time,
+	       invoice_id,
+	       bill_id,
+	       recharge_status
+         from  account_balance_detail
+	     where user_id = #{userId}  
+	        and id = #{id}   
+	 </select>
+	 
+	 <select id="getRechargeDetailByUserIdCount" resultType="int">
+	     select  count(1)
+         from  account_balance_detail
+	     where user_id = #{userId} 
+	      
+	        and type = #{type}
+			<if test="type==1"> 
+				  and recharge_status = 2 
+			</if>  
+			<if test="endTime!=null"> 
+	         <![CDATA[
+				  and change_time <= #{endTime}
+			 ]]>
+			</if> 
+			<if test="startTime!=null"> 
+	         <![CDATA[
+				  and change_time >= #{startTime} 
+			 ]]>
+			</if> 
+	 
+	 </select>
+	 <select id="getDetailCount" resultType="int">
+	     select  count(1)   
+		from account_balance_detail b
+		join sys_user u
+			on b.user_id = u.id
+		<where>
+			b.user_id = #{userId}
+			<if test="account!=null and account!='%%'">
+				and u.account like #{account}
+			</if>
+		</where>
+		order by b.change_time desc
+	 
+	 </select>
+	 <select id="getAllAccount" resultType="string">
+	     select  sum(b.amount)   
+		from account_balance_detail b
+		join sys_user u
+			on b.user_id = u.id
+		<where>
+			b.user_id = #{userId}
+			and b.type = #{type}
+			
+			<if test="type==1"> 
+				and recharge_status = 2
+			</if> 
+		</where> 
+		 
+	 
+	 </select>
+	 <select id="getDetail" resultMap="AccountBalanceDetailVO">
+	     select 
+			b.id                 ,
+			u.account userAccount, 
+			b.amount                ,
+			b.change_time       , 
+			b.type              ,
+			b.bill_id
+		from account_balance_detail b
+		join sys_user u
+			on b.user_id = u.id
+		<where>
+			b.user_id = #{userId}
+			<if test="account!=null and account!='%%'">
+				and u.account like #{account}
+			</if>
+		</where>
+		order by b.change_time desc
+		limit #{start_row}, #{row_count} 
+	 
+	 </select>
+	  
+	
+	 
+	<!-- ***************** -->
+	
+	<update id="updateAfterRecharge">
+		update account_balance_detail set
+		       balance_before_change = #{balanceBeforeChange},
+		       balance_after_change  = #{balanceAfterChange},
+		       
+		       recharge_status  = #{rechargeStatus},
+		       change_time = #{changeTime}
+		where id = #{id}
+	</update>
+	
+	<!-- ***************** -->
+	
+	<update id="updateInvoiceId">
+		update account_balance_detail set
+		      invoice_id = #{invoiceId}
+		where id = #{id}
+	</update>
+	
+	<select id="getConsumDetail" resultMap="AccountBalanceDetailVO">
+	    select 
+	       user_id,
+		date_add(#{consum_time_from},interval #{i} day) change_time,
+	       sum(amount) amount
+         from  account_balance_detail
+	<where>
+		 type = 2
+		<if test="user_id!=null and user_id!='%%'">
+			and user_id = #{user_id}
+		</if>
+		<if test="consum_time_from!=null and consum_time_from!=''">
+				and date(change_time) = date_add(#{consum_time_from},interval #{i} day)						
+		</if>		
+	</where>
+		group by user_id,date_format(change_time,'%Y-%m-%d')
+		order by date_format(change_time,'%Y-%m-%d') asc	
+	</select>	
+
+</mapper>

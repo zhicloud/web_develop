@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd">
+    
+	<!-- annotated controller class { -->
+<!-- 	<bean id="TestController" class="com.zhicloud.op.controller.TestController"></bean>
+ -->	
+	
+	<bean id="InterfaceController" class="com.zhicloud.op.controller.InterfaceController"></bean>
+	<bean id="EasyInterfaceController" class="com.zhicloud.op.controller.EasyInterfaceController"></bean>
+	
+	<bean id="hgMessageController" class="com.zhicloud.op.controller.HttpGatewayMessageController"></bean>
+	<bean id="hgAsyncMessageController" class="com.zhicloud.op.controller.HttpGatewayAsyncMessageController"></bean>
+	
+	
+	<bean id="RemoteCallController" class="com.zhicloud.op.remote.RemoteCallController"></bean>
+	<bean id="BeanDirectCallController" class="com.zhicloud.op.remote.BeanDirectCallController"></bean>
+	
+	
+	<bean id="VerificationCodeController" class="com.zhicloud.op.controller.VerificationCodeController"></bean>
+	<bean id="MainController" class="com.zhicloud.op.controller.MainController"></bean>
+	<bean id="AdminController" class="com.zhicloud.op.controller.AdminController"></bean>
+	<bean id="OperatorController" class="com.zhicloud.op.controller.OperatorController"></bean>
+	<bean id="AgentController" class="com.zhicloud.op.controller.AgentController"></bean>
+	<bean id="TerminalUserController" class="com.zhicloud.op.controller.TerminalUserController"></bean>
+	<bean id="AgentAPIController" class="com.zhicloud.op.controller.AgentAPIController"></bean>
+	<bean id="ExportController" class="com.zhicloud.op.controller.ExportController"></bean>
+	<bean id="MonitorController" class="com.zhicloud.op.controller.MonitorController"></bean>
+	<!-- annotated controller class } -->
+	
+	<bean id="multipartResolver"  
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+        <property name="maxUploadSize">  
+            <value>-1</value>  
+        </property>  
+        <property name="maxInMemorySize">  
+            <value>4096</value>  
+        </property>  
+    </bean>  
+	
+</beans>

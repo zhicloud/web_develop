@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.SmsConfigMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.SmsConfigVO" id="SmsConfigVO">
+		<id     column="id"             property="id" />
+        <id     column="sms_id"         property="smsId" />
+        <id     column="config_name"    property="configName" />
+        <id     column="service_url"    property="serviceUrl" />
+        <result column="create_time"    property="createTime" />
+		<result column="modified_time"  property="modifiedTime" />
+	</resultMap>
+
+	<!-- ********************* -->
+
+	<insert id="insertConfig">
+		insert into sms_config (id, sms_id, config_name, service_url, name, password, create_time, modified_time)
+		values (#{id}, #{sms_id}, #{config_name}, #{service_url}, #{name}, #{password}, #{create_time}, #{modified_time})
+	</insert>
+
+	<!-- ********************* -->
+
+	<select id="queryAllPageCount" resultType="int">
+		select count(1)
+		from sms_config
+		<where>
+			<if test="name!=null and name!='%%'">
+				name like #{name}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryAllPage" resultMap="SmsConfigVO">
+		select
+			id,
+            sms_id,
+            service_url,
+            name,
+            config_name,
+			password,
+			create_time,
+            modified_time
+		from sms_config
+		<where>
+			<if test="config_name!=null and config_name!='%%'">
+				config_name like #{config_name}
+			</if>
+		</where>
+		order by modified_time desc
+		limit #{start_row}, #{row_count}
+	</select>
+
+    <!-- ********************* -->
+    <select id="queryAllConfig" resultMap="SmsConfigVO">
+        select
+            id,
+            sms_id,
+            service_url,
+            name,
+            config_name,
+			password,
+			create_time,
+            modified_time
+		from sms_config
+    </select>
+
+	<!-- ********************* -->
+	<select id="queryConfigByName" resultMap="SmsConfigVO">
+		select
+            id,
+            sms_id,
+            service_url,
+            name,
+            config_name,
+            password,
+            create_time,
+            modified_time
+        from sms_config
+		<where>
+			name = #{name}
+		</where>
+	</select>
+
+	<!-- ********************* -->
+	<select id="queryConfigById" resultMap="SmsConfigVO">
+		select
+            id,
+            sms_id,
+            service_url,
+            name,
+            config_name,
+            password,
+            create_time,
+            modified_time
+        from sms_config
+		<where>
+			id = #{id}
+		</where>
+	</select>
+
+	<!-- ********************* -->
+
+	<update id="updateConfig" >
+		update sms_config set
+            sms_id = #{sms_id},
+            service_url = #{service_url},
+			name = #{name},
+            config_name = #{config_name},
+			password = #{password},
+			modified_time = #{modified_time}
+		<where>
+			id = #{id}
+		</where>
+	</update>
+
+	<!-- ********************* -->
+
+	<delete id="deleteConfigByIds">
+		delete
+		from sms_config
+		where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>
