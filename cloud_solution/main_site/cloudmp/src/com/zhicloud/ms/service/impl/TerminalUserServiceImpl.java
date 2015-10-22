@@ -147,13 +147,16 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
 		if (sysUserResult > 0 && terminalUserResult > 0) {
 
         try {
+            Map<String, Object> param = new LinkedHashMap<>();
+            param.put("name", userName);
+            param.put("password", password);
+            EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
+
             // 发送注册通知邮件
             if(!StringUtil.isBlank(email)) {
-                Map<String, Object> param = new LinkedHashMap<>();
-                param.put("name", userName);
-                param.put("password", password);
-                EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
                 emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_REGISTER, email, param);
+            } else {
+                emailSendService.sendMail(EmailTemplateConstant.INFO_REGISTER, param);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -10,19 +10,13 @@ import com.zhicloud.ms.vo.SmsConfigVO;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 张翔
@@ -147,12 +141,12 @@ public class SmsConfigController {
             return new MethodResult(MethodResult.FAIL,"您没有修改邮件配置的权限，请联系管理员");
         }
         Map<String, Object> data = new LinkedHashMap<String, Object>();
-        data.put("id", smsConfigVO);
-        data.put("sms_id", smsConfigVO);
-        data.put("name", smsConfigVO);
-        data.put("service_url", smsConfigVO);
-        data.put("config_name", smsConfigVO);
-        data.put("password", smsConfigVO);
+        data.put("id", smsConfigVO.getId());
+        data.put("sms_id", smsConfigVO.getSmsId());
+        data.put("name", smsConfigVO.getName());
+        data.put("service_url", smsConfigVO.getServiceUrl());
+        data.put("config_name", smsConfigVO.getConfigName());
+        data.put("password", smsConfigVO.getPassword());
         if(MethodResult.SUCCESS.equals(smsConfigService.modifyConfigById(data).status)) {
             operLogService.addLog("短信模板", "修改短信模板成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"修改成功");
@@ -162,7 +156,7 @@ public class SmsConfigController {
     }
 
     /**
-     * @function 删除修改
+     * @function 删除
      * @param id
      * @param request
      * @return
@@ -177,6 +171,28 @@ public class SmsConfigController {
         ids.add(id);
 
         if(MethodResult.SUCCESS.equals(smsConfigService.removeConfigByIds(ids).status)) {
+            operLogService.addLog("短信模板", "删除短信模板失败", "1", "1", request);
+            return new MethodResult(MethodResult.SUCCESS,"删除成功");
+        }
+        operLogService.addLog("短信模板", "删除短信模板失败", "1", "2", request);
+        return new MethodResult(MethodResult.FAIL,"删除失败");
+    }
+
+    /**
+     * @function 批量删除
+     * @param ids
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="/remove",method= RequestMethod.POST)
+    @ResponseBody
+    public MethodResult MultiRemove(@RequestParam("ids[]") String[] ids, HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.message_sms_config_remove)){
+            return new MethodResult(MethodResult.FAIL,"您没有删除邮件配置的权限，请联系管理员");
+        }
+        List<String> idList = Arrays.asList(ids);
+
+        if(MethodResult.SUCCESS.equals(smsConfigService.removeConfigByIds(idList).status)) {
             operLogService.addLog("短信模板", "删除短信模板失败", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"删除成功");
         }

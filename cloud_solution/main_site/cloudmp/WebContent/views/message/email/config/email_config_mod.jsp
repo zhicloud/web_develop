@@ -198,6 +198,20 @@
 
                                 </form>
 
+                                <div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content" style="width:60%;margin-left:20%;">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                                                <h3 class="modal-title" id="modalDialogLabel"><strong>提示</strong></h3>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p id="tipscontent"></p>
+                                            </div>
+                                        </div><!-- /.modal-content -->
+                                    </div><!-- /.modal-dialog -->
+                                </div><!-- /.modal -->
+
                             </div>
                             <!-- /tile body -->
 

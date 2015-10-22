@@ -37,6 +37,19 @@
        </if>       
 		order by insert_date desc
 	</select>
+	
+	<select id="queryAvailable" resultMap="SharedMemoryVO">
+		select 	t.id,
+				t.name,
+				t.url,
+				t.username,
+				t.password,
+				t.secretkey,
+				available,
+				insert_user
+		from shared_memory t
+		where t.available = 'yes'
+	</select>
     
 	<insert id="addInfo">
 		insert into shared_memory (id, name, url, username,

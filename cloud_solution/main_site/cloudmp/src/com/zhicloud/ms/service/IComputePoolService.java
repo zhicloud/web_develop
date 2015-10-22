@@ -29,6 +29,25 @@ public interface IComputePoolService {
 
 
     /**
+     * @function 创建资源池(异步)
+     * @param name
+     * @param networkType
+     * @param network
+     * @param diskType
+     * @param diskSource
+     * @return
+     * @throws IOException
+     */
+    public String createComputePoolAsync(String name, int networkType, String network, int diskType, String diskSource, Integer[] mode, String path, String crypt) throws IOException;
+
+    /**
+     * @function 创建资源池(同步)
+     * @param parameter
+     * @return
+     */
+    public MethodResult createComputePoolSync(Map<String, Object> parameter) throws IOException;
+
+    /**
      * @function 修改资源池(异步)
      * @param uuid
      * @param name

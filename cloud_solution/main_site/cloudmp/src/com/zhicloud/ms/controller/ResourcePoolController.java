@@ -403,54 +403,84 @@ public class ResourcePoolController {
         
         return "resourcepool/resource_pool_add";
     }
-    
+
     /**
-     * 创建资源池
-     * @param name
-     * @param networkType
-     * @param networkId
-     * @param diskType
-     * @param diskId
+     * @function 创建主机资源池
+     * @param computeInfoExt
+     * @param prefixion
+     * @param request
      * @return
      */
     @RequestMapping(value="/add",method=RequestMethod.POST)
     @ResponseBody
-    public MethodResult addResourcePool(String name,String networkType,String networkId,String diskType,String diskId,String prefixion,
-    		 int mode0, int mode1, int mode2, int mode3,String path,String crypt){
+    public MethodResult addResourcePool(ComputeInfoExt computeInfoExt, String prefixion, HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_pool_add)){
+            return new MethodResult(MethodResult.FAIL,"您没有修改资源池的权限，请联系管理员");
+        }
+
+        String name = prefixion+computeInfoExt.getName();
+        Integer networkType = computeInfoExt.getNetworkType();
+        String network = computeInfoExt.getNetwork();
+        Integer diskType = computeInfoExt.getDiskType();
+        String diskSource = computeInfoExt.getDiskSource();
+        int mode0 = computeInfoExt.getMode0();
+        int mode1 = computeInfoExt.getMode1();
+        //            String path = computeInfoExt.getPath();
+        //            String crypt = computeInfoExt.getCrypt();
+
         if(StringUtil.isBlank(name)){
             return new MethodResult(MethodResult.FAIL,"资源池名不能为空");
         }
-        if(StringUtil.isBlank(networkType)){
+        if(StringUtil.isBlank(String.valueOf(networkType))){
             return new MethodResult(MethodResult.FAIL,"网络类型不能为空");
         }
-        if(("1".equals(networkType) || "2".equals(networkType)) && StringUtil.isBlank(networkType)){
+        if(("1".equals(networkType) || "2".equals(networkType)) && StringUtil.isBlank(network)){
             return new MethodResult(MethodResult.FAIL,"IP或端口资源池不能为空");
         }
-        if(StringUtil.isBlank(diskType)){
+        if(StringUtil.isBlank(String.valueOf(diskType))){
             return new MethodResult(MethodResult.FAIL,"存储类型不能为空");
         }
-        if(!"0".equals(diskType) && StringUtil.isBlank(diskId)){
+        if(!("0".equals(String.valueOf(diskType))) && StringUtil.isBlank(diskSource)){
             return new MethodResult(MethodResult.FAIL,"存储资源池不能为空");
         }
-        Integer[] mode = new Integer[4];
-        mode[0] = mode0;
-        mode[1] = mode1;
-        mode[2] = mode2;
-        mode[3] = mode3;
-        try {
-        	HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-                if(channel!=null){
-                    JSONObject result = channel.computePoolCreate(prefixion+name, Integer.parseInt(networkType), networkId, 
-                    		                                          Integer.parseInt(diskType), diskId, mode, path, crypt);
-                    if("success".equals(result.get("status"))){                    	
-                        return new MethodResult(MethodResult.SUCCESS,"创建成功");
-                    }
-                    return new MethodResult(MethodResult.FAIL,"创建失败");
-                }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        if(StringUtil.isBlank(String.valueOf(mode0))){
+            return new MethodResult(MethodResult.FAIL,"高可用选项不能为空");
         }
-        return new MethodResult(MethodResult.FAIL,"创建失败");
+        if(StringUtil.isBlank(String.valueOf(mode1))){
+            return new MethodResult(MethodResult.FAIL,"自动Qos选项不能为空");
+        }
+
+        try {
+
+            Map<String, Object> data = new LinkedHashMap<String, Object>();
+            data.put("name", name);
+            data.put("network_type", networkType);
+            data.put("network", network);
+            data.put("disk_type", diskType);
+            data.put("disk_source", diskSource);
+            data.put("mode0", mode0);
+            data.put("mode1", mode1);
+            //            data.put("path", path);
+            //            data.put("crypt", crypt);
+
+
+            MethodResult result = computePoolService.createComputePoolSync(data);
+            if("success".equals(result.status)){
+                operLogService.addLog("桌面云资源池管理", "创建计算资源池", "1", "1", request);
+                return new MethodResult(result.status, result.message);
+
+            }
+
+
+        }  catch (Exception e) {
+            e.printStackTrace();
+            operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "2", request);
+            return new MethodResult(MethodResult.FAIL,"资源池创建失败");
+        }
+
+        operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "2", request);
+        return new MethodResult(MethodResult.FAIL,"资源池创建失败");
     }
     
     /**
