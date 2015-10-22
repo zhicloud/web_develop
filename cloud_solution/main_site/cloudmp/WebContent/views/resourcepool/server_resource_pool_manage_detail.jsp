@@ -67,7 +67,7 @@
           <div class="pageheader">
             
 
-            <h2><i class="fa fa-life-buoy"></i> 云桌面资源池节点管理</h2>
+            <h2><i class="fa fa-life-buoy"></i> 云平台资源池节点管理</h2>
             
 
           </div>
