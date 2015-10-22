@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.AgentMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.AgentVO" id="AgentVO">
+		<id     column="id"       property="id" />
+		<result column="group_id" property="groupId" />
+		<result column="account_balance" property="accountBalance" />
+		<result column="percent_off" property="percentOff" />
+	</resultMap>
+	
+
+	<select id="getAll" resultMap="AgentVO">
+		select 
+			u.id, 
+			u.account, 
+			u.group_id, 
+			a.name,
+			a.email, 
+			a.phone, 
+			a.create_time,
+			a.percent_off,
+			a.account_balance,
+			
+			a.status
+		from sys_user u 
+		join agent a
+			on u.id = a.id
+		where u.type = 3
+		order by a.name
+	</select>
+
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from agent a
+		left join sys_user u
+			on u.id = a.id
+		<where>
+			<if test="account!=null">
+				u.account like #{account}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryPage" resultMap="AgentVO">
+		select 
+			u.id, 
+			u.account,
+			u.group_id,
+			a.name,
+			a.email,
+			a.phone, 
+			a.create_time,
+			a.status,
+			a.percent_off,
+			a.account_balance
+		from agent a 
+		left join sys_user u
+			on u.id = a.id
+		<where>
+			<if test="account!=null">
+				u.account like #{account}
+			</if>
+		</where>
+		order by a.create_time desc
+		limit #{start_row}, #{row_count}
+	</select>
+
+	<select id="getAgentById" resultMap="AgentVO">
+		select 
+			u.id id, 
+			u.account, 
+			u.group_id, 
+			a.name,
+			a.email, 
+			a.phone, 
+			a.create_time,
+			a.status status,
+			a.account_balance,
+			a.percent_off
+		from sys_user u 
+		left join agent a
+			on u.id = a.id
+		where u.type = 3
+		and u.id = #{id}
+		order by a.name
+	</select>
+	<select id="getAgentByUserId" resultMap="AgentVO">
+		select 
+			u.id id, 
+			u.account, 
+			u.group_id, 
+			a.name,
+			a.email, 
+			a.phone, 
+			a.create_time,
+			a.status status,
+			a.account_balance,
+			a.percent_off
+		from sys_user u 
+		left join agent a
+			on u.id = a.id
+		join terminal_user tu
+		    on a.id = tu.belonging_id
+		where u.type = 3
+		and tu.id = #{userId}
+		order by a.name
+	</select>
+	
+	<select id="getBasicInformationById" resultMap="AgentVO">
+		select 
+			u.id id, 
+			u.account account, 
+			u.group_id,
+			a.name name,
+			a.email email, 
+			a.phone phone
+		from sys_user u
+		join agent a 
+			on u.id = a.id
+		where u.id = #{id}
+	</select>
+	
+	<select id="getAgentByAccount" resultMap="AgentVO">
+		select 
+			u.id,
+			u.account, 
+			u.group_id, 
+			a.name,
+			a.email, 
+			a.phone, 
+			a.create_time,
+			a.status
+		from sys_user u
+		left join agent a
+			on u.id = a.id
+		where u.type = 3
+		and binary u.account = #{account}
+		order by a.name
+	</select>
+
+	<select id="getAgentByPhone" resultMap="AgentVO">
+		select 
+			t.id, 
+			t.email,
+			t.phone, 
+			t.create_time,
+			t.status status
+		from agent t
+		where t.phone = #{phone}
+		limit 1
+	</select>
+	<!-- ***************** -->
+	
+
+	<insert id="addAgent">
+		insert into agent (id, name, email, phone, status, create_time,belonging_id,percent_off) 
+		values (#{id}, #{name}, #{email}, #{phone}, #{status}, #{create_time},#{operatorId},#{percentOff})
+	</insert>
+
+	<!-- ***************** -->
+	
+	<update id="updateAgent">
+		update agent 
+		<set>
+			name        = #{name}, 
+			email       = #{email},
+			phone       = #{phone}, 
+			status      = #{status},
+			<if test="operatorId!=null and operatorId!=''">
+				belonging_id = #{operatorId},
+			</if>
+			<if test="percentOff!=null and percentOff!=''">
+				percent_off =#{percentOff}  
+			</if>
+		</set> 
+		where id = #{id} 
+	</update>
+	
+	<update id="updateBalanceById">
+		update agent set  
+			account_balance = #{accountBalance} 
+		where id = #{id} 	
+	</update>
+	<update id="updateEmailById">
+		update agent set  
+			email  = #{email} 
+		where id = #{id} 	
+	</update>
+	
+	<update id="updatePhoneById">
+		update agent set  
+			phone  = #{phone} 
+		where id = #{id} 	
+	</update>
+	
+	<!-- ***************** -->
+	
+	<delete id="deleteAgent">
+		delete from agent
+		where id=#{id}
+	</delete>
+
+	<delete id="deleteAgentByIds">
+		delete from agent
+		where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

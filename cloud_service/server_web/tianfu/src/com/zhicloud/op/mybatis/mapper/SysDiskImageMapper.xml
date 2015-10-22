@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.SysDiskImageMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.SysDiskImageVO" id="SysDiskImageVO">
+		<id     column="id"            property="id" />
+		<result column="real_image_id" property="realImageId" />
+		<result column="from_host_id"  property="fromHostId" />
+		<result column="group_id"      property="groupId" />
+		<result column="user_id"       property="userId" />
+		<result column="display_name"  property="displayName" />
+		<result column="region"  property="region" />
+		<result column="type"  property="type" />
+	</resultMap>
+	
+	<!-- ******************* -->
+	
+	
+	<select id="getMaxSort" resultType="long">
+		select ifnull(max(sort), 0)
+		from sys_disk_image t
+	</select>
+	
+	<select id="getById" resultMap="SysDiskImageVO">
+		select
+			t.id,
+			t.real_image_id,
+			t.name,
+			t.from_host_id,
+			t.tag,
+			t.description,
+			t.group_id,
+			t.user_id,
+			t.sort,
+			t.display_name,
+			t.region,
+			t.type
+		from sys_disk_image t
+		where t.id = #{id}
+	</select>
+	
+	<select id="getByRealImageId" resultMap="SysDiskImageVO">
+		select
+			t.id,
+			t.real_image_id,
+			t.name,
+			t.from_host_id,
+			t.tag,
+			t.description,
+			t.group_id,
+			t.user_id,
+			t.sort,
+			t.display_name
+		from sys_disk_image t
+		where t.real_image_id = #{realImageId}
+		limit 1
+	</select>
+	
+	<select id="getAll" resultMap="SysDiskImageVO">
+		select
+			t.id,
+			t.real_image_id,
+			t.name,
+			t.from_host_id,
+			t.tag,
+			t.description,
+			t.group_id,
+			t.user_id,
+			t.sort,
+			t.display_name,
+			t.region,
+			t.status
+		from sys_disk_image t
+		order by t.name
+	</select>
+	
+	<select id="getAllCommonImage" resultMap="SysDiskImageVO">
+		select
+			t.id,
+			t.real_image_id,
+			t.name,
+			t.from_host_id,
+			t.tag,
+			t.description,
+			t.group_id,
+			t.user_id,
+			t.sort,
+			t.display_name,
+			t.region,
+			t.status
+		from sys_disk_image t
+		where t.type = 1
+		order by t.name
+	</select>
+	<select id="getDiyImage" resultMap="SysDiskImageVO">
+		select
+			t.id,
+			t.real_image_id,
+			t.name,
+			t.from_host_id,
+			t.tag,
+			t.description,
+			t.group_id,
+			t.user_id,
+			t.sort,
+			t.display_name,
+			t.region,
+			t.status
+		from sys_user_image_relation s 
+		left join  sys_disk_image t 
+		on s.sys_image_id = t.id
+		where t.type = 2
+		and s.user_id = #{userId}
+		order by t.name
+	</select>
+	
+	<select id="getByRegion" resultMap="SysDiskImageVO">
+		select
+			t.id,
+			t.real_image_id,
+			t.name,
+			t.from_host_id,
+			t.tag,
+			t.description,
+			t.group_id,
+			t.user_id,
+			t.sort,
+			t.display_name,
+			t.region
+		from sys_disk_image t
+		where t.region = #{region}
+		order by t.name
+	</select>
+	
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from sys_disk_image d
+		<where>
+			<if test="sysDiskImageName!=null and sysDiskImageName!='%%'">
+				d.name like #{sysDiskImageName}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryPage" resultMap="SysDiskImageVO">
+		select 
+			d.id id,
+			d.real_image_id,
+			d.name,
+			d.from_host_id,
+			d.tag,
+			d.description,
+			d.group_id,
+			d.user_id,
+			d.sort,
+			d.region,
+			d.status,
+			d.type
+		from sys_disk_image d
+		<where>
+			<if test="sysDiskImageName!=null and sysDiskImageName!='%%'">
+				d.name like #{sysDiskImageName}
+			</if>
+		</where>
+		order by d.name
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	<!-- 
+	<select id="getBySysDiskImageName" resultMap="SysDiskImageVO">
+		select
+			d.id id,
+			d.real_image_id,
+			d.name,
+			d.from_host_id,
+			d.tag,
+			d.description,
+			d.group_id,
+			d.user_id,
+			d.sort sort,
+			d.display_name
+		from sys_disk_image d
+		where d.name = #{name}
+	</select>
+	-->
+	
+	<select id="getByRegionAndName" resultMap="SysDiskImageVO">
+		select
+			d.id id,
+			d.real_image_id,
+			d.name,
+			d.from_host_id,
+			d.tag,
+			d.description,
+			d.group_id,
+			d.user_id,
+			d.sort sort,
+			d.display_name
+		from sys_disk_image d
+		where d.region = #{region}
+		and d.name = #{name}
+	</select>
+
+	<insert id="addSysDiskImage">
+		insert into sys_disk_image
+		      (  id,    real_image_id,  name,    from_host_id,  tag,    description,    group_id,   user_id,   sort,   display_name,   region,type)
+		values(#{id}, #{realImageId}, #{name}, #{fromHostId}, #{tag}, #{description}, #{groupId}, #{userId}, #{sort},#{displayName}, #{region},#{type})
+	</insert>
+	
+	
+	<!-- ******************* -->
+	
+	<insert id="updateSysDiskImageById">
+		update sys_disk_image set 
+			name          = #{name}, 
+			real_image_id = #{realImageId},
+			from_host_id  = #{fromHostId},
+			tag           = #{tag},
+			description   = #{description},
+			display_name  = #{displayName},
+			<if test="groupId!=null">
+				group_id  = #{groupId},
+			</if>
+			<if test="userId!=null">
+				user_id   = #{userId},
+			</if>
+			<if test="type!=null">
+				type   = #{type},
+			</if>
+			sort          = #{sort}		
+		where id = #{id} 
+	</insert>
+	
+	<insert id="updateSysDiskImageByRealImageId">
+		update sys_disk_image 
+		<set>
+			<if test="tag!=null">
+				tag           = #{tag},
+			</if>
+			<if test="description!=null">
+				description   = #{description},
+			</if>
+			<if test="groupId!=null">
+				group_id      = #{groupId},
+			</if>
+			<if test="userId!=null">
+				user_id       = #{userId},
+			</if>
+			<if test="sort!=null">
+				sort          = #{sort},
+			</if>
+		</set>
+		where real_image_id = #{real_image_id} 
+	</insert>
+	
+	<!-- 
+	<update id="updateUnrelatedSysDiskImageByRealImageName">
+		update sys_disk_image 
+		<set>
+			<if test="realImageId!=null">
+				real_image_id = #{realImageId},
+			</if>
+			<if test="tag!=null">
+				tag           = #{tag},
+			</if>
+			<if test="description!=null">
+				description   = #{description},
+			</if>
+			<if test="groupId!=null">
+				group_id      = #{groupId},
+			</if>
+			<if test="userId!=null">
+				user_id       = #{userId},
+			</if>
+			<if test="sort!=null">
+				sort          = #{sort},
+			</if>
+		</set>
+		where region = #{region}
+		and name = #{name}
+		and real_image_id is null
+	</update> 
+	-->
+	
+	<update id="updateUnrelatedSysDiskImageByRegionAndName">
+		update sys_disk_image 
+		<set>
+			<if test="realImageId!=null">
+				real_image_id = #{realImageId},
+			</if>
+			<if test="tag!=null">
+				tag           = #{tag},
+			</if>
+			<if test="description!=null">
+				description   = #{description},
+			</if>
+			<if test="groupId!=null">
+				group_id      = #{groupId},
+			</if>
+			<if test="userId!=null">
+				user_id       = #{userId},
+			</if>
+			<if test="sort!=null">
+				sort          = #{sort},
+			</if>
+		</set>
+		where region = #{region}
+		and name = #{name}
+		and real_image_id is null
+	</update>
+	
+	<update id="publishSysDiskImageByIds">
+		update sys_disk_image
+		set status = 2
+		where id in 
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</update>
+	
+	<delete id="deleteSysDiskImageByIds">
+		delete from sys_disk_image
+		where id in 
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	
+	
+</mapper>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.SysRoleMapper">
+	
+	
+	<resultMap id="SysRoleVO" type="com.zhicloud.op.vo.SysRoleVO">
+		<id property="id" column="id" />
+		<result property="roleName" column="role_name" />
+	</resultMap>
+	
+	<!-- *************** -->
+	
+	<select id="getAll" resultMap="SysRoleVO">
+		select r.*
+		from sys_role r
+		order by r.role_name
+	</select>
+	
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from sys_role r
+		<where>
+			<if test="roleName!=null and roleName!='%%'">
+				and r.role_name like #{roleName}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryPage" resultMap="SysRoleVO">
+		select r.*
+		from sys_role r
+		<where>
+			<if test="roleName!=null and roleName!='%%'">
+				and r.role_name like #{roleName}
+			</if>
+		</where>
+		order by r.create_time desc
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	<select id="getById" resultMap="SysRoleVO">
+		select r.*
+		from sys_role r
+		where id=#{id}
+	</select>
+	
+	<select id="getByName" resultMap="SysRoleVO">
+		select r.*
+		from sys_role r
+		where role_name=#{roleName}
+	</select>
+	
+	
+	<select id="getRoleByGroupId" resultMap="SysRoleVO">
+		select r.*
+		from sys_role r
+		join sys_role_group_relation rg
+			on r.id = rg.role_id
+		where rg.group_id = #{groupId} 
+	</select>
+	
+	<select id="getRoleNotInGroupId" resultMap="SysRoleVO">
+		select r.*
+		from sys_role r
+		where r.id not in (
+			select rg.role_id 
+			from sys_role_group_relation rg 
+			where rg.group_id = #{groupId}
+		)
+	</select>
+	
+	
+	<!-- *************** -->
+	
+	<insert id="addSysRole">
+		insert into sys_role (id, role_name,create_time) values (#{id}, #{roleName},#{createTime})
+	</insert>
+	
+	
+	<insert id="addRoleGroupRelation">
+		insert into sys_role_group_relation (id,role_id,group_id) values(#{id},#{roleid},#{groupId});
+	</insert>
+	
+	
+	<insert id="updateSysRole">
+		update sys_role set 
+			role_name = #{roleName}
+		where id = #{id}
+	</insert>
+	
+	<!-- *************** -->
+	
+	<delete id="deleteSysRoleById">
+		delete r.*
+		from sys_role r
+		where id=#{id}
+	</delete>
+	
+	<delete id="deleteSysRoleByIds">
+		delete r.*
+		from sys_role r
+		where id in 
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteRoloGroupRelation">
+		delete from sys_role_group_relation where group_id=#{groupId}
+		and role_id in
+		<foreach collection="roleIds" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+
+	</delete>
+	
+	
+</mapper>

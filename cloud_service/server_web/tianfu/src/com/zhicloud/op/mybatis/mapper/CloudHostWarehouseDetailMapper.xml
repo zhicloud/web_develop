@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.CloudHostWarehouseDetailMapper">
+	
+	<resultMap type="com.zhicloud.op.vo.CloudHostWarehouseDetailVO" id="CloudHostWarehouseDetailVO">
+		<id     column="id"              property="id" />
+		<result column="warehouse_id"    property="warehouseId" />
+		<result column="host_id"         property="hostId" />
+		<result column="process_message" property="processMessage" />
+		<result column="real_host_id"    property="realHostId" />
+		<result column="host_name"       property="hostName" />
+		<result column="cpu_core"        property="cpuCore" />
+		<result column="sys_image_id"    property="sysImageId" />
+		<result column="sys_disk"        property="sysDisk" />
+		<result column="data_disk"       property="dataDisk" />
+		<result column="inner_ip"        property="innerIp" />
+		<result column="outer_ip"        property="outerIp" />
+		<result column="create_time"     property="createTime" />
+		<result column="sys_image_name"     property="sysImageName" />
+	</resultMap>
+	
+	<!-- ******************* -->
+	
+	<select id="getById" resultMap="CloudHostWarehouseDetailVO">
+		select 
+			wh_detail.id          ,
+			wh_detail.warehouse_id   ,
+			wh_detail.host_id        ,
+			wh_detail.status         ,
+			wh_detail.process_message
+		from cloud_host_warehouse_detail wh_detail
+		where id = #{id}
+	</select>
+	
+	<select id="getByHostId" resultMap="CloudHostWarehouseDetailVO">
+		select 
+			wh_detail.id             ,
+			wh_detail.warehouse_id   ,
+			wh_detail.host_id        ,
+			wh_detail.status         ,
+			wh_detail.process_message
+		from cloud_host_warehouse_detail wh_detail
+		where host_id = #{hostId}
+	</select>
+	
+	<select id="getOneUncreatedCloudHost" resultMap="CloudHostWarehouseDetailVO">
+		select 
+			wh_detail.id             ,
+			wh_detail.warehouse_id   ,
+			wh_detail.host_id        ,
+			wh_detail.status         ,
+			wh_detail.process_message,
+			ch.host_name             ,
+			ch.cpu_core              ,
+			ch.memory                ,
+			ch.sys_image_id          ,
+			ch.sys_disk              ,
+			ch.data_disk             ,
+			ch.bandwidth             ,
+			ch.region             
+		from cloud_host_warehouse_detail wh_detail
+		join cloud_host ch
+			on wh_detail.host_id = ch.id
+		where wh_detail.status = 1
+		and ch.type = 4
+		and ch.real_host_id is null
+		limit 1
+	</select>
+	<select id="getOneFailedCloudHost" resultMap="CloudHostWarehouseDetailVO">
+		select 
+			wh_detail.id             ,
+			wh_detail.warehouse_id   ,
+			wh_detail.host_id        ,
+			wh_detail.status         ,
+			wh_detail.process_message,
+			ch.host_name             ,
+			ch.cpu_core              ,
+			ch.memory                ,
+			ch.sys_image_id          ,
+			ch.sys_disk              ,
+			ch.data_disk             ,
+			ch.bandwidth             ,
+			ch.region             
+		from cloud_host_warehouse_detail wh_detail
+		join cloud_host ch
+			on wh_detail.host_id = ch.id
+		where wh_detail.status = 2
+		and ch.type = 4
+		and ch.real_host_id is null
+		order by wh_detail.fail_time asc
+		limit 1
+	</select>
+	
+	<select id="getOneUncreatedCloudHostByWarehouseId" resultMap="CloudHostWarehouseDetailVO">
+		select 
+			wh_detail.id             ,
+			wh_detail.warehouse_id   ,
+			wh_detail.host_id        ,
+			wh_detail.status         ,
+			wh_detail.process_message,
+			ch.host_name             ,
+			ch.cpu_core              ,
+			ch.memory                ,
+			ch.sys_image_id          ,
+			ch.sys_disk              ,
+			ch.data_disk             ,
+			ch.bandwidth             ,
+			ch.region             
+		from cloud_host_warehouse_detail wh_detail
+		join cloud_host ch
+			on wh_detail.host_id = ch.id
+		where wh_detail.warehouse_id = #{warehouseId}
+		and wh_detail.status = 1
+		and ch.type = 4
+		and ch.real_host_id is null
+		limit 1
+	</select>
+	
+	<select id="getUncreatedCloudHostsByWarehouseId" resultMap="CloudHostWarehouseDetailVO">
+		select 
+			wh_detail.id             ,
+			wh_detail.warehouse_id   ,
+			wh_detail.host_id        ,
+			wh_detail.status         ,
+			wh_detail.process_message,
+			ch.host_name             ,
+			ch.cpu_core              ,
+			ch.memory                ,
+			ch.sys_image_id          ,
+			ch.sys_disk              ,
+			ch.data_disk             ,
+			ch.bandwidth             ,
+			ch.region             
+		from cloud_host_warehouse_detail wh_detail
+		join cloud_host ch
+			on wh_detail.host_id = ch.id
+		where wh_detail.warehouse_id = #{warehouseId}
+		and wh_detail.status = 1
+		and ch.type = 4
+		and ch.real_host_id is null
+	</select>
+	
+	<select id="getOneUndistributedCloudHostFromWarehouse" resultMap="CloudHostWarehouseDetailVO">
+		select 
+			wh_detail.id,
+			wh_detail.warehouse_id,
+			wh_detail.status,
+			wh_detail.process_message,     
+			ch.id host_id,          
+			ch.real_host_id,
+			ch.host_name,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_image_id,
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,
+			ch.inner_ip,
+			ch.outer_ip,
+			ch.region
+		from cloud_host ch
+		left join cloud_host_warehouse_detail wh_detail
+			on wh_detail.host_id = ch.id
+		where ch.type = 4				<!-- warehouse cloud host -->
+		and ch.real_host_id is not null	<!-- created already -->
+		and ch.sys_image_id = #{sysImageId}
+		and ch.region = #{region}
+		limit 1
+	</select>
+	
+	<select id="getAllUndistributedCloudHostFromWarehouse" resultMap="CloudHostWarehouseDetailVO">
+		select 
+			wh_detail.id,
+			wh_detail.warehouse_id,
+			wh_detail.status, 
+			wh_detail.process_message,     
+			ch.id host_id,          
+			ch.real_host_id,
+			ch.host_name,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_image_id,
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,
+			ch.inner_ip,
+			ch.outer_ip,
+			ch.region,
+			ch.sys_image_name
+		from cloud_host ch
+		left join cloud_host_warehouse_detail wh_detail
+			on wh_detail.host_id = ch.id
+		where ch.type = 4				<!-- warehouse cloud host -->
+		and ch.real_host_id is not null	<!-- created already -->
+		and ch.sys_image_id = #{sysImageId}
+		and ch.region = #{region}
+	</select>
+	
+	
+	<select id="getRemainAmountByWarehouseId" resultType="int">
+		select count(1)
+		from cloud_host_warehouse_detail w_dt
+		where w_dt.warehouse_id = #{warehouseId}
+		and status in (1, 3, 5)
+	</select>
+	
+	<!-- ************** -->
+	<insert id="addWarehouseDetail">
+		insert into cloud_host_warehouse_detail 
+		      (  id,    warehouse_id,   host_id,   status,    process_message) 
+		values(#{id}, #{warehouseId}, #{hostId}, #{status}, #{processMessage})
+	</insert>
+	
+	<update id="updateStatusById">
+		update cloud_host_warehouse_detail
+		<set>
+			status = #{status}
+			<if test="processMessage!=null">
+				,process_message = #{processMessage}
+			</if>
+			<if test="failTime!=null">
+				,fail_time = #{failTime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateStatusByHostId">
+		update cloud_host_warehouse_detail
+		<set>
+			status = #{status},
+			<if test="processMessage!=null">
+				process_message = #{processMessage}
+			</if>
+		</set>
+		where host_id = #{hostId}
+	</update>
+	
+	<!-- ********************* -->
+
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from cloud_host_warehouse_detail c
+		where c.warehouse_id = #{warehouseId}
+	</select>
+
+	<select id="queryPage" resultMap="CloudHostWarehouseDetailVO">
+		select 
+			w.host_id, 
+			c.host_name,
+			c.create_time, 
+			c.id cloudHostId,
+			w.status
+		from cloud_host_warehouse_detail w
+		join cloud_host c
+			on w.host_id = c.id
+		<where>
+			w.warehouse_id = #{warehouseId}
+		</where>
+		order by ifnull(c.create_time, '')
+	</select>
+	
+	<!-- **************** -->
+	
+	<delete id="deleteById">
+		delete 
+		from cloud_host_warehouse_detail 
+		where host_id = #{hostId} 
+	</delete>
+	
+	<delete id="deleteByWarehouseIds">
+		delete 
+		from cloud_host_warehouse_detail 
+		where warehouse_id in 
+		<foreach collection="array" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteByWarehouseIdsAndStatus">
+		delete 
+		from cloud_host_warehouse_detail 
+		<where>
+			and warehouse_id in 
+			<foreach collection="warehouseIds" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+			and status in 
+			<foreach collection="status" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</where>
+	</delete>
+	
+	<!-- **************** -->
+	
+</mapper>
