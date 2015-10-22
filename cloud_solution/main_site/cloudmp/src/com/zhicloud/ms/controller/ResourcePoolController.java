@@ -1,6 +1,9 @@
 package com.zhicloud.ms.controller;
 
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
+import com.zhicloud.ms.app.pool.storage.StorageManager;
+import com.zhicloud.ms.app.pool.storage.StorageResult;
+import com.zhicloud.ms.httpGateway.HttpGatewayAsyncChannel;
 import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
 import com.zhicloud.ms.remote.MethodResult;
@@ -12,8 +15,10 @@ import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.*;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -415,42 +421,74 @@ public class ResourcePoolController {
      */
     @RequestMapping(value="/add",method=RequestMethod.POST)
     @ResponseBody
-    public MethodResult addResourcePool(String name,String networkType,String networkId,String diskType,String diskId,String prefixion,
-    		 int mode0, int mode1, int mode2, int mode3,String path,String crypt){
+    public MethodResult addResourcePool(ComputeInfoExt computeInfoExt, String prefixion, HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_pool_add)){
+            return new MethodResult(MethodResult.FAIL,"您没有修改资源池的权限，请联系管理员");
+        }
+
+        String name = prefixion+computeInfoExt.getName();
+        Integer networkType = computeInfoExt.getNetworkType();
+        String network = computeInfoExt.getNetwork();
+        Integer diskType = computeInfoExt.getDiskType();
+        String diskSource = computeInfoExt.getDiskSource();
+        int mode0 = computeInfoExt.getMode0();
+        int mode1 = computeInfoExt.getMode1();
+        //            String path = computeInfoExt.getPath();
+        //            String crypt = computeInfoExt.getCrypt();
+
         if(StringUtil.isBlank(name)){
             return new MethodResult(MethodResult.FAIL,"资源池名不能为空");
         }
-        if(StringUtil.isBlank(networkType)){
+        if(StringUtil.isBlank(String.valueOf(networkType))){
             return new MethodResult(MethodResult.FAIL,"网络类型不能为空");
         }
-        if(("1".equals(networkType) || "2".equals(networkType)) && StringUtil.isBlank(networkType)){
+        if(("1".equals(networkType) || "2".equals(networkType)) && StringUtil.isBlank(network)){
             return new MethodResult(MethodResult.FAIL,"IP或端口资源池不能为空");
         }
-        if(StringUtil.isBlank(diskType)){
+        if(StringUtil.isBlank(String.valueOf(diskType))){
             return new MethodResult(MethodResult.FAIL,"存储类型不能为空");
         }
-        if(!"0".equals(diskType) && StringUtil.isBlank(diskId)){
+        if(!("0".equals(String.valueOf(diskType))) && StringUtil.isBlank(diskSource)){
             return new MethodResult(MethodResult.FAIL,"存储资源池不能为空");
         }
-        Integer[] mode = new Integer[4];
-        mode[0] = mode0;
-        mode[1] = mode1;
-        mode[2] = mode2;
-        mode[3] = mode3;
-        try {
-        	HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-                if(channel!=null){
-                    JSONObject result = channel.computePoolCreate(prefixion+name, Integer.parseInt(networkType), networkId, 
-                    		                                          Integer.parseInt(diskType), diskId, mode, path, crypt);
-                    if("success".equals(result.get("status"))){                    	
-                        return new MethodResult(MethodResult.SUCCESS,"创建成功");
-                    }
-                    return new MethodResult(MethodResult.FAIL,"创建失败");
-                }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        if(StringUtil.isBlank(String.valueOf(mode0))){
+            return new MethodResult(MethodResult.FAIL,"高可用选项不能为空");
         }
-        return new MethodResult(MethodResult.FAIL,"创建失败");
+        if(StringUtil.isBlank(String.valueOf(mode1))){
+            return new MethodResult(MethodResult.FAIL,"自动Qos选项不能为空");
+        }
+
+        try {
+
+            Map<String, Object> data = new LinkedHashMap<String, Object>();
+            data.put("name", name);
+            data.put("network_type", networkType);
+            data.put("network", network);
+            data.put("disk_type", diskType);
+            data.put("disk_source", diskSource);
+            data.put("mode0", mode0);
+            data.put("mode1", mode1);
+            //            data.put("path", path);
+            //            data.put("crypt", crypt);
+
+
+            MethodResult result = computePoolService.createComputePoolSync(data);
+            if("success".equals(result.status)){
+                operLogService.addLog("桌面云资源池管理", "创建计算资源池", "1", "1", request);
+                return new MethodResult(result.status, result.message);
+
+            }
+
+
+        }  catch (Exception e) {
+            e.printStackTrace();
+            operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "2", request);
+            return new MethodResult(MethodResult.FAIL,"资源池创建失败");
+        }
+
+        operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "2", request);
+        return new MethodResult(MethodResult.FAIL,"资源池创建失败");
     }
     
     /**
@@ -915,5 +953,324 @@ public class ResourcePoolController {
         }
         MethodResult mr = cloudHostService.addHostToDeskTopByRealHostId(hostId, wareHouseId);
         return mr;
+    }
+    
+    /**
+     * 
+     * @Title: nodeDevice 
+     * @Description: NC磁盘挂载
+     * @param @param nodename
+     * @param @param request
+     * @param @return      
+      */
+ @RequestMapping(value="/{nodename}/device/{poolid}",method=RequestMethod.GET)
+ public String nodeDevice(@PathVariable("nodename") String target,
+         @PathVariable("poolid") String poolid,
+         Model model,HttpServletRequest request){
+     if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_node_device)){
+         return "not_have_access";
+     }   
+     List<MountDiskVo> cList = new ArrayList<MountDiskVo>();
+     try {
+         HttpGatewayAsyncChannel channel = HttpGatewayManager.getAsyncChannel(Integer.valueOf(1)); 
+         if(channel!=null){
+
+             long reqTime = System.currentTimeMillis();
+             JSONObject result = channel.serverQueryStorageDevice(MountDiskVo.LEVEL, target, MountDiskVo.DISK_TYPE_LOCALSTORAGE);  
+             logger.info("HttpGatewayAsyncChannel.serverQueryStorageDevice>result:"+result.toString());
+             if("success".equals(result.get("status"))){
+                 List<MountDiskVo> list = StorageManager.singleton().getDiskVoList(reqTime, MountDiskVo.DISK_TYPE_LOCALSTORAGE);
+                 cList.addAll(list);
+             }
+
+             reqTime = System.currentTimeMillis();
+             result = channel.serverQueryStorageDevice(MountDiskVo.LEVEL, target,MountDiskVo.DISK_TYPE_CLOUDSTORAGE );  
+             if("success".equals(result.get("status"))){
+                 List<MountDiskVo> list = StorageManager.singleton().getDiskVoList(reqTime, MountDiskVo.DISK_TYPE_CLOUDSTORAGE);
+                 cList.addAll(list);
+             }
+
+             reqTime = System.currentTimeMillis();
+             result = channel.serverQueryStorageDevice(MountDiskVo.LEVEL, target, MountDiskVo.DISK_TYPE_NASDISK);  
+             if("success".equals(result.get("status"))){
+                 List<MountDiskVo> list = StorageManager.singleton().getDiskVoList(reqTime, MountDiskVo.DISK_TYPE_NASDISK);
+                 cList.addAll(list);
+             }
+ 
+             reqTime = System.currentTimeMillis();
+             result = channel.serverQueryStorageDevice(MountDiskVo.LEVEL, target, MountDiskVo.DISK_TYPE_IPSAN);  
+             if("success".equals(result.get("status"))){
+                 List<MountDiskVo> list = StorageManager.singleton().getDiskVoList(reqTime, MountDiskVo.DISK_TYPE_IPSAN);
+                 cList.addAll(list);
+             }                
+         }
+     } catch (MalformedURLException e) {
+         e.printStackTrace();
+     } catch (IOException e) {
+         e.printStackTrace();        
+     }       
+     model.addAttribute("formPageFlag", "0");
+     model.addAttribute("poolId", poolid);
+     model.addAttribute("deviceList", cList);
+     model.addAttribute("nodename", target);     
+     return "resourcepool/resource_pool_node_device";
+ }
+ 
+    /**
+     * @Title: unmount
+     * @Description: 取消NC磁盘挂载
+     * @param @param request
+     * @param @return
+     */
+    @RequestMapping(value = "/unmount", method = RequestMethod.POST)
+    @ResponseBody
+    public MethodResult unmountDevice(HttpServletRequest request) {
+        if (!new TransFormPrivilegeUtil().isHasPrivilege(request,
+                TransFormPrivilegeConstant.desktop_resource_node_unmount)) {
+            return new MethodResult(MethodResult.FAIL, "您没有取消挂载硬盘的权限，请联系管理员");
+        }
+
+        String target = request.getParameter("nodename");
+        Integer index = Integer.valueOf(request.getParameter("index"));
+        Integer diskType = Integer.valueOf(request.getParameter("disk_type"));
+        try {
+            HttpGatewayAsyncChannel channel = HttpGatewayManager.getAsyncChannel(Integer.valueOf(1));
+            if (channel == null) {
+                operLogService.addLog("云计算资源池", "计算节点" + target + "取消挂载本地硬盘失败", "2", "2", request);
+                return new MethodResult(MethodResult.FAIL, "取消挂载本地硬盘失败，请联系管理员");
+            }
+            long reqTime = System.currentTimeMillis();
+            JSONObject result = channel.serverRemoveStorageDevice(MountDiskVo.LEVEL, target, diskType, index);
+            if ("fail".equals(result.get("status"))) {
+                operLogService.addLog("云计算资源池", "计算节点" + target + "取消挂载本地硬盘失败", "2", "2", request);
+                return new MethodResult(MethodResult.FAIL, result.getString("message"));
+            }
+            // 等待异步处理结果。
+            StorageResult ret = StorageManager.singleton().getRemoveStorageReslt(reqTime);
+            if (!ret.isFlag()) {
+                operLogService.addLog("云计算资源池", "计算节点" + target + "取消挂载本地硬盘失败，返回：" + ret.getMsg(), "2", "2", request);
+                return new MethodResult(MethodResult.FAIL, ret.getMsg());
+            }
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            operLogService.addLog("云计算资源池", "计算节点" + target + "取消挂载本地硬盘失败", "2", "2", request);
+            return new MethodResult(MethodResult.FAIL, "取消挂载本地硬盘失败，请联系管理员");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            operLogService.addLog("云计算资源池", "计算节点" + target + "取消挂载本地硬盘失败", "2", "2", request);
+            return new MethodResult(MethodResult.FAIL, "取消挂载本地硬盘失败，请联系管理员");
+        }
+        operLogService.addLog("云服务器资源池", "计算节点" + target + "取消挂载硬盘成功", "2", "1", request);
+        return new MethodResult(MethodResult.SUCCESS, "取消挂载硬盘成功！");
+    }
+    
+    /**
+     * @Title: mount
+     * @Description: 磁盘挂载
+     * @param @param request
+     * @param @return
+     */
+    @RequestMapping(value = "/mount", method = RequestMethod.POST)
+    @ResponseBody
+    public MethodResult mountDevice(HttpServletRequest request) {
+        if (!new TransFormPrivilegeUtil()
+                .isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_node_mount)) {
+            return new MethodResult(MethodResult.FAIL, "您没有挂载硬盘的权限，请联系管理员");
+        }
+
+        String target = request.getParameter("nodename");
+        Integer[] index = new Integer[] {Integer.valueOf(request.getParameter("index")) };
+        Integer disk_type = Integer.valueOf(request.getParameter("disk_type"));
+        try {
+            HttpGatewayAsyncChannel channel = HttpGatewayManager.getAsyncChannel(Integer.valueOf(1));
+            if (channel == null) {
+                operLogService.addLog("云计算资源池", "计算节点" + target + "挂载本地硬盘失败", "2", "2", request);
+                return new MethodResult(MethodResult.FAIL, "挂载本地硬盘失败，请联系管理员");
+            }
+
+            long reqTime = System.currentTimeMillis();
+            JSONObject result = channel.serverAddStorageDevice(MountDiskVo.LEVEL, target, disk_type, index, "", "", "");
+            if ("fail".equals(result.get("status"))) {
+                operLogService.addLog("云计算资源池", "计算节点" + target + "挂载本地硬盘失败", "2", "2", request);
+                return new MethodResult(MethodResult.FAIL, result.getString("message"));
+            }
+
+            // 等待异步处理结果。
+            StorageResult ret = StorageManager.singleton().getAddStorageReslt(reqTime);
+            if (!ret.isFlag()) {
+                operLogService.addLog("云计算资源池", "计算节点" + target + "挂载本地硬盘失败，返回：" + ret.getMsg(), "2", "2", request);
+                return new MethodResult(MethodResult.FAIL, ret.getMsg());
+            }
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            operLogService.addLog("云计算资源池", "计算节点" + target + "挂载本地硬盘失败", "2", "2", request);
+            return new MethodResult(MethodResult.FAIL, "挂载本地硬盘失败，请联系管理员");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            operLogService.addLog("云计算资源池", "计算节点" + target + "挂载本地硬盘失败", "2", "2", request);
+            return new MethodResult(MethodResult.FAIL, "挂载本地硬盘失败，请联系管理员");
+        }
+        operLogService.addLog("云计算资源池", "计算节点" + target + "挂载本地硬盘成功", "2", "1", request);
+        return new MethodResult(MethodResult.SUCCESS, "挂载硬盘成功！");
+    }
+    
+    /**
+     * @Title: enableDisk
+     * @Description: 启用本地存储设备
+     * @param @param request
+     * @param @return
+     */
+    @RequestMapping(value = "/enableDisk", method = RequestMethod.POST)
+    @ResponseBody
+    public MethodResult enableDisk(HttpServletRequest request) {
+        if (!new TransFormPrivilegeUtil().isHasPrivilege(request,
+                TransFormPrivilegeConstant.desktop_resource_node_enabledisk)) {
+            return new MethodResult(MethodResult.FAIL, "您没有启用本地存储设备权限！");
+        }
+        String target = request.getParameter("nodename");
+        Integer index = Integer.valueOf(request.getParameter("index"));
+
+        try {
+            HttpGatewayAsyncChannel channel = HttpGatewayManager.getAsyncChannel(Integer.valueOf(1));
+            if (channel == null) {
+                operLogService.addLog("云计算资源池", "计算节点" + target + "启用本地硬盘失败", "2", "2", request);
+                return new MethodResult(MethodResult.FAIL, "启用本地硬盘失败，请联系管理员");
+            }
+            long reqTime = System.currentTimeMillis();
+            JSONObject result = channel.serverEnableStorageDevice(MountDiskVo.LEVEL, target,
+                    MountDiskVo.DISK_TYPE_LOCALSTORAGE, index);
+            if ("fail".equals(result.get("status"))) {
+                operLogService.addLog("云计算资源池", "计算节点" + target + "启用本地硬盘失败", "2", "2", request);
+                return new MethodResult(MethodResult.FAIL, result.getString("message"));
+            }
+            // 等待异步处理结果。
+            StorageResult ret = StorageManager.singleton().getEnableStorageReslt(reqTime);
+            if (!ret.isFlag()) {
+                operLogService.addLog("云计算资源池", "计算节点" + target + "启用本地硬盘失败，返回：" + ret.getMsg(), "2", "2", request);
+                return new MethodResult(MethodResult.FAIL, ret.getMsg());
+            }
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            operLogService.addLog("云计算资源池", "计算节点" + target + "启用本地硬盘失败", "2", "2", request);
+            return new MethodResult(MethodResult.FAIL, "启用本地硬盘失败，请联系管理员");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            operLogService.addLog("云计算资源池", "计算节点" + target + "启用本地硬盘失败", "2", "2", request);
+            return new MethodResult(MethodResult.FAIL, "启用本地硬盘失败，请联系管理员");
+        }
+
+        operLogService.addLog("云计算资源池", "计算节点" + target + "启用本地存储设备成功", "2", "1", request);
+
+        return new MethodResult(MethodResult.SUCCESS, "启用本地存储设备成功！");
+    }
+    
+    /**
+     * @Title: disableDisk
+     * @Description: 禁用本地磁盘
+     * @param @param request
+     * @param @return
+     */
+    @RequestMapping(value = "/disableDisk", method = RequestMethod.POST)
+    @ResponseBody
+    public MethodResult disableDisk(HttpServletRequest request) {
+        if (!new TransFormPrivilegeUtil().isHasPrivilege(request,
+                TransFormPrivilegeConstant.desktop_resource_node_disabledisk)) {
+            return new MethodResult(MethodResult.FAIL, "您没有禁用本地存储设备权限！");
+        }
+        String target = request.getParameter("nodename");
+        Integer index = Integer.valueOf(request.getParameter("index"));
+
+        try {
+            HttpGatewayAsyncChannel channel = HttpGatewayManager.getAsyncChannel(Integer.valueOf(1));
+            if (channel == null) {
+                operLogService.addLog("云计算资源池", "计算节点" + target + "禁用本地硬盘失败", "2", "2", request);
+                return new MethodResult(MethodResult.FAIL, "禁用本地硬盘失败，请联系管理员");
+            }
+            long reqTime = System.currentTimeMillis();
+            JSONObject result = channel.serverDisableStorageDevice(MountDiskVo.LEVEL, target,
+                    MountDiskVo.DISK_TYPE_LOCALSTORAGE, index);
+            if ("fail".equals(result.get("status"))) {
+                operLogService.addLog("云计算资源池", "计算节点" + target + "禁用本地硬盘失败", "2", "2", request);
+                return new MethodResult(MethodResult.FAIL, result.getString("message"));
+            }
+            // 等待异步处理结果。
+            StorageResult ret = StorageManager.singleton().getDisableStorageReslt(reqTime);
+            if (!ret.isFlag()) {
+                operLogService.addLog("云计算资源池", "计算节点" + target + "禁用本地硬盘失败,返回：" + ret.getMsg(), "2", "2", request);
+                return new MethodResult(MethodResult.FAIL, ret.getMsg());
+            }
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            operLogService.addLog("云计算资源池", "计算节点" + target + "禁用本地硬盘失败", "2", "2", request);
+            return new MethodResult(MethodResult.FAIL, "禁用本地硬盘失败，请联系管理员");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            operLogService.addLog("云计算资源池", "计算节点" + target + "禁用本地硬盘失败", "2", "2", request);
+            return new MethodResult(MethodResult.FAIL, "禁用本地硬盘失败，请联系管理员");
+        }
+        operLogService.addLog("云计算资源池", "计算节点" + target + "禁用本地存储设备成功", "2", "1", request);
+        return new MethodResult(MethodResult.SUCCESS, "禁用本地存储设备成功！");
+    }
+    
+    /**
+     * @Title: addShareDisk
+     * @Description: 共享存储挂载
+     * @param @param request
+     * @param @return
+     */
+    @RequestMapping(value = "/addShareDisk", method = RequestMethod.POST)
+    @ResponseBody
+    public MethodResult addShareDisk(HttpServletRequest request) {
+        if (!new TransFormPrivilegeUtil()
+                .isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_node_mount)) {
+            return new MethodResult(MethodResult.FAIL, "您没有挂载共享存储的权限，请联系管理员");
+        }
+
+        String target = request.getParameter("nodename");
+        Integer[] index = new Integer[] {Integer.valueOf(9) }; // 挂载网络的，不知道有没有要求？
+        Integer disk_type = Integer.valueOf(request.getParameter("disk_type"));
+        String name = request.getParameter("name");
+        String path = request.getParameter("path");
+        String crypt = request.getParameter("crypt");
+        try {
+            HttpGatewayAsyncChannel channel = HttpGatewayManager.getAsyncChannel(Integer.valueOf(1));
+            if (channel == null) {
+                operLogService.addLog("云计算资源池", "计算节点" + target + "挂载共享存储失败", "2", "2", request);
+                return new MethodResult(MethodResult.FAIL, "挂载共享存储失败，请联系管理员");
+            }
+            long reqTime = System.currentTimeMillis();
+            JSONObject result = channel.serverAddStorageDevice(MountDiskVo.LEVEL, target, disk_type, index, name, path,
+                    crypt);
+            if ("fail".equals(result.get("status"))) {
+                operLogService.addLog("云计算资源池", "计算节点" + target + "挂载共享存储失败", "2", "2", request);
+                return new MethodResult(MethodResult.FAIL, result.getString("message"));
+            }
+            // 等待异步处理结果。
+            StorageResult ret = StorageManager.singleton().getAddStorageReslt(reqTime);
+            if (!ret.isFlag()) {
+                operLogService.addLog("云计算资源池", "计算节点" + target + "挂载共享存储失败，返回：" + ret.getMsg(), "2", "2", request);
+                return new MethodResult(MethodResult.FAIL, ret.getMsg());
+            }
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            operLogService.addLog("云计算资源池", "计算节点" + target + "挂载共享存储失败", "2", "2", request);
+            return new MethodResult(MethodResult.FAIL, "挂载共享存储失败，请联系管理员");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            operLogService.addLog("云计算资源池", "计算节点" + target + "挂载共享存储失败", "2", "2", request);
+            return new MethodResult(MethodResult.FAIL, "挂载共享存储失败，请联系管理员");
+        }
+        operLogService.addLog("云计算资源池", "计算节点" + target + "挂载共享存储成功", "2", "1", request);
+        return new MethodResult(MethodResult.SUCCESS, "挂载共享存储成功！");
     }
 }

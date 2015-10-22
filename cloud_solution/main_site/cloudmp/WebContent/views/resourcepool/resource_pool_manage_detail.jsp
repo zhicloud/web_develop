@@ -180,6 +180,7 @@
                       <ul class="dropdown-menu" role="menu">
 <!--                       	<li><a href="#">新增资源节点</a></li> -->
                         <li><a href="javascript:void(0);" cur_name="${cp.name }" cur_ip="${cp.ip }" class="delete_resource_node">删除该资源节点</a></li>
+                        <li><a href="javascript:void(0);" cur_name="${cp.name}" onclick="mountDevciceclick(this);">磁盘挂载</a></li>
 <!--                         <li><a href="#">编辑该资源池</a></li> -->
                       </ul>
                     </div>
@@ -375,6 +376,10 @@
 	     });  
     }
     
+    function mountDevciceclick(a){
+    	var name = jQuery(a).attr("cur_name");
+    	window.location.href = path+"/cdrpm/"+name+"/device/"+poolId;
+    }
     </script>
   </body>
 </html>
