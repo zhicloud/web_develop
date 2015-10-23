@@ -103,34 +103,17 @@
                   <!-- tile body -->
                   <div class="tile-body">
                     
-                    <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/version/add" method="post"    >
+                    <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/isoimage/add" method="post"    >
                       
-                      <div class="form-group">
-                        <label for="input01" class="col-sm-2 control-label">镜像名称 *</label>
-                        <div class="col-sm-4">
-                          <input type="text" class="form-control" name="name" id="name"  parsley-trigger="change" parsley-required="true" parsley-checkversionname="true" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
-                        </div>
-                      </div>
+                       
                       
                       <div class="form-group">
                         <label for="optionsRadios1" class="col-sm-2 control-label">挂载类型 *</label>
-                        <div class="col-sm-10">
-                          <div class="radio radio-transparent col-md-2">
-                            <input type="radio" name="diskType" id="optionsRadios1" value="0" checked>
-                            <label for="optionsRadios1">本地磁盘</label>
-                          </div>
-                          <div class="radio radio-transparent col-md-3">
-                            <input type="radio" name="diskType" id="optionsRadios2" value="1">
-                            <label for="optionsRadios2">云存储</label>
-                          </div>
+                        <div class="col-sm-10">  
                           <div class="radio radio-transparent col-md-3">
                             <input type="radio" name="diskType" id="optionsRadios3" value="2">
                             <label for="optionsRadios3">共享存储</label>
-                          </div>
-                          <div class="radio radio-transparent col-md-2">
-                             <input type="radio" name="diskType" id="optionsRadios4" value="3">
-                             <label for="optionsRadios4">ip san</label>
-                          </div>
+                          </div> 
                         </div>
                       </div>
                       
@@ -151,7 +134,7 @@
                      <div class="form-group">
                         <label for="input05" class="col-sm-2 control-label">描述</label>
                         <div class="col-sm-4">
-                          <textarea class="form-control" name="updateInfo" id="updateInfo" rows="6" parsley-maxlength="100"></textarea>
+                          <textarea class="form-control" name="description" id="description" rows="6" parsley-maxlength="100"></textarea>
                         </div>
                       </div>
                       
@@ -354,7 +337,7 @@
 								        		  $("#tipscontent").html("创建失败");
 								     		      $("#dia").click();  		        							
 	   		        						}else{  		        							
-		   		        						location.href = path + "/version/list";
+		   		        						location.href = path + "/isoimage/all";
 	   		        						}
 	   		        					},
 	   		        					dataType:'json',
@@ -378,14 +361,7 @@
     		$("#tipscontent").html("未选择文件");
 		      $("#dia").click();
     		return false;
-    	}
-     	if(filetype != ".tgz"){
-     		isCommited = false;
-    		$("#tipscontent").html("文件格式不正确");
-		      $("#dia").click();
-    		return false;
-    		
-    	}
+    	} 
     	
     	return true;
     }

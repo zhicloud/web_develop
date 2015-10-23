@@ -831,7 +831,7 @@ public class CloudServerController {
 		HttpGatewayAsyncChannel channel = HttpGatewayManager.getAsyncChannel(region);
 		
 		if ("backup".equalsIgnoreCase(command)) {
-            this.operatorHostBeforeBackup(uuid, region);
+//            this.operatorHostBeforeBackup(uuid, region);
 			Integer mode = Integer.valueOf(String.valueOf(parameter.get("mode")));
 			Integer disk = Integer.valueOf(String.valueOf(parameter.get("disk")));
 			
