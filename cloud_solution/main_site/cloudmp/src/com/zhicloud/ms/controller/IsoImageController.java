@@ -40,8 +40,10 @@ import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.service.IsoImageService;
+import com.zhicloud.ms.service.SharedMemoryService;
 import com.zhicloud.ms.service.impl.EmailTemplateServiceImpl;
 import com.zhicloud.ms.util.ServiceUtil;
+import com.zhicloud.ms.vo.SharedMemoryVO;
 @Controller
 public class IsoImageController {
     
@@ -53,6 +55,9 @@ public class IsoImageController {
     
     @Resource
     private IsoImageService isoImageService;
+    
+    @Resource
+    private SharedMemoryService sharedMemoryService;
     
     
     @RequestMapping(value="/isoimage/all",method=RequestMethod.GET)
@@ -75,6 +80,10 @@ public class IsoImageController {
     @ResponseBody
     public MethodResult add(String name,String type,String description,HttpServletRequest request, HttpServletResponse response) throws IOException
     { 
+        SharedMemoryVO vo = sharedMemoryService.queryAvailable();
+        if(vo == null){
+            return new MethodResult(MethodResult.FAIL,"路径未定义");
+        }
         MultipartHttpServletRequest  multipartRequest = (MultipartHttpServletRequest) request;
          
         MultipartFile attach = multipartRequest.getFile("filename");
@@ -84,7 +93,7 @@ public class IsoImageController {
         String fileName = new String(attach.getOriginalFilename().getBytes("ISO-8859-1"), "UTF-8");
          
         //定义上传路径
-        String filePath = "/usr/local/test/iso_image/system/";
+        String filePath = "/image/iso_image/system/";
         
         //若无该文件夹自动创建
         File fp = new File(filePath);
