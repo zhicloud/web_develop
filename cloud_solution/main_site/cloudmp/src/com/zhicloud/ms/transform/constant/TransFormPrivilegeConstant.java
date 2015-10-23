@@ -379,6 +379,12 @@ public class TransFormPrivilegeConstant {
     public static final String server_snapshot_create = "server_snapshot_create"; //快照创建
     public static final String server_snapshot_resume = "server_snapshot_resume"; //快照恢复
 
+    public static final String desktop_resource_node_device = "desktop_resource_node_device";// 查询磁盘挂载
+    public static final String desktop_resource_node_unmount = "desktop_resource_node_unmount";// 磁盘取消挂载
+    public static final String desktop_resource_node_mount = "desktop_resource_node_mount";// 磁盘挂载
+    public static final String desktop_resource_node_enabledisk = "desktop_resource_node_enabledisk";// 本地磁盘启用
+    public static final String desktop_resource_node_disabledisk = "desktop_resource_node_disabledisk";// 本地磁盘禁用
+
 }
  
  
