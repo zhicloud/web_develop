@@ -62,4 +62,10 @@ public interface SharedMemoryService {
      * @return
      */
     public MethodResult setAvailable(String id);
+    
+    /**
+     * 查询可用的路径
+     * @return
+     */
+    public SharedMemoryVO queryAvailable();
 }
