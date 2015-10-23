@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.MemoryPackageOptionMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.MemoryPackageOptionVO" id="MemoryPackageOptionVO">
+		<id     column="id"     property="id" />
+		<result column="memory" property="memory" />
+		<result column="label"  property="label" />
+		<result column="sort"   property="sort" />
+	</resultMap>
+	
+	<!-- ******************* -->
+	
+	<select id="getAll" resultMap="MemoryPackageOptionVO">
+		select
+			t.id,
+			t.memory,
+			t.label,
+			t.sort
+		from memory_package_option t
+		order by t.sort
+	</select>
+	
+	<!-- ******************* -->
+	
+	<select id="getByMemory" resultMap="MemoryPackageOptionVO">
+		select
+			t.id,
+			t.memory,
+			t.label,
+			t.sort
+		from memory_package_option t
+		where memory = #{memory}
+		order by t.sort
+	</select>
+	
+	<!-- ******************* -->
+	
+	<insert id="addMemoryPackageOption">
+	insert into memory_package_option (id, memory, label, sort)
+	values(#{id}, #{memory}, #{label}, #{sort})
+	</insert>
+	
+	<!-- ******************* -->
+	
+	<delete id="deleteMemoryPackageOption">
+	delete from memory_package_option
+	where id = #{id}
+	</delete>
+	
+	<!-- ******************* -->
+</mapper>

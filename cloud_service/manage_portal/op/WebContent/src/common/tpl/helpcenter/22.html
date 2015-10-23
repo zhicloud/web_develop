@@ -1,0 +1,23 @@
+<div class="content">
+	<div class="c-location"><label>帮助中心</label>&nbsp;&gt;&nbsp;<label>云主机</label>&nbsp;&gt;&nbsp;<label class="c-19f">使用数据盘</label></div>
+	<div class="c-info">
+		<ul>
+			<li>
+				<h4>Windows系统</h4>
+				<p class="mb20">以win2003系统参考，进入云主机后，右键“我的电脑”->“管理”—>“磁盘管理”，系统会提示需初始化磁盘，根据向导提示初始化及格式化数据盘。</p>
+				<img class="f-db" src="img/hc_img31.png" alt="使用数据盘"/>
+			</li>
+			<li>
+				<h4>Linux系统</h4>
+				<p class="mb20">1）通过ssh登录后，执行命令“fdisk -l”查看数据盘信息</p>
+				<img class="f-db" src="img/hc_img32.png" alt="使用数据盘"/>
+				<p class="mb20 mt20">2）格式化数据盘，如sdb，执行命令“mkfs.ext4 /dev/sdb”</p>
+				<img class="f-db" src="img/hc_img33.png" alt="使用数据盘"/>
+				<p class="mb20 mt20">3）新建一个目录用于挂载数据盘，如：”mkdir /data”</p>
+				<img class="f-db" src="img/hc_img34.png" alt="使用数据盘"/>
+				<p class="mb20 mt20">4）挂载数据盘，如：“mount /dev/sdb /data”</p>
+				<img class="f-db" src="img/hc_img35.png" alt="使用数据盘"/>
+			</li>
+		</ul>
+	</div>
+</div>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<thresholds>   
+	<!-- 数值为百分比 -->
+	<threshold id="cpu_usage" name="CPU利用率" warnvalue="50" errorvalue="90"/>
+	<threshold id="memory_usage" name="内存利用率" warnvalue="50" errorvalue="90"/>
+	<threshold id="disk_usage" name="磁盘利用率" warnvalue="50" errorvalue="90"/>
+</thresholds>

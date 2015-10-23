@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.CloudDiskMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.CloudDiskVO" id="CloudDiskVO">
+		<id     column="id"         property="id" />
+		<result column="real_disk_id" property="realDiskId" />
+		<result column="name"  property="name" />
+		<result column="user_id" property="userId" />
+		<result column="running_status" property="runningStatus" />
+		<result column="inner_ip" property="innerIp" />
+		<result column="inner_port" property="innerPort" />
+		<result column="outer_ip" property="outerIp" />
+		<result column="outer_port" property="outerPort" />
+		<result column="create_time" property="createTime" />
+		<result column="inactivate_time" property="inactiveTime" />
+		<result column="reactivate_time" property="reactiveTime" />
+		<result column="monthly_price" property="monthlyPrice" />
+	</resultMap>
+	
+	<!-- ********************* -->
+	
+	<insert id="addCloudDisk">
+		insert into cloud_disk (id, real_disk_id, user_id, name, account, disk, running_status, status, create_time, region,iqn,ip,password) 
+		values (#{id}, #{realDiskId}, #{userId}, #{name}, #{account}, #{disk}, #{runningStatus}, #{status}, #{createTime}, #{region},#{iqn},#{ip},#{password})
+	</insert>
+	
+	<!-- ********************* -->
+
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from cloud_disk 
+		<where>
+			status != 4
+			and user_id = #{userId}
+			<if test="region!=null and region!='%%'">
+				 and region = #{region}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryPage" resultMap="CloudDiskVO">
+		select 
+			id, 
+			real_disk_id, 
+			user_id, 
+			name, 
+			account,
+			password,
+			disk, 
+			running_status, 
+			status, 
+			inner_ip,
+			inner_port,
+			outer_ip,
+			outer_port,
+			create_time,
+			inactivate_time,
+			reactivate_time,
+			monthly_price,
+			region,
+			iqn,
+			ip
+		from cloud_disk
+		<where>
+			status != 4
+			and user_id = #{userId}
+			<if test="region!=null">
+				 and region = #{region}
+			</if>
+		</where>
+		order by create_time desc
+<!-- 		limit #{start_row}, #{row_count} -->
+	</select>
+	
+	<select id="getCloudDiskByUserId" resultMap="CloudDiskVO">
+		select 
+			id, 
+			real_disk_id, 
+			user_id, 
+			name, 
+			account,
+			password,
+			disk, 
+			running_status, 
+			status, 
+			inner_ip,
+			inner_port,
+			outer_ip,
+			outer_port,
+			create_time,
+			inactivate_time,
+			reactivate_time,
+			monthly_price,
+			region
+		from cloud_disk
+		where user_id = #{userId}
+		and status!=4
+		order by create_time desc
+<!-- 		limit #{start_row}, #{row_count} -->
+	</select>
+	
+	<select id="getCloudDiskById" resultMap="CloudDiskVO">
+		select 
+			id, 
+			real_disk_id, 
+			user_id, 
+			name, 
+			account,
+			password,
+			disk, 
+			running_status, 
+			status, 
+			inner_ip,
+			inner_port,
+			outer_ip,
+			outer_port,
+			create_time,
+			inactivate_time,
+			reactivate_time,
+			monthly_price,
+			region
+		from cloud_disk
+		<where>
+			status!=4
+			and id = #{id}
+		</where>
+	</select>
+	
+	<!-- ********************* -->
+	
+	<update id="updateCloudDisk">
+		update cloud_disk set 
+			disk = #{disk}
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	<!-- ********************* -->
+	<delete id="deleteCloudDiskById">
+		delete
+		from cloud_disk
+		<where>
+			id = #{id}
+		</where>
+	</delete>
+	<!-- ********************* -->
+	
+	<update id="updateStatusById">
+		update cloud_disk
+		<set>
+			status = #{status},
+			<if test="inactivateTime!=null">
+				inactivate_time = #{inactivateTime},
+			</if>
+			<if test="reactivateTime!=null">
+				reactivate_time = #{reactivateTime},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	<select id="getCloudDiskForRegion" resultMap="CloudDiskVO">
+		select
+			cd.name
+		from cloud_disk cd
+		where cd.user_id = #{userId} and cd.region = #{region}
+	</select>
+</mapper>

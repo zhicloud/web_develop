@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.SysUserImageRelationMapper">
+	
+	
+	 
+	<resultMap type="com.zhicloud.op.vo.SysUserImageRelationVO" id="SysUserImageRelationVO">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="sys_image_id" property="sysImageId" />
+	</resultMap>
+	 
+	
+	<!-- *************** -->
+	
+	<insert id="addImageToUser">
+		insert into sys_user_image_relation (id, user_id ,sys_image_id ) values (#{id}, #{userId},#{sysImageId})
+	</insert>	
+	<!-- *************** -->
+	
+	<delete id="deleteImageByImageId">
+		delete 
+		from sys_user_image_relation 
+		where sys_image_id=#{sysImageId}
+	</delete>	 
+	
+	
+</mapper>

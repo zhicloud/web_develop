@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.OperatorMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.OperatorVO" id="OperatorVO">
+		<id     column="id"         property="id" />
+		<result column="group_id"   property="groupId" />
+		<result column="group_name" property="groupName" />
+	</resultMap>
+	
+	<!-- ********************* -->
+	
+	<select id="getAllOperator" resultMap="OperatorVO">
+		select 
+			u.id id, 
+			u.account account, 
+			o.name name,
+			o.email email, 
+			o.phone phone, 
+			o.status status
+		from sys_user u
+		join operator o
+			on u.id = o.id
+		where u.type = 2
+		order by o.name
+	</select>
+
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from sys_user u
+		left join operator o
+			on u.id = o.id
+		<where>
+			u.type = 2
+			<if test="account !=null and account !='%%'">
+				and u.account like #{account}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryPage" resultMap="OperatorVO">
+		select 
+			u.id id, 
+			u.account account, 
+			u.group_id,
+			g.group_name,
+			o.name name,
+			o.email email, 
+			o.phone phone, 
+			o.status status
+		from sys_user u
+		left join operator o
+			on u.id = o.id
+		left join privilege_group g
+			on u.group_id = g.id
+		<where>
+			u.type = 2
+			<if test="account !=null and account !='%%'">
+				and u.account like #{account}
+			</if>
+		</where>
+		order by o.create_time desc
+		limit #{start_row}, #{row_count}
+	</select>
+
+	<select id="getOperatorById" resultMap="OperatorVO">
+		select 
+			u.id id, 
+			u.account account, 
+			u.group_id, 
+			o.name name,
+			o.email email, 
+			o.phone phone, 
+			o.status status
+		from sys_user u
+		left join operator o 
+			on u.id = o.id
+		where u.type = 2 
+		and u.id = #{id}
+		order by o.name
+	</select>
+	
+	
+	<select id="getBasicInformationById" resultMap="OperatorVO">
+		select 
+			u.id id, 
+			u.account account, 
+			u.group_id group_id,
+			o.name name,
+			o.email email, 
+			o.phone phone
+		from sys_user u
+		join operator o 
+			on u.id = o.id
+		where u.id = #{id}
+		order by o.name
+	</select>
+
+	<select id="getOperatorByAccount" resultMap="OperatorVO">
+		select 
+			u.id id,
+			u.account account, 
+			o.name name,
+			o.email email, 
+			o.phone phone, 
+			o.status status
+		from sys_user u
+		join operator o
+			on u.id = o.id
+		where u.type = 2 
+		and u.account =#{account}
+		order by o.name
+	</select>
+	
+	<!-- ********************* -->
+	
+	<insert id="addOperator">
+		insert into operator (id, name, email, phone, status, create_time) 
+		values (#{id}, #{name}, #{email}, #{phone}, #{status}, #{createTime})
+	</insert>
+	
+	<!-- ********************* -->
+	
+	<update id="updateOperator">
+		update operator set 
+			name = #{name}, 
+			email = #{email},
+			phone = #{phone}, 
+			status = #{status} 
+		where id = #{id}
+	</update>
+	
+	<!-- ********************* -->
+
+	<delete id="deleteOperator">
+		delete from operator
+		where id=#{id}
+	</delete>
+
+	<delete id="deleteOperatorByIds">
+		delete
+		from operator
+		where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

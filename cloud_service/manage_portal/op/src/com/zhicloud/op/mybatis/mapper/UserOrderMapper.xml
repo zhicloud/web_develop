@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.UserOrderMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.UserOrderVO" id="UserOrderVO">
+		<id     column="id"                  property="id" /> 
+		<result column="user_id"             property="userId" /> 
+		<result column="create_time"         property="createTime" /> 
+		<result column="total_price"         property="totalPrice" /> 
+		<result column="type"                property="type" /> 
+		<result column="cpu_core"            property="cpuCore" /> 
+		<result column="memory"              property="memory" /> 
+		<result column="sys_image_id"        property="sysImageId" /> 
+		<result column="sys_disk"            property="sysDisk" /> 
+		<result column="data_disk"           property="dataDisk" /> 
+		<result column="bandwidth"           property="bandwidth" /> 
+		<result column="start_time"          property="startTime" /> 
+		<result column="end_time"            property="endTime" /> 
+		<result column="price"               property="price" />  
+		<result column="item_id"             property="itemId" />  
+		<result column="item_type"           property="itemType" />  
+		<result column="order_id"            property="orderId" />  
+		<result column="is_processed"        property="isProcessed" />   
+		<result column="account"             property="account" />  
+		<result column="host_id"             property="hostId" />  
+		<result column="is_paid"             property="isPaid" />  
+		<result column="name"                property="name" />  
+		<result column="image_name"          property="imageName" />  
+		<result column="port"                property="port" />  
+		<result column="host_name"           property="hostName" />  
+		<result column="process_status"      property="processStatus" />  
+	</resultMap>
+	
+	<!-- ******************* -->
+	
+	<select id="getOrderById" resultMap="UserOrderVO">
+		select *
+		from order_info o
+		where o.user_id = #{userId}
+	</select>
+	<select id="getOrderByOrderId" resultMap="UserOrderVO">
+		select *
+		from order_info o
+		where o.id = #{id}
+	</select>
+	
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from order_info c
+		<where>
+			<if test="userId!=null and userId!='%%'">
+				c.user_id = #{userId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryPage" resultMap="UserOrderVO">
+		select *
+		from order_info c 
+		<where>
+			<if test="userId!=null and userId!='%%'">
+				c.user_id = #{userId}
+			</if>
+		</where>
+		 order by c.create_time
+		limit #{start_row}, #{row_count} 
+	</select>
+	<select id="getOrderDetailByOrderId" resultMap="UserOrderVO">
+		select b.*,c.name
+		from order_detail a
+		join cloud_host_shopping_config b
+		on a.item_type = 1 and   a.item_id=b.id
+		left join sys_disk_image c on b.sys_image_id=c.id
+		 where a.order_id = #{orderId} 
+	</select> 
+	<select id="getOrderConfigById" resultMap="UserOrderVO">
+		select b.*,c.account,d.name as image_name
+		from  cloud_host_shopping_config b join sys_user c on b.user_id = c.id left join sys_disk_image d on b.sys_image_id = d.id
+		 where b.id = #{id} 
+	</select> 
+	<select id="getTrailOrderConfigByUserId" resultMap="UserOrderVO">
+		select b.*
+		from cloud_host_shopping_config  b 
+		join order_detail a 
+			on a.item_id = b.id 
+			and a.item_type=1
+		where b.user_id = #{userId} 
+		and b.type = 3
+	</select> 
+	<insert id="insertIntoOrder"  >
+		insert into order_info (id, user_id,create_time,total_price,process_status,is_paid) 
+		values (#{id},#{userId},#{createTime},#{totalPrice},"0","1")
+	</insert>
+	<insert id="insertIntoOrderDetail"  >
+		insert into order_detail (id, order_id,item_type,item_id) 
+		values (#{id},#{orderId},#{itemType},#{itemId}) 
+	</insert> 
+	<update id="updateOrder"  >
+		update order_info set is_paid = '2'
+		 where id = #{id}
+	</update> 
+	<update id="updateConfig"  >
+		update cloud_host_shopping_config set start_time = #{startTime},end_time = #{endTime}
+		 where id = #{id}
+	</update> 
+	<select id="queryOrderConfigPageCount" resultType="int">
+		select count(*) from cloud_host_shopping_config a join order_detail b on a.id=b.item_id join order_info c on b.order_id=c.id join sys_user d on a.user_id=d.id
+		<where>
+			<if test="processStatus!=null and processStatus!='%%' and account!=null and account!='%%'">
+				a.process_status = #{processStatus} and d.account like #{account}
+			</if>
+			<if test="processStatus!=null and processStatus!='%%' and (account ==null or account =='%%')">
+				a.process_status = #{processStatus} 
+			</if>
+			<if test="(processStatus ==null or processStatus =='%%') and account!=null and account!='%%'">
+				d.account like #{account}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryOrderConfigPage" resultMap="UserOrderVO">
+		select a.id,
+		       d.account,
+		       a.type,
+		       a.process_status,
+		       a.create_time
+		        
+		
+		from cloud_host_shopping_config a join order_detail b on a.id=b.item_id join order_info c on b.order_id=c.id join sys_user d on a.user_id=d.id
+		<where>
+			<if test="processStatus!=null and processStatus!='%%' and account!=null and account!='%%'">
+				a.process_status = #{processStatus} and d.account like #{account}
+			</if>
+			<if test="processStatus!=null and processStatus!='%%' and (account ==null or account =='%%')">
+				a.process_status = #{processStatus} 
+			</if>
+			<if test="(processStatus ==null or processStatus =='%%') and account!=null and account!='%%'">
+				d.account like #{account}
+			</if>
+		</where>
+		 order by a.create_time
+		limit #{start_row}, #{row_count} 
+	</select> 
+	
+	<update id="updateOrderConfig"  >
+		update cloud_host_shopping_config set host_id = #{hostId},process_status = #{processStatus}
+		 where id = #{id}
+	</update> 
+	<select id="getPortsByConfigId" resultMap="UserOrderVO">
+		select port
+		from  cloud_host_shopping_port_config  
+		 where config_id = #{configId} 
+	</select>
+	 
+	
+	 
+
+</mapper>

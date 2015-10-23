@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.TerminalUserMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.TerminalUserVO" id="TerminalUserVO">
+		<id     column="id"                  property="id" />
+		<result column="group_id"            property="groupId" />
+		<result column="id_card"             property="idCard" />
+		<result column="email_verified"      property="emailVerified" />
+		<result column="phone_verified"      property="phoneVerified" />
+		<result column="create_time"         property="createTime" />
+		<result column="belonging_type"      property="belongingType" />
+		<result column="belonging_id"        property="belongingId" />
+		<result column="belonging_account"   property="belongingAccount" />
+		<result column="balance_update_time" property="balanceUpdateTime" />
+		<result column="account_balance"     property="accountBalance" />
+		<result column="percent_off"         property="percentOff" />
+		<result column="account_balance"     property="account_balance" />
+	</resultMap>
+
+	<select id="getAll" resultMap="TerminalUserVO">
+		select 
+			u.id, 
+			u.account,
+			u.group_id, 
+			t.name, 
+			t.id_card, 
+			t.email, 
+			t.phone, 
+			t.create_time,
+			t.belonging_type,
+			t.status,
+			t.percent_off,
+			t.account_balance
+		from sys_user u
+		left join terminal_user t
+			on u.id = t.id
+		where u.type=4
+		order by t.name
+	</select>
+	
+	<select id="getTerminalUserFromAgent" resultMap="TerminalUserVO">
+		select 
+			u.id, 
+			u.account,
+			u.group_id, 
+			t.name, 
+			t.id_card, 
+			t.email, 
+			t.phone, 
+			t.create_time,
+			t.belonging_type,
+			t.status,
+			t.account_balance
+		from sys_user u
+		 left join terminal_user t
+			on u.id = t.id
+	    join agent a
+	     on a.id=t.belonging_id
+		where u.type=4 and a.id=#{agentId}
+		order by t.name
+	</select>
+
+	
+	
+	
+	
+	<select id="terminalUserCount" resultType="int">
+		select count(1)
+		from terminal_user t
+		where t.belonging_id = #{userId}
+	</select>
+	
+	<select id="newTerminalUserCount" resultType="int">
+		select count(1)
+		from terminal_user t
+		where t.belonging_id = #{userId}
+			and t.create_time like #{currentMonth}
+	</select>
+	
+	<select id="getTerminalUserCountByTime" resultType="int">
+		select count(1)
+		from terminal_user t
+		where t.belonging_id = #{userId}
+			and t.create_time like #{time}
+	</select>
+	
+	<!-- **************** -->
+	
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from terminal_user t
+		left join sys_user u
+			on t.id = u.id
+		left join sys_user bu
+			on t.belonging_id = bu.id
+		left join mark_bind_user mbu
+			on t.id = mbu.user_id
+		left join mark m
+			on mbu.mark_id = m.id
+		left join	
+		(select user_id ,sum(recharge) recharge,sum(consum) consum from (
+		select user_id,
+		sum(case when type = 1 then amount else 0 end) recharge,
+		sum(case when type = 2 then amount else 0 end) consum
+		from account_balance_detail where recharge_status = 2 group by user_id,type  ) x group by user_id) y on y.user_id = t.id				
+		<where>
+			t.status != 5
+			<if test="belongingId!=null">
+				and t.belonging_id = #{belongingId}
+			</if>
+			<if test="terminalUserAccount!=null and terminalUserAccount!='%%'">
+				and u.account like #{terminalUserAccount}
+			</if>
+			<if test="phone!=null and phone!='%%'">
+				and t.phone like #{phone}
+			</if>
+			<if test="markId!=null and markId!=''">
+				and m.id = #{markId}
+			</if>
+			<if test="percent_off!=null and percent_off!=''">
+				<if test="percent_off_op==0">
+					and t.percent_off = #{percent_off}
+				</if>
+				<if test="percent_off_op==1">
+					and t.percent_off &gt; #{percent_off}
+				</if>	
+				<if test="percent_off_op==-1">
+					and t.percent_off &lt; #{percent_off}
+				</if>								
+			</if>
+			<if test="account_balance!=null and account_balance!=''">
+				<if test="account_balance_op==0">
+					and t.account_balance = #{account_balance}
+				</if>
+				<if test="account_balance_op==1">
+					and t.account_balance &gt; #{account_balance}
+				</if>	
+				<if test="account_balance_op==-1">
+					and t.account_balance &lt; #{account_balance}
+				</if>								
+			</if>	
+			<if test="recharge!=null and recharge!=''">
+				<if test="recharge_op==0">
+					and ifnull(y.recharge,0) = #{recharge}
+				</if>
+				<if test="recharge_op==1">
+					and ifnull(y.recharge,0) &gt; #{recharge}
+				</if>	
+				<if test="recharge_op==-1">
+					and ifnull(y.recharge,0) &lt; #{recharge}
+				</if>								
+			</if>	
+			<if test="consum!=null and consum!=''">
+				<if test="consum_op==0">
+					and ifnull(y.consum,0) = #{consum}
+				</if>
+				<if test="consum_op==1">
+					and ifnull(y.consum,0) &gt; #{consum}
+				</if>	
+				<if test="consum_op==-1">
+					and ifnull(y.consum,0) &lt; #{consum}
+				</if>								
+			</if>	
+			<if test="create_time_from!=null and create_time_from!=''">
+				and date(t.create_time) &gt;= #{create_time_from}							
+			</if>	
+			<if test="create_time_to!=null and create_time_to!=''">
+				and date(t.create_time) &lt;= #{create_time_to}							
+			</if>	
+			<if test="recharge_time_from!=null and recharge_time_from!=''">
+			and exists (
+			select 1 from (select user_id,change_time from account_balance_detail
+			where type = 1 and recharge_status = 2 and date(change_time) &gt;=
+			#{recharge_time_from}
+			group by user_id,change_time
+			) r1 where r1.user_id = t.id)
+			</if>	
+			<if test="recharge_time_to!=null and recharge_time_to!=''">
+			and exists (
+			select 1 from (select user_id,change_time from account_balance_detail
+			where type = 1 and recharge_status = 2 and date(change_time) &lt;=
+			#{recharge_time_to}
+			group by user_id,change_time
+			) r2 where r2.user_id = t.id)
+			</if>	
+			<if test="consum_time_from!=null and consum_time_from!=''">
+			and exists (
+			select 1 from (select user_id,change_time from account_balance_detail
+			where type = 2 and date(change_time) &gt;=
+			#{consum_time_from}
+			group by user_id,change_time
+			) c1 where c1.user_id = t.id)
+			</if>	
+			<if test="consum_time_to!=null and consum_time_to!=''">
+			and exists (
+			select 1 from (select user_id,change_time from account_balance_detail
+			where type = 2 and date(change_time) &lt;=
+			#{consum_time_to}
+			group by user_id,change_time
+			)c2 where c2.user_id = t.id)
+			</if>		
+		</where>
+	</select>
+	
+	<select id="queryPage" resultMap="TerminalUserVO">
+		select 
+			t.id, 
+			u.account,
+			u.group_id,
+			t.name, 
+			t.id_card, 
+			t.email, 
+			t.phone, 
+			t.create_time,
+			t.account_balance,
+			t.status,
+			t.percent_off,
+			bu.account belonging_account,
+			m.name markName,
+			ifnull(y.recharge,0) recharge,
+			ifnull(y.consum,0) consum,
+			t.account_balance
+		from terminal_user t
+		left join sys_user u
+			on t.id = u.id
+		left join sys_user bu
+			on t.belonging_id = bu.id
+		left join mark_bind_user mbu
+			on t.id = mbu.user_id
+		left join mark m
+			on mbu.mark_id = m.id
+		left join	
+		(select user_id ,sum(recharge) recharge,sum(consum) consum from (
+		select user_id,
+		sum(case when type = 1 then amount else 0 end) recharge,
+		sum(case when type = 2 then amount else 0 end) consum
+		from account_balance_detail where recharge_status = 2 group by user_id,type  ) x group by user_id) y on y.user_id = t.id			
+		<where>
+			t.status != 5
+			<if test="belongingId!=null">
+				and t.belonging_id = #{belongingId}
+			</if>
+			<if test="terminalUserAccount!=null and terminalUserAccount!='%%'">
+				and u.account like #{terminalUserAccount}
+			</if>
+			<if test="phone!=null and phone!='%%'">
+				and t.phone like #{phone}
+			</if>
+			<if test="markId!=null and markId!=''">
+				and m.id = #{markId}
+			</if>
+			<if test="percent_off!=null and percent_off!=''">
+				<if test="percent_off_op==0">
+					and t.percent_off = #{percent_off}
+				</if>
+				<if test="percent_off_op==1">
+					and t.percent_off &gt; #{percent_off}
+				</if>	
+				<if test="percent_off_op==-1">
+					and t.percent_off &lt; #{percent_off}
+				</if>								
+			</if>
+			<if test="account_balance!=null and account_balance!=''">
+				<if test="account_balance_op==0">
+					and t.account_balance = #{account_balance}
+				</if>
+				<if test="account_balance_op==1">
+					and t.account_balance &gt; #{account_balance}
+				</if>	
+				<if test="account_balance_op==-1">
+					and t.account_balance &lt; #{account_balance}
+				</if>								
+			</if>	
+			<if test="recharge!=null and recharge!=''">
+				<if test="recharge_op==0">
+					and ifnull(y.recharge,0) = #{recharge}
+				</if>
+				<if test="recharge_op==1">
+					and ifnull(y.recharge,0) &gt; #{recharge}
+				</if>	
+				<if test="recharge_op==-1">
+					and ifnull(y.recharge,0) &lt; #{recharge}
+				</if>								
+			</if>	
+			<if test="consum!=null and consum!=''">
+				<if test="consum_op==0">
+					and ifnull(y.consum,0) = #{consum}
+				</if>
+				<if test="consum_op==1">
+					and ifnull(y.consum,0) &gt; #{consum}
+				</if>	
+				<if test="consum_op==-1">
+					and ifnull(y.consum,0) &lt; #{consum}
+				</if>								
+			</if>	
+			<if test="create_time_from!=null and create_time_from!=''">
+				and date(t.create_time) &gt;= #{create_time_from}							
+			</if>	
+			<if test="create_time_to!=null and create_time_to!=''">
+				and date(t.create_time) &lt;= #{create_time_to}							
+			</if>	
+			<if test="recharge_time_from!=null and recharge_time_from!=''">
+			and exists (
+			select 1 from (select user_id,change_time from account_balance_detail
+			where type = 1 and recharge_status = 2 and date(change_time) &gt;=
+			#{recharge_time_from}
+			group by user_id,change_time
+			) r1 where r1.user_id = t.id)
+			</if>	
+			<if test="recharge_time_to!=null and recharge_time_to!=''">
+			and exists (
+			select 1 from (select user_id,change_time from account_balance_detail
+			where type = 1 and recharge_status = 2 and date(change_time) &lt;=
+			#{recharge_time_to}
+			group by user_id,change_time
+			) r2 where r2.user_id = t.id)
+			</if>	
+			<if test="consum_time_from!=null and consum_time_from!=''">
+			and exists (
+			select 1 from (select user_id,change_time from account_balance_detail
+			where type = 2 and date(change_time) &gt;=
+			#{consum_time_from}
+			group by user_id,change_time
+			) c1 where c1.user_id = t.id)
+			</if>	
+			<if test="consum_time_to!=null and consum_time_to!=''">
+			and exists (
+			select 1 from (select user_id,change_time from account_balance_detail
+			where type = 2 and date(change_time) &lt;=
+			#{consum_time_to}
+			group by user_id,change_time
+			)c2 where c2.user_id = t.id)
+			</if>							
+		</where>
+		order by t.create_time desc
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	<!-- **************** -->
+	
+	<select id="getTerminalUserById" resultMap="TerminalUserVO">
+		select 
+			u.id id, 
+			u.account, 
+			u.group_id, 
+			t.name,
+			u.password,
+			t.id_card,
+			t.email,
+			t.email_verified, 
+			t.phone phone, 
+			t.phone_verified, 
+			t.create_time,
+			t.status status,
+			t.belonging_id,
+			t.percent_off,
+			t.account_balance
+		from sys_user u 
+		left join terminal_user t
+			on u.id = t.id
+		where u.type = 4
+		and u.id = #{id}	
+	</select>
+	
+	<select id="getBaseInfoById" resultMap="TerminalUserVO">
+		select 
+			u.id, 
+			u.account, 
+			u.group_id,
+			t.name,
+			t.id_card,
+			t.email, 
+			t.phone,
+			t.percent_off,
+			t.account_balance
+		from sys_user u
+		join terminal_user t 
+			on u.id = t.id
+		where u.id = #{id}
+	</select>
+	
+	<select id="getTerminalUserByAccount" resultMap="TerminalUserVO">
+		select 
+			t.id, 
+			u.account, 
+			t.name,
+			u.password,
+			t.id_card,
+			t.email,
+			t.email_verified, 
+			t.phone, 
+			t.phone_verified, 
+			t.create_time,
+			t.status status
+		from sys_user u 
+		left join terminal_user t
+			on u.id = t.id
+		where u.type = 4
+		and u.account = #{account}
+		limit 1
+	</select>
+	
+	<select id="getUserByName" resultMap="TerminalUserVO">
+		select 
+			t.id, 
+			u.account, 
+			t.name,
+			u.password,
+			t.id_card,
+			t.email,
+			t.email_verified, 
+			t.phone, 
+			t.phone_verified, 
+			t.create_time,
+			t.status status
+		from sys_user u 
+		left join terminal_user t
+			on u.id = t.id
+		where u.type = 4
+		and t.name = #{name}
+		limit 1
+	</select>	
+	
+	<select id="getTerminalUserByAccountToAgentApi" resultMap="TerminalUserVO">
+		select 
+			t.id, 
+			u.account, 
+			t.name,
+			u.password,
+			t.id_card,
+			t.email,
+			t.email_verified, 
+			t.phone, 
+			t.phone_verified, 
+			t.create_time,
+			t.status status
+		from sys_user u 
+		left join terminal_user t
+			on u.id = t.id
+		where u.type = 4
+		and u.account = #{account}
+		and t.belonging_id =#{belongingId}
+		limit 1
+	</select>
+	
+	<select id="getTerminalUserByAccountForgetPassword" resultMap="TerminalUserVO">
+		select 
+			t.id, 
+			u.account, 
+			t.email,
+			t.phone
+		from sys_user u 
+		left join terminal_user t
+			on u.id = t.id
+		where u.type = 4
+		and u.account = #{account}
+	</select>
+	
+	<select id="getTerminalUserByPhone" resultMap="TerminalUserVO">
+		select 
+			t.id, 
+			t.id_card,
+			t.email,
+			t.email_verified, 
+			t.phone, 
+			t.phone_verified, 
+			t.create_time,
+			t.status status
+		from terminal_user t
+		where t.phone = #{phone}
+		limit 1
+	</select>
+	
+	<select id="getTerminalUserByEmail" resultMap="TerminalUserVO">
+		select 
+			t.id, 
+			t.id_card,
+			t.email,
+			t.email_verified, 
+			t.phone, 
+			t.phone_verified, 
+			t.create_time,
+			t.status status
+		from terminal_user t
+		where t.email = #{email}
+		limit 1
+	</select>
+	
+	<select id="getTerminalUserByName" resultMap="TerminalUserVO">
+		select 
+			u.id id,
+			u.account account, 
+			t.name name,
+			t.email email, 
+			t.phone phone, 
+			t.create_time createTime,
+			t.status status
+		from sys_user u
+		left join terminal_user t
+			on u.id = t.id
+		where u.type = 4
+		and binary u.account = #{account}
+	</select>
+	
+	<select id="getTerminalUserByIdCard" resultMap="TerminalUserVO">
+		select 
+			u.id id,
+			u.account account, 
+			t.name name,
+			t.email email, 
+			t.status status
+		from sys_user u
+		left join terminal_user t
+			on u.id = t.id
+		where u.type = 4
+		and binary t.id_card = #{idCard}
+		limit 1
+	</select>
+	
+	<select id="getBalanceById" resultMap="TerminalUserVO">
+		select 
+			 account_balance,
+			 balance_update_time,
+			 percent_off
+		from  terminal_user 
+		where 
+		   id = #{id}	
+	</select>
+	
+	<!-- ********************* -->
+	
+	<insert id="addTerminalUser">
+		insert into terminal_user (id, name, id_card, email, email_verified, phone,phone_verified, status, belonging_type, belonging_id, account_balance, create_time, percent_off) 
+		values (#{id}, #{name}, #{idCard}, #{email}, #{emailVerified}, #{phone}, #{phoneVerified}, #{status}, #{belongingType}, #{belongingId}, #{accountBalance}, #{createTime} ,#{percentOff})
+	</insert>
+	
+	<!-- ********************* -->
+	
+	<update id="updateBalanceById">
+		update terminal_user set  
+			account_balance = #{accountBalance},
+			balance_update_time    = #{balanceUpdateTime}
+		where id = #{id} 	
+	</update>
+	
+	<update id="updateTerminalUser">
+		update terminal_user set 
+			name           = #{name}, 
+			id_card        = #{idCard},
+			email          = #{email},
+			email_verified = #{emailVerified}, 
+			phone          = #{phone}, 
+			phone_verified = #{phoneVerified}, 
+			status         = #{status},
+			belonging_type = #{belongingType},
+			<if test="createTime!=null and createTime!=''">
+			create_time    = #{createTime},
+			</if> 
+			<if test="percentOff!=null and percentOff!=''">
+				percent_off =#{percentOff}  
+			</if>
+		where id = #{id} 
+	</update>
+	
+	<update id="updateTerminalUserBaseInfo">
+		update terminal_user set 
+			name           = #{name}, 
+			id_card        = #{idCard},
+			email          = #{email},
+			phone          = #{phone}, 
+			status         = #{status}
+		where id = #{id} 
+	</update>
+	
+	<update id="updateTerminalUserBaseInfoEmail">
+		update terminal_user set 
+			         email = #{email},
+			email_verified = #{emailVerified}
+		where id = #{id} 
+	</update>
+	
+	<update id="updateTerminalUserBaseInfoPhone">
+		update terminal_user set 
+					 phone = #{phone},
+			phone_verified = #{phoneVerified}
+		where id = #{id} 
+	</update>
+	
+	<update id="activaTerminalUserByStr">
+		update terminal_user set 
+			email_verified = #{emailVerified},
+			status         = #{status}
+		where id = #{id} 
+	</update>
+	
+	<update id="updateAccountBalanceById">
+		update terminal_user
+		<set>
+			account_balance = #{accountBalance}
+		</set>
+		where id = #{id}
+	</update>
+
+	<!-- ********************* -->
+	
+	<delete id="deleteTerminalUser">
+		delete from terminal_user
+		where id=#{id}
+	</delete>
+
+	<delete id="deleteTerminalUserByIds">
+		delete
+		from terminal_user
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

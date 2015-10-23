@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.PackagePriceMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.PackagePriceVO" id="PackagePriceVO">
+		<id     column="id"            property="id" />
+		<result column="region"        property="region" />
+		<result column="type"          property="type" />
+		<result column="cpu_core"      property="cpuCore" />
+		<result column="memory"        property="memory" />
+		<result column="data_disk"     property="dataDisk" />
+		<result column="bandwidth"     property="bandwidth" />
+		<result column="percent_off"   property="percentOff" />
+		<result column="description"   property="description" />
+		<result column="status"        property="status" />
+		<result column="monthly_price" property="price" />
+	</resultMap>
+	<resultMap type="com.zhicloud.op.vo.PriceVO" id="PriceVO">
+		<id     column="id"            property="id" />
+		<result column="package_id"    property="packageId" />
+		<result column="status"        property="status" />
+		<result column="monthly_price" property="monthlyPrice" />
+		<result column="create_time"   property="createTime" />
+		<result column="modified_time" property="modifiedTime" />
+	</resultMap>
+	
+	<select id="queryCount" resultType="int">
+		select count(1)
+		from package_info pi
+		where pi.type = #{type}
+		and pi.region = #{region}
+	</select>
+	
+	<select id="getPackagePrice" resultMap="PackagePriceVO">
+		select 
+			p.id, 
+			p.cpu_core,
+			p.memory,
+			p.data_disk,
+			p.bandwidth, 
+			p.region,
+			p.type,
+			p.percent_off,
+			p.description,
+			p.status
+		from package_info p 
+		where p.type = #{type}
+		and p.region = #{region}
+		order by p.cpu_core,p.memory,p.data_disk,p.bandwidth asc
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	<select id="getAllPackagePrice" resultMap="PackagePriceVO">
+		select 
+			p.id, 
+			p.cpu_core,
+			p.memory,
+			p.data_disk,
+			p.bandwidth, 
+			p.region,
+			p.type,
+			p.percent_off,
+			p.description,
+			p.status,
+			pp.monthly_price
+		from package_info p  
+		left join package_price pp
+		on p.id = pp.package_id and pp.status = #{status2}
+		where p.status != #{status1}
+		order by p.cpu_core,p.memory,p.data_disk,p.bandwidth asc
+	</select>
+	
+	<select id="queryPackagePrice" resultMap="PackagePriceVO">
+		select 
+			p.id, 
+			p.cpu_core,
+			p.memory,
+			p.data_disk,
+			p.bandwidth, 
+			p.region,
+			p.type,
+			p.percent_off,
+			p.description,
+			pp.status priceStatus
+		from package_info p 
+		join package_price pp
+		on p.id = pp.package_id
+		where p.type = #{type}
+	</select>
+	
+	<select id="getById" resultMap="PackagePriceVO">
+		select 
+			p.id, 
+			p.cpu_core,
+			p.memory,
+			p.data_disk,
+			p.bandwidth, 
+			p.region,
+			p.type,
+			p.percent_off,
+			p.description,
+			p.status
+		from package_info p 
+		where p.id = #{id}
+	</select>
+	
+	<select id="getPriceByInfoId" resultMap="PriceVO">
+		select 
+			p.id, 
+			p.package_id,
+			p.monthly_price,
+			p.status
+		from package_price p 
+		where p.package_id = #{id}
+	</select>
+	<select id="getByRegionAndTypeAndOption" resultMap="PackagePriceVO">
+		select 
+			p.id, 
+			p.cpu_core,
+			p.memory,
+			p.data_disk,
+			p.bandwidth, 
+			p.region,
+			p.type,
+			p.percent_off
+		from package_info p 
+		<where>
+			p.region = #{region}
+			and p.type = #{type}
+			and p.status = #{status}
+			<if test="cpuCore!=null and cpuCore!=''">
+				and p.cpu_core = #{cpuCore}
+			</if>
+			<if test="memory!=null and memory!=''">
+				and p.memory = #{memory}
+			</if>
+			<if test="dataDisk!=null and dataDisk!=''">
+				and p.data_disk = #{data_disk}
+			</if>
+			<if test="bandwidth!=null and bandwidth!=''">
+				and p.bandwidth = #{bandwidth}
+			</if>
+		</where>
+	</select>
+
+	<insert id="addPackagePrice">
+		insert into package_info (id, region, type, cpu_core, memory, data_disk,bandwidth,monthly_price,percent_off,description,status) 
+		values (#{id}, #{region}, #{type}, #{cpuCore}, #{memory}, #{disk},#{bandwidth},#{price},#{percentOff},#{description},#{status})
+	</insert>
+	<insert id="addPrice">
+		insert into package_price (id,package_id,status,monthly_price,create_time) 
+			values (#{id},#{packageId},#{status},#{monthlyPrice},#{createTime})
+	</insert>
+	<!-- ***************** -->
+	
+	<update id="updatePackagePrice">
+		update package_info 
+		<set>
+			cpu_core      = #{cpuCore}, 
+			memory        = #{memory},
+			data_disk     = #{disk}, 
+			bandwidth     = #{bandwidth},
+			percent_off   = #{percentOff},
+			description   = #{description},
+			status        = #{status}
+		</set> 
+		where id = #{id} 
+	</update>
+	
+	<update id="updateAllDiskPrice">
+		update package_info 
+		<set>
+			monthly_price = #{price} * monthly_price
+		</set> 
+		where type = #{type}
+		and region = #{region}
+	</update>
+	
+	<delete id="deleteById">
+		delete from package_info
+		where id=#{id}
+	</delete>
+	
+	<delete id="deletepriceByInfoId">
+		delete from package_price
+		where package_id=#{id}
+	</delete>
+</mapper>

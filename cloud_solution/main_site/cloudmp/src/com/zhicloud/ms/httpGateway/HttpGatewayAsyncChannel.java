@@ -246,5 +246,25 @@ public class HttpGatewayAsyncChannel extends HttpGatewayChannelExt {
     public synchronized JSONObject serviceModify(int type, String target, int diskType, String diskSource, String crypt) throws MalformedURLException, IOException {
         return this.serviceModify(type, target, diskType, diskSource, crypt, this.callback);
     }
+    
+    public synchronized JSONObject query_service_detail(String target, int level, String begin, String end)
+            throws MalformedURLException, IOException {
+        return this.query_service_detail(target, level, begin, end, this.callback);
+    }
+
+    public synchronized JSONObject query_service_summary(String[] target, String begin, String end)
+            throws MalformedURLException, IOException {
+        return this.query_service_summary(target, begin, end, this.callback);
+    }
+
+    public synchronized JSONObject query_operate_detail(String target, int level, String begin, String end)
+            throws MalformedURLException, IOException {
+        return this.query_operate_detail(target, level, begin, end, this.callback);
+    }
+
+    public synchronized JSONObject query_operate_summary(String[] target, String begin, String end)
+            throws MalformedURLException, IOException {
+        return this.query_operate_summary(target, begin, end, this.callback);
+    }
 	
 }

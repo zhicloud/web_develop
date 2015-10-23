@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.CloudHostBillDetailMapper">
+
+	<resultMap type="com.zhicloud.op.vo.CloudHostBillDetailVO" id="CloudHostBillDetailVO">
+		<id     column="id"              property="id" />
+		<result column="host_id"         property="hostId" />
+		<result column="type"            property="type" />
+		<result column="cpu_core"        property="cpuCore" />
+		<result column="cpu_used"        property="cpuUsed" />
+		<result column="memory"          property="memory" />
+		<result column="memory_used"     property="memoryUsed" />
+		<result column="sys_image_id"    property="sysImageId" />
+		<result column="sys_disk"        property="sysDisk" />
+		<result column="data_disk"       property="dataDisk" />
+		<result column="sys_disk_used"   property="sysDiskUsed" />
+		<result column="data_disk_used"  property="dataDiskUsed" />
+		<result column="disk_read"       property="diskRead" />
+		<result column="disk_write"      property="diskWrite" />
+		<result column="bandwidth"       property="bandWidth" />
+		<result column="network_traffic" property="networkTraffic" />
+		<result column="start_time"      property="startTime" />
+		<result column="end_time"        property="endTime" />
+		<result column="fee"             property="fee" />
+		<result column="is_paid"         property="isPaid" />
+		<result column="create_time"     property="createTime" />
+		<result column="monthly_price"     property="monthlyPrice" />  
+	</resultMap>
+	
+	<select id="queryCloudHostByDetailByBillId" resultMap="CloudHostBillDetailVO">
+		select 
+			t.id          ,
+			t.sys_image_id,
+			t.cpu_core    ,
+			t.memory      ,
+			t.sys_disk    ,
+			t.data_disk   ,
+			t.type        ,
+			t.start_time  ,
+			t.end_time    ,
+			t.fee         ,
+			t.is_paid     
+		from bill b
+		join bill_detail b_d
+			on b_d.bill_id = b.id
+		join cloud_host_bill_detail t
+			on b_d.item_type = 1
+			and t.id = b_d.item_id
+		where b.id = #{billId}
+	</select>
+	
+	<select id="getBillDetailByHostId" resultMap="CloudHostBillDetailVO">
+		 
+		select 
+			t.id          ,
+			t.sys_image_id,
+			t.cpu_core    ,
+			t.memory      ,
+			t.sys_disk    ,
+			t.data_disk   ,
+			t.type        ,
+			t.start_time  ,
+			t.end_time    ,
+			t.fee         ,
+			t.is_paid     
+		from cloud_host_bill_detail t
+		where t.host_id = #{hostId}
+		<if test="startTime!=null and startTime!=''">
+		      and start_time >= #{startTime}
+		</if>
+		<if test="endTime!=null and endTime!=''">
+		      and #{endTime} >= end_time   
+		</if>
+		and t.is_paid = 2 
+	</select>
+	
+	<select id="getOneUndoneReocrdBeforeTime" resultMap="CloudHostBillDetailVO">
+		<![CDATA[
+		select 
+			bd.id,              
+			bd.host_id,         
+			bd.type,            
+			bd.cpu_core,        
+			bd.cpu_used,        
+			bd.memory,          
+			bd.memory_used,     
+			bd.sys_image_id,    
+			bd.sys_disk,        
+			bd.data_disk,       
+			bd.sys_disk_used,   
+			bd.data_disk_used,  
+			bd.disk_read,       
+			bd.disk_write,      
+			bd.bandwidth,       
+			bd.network_traffic, 
+			bd.start_time,      
+			bd.end_time,        
+			bd.fee,             
+			bd.is_paid,         
+			bd.create_time     
+		from cloud_host_bill_detail bd
+		where bd.end_time is null
+		and bd.start_time < #{beforeTime}
+		limit 1
+		]]>
+	</select>
+	
+	<select id="getAllUndoneByHostIdBeforeTime" resultMap="CloudHostBillDetailVO">
+		<![CDATA[
+		select 
+			bd.id,              
+			bd.host_id,         
+			bd.type,            
+			bd.cpu_core,        
+			bd.cpu_used,        
+			bd.memory,          
+			bd.memory_used,     
+			bd.sys_image_id,    
+			bd.sys_disk,        
+			bd.data_disk,       
+			bd.sys_disk_used,   
+			bd.data_disk_used,  
+			bd.disk_read,       
+			bd.disk_write,      
+			bd.bandwidth,       
+			bd.network_traffic, 
+			bd.start_time,      
+			bd.end_time,        
+			bd.fee,             
+			bd.is_paid,         
+			bd.create_time     
+		from cloud_host_bill_detail bd
+		where bd.end_time is null
+		and bd.host_id = #{hostId}
+		and bd.start_time < #{beforeTime}
+		]]>
+	</select>
+	<select id="getAllUndoneByUserId" resultMap="CloudHostBillDetailVO">
+		<![CDATA[
+		select 
+			bd.id,              
+			bd.host_id,         
+			bd.type,            
+			bd.cpu_core,        
+			bd.cpu_used,        
+			bd.memory,          
+			bd.memory_used,     
+			bd.sys_image_id,    
+			bd.sys_disk,        
+			bd.data_disk,       
+			bd.sys_disk_used,   
+			bd.data_disk_used,  
+			bd.disk_read,       
+			bd.disk_write,      
+			bd.bandwidth,       
+			bd.network_traffic, 
+			bd.start_time,      
+			bd.end_time,        
+			bd.fee,             
+			bd.is_paid,         
+			bd.create_time,
+			ch.monthly_price,
+			ch.type hostType    
+		from cloud_host_bill_detail bd
+		left join cloud_host ch
+		on bd.host_id = ch.id
+		where bd.end_time is null
+		and ch.user_id = #{userId}
+		and bd.start_time < #{beforeTime}
+		]]>
+	</select>
+	
+	<select id="queryCloudHostBillDetailByBillDetailId" resultMap="CloudHostBillDetailVO">
+		select t.*    
+		from cloud_host_bill_detail t
+		where t.id = #{billDetailId}
+	</select>
+	
+	<select id="incomeCountForAgent" resultType="BigDecimal">
+		select sum(t.fee)
+		from cloud_host_bill_detail t
+		left join bill_detail b_d
+			on t.id = b_d.item_id
+		left join bill b
+			on b_d.bill_id = b.id
+		left join terminal_user u
+			on b.user_id = u.id
+		where u.belonging_id = #{userId}
+			and t.is_paid = 2
+	</select>
+	
+	<select id="incomeCountPaymentForMonthly" resultType="BigDecimal">
+		select sum(t.fee)
+		from cloud_host_bill_detail t
+		left join bill_detail b_d
+			on t.id = b_d.item_id
+		left join bill b
+			on b_d.bill_id = b.id
+		left join terminal_user u
+			on b.user_id = u.id
+		where u.belonging_id = #{userId}
+			and t.is_paid = 2
+			and t.type = 1
+	</select>
+	
+	<select id="incomeCountPaymentForDosage" resultType="BigDecimal">
+		select sum(t.fee)
+		from cloud_host_bill_detail t
+		left join bill_detail b_d
+			on t.id = b_d.item_id
+		left join bill b
+			on b_d.bill_id = b.id
+		left join terminal_user u
+			on b.user_id = u.id
+		where u.belonging_id = #{userId}
+			and t.is_paid = 2
+			and t.type = 2
+	</select>
+	
+	
+	<select id="countMonthlyBill" resultType="BigDecimal">
+	<![CDATA[
+		select sum(a.fee) as fee
+		from cloud_host_bill_detail a,cloud_host b,terminal_user c where a.type=4 and a.is_paid=2  and b.type=2
+
+        and a.host_id = b.id and b.user_id = c.id and c.belonging_id=#{id} and a.end_time like #{createTime} 
+        ]]>
+	</select>
+	<select id="getDetailByHostMonthly" resultMap="CloudHostBillDetailVO">
+	<![CDATA[
+		select sum(a.fee) as fee, c.email as userName ,  b.display_name as hostName, b.region 
+		from cloud_host_bill_detail a,cloud_host b,terminal_user c where a.type=4 and a.is_paid=2 and b.type=2
+
+        and a.host_id = b.id and b.user_id = c.id and c.belonging_id=#{id} and a.end_time like #{createTime} 
+        
+        group by b.display_name
+        
+        limit #{start_row}, #{row_count}
+        ]]>
+	</select>
+	<select id="getAllDetailByHostMonthly" resultMap="CloudHostBillDetailVO">
+	<![CDATA[
+		select sum(a.fee) as fee, c.email as userName ,  b.display_name as hostName, b.region 
+		from cloud_host_bill_detail a,cloud_host b,terminal_user c where a.type=4 and a.is_paid=2 and b.type=2
+
+        and a.host_id = b.id and b.user_id = c.id and c.belonging_id=#{id} and a.end_time like #{createTime} 
+        
+        group by b.display_name 
+        ]]>
+	</select>
+	<select id="getDetailByHostMonthlyCount" resultType="int">
+	<![CDATA[
+		select count(1) from (select sum(a.fee) as fee,  b.display_name as hostName
+		from cloud_host_bill_detail a,cloud_host b,terminal_user c where a.type=4 and a.is_paid=2  and b.type=2
+
+        and a.host_id = b.id and b.user_id = c.id and c.belonging_id=#{id} and a.end_time like #{createTime} 
+        
+        group by b.display_name) d
+	]]>
+	</select>
+	<select id="countAllBill" resultType="BigDecimal">
+	<![CDATA[
+		select sum(a.fee) as fee 
+		from cloud_host_bill_detail a,cloud_host b,terminal_user c where a.type=4 and a.is_paid=2  and b.type=2
+
+        and a.host_id = b.id and b.user_id = c.id and c.belonging_id=#{id} 
+         
+        ]]>
+	</select>
+	<select id="getDetailByMonthly" resultMap="CloudHostBillDetailVO">
+	<![CDATA[
+		select sum(a.fee) as fee,  
+		       date_format(a.end_time, '%Y%m')  as createTime
+		from cloud_host_bill_detail a,cloud_host b,terminal_user c where a.type=4 and a.is_paid=2  and b.type=2
+
+        and a.host_id = b.id and b.user_id = c.id and c.belonging_id=#{id} 
+        
+        group by date_format(a.end_time, '%Y%m')
+        
+        limit #{start_row}, #{row_count}
+        ]]>
+	</select>
+	
+	<select id="getDetailByMonthlyCount" resultType="int">
+	<![CDATA[
+		select count(1) from (select  date_format(a.end_time, '%Y%m') from cloud_host_bill_detail a,cloud_host b,terminal_user c where a.type=4 and a.is_paid=2 
+and a.host_id = b.id and b.user_id = c.id and c.belonging_id=#{id}  group by date_format(a.end_time, '%Y%m')) d
+	]]>
+	</select>
+	
+	
+	
+	<select id="countAllBillByRegion" resultType="BigDecimal">
+	<![CDATA[
+		select sum(a.fee) as fee 
+		from cloud_host_bill_detail a,cloud_host b,terminal_user c where a.type=4 and a.is_paid=2  and b.type=2
+
+        and a.host_id = b.id and b.user_id = c.id and c.belonging_id=#{id}  and b.region=#{region}
+        
+         
+        ]]>
+        <if test="startTime!=null"> 
+           and a.start_time>#{startTime}
+		</if>
+	</select>
+	
+	<select id="getIncomeCountByTime" resultType="BigDecimal">
+		select sum(t.fee)
+		from cloud_host_bill_detail t
+		left join cloud_host c
+			  on t.host_id=c.id
+		left join terminal_user u
+			on c.user_id = u.id
+		where u.belonging_id = #{userId}
+			and c.type=2
+			and t.is_paid = 2
+			and t.type = 4
+			and t.end_time like #{time}
+			<if test="region!=''and region!=null and region!=0">
+			and c.region = #{region}
+			</if>
+			
+	</select>
+	<!-- ************** -->
+	
+	<insert id="addCloudHostBillDetail">
+		insert into cloud_host_bill_detail
+		(         id,    host_id,    type,    cpu_core,   cpu_used,   memory,    memory_used,   sys_image_id,  sys_disk,   sys_disk_used,  data_disk,   data_disk_used,  disk_read,   disk_write,   bandwidth,    network_traffic,   start_time,   end_time,   fee,    is_paid,   create_time)
+		values (#{id}, #{host_id}, #{type}, #{cpuCore}, #{cpuUsed}, #{memory}, #{memoryUsed}, #{sysImageId}, #{sysDisk}, #{sysDiskUsed}, #{dataDisk}, #{dataDiskUsed}, #{diskRead}, #{diskWrite}, #{bandwidth}, #{networkTraffic}, #{startTime}, #{endTime}, #{fee}, #{isPaid}, #{createTime})
+	
+	</insert>
+	
+	<update id="updateFeeById">
+		update cloud_host_bill_detail
+		<set>
+			fee = #{fee},
+			<if test="isPaid!=null">
+				is_paid = #{isPaid},
+			</if>
+			<if test="endTime!=null">
+				end_time = #{endTime},
+			</if>
+		</set>
+		where id = #{id}
+		and is_paid !=2    <!-- 屏蔽掉已经付费的账单 -->
+	</update>
+	
+	
+	<update id="deleteById">
+		delete from cloud_host_bill_detail
+		where id = #{id}
+	</update>
+	
+	<delete id="deleteAllNotPaid">
+		delete from cloud_host_bill_detail
+		where host_id in (select id from cloud_host where user_id = #{userId} and type = #{type}) and is_paid = 1
+	
+	</delete>
+	
+	
+</mapper>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.InvoiceAddressMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.InvoiceAddressVO" id="InvoiceAddressVO">
+		<id     column="id"         property="id" />
+		<result column="user_id" property="userId" />
+		<result column="invoice_title" property="invoiceTitle" />
+	</resultMap>
+	
+	<insert id="addInvoiceAddress">
+		insert into invoice_address (id, user_id, invoice_title, address, recipients, phone) 
+		values (#{id}, #{userId}, #{invoiceTitle}, #{address}, #{recipients}, #{phone})
+	</insert>
+	
+	<!-- ********************* -->
+
+	<select id="getInvoiceAddress" resultMap="InvoiceAddressVO">
+		select 
+			id,
+			user_id,
+			invoice_title,
+			address,
+			recipients,
+			phone
+		from invoice_address
+		<where>
+			user_id = #{userId}
+		</where>
+	</select>
+	
+	<!-- ********************* -->
+
+	<select id="getInvoiceAddressById" resultMap="InvoiceAddressVO">
+		select 
+			id,
+			user_id,
+			invoice_title,
+			address,
+			recipients,
+			phone
+		from invoice_address
+		<where>
+			id = #{id}
+		</where>
+	</select>
+	
+	<!-- ********************* -->
+	
+	<select id="queryPage" resultMap="InvoiceAddressVO">
+		select 
+			id,
+			user_id,
+			invoice_title,
+			address,
+			recipients,
+			phone
+		from invoice_address
+		<where>
+			user_id = #{userId}
+		</where>
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	<!-- ********************* -->
+	
+	<select id="queryPageCount" resultType="int">
+	select count(1)
+	from invoice_address
+		<where>
+			user_id = #{userId}
+		</where>
+	</select>
+	
+	<!-- ********************* -->
+	
+	<delete id="deleteAddressByIds">
+		delete
+		from invoice_address
+		where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<!-- ********************* -->
+	
+	<update id="updateInvoiceAddress">
+		update invoice_address set 
+			invoice_title = #{invoiceTitle}, 
+			address = #{address},
+			recipients = #{recipients},
+			phone = #{phone}
+		where id = #{id}
+	</update>
+	
+	<!-- ********************* -->
+	
+</mapper>

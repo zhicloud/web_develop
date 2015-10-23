@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  	<display-name>ms</display-name>
+  	<welcome-file-list>
+    	<welcome-file>/views/common/main.jsp</welcome-file>
+  	</welcome-file-list>
+  	<filter>
+	    <filter-name>CharacterFilter</filter-name>
+	    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+	    <init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+	    </init-param>
+  	</filter>
+  	<filter-mapping>
+	    <filter-name>CharacterFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+  	</filter-mapping>
+  
+	<filter>
+		<filter-name>LoginFilter</filter-name>
+		<filter-class>com.zhicloud.ms.filter.login.LoginFilter</filter-class>
+	</filter>
+  	<filter-mapping>
+		<filter-name>LoginFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+  	</filter-mapping>
+
+	<listener>
+		<description>用于加载系统属性</description>
+		<listener-class>com.zhicloud.ms.app.propeties.AppPropertiesListener</listener-class>
+	</listener>
+	
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+  	<listener>
+    	<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+  	</listener>
+  	<context-param>
+	    <param-name>contextConfigLocation</param-name>
+	    <param-value>classpath:*.xml</param-value>
+  	</context-param>
+  	<servlet> 
+		<servlet-name>zcmsDispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>zcmsDispatcher</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<description>开启本机系统信息检测</description>
+		<servlet-name>SystemStateListener</servlet-name>
+		<servlet-class>com.zhicloud.ms.app.listener.SystemStateListener</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+</web-app>

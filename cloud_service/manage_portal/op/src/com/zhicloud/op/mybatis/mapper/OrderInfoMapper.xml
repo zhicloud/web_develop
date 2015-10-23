@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.OrderInfoMapper">
+
+	<!-- ******************* -->
+	
+	<resultMap type="com.zhicloud.op.vo.OrderInfoVO" id="OrderInfoVO">
+		<id     column="id"             property="id" />
+		<result column="user_id"        property="userId" />
+		<result column="create_time"    property="createTime" />
+		<result column="total_price"    property="totalPrice" />
+		<result column="process_status" property="processStatus" />
+		<result column="is_paid"        property="isPaid" />
+	</resultMap>
+	
+	<!-- ******************* -->
+	
+	<select id="getOneUnprocessedOrderByRegion" resultMap="OrderInfoVO">
+		select 
+			o.id,             
+			o.user_id,        
+			o.create_time,    
+			o.total_price,   
+			o.process_status,
+			o.is_paid        
+		from order_info o
+		where o.process_status = 0	<!-- 未处理 -->
+		and exists (
+			select 1
+			from order_detail o_det
+			join cloud_host_shopping_config h_conf
+				on  o_det.item_type = 1
+				and h_conf.id = o_det.item_id
+			where o_det.order_id = o.id
+			and   h_conf.region = #{region}
+		)
+		order by o.create_time
+		limit 1
+	</select>
+	
+	<!-- ******************* -->
+	
+	<insert id="addOrderInfo">
+		insert into order_info 
+		       (   id,    user_id,   create_time,   total_price,   process_status,   process_message,  is_paid) 
+		values ( #{id}, #{userId}, #{createTime}, #{totalPrice}, #{processStatus}, #{processMessage}, #{isPaid} )
+	</insert>
+	
+	
+	<update id="updateProcessStatusById">
+		update order_info
+		<set>
+			process_status = #{processStatus},
+			process_message = #{processMessage},
+		</set>
+		where id = #{id}
+	</update>
+	<update id="updateProcessStatusToPendingById">
+		update order_info
+		<set>
+			process_status = #{processStatus},
+			process_message = #{processMessage},
+		</set>
+		where id = #{id}
+		and process_status != 3 <!-- 排除正在被占用的订单 -->
+		and process_status != 1 <!-- 排除已经创建了的订单 -->
+	</update>
+	
+	
+	
+
+</mapper>
