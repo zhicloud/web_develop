@@ -1125,6 +1125,27 @@ public class StringUtil
         }
         return "";
     }
+	
+	/**
+	 * 
+	* @Title: getIpFromUrl 
+	* @Description: 从字符串中截取IP地址
+	* @param @param str
+	* @param @return      
+	* @return String[]     
+	* @throws
+	 */
+	public static String [] getIpFromUrl(String str){
+	    Matcher m=Pattern.compile("ip address ((\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3}))").matcher(str);
+	    String [] ips = null ; 
+	    int i = 0;
+        while(m.find()){ 
+            ips[i] = m.group(1); 
+            i++;
+        }
+        return ips;
+	}
+	
     
 	
 	

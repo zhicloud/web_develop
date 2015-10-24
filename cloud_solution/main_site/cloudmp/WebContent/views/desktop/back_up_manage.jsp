@@ -529,7 +529,7 @@ function refreshResumeProgress(){
 					}
 				
 				}
-			 else if(result.properties.backup_status==null )
+			 else if(result.properties.resume_status==null )
 				{
 					
 					window.setTimeout(self.refreshResumeProgress, 5000);
