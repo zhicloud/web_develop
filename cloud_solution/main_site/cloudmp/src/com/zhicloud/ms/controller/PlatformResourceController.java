@@ -15,10 +15,8 @@ import com.zhicloud.ms.service.SharedMemoryService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.vo.*;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +27,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -311,7 +308,7 @@ public class PlatformResourceController {
         json.put("error", error);
         json.put("stop", stop);
         model.addAttribute("statusdata", json);
-		return "service_and_version_manage";
+		return "service/service_and_version_manage";
 	}
 
     @RequestMapping(value="/mypaltform/service/mod",method=RequestMethod.GET)
@@ -336,12 +333,18 @@ public class PlatformResourceController {
         // 获取共享存储源列表
         List<SharedMemoryVO> sharedMemoryVOList = sharedMemoryService.queryInfo(null);
 
-        model.addAttribute("shared_memory_vo_list", sharedMemoryVOList);
+       // 获取最新共享存储
+        SharedMemoryVO sharedMemoryVO =  sharedMemoryVOList.get(0);
+
+        String url = sharedMemoryVO.getUrl();
+
+        model.addAttribute("url", url);
 
         return "service/service_and_version_mod";
     }
 
     @RequestMapping(value="/mypaltform/service/mod",method=RequestMethod.POST)
+    @ResponseBody
     public MethodResult serviceModify(ServiceInfoExt serviceInfo,HttpServletRequest request)
         throws IOException {
 

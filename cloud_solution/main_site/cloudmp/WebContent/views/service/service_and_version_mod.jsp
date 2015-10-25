@@ -62,7 +62,7 @@
           <div class="pageheader">
             
 
-            <h2><i class="fa fa-cogs"></i>编辑主机资源池</h2>
+            <h2><i class="fa fa-cogs"></i>编辑服务</h2>
             
 
           </div>
@@ -91,7 +91,7 @@
 
                   <!-- tile header -->
                   <div class="tile-header">
-                      <h3><a href="<%=request.getContextPath() %>/mypaltform/service"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-arrow-left"></i></a>输入主机资源池信息</h3>
+                      <h3><a href="<%=request.getContextPath() %>/mypaltform/service"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-arrow-left"></i></a>输入服务信息</h3>
                   </div>
                   <!-- /tile header -->
 
@@ -100,22 +100,24 @@
                     
                     <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="${pageContext.request.contextPath }/mypaltform/service/mod" method="post">
 
+                        <input type="hidden" id="type" name="type" value="${service_info.type} ">
+
                       <div class="form-group">
                         <label for="target" class="col-sm-2 control-label">服务名 *</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="target" name="target" value="${service_info.name}" parsley-trigger="change" parsley-required="true" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
+                          <input type="text" class="form-control" id="target" name="name" value="${service_info.name}" readonly="readonly">
                         </div>
                       </div>
                       
 					<div class="form-group">
-					    <label for="optionsRadios10" class="col-sm-2 control-label">磁盘模式*</label>
+					    <label for="optionsRadios10" class="col-sm-2 control-label">存储模式*</label>
 					    <div class="col-sm-8">  
 					        <div class="radio radio-transparent col-md-2">
-					        	<input type="radio" name="diskType" id="optionsRadios10" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');" checked>
+					        	<input type="radio" name="diskType" id="optionsRadios10" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');" checked="checked">
 					       		<label for="optionsRadios10">本地</label>
 					     	</div>
-					     	<div class="radio radio-transparent col-md-2">
-					       		<input type="radio" name="diskType" id="optionsRadios11" value="1" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');">
+					     	<div class="radio radio-transparent col-md-4">
+					       		<input type="radio" name="diskType" id="optionsRadios11" value="1" onclick="$('#divNas').removeAttr('hidden');$('#divNas').attr('class','show');">
 					       		<label for="optionsRadios11">共享存储</label>
 					     	</div>                          
 					   	</div>
@@ -123,9 +125,9 @@
                       
 					<div id="divNas" class="hidden">
 						<div class="form-group">
-						<label for="path" class="col-sm-2 control-label">存储路径</label>
+						<label for="disk_source" class="col-sm-2 control-label">存储路径</label>
 							<div class="col-sm-4">
-							     <input type="text" class="form-control" id="path" name="path" value="${computeInfoExt.path}" parsley-trigger="change" parsley-type="nochinese" parsley-maxlength="50" />
+							     <input type="text" class="form-control" id="disk_source" name="diskSource" value="${url}" readonly="readonly" />
 							</div>
 						</div>
 					</div>
@@ -215,59 +217,37 @@
     });
 
     $(function(){
-        $("#port_pool").hide();
-        $("#ip_pool").hide();
-        $("#network_ip").attr("disabled",true);
-        $("#network_port").attr("disabled",true);
-        $("#disk_pool").hide();
-        $("#optionsRadios"+${computeInfoExt.networkType}).click();
-        $("#optionsRadios1"+${computeInfoExt.diskType}).click();
-        $("#mode0"+${computeInfoExt.mode0}).attr("checked", true);
-        $("#mode1"+${computeInfoExt.mode1}).attr("checked", true);
-        $("#mode2"+${computeInfoExt.mode2}).attr("checked", true);
-        $("#mode3"+${computeInfoExt.mode3}).attr("checked", true);
-        if($('#optionsRadios12').is(':checked')) {
-        	$("#divNas").show();
-        }
+        <%--$("#port_pool").hide();--%>
+        <%--$("#ip_pool").hide();--%>
+        <%--$("#network_ip").attr("disabled",true);--%>
+        <%--$("#network_port").attr("disabled",true);--%>
+        <%--$("#disk_pool").hide();--%>
+        <%--$("#optionsRadios"+${computeInfoExt.networkType}).click();--%>
+        <%--$("#optionsRadios1"+${computeInfoExt.diskType}).click();--%>
+        <%--$("#mode0"+${computeInfoExt.mode0}).attr("checked", true);--%>
+        <%--$("#mode1"+${computeInfoExt.mode1}).attr("checked", true);--%>
+        <%--$("#mode2"+${computeInfoExt.mode2}).attr("checked", true);--%>
+        <%--$("#mode3"+${computeInfoExt.mode3}).attr("checked", true);--%>
+        <%--if($('#optionsRadios12').is(':checked')) {--%>
+        	<%--$("#divNas").show();--%>
+        <%--}--%>
         <%--$("#option"+${computeInfoExt.option}).attr("checked", true);--%>
     });
 
-    function networkCheck(id) {
-        if (id == 'optionsRadios0') {
-            $("#port_pool").hide();
-            $("#ip_pool").hide();
-            $("#no_pool").attr("disabled",false);
-            $("#network_ip").attr("disabled",true);
-            $("#network_port").attr("disabled",true);
-        }
-        if (id == 'optionsRadios1' ) {
-            $("#port_pool").hide();
-            $("#ip_pool").show();
-            $("#no_pool").attr("disabled",true);
-            $("#network_ip").attr("disabled",false);
-            $("#network_port").attr("disabled",true);
-        }
-        if (id == 'optionsRadios2') {
-            $("#port_pool").show();
-            $("#ip_pool").hide();
-            $("#no_pool").attr("disabled",true);
-            $("#network_ip").attr("disabled",true);
-            $("#network_port").attr("disabled",false);
-        }
-    }
 
-    function diskCheck(id) {
-        if (id == 'optionsRadios10') {
-            $("#disk_pool").hide();
-            $("#no_pool").attr("disabled",false);
-            $("#sys_image_id").attr("disabled",true);
-        }
-        if (id == 'optionsRadios11' ) {
-            $("#disk_pool").show();
-            $("#no_pool").attr("disabled",true);
-            $("#sys_image_id").attr("disabled",false);
-        }
-    }
+
+//    function diskCheck(id) {
+//        if (id == 'optionsRadios10') {
+//            $("#disk_pool").hide();
+//            $("#no_pool").attr("disabled",false);
+//            $("#sys_image_id").attr("disabled",true);
+//        }
+//        if (id == 'optionsRadios11' ) {
+//            $("#disk_pool").show();
+//            $("#no_pool").attr("disabled",true);
+//            $("#sys_image_id").attr("disabled",false);
+//        }
+//    }
 
     function saveForm(){
 		jQuery.ajax({
@@ -289,10 +269,11 @@
  		        			var options = {
  		        					success:function result(data){
  		        						if(data.status == "fail"){
+                                            console.info("fail");
                                             $("#tipscontent").html(data.message);
 							     		      $("#dia").click();  		        							
  		        						}else{
-                                            location.href = path + "/cdrpm/all";
+                                            location.href = path + "/mypaltform/service";
  		        						}
  		        					},
  		        					dataType:'json',
