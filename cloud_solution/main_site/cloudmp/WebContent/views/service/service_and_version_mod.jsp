@@ -134,6 +134,7 @@
 					
                     <input id="no_disk" type="hidden" name="diskId" value="">
 
+
                      <div class="form-group form-footer footer-white">
                         <div class="col-sm-offset-4 col-sm-8">
                           <button type="button" class="btn btn-greensea" onclick="saveForm();"><i class="fa fa-plus"></i>
@@ -145,8 +146,10 @@
                             
                     </form>
 
+
                   </div>
                   <!-- /tile body -->
+
 
                 </section>
                 <!-- /tile -->
@@ -178,13 +181,29 @@
 
 
 
+
+
+
+
+
+
         </div>
         <!-- Page content end -->
 
 
 
 
+
+
+
+
          
+
+
+
+
+
+
 
 
 
@@ -197,24 +216,36 @@
 
 
 
+
+
+
+
     </div>
     <!-- Wrap all page content end -->
 
 
 
+
+
+
     <section class="videocontent" id="video"></section>
 
+
      <script type="text/javascript" src="<%=request.getContextPath()%>/js/plugins/jquery.form.js"></script>
+
 
     <script>
     
     var path = '<%=request.getContextPath()%>';
 
+
     $(function(){
       //chosen select input
         $(".chosen-select").chosen({disable_search_threshold: 10});
 
+
     });
+
 
     $(function(){
         <%--$("#port_pool").hide();--%>
@@ -234,7 +265,32 @@
         <%--$("#option"+${computeInfoExt.option}).attr("checked", true);--%>
     });
 
+    function networkCheck(id) {
+        if (id == 'optionsRadios0') {
+            $("#port_pool").hide();
+            $("#ip_pool").hide();
+            $("#no_pool").attr("disabled",false);
+            $("#network_ip").attr("disabled",true);
+            $("#network_port").attr("disabled",true);
+        }
 
+
+
+        if (id == 'optionsRadios1' ) {
+            $("#port_pool").hide();
+            $("#ip_pool").show();
+            $("#no_pool").attr("disabled",true);
+            $("#network_ip").attr("disabled",false);
+            $("#network_port").attr("disabled",true);
+        }
+        if (id == 'optionsRadios2') {
+            $("#port_pool").show();
+            $("#ip_pool").hide();
+            $("#no_pool").attr("disabled",true);
+            $("#network_ip").attr("disabled",true);
+            $("#network_port").attr("disabled",false);
+        }
+    }
 
 //    function diskCheck(id) {
 //        if (id == 'optionsRadios10') {
@@ -248,6 +304,7 @@
 //            $("#sys_image_id").attr("disabled",false);
 //        }
 //    }
+
 
     function saveForm(){
 		jQuery.ajax({
@@ -294,6 +351,7 @@
   </body>
 </html>
       
+
 
       
 

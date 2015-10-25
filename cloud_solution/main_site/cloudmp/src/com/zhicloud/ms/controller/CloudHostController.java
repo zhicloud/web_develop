@@ -601,8 +601,11 @@ public class CloudHostController {
 	        HostBackupProgressData data = pool.get(uuid);
 //			HostBackupProgressData data = this.getProgressData(uuid);
 			if(data==null){
-				MethodResult message = new MethodResult(MethodResult.FAIL, "备份还未开始");
-				return message;			
+	            MethodResult result = new MethodResult(MethodResult.SUCCESS, "备份成功");
+	            result.put("progress", 100);
+                result.put("backup_status", true);
+                return result;
+		
 			}				
 			MethodResult result = new MethodResult(MethodResult.SUCCESS, "备份成功");
 			if(data.isReady()){
