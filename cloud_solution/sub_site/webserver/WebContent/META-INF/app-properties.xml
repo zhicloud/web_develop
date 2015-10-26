@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="gbk"?>
+<properties>
+	<property key="component_runtime_script" name="组件运行时间执行脚本" type="String" 
+		description="组件运行时间执行脚本">
+		ps -ef|grep {%%}|grep -v grep|awk '{print $2}'|xargs ps -o etime -p|sed -n '2p'
+	</property>
+	
+	<property key="component_pid_path" name="组件pid存放位置" type="String" 
+		description="组件pid存放位置">
+		/var/zhicloud/running
+	</property>
+	<property key="find_process_id" name="查找进程pid" type="String" 
+		description="查找进程pid">
+		ps -ef|grep {%%}|grep -v grep
+	</property>
+	<property key="reboot_server" name="重启服务器" type="String" 
+		description="重启服务器">
+		reboot
+	</property>
+	<property key="shutdown_server" name="服务器关机" type="String" 
+		description="服务器关机">
+		shutdown -h now
+	</property>
+	
+	<property key="update_server_datetime" name="更新服务器时间" type="String" 
+		description="更新服务器时间">
+		date -s {%%}	
+	</property>
+	
+	<property key="update_server_hostname" name="更新服务器名称" type="String" 
+		description="更新服务器名称">
+		hostname {%%}
+	</property>	
+	<property key="reboot_tomcat" name="重启tomcat" type="String" 
+		description="重启tomcat">
+		/opt/start.sh
+	</property>
+	<property key="component_temp_path" name="组件临时目录" type="String" 
+		description="组件临时目录">
+		/home/temp
+	</property>
+	<property key="component_back_path" name="组件备份目录" type="String" 
+		description="组件备份目录">
+		/opt/temp
+	</property>
+	
+	<property key="stop_component_service" name="停止组件服务" type="String" 
+		description="停止组件服务">
+		{%%} stop
+	</property>
+	<property key="start_component_service" name="启动组件服务" type="String" 
+		description="启动组件服务">
+		{%%} start
+	</property>
+	<property key="kill_process" name="强制杀进程" type="String" 
+		description="强制杀进程">
+		ps -ef|grep {%%}|grep -v grep|awk '{print $2}'|xargs kill -9 
+	</property>
+	
+	<property key="network_bandwidth" name="网卡带宽" type="String" 
+		description="网卡带宽">
+		ethtool {%%}|grep Speed|awk '{print $2}'
+	</property>
+</properties>

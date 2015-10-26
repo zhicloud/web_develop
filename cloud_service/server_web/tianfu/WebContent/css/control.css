@@ -1,0 +1,276 @@
+
+body, html {
+	background: #f8f8f8;
+	color: #333;
+	font-family: "微软雅黑", "宋体", Arial;
+	font-size: 14px;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+a {
+	color: #157efb;
+	text-decoration: none;
+}
+* {
+	outline: none;
+}
+h1, h2, h3, h4, h5, p, ul, ol, li, dl, dt, dd, form {
+	margin: 0;
+	padding: 0;
+}
+ul, ol, dl {
+	list-style: none;
+}
+img {
+	border: 0;
+}
+.clear {
+	clear: both;
+	height: 0;
+	overflow: hidden;
+}
+.l {
+	float: left;
+}
+.r {
+	float: right;
+}
+.full{
+	width:100%;
+	height:100%;
+}
+.navbar {
+	width:200px;
+	background:#d9ecfe;
+	height: 100%;
+	overflow:hidden;
+	border-right:solid 1px #acc0b7;
+	position:fixed;
+	z-index:2;
+}
+.navbarlogo {
+	width:145px;
+	height:30px;
+	padding:15px 28px 15px 27px;
+}
+.navbar ul {
+	display:block;
+	width:200px;
+	padding:40px 0 0 0;
+}
+.navbar ul ul {
+	padding:0;
+	display:none;
+}
+.navbar li {
+	display:block;
+	width:200px;
+	float:left;
+}
+.navbar li span{
+	font-family:Courier,"微软雅黑", "宋体", Arial;
+	float:right;
+}
+.navbar li a {
+	display:block;
+	color:#5dbcdc;
+	padding:12px 17px 12px 20px;
+	border-right:solid 3px #d9ecfe;
+	width:160px;
+	height:16px;
+	line-height:16px;
+	cursor:pointer;
+}
+.navbar li a:hover {
+	color:#fff;
+	background:#acc0b7;
+	border-right:solid 3px #acc0b7;
+}
+.navbar li li {
+	width:200px;
+	height:30px;
+}
+.navbar li li:first-child {
+}
+.navbar li li a {
+	display:block;
+	padding:7px 17px 7px 34px;
+	width:146px;
+	height:16px;
+	line-height:16px;
+	background:#ecf6ff;
+	border-right:solid 3px #ecf6ff;
+}
+.navbarnavactive{
+	border-right:solid 3px #668e90 !important;
+	color:#668e90 !important;
+}
+.navbarfooter{
+	position: absolute;
+	bottom: 0;
+	height:60px;
+	width: 200px;
+}
+.control{
+	position:relative;
+	width:100%;
+	min-height:100%;
+}
+.controlheader{
+	background:#fcfcfc;
+	height:60px;
+	border-bottom:solid 1px #acc0b7;
+	position:fixed;
+	width:100%;
+	min-width:1000px;
+	width:expression_r(document.body.clientWidth < 1000 ? "1000px" : "auto" );
+}
+.controlheaderbox{
+	margin-left:201px;
+}
+.controlheaderbutton{
+	color:#668e90;
+	height:60px;
+	border-right:solid 1px #acc0b7;
+}
+.controlheaderbutton a{
+	display:block;
+	height:60px;
+	padding:0 20px;
+	line-height:60px;
+	font-size:14px;
+	color:#668e90;
+}
+.controlheaderbutton a:hover{
+	color:#00ab51;
+	background:#fff;
+}
+.controlheaderuser{
+	color:#668e90;
+	height:60px;
+	font-size:14px;
+	line-height:60px;
+	padding:0 20px;
+}
+.controlheaderlogout{
+	height:26px;
+	width:50px;
+	margin:17px 20px 0 0;
+}
+.controlheaderlogout a{
+	display:block;
+	color:#fff;
+	background:url(../control/button_bg_gray_50_26.png) no-repeat center;
+	height:26px;
+	width:50px;
+	text-align:center;
+	line-height:26px;
+}
+.controlheaderlogout a:hover{
+	background:url(../control/button_bg_orange_50_24.png) no-repeat center;
+}
+.controlheader #productmenu{
+	position:absolute;
+	left:269px;
+	top:60px;
+	width:96px;
+	height:180px;
+	background:#acc0b7;
+	border:solid 1px #acc0b7;
+	display:none;
+}
+#productmenu a{
+	display:block;
+	height:30px;
+	width:76px;
+	line-height:30px;
+	padding-left: 20px;
+	color:#fff;
+}
+#productmenu a:hover{
+	color:#00ab51;
+	background:#fff;
+}
+.control table {
+	width:100%;
+}
+.control td {
+	width:100%;
+	padding-top:61px;
+	padding-left:201px;
+	padding-bottom:60px;
+}
+ iframe {
+	width:100%;
+	border:none;
+}
+.controltitle{
+	margin:0 0 40px 200px;
+	padding:40 20px;
+	background:#f0f0f0;
+	height:49px;
+	line-height:19px;
+	border-border:solid 1px #bbb;
+}
+.controltitle h2{
+	font-size:20px;
+	line-height:29px;
+}
+.controltitle h3{
+	font-size:14px;
+	line-height:20px;
+}
+.controlmain{
+	position:relative;
+	width:100%;
+	min-width:1000px;
+	width:expression_r(document.body.clientWidth < 1000 ? "1000px" : "auto" );
+	padding:0 0 60px 0;
+}
+.controlfooter{
+	position:absolute;
+	bottom:0;
+	background:#f0f0f0;
+	height:60px;
+	width:100%;
+	min-width:1000px;
+	width:expression_r(document.body.clientWidth < 1000 ? "1000px" : "auto" );
+}
+.controlfooterbox{
+	padding-left:201px;
+	color:#668e90;
+	line-height:60px;
+	text-align:center;
+}
+.controlfooter a{
+	color:#00ab51;
+}
+/*让position:fixed在IE6下可用!*/ 
+.fixed-top/*头部固定*/{position:fixed;bottom:auto;top:0px;}
+.fixed-bottom/*底部固定*/{position:fixed;bottom:0px;top:auto;} 
+.fixed-left/*左侧固定*/{position:fixed;right:auto;left:0px;} 
+.fixed-right/*右侧固定*/{position:fixed;right:0px;left:auto;}
+
+/*上面的是除了IE6的主流浏览器通用的方法*/
+*html,*htmlbody/*修正IE6振动bug*/
+{background-image:url(about:blank);background-attachment:fixed;}
+*html.fixed-top/*IE6头部固定*/
+{position:absolute;bottom:auto;
+top:expression(eval(document.documentElement.scrollTop));}
+*html.fixed-right/*IE6右侧固定*/
+{position:absolute;right:auto;
+left:expression(eval(document.documentElement.scrollLeft
++document.documentElement.clientWidth-this.offsetWidth)
+-(parseInt(this.currentStyle.marginLeft,10)||0)
+-(parseInt(this.currentStyle.marginRight,10)||0));}
+
+*html.fixed-bottom/*IE6底部固定*/
+{position:absolute;bottom:auto;
+top:expression(eval(document.documentElement.scrollTop
++document.documentElement.clientHeight-this.offsetHeight
+-(parseInt(this.currentStyle.marginTop,10)||0)
+-(parseInt(this.currentStyle.marginBottom,10)||0)));}
+*html.fixed-left/*IE6左侧固定*/
+{position:absolute;right:auto;
+left:expression(eval(document.documentElement.scrollLeft));}

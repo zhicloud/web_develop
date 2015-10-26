@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.VpcBillDetailMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.VpcBillDetailVO" id="VpcBillDetailVO">
+		<id     column="id"            property="id" />
+ 		<result column="vpc_id"        property="vpcId" /> 
+		<result column="create_time"   property="createTime" />  
+		<result column="start_time"    property="startTime" />  
+		<result column="end_time"      property="endTime" />  
+		<result column="host_amount"   property="hostAmount"/>
+		<result column="ip_amount"     property="ipAmount"/>
+		<result column="fee"           property="fee"/>
+		<result column="is_paid"       property="isPaid"/>
+	</resultMap> 
+	
+	<!-- ***************** -->
+
+	<select id="getOneUndoneReocrdBeforeTime" resultMap="VpcBillDetailVO">
+		<![CDATA[
+		select 
+			bd.id,              
+			bd.vpc_id, 
+			bd.start_time,      
+			bd.end_time,        
+			bd.fee,             
+			bd.is_paid,         
+			bd.create_time     
+		from vpc_bill_detail bd
+		where bd.end_time is null
+		and   bd.start_time < #{beforeTime}
+		limit 1
+		]]>
+ 	</select> 
+	<select id="getUndoneBillByUserId" resultMap="VpcBillDetailVO">
+		<![CDATA[
+		select 
+			bd.id,              
+			bd.vpc_id, 
+			bd.start_time,      
+			bd.end_time,        
+			bd.fee,             
+			bd.is_paid,         
+			bd.create_time     
+		from vpc_bill_detail bd
+		join vpc_base_info vbi
+		on bd.vpc_id = vbi.id
+		where bd.end_time is null
+		and   bd.start_time < #{beforeTime} 
+		and   vbi.user_id = #{userId} 
+		]]>
+ 	</select> 
+	<select id="getOneUndoneReocrdByVpcId" resultMap="VpcBillDetailVO">
+ 		select 
+			bd.id,              
+			bd.vpc_id, 
+			bd.start_time,      
+			bd.end_time,        
+			bd.fee,             
+			bd.is_paid,         
+			bd.create_time     
+		from vpc_bill_detail bd
+		where bd.end_time is null and bd.is_paid = 1
+        and bd.vpc_id = #{vpcId}
+		limit 1
+  	</select> 
+	<select id="getAllUndoneReocrdByVpcId" resultMap="VpcBillDetailVO">
+ 		select 
+			bd.id,              
+			bd.vpc_id, 
+			bd.start_time,      
+			bd.end_time,        
+			bd.fee,             
+			bd.is_paid,         
+			bd.create_time     
+		from vpc_bill_detail bd
+		where bd.end_time is null and bd.is_paid = 1
+        and bd.vpc_id = #{vpcId}
+   	</select> 
+	 
+	 <!-- ********************* -->
+	
+	<insert id="addVpcBillDetail">
+		insert into vpc_bill_detail (id,vpc_id,create_time,start_time,end_time,host_amount,ip_amount,fee,is_paid) 
+		values (#{id}, #{vpcId},#{createTime},#{startTime},#{endTime},#{hostAmount},#{ipAmount},#{fee},1)
+	</insert>
+	
+	<!-- ********************* -->
+	
+	
+	<update id="updateBillStatusBeforPay">
+		update vpc_bill_detail
+		set 
+		    is_paid = 3
+		where  id = #{id}
+		and is_paid != 3
+	</update>
+	
+	<update id="updateBillAfterPay">
+		update vpc_bill_detail
+		set 
+		    end_time = #{endTime},
+		    is_paid = 2 ,
+		    fee = #{fee}
+		where  id = #{id}
+	</update>
+	<delete id="deleteVpcBillDetailById">
+		delete from vpc_bill_detail 
+		where  id = #{id}
+	</delete>
+	<delete id="deleteVpcBillDetailByUserId">
+		delete from vpc_bill_detail 
+		where  user_id = #{userId}
+	</delete>
+	 
+
+</mapper>

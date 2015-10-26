@@ -1,0 +1,100 @@
+﻿body, html {
+	background: #f4f4f4;
+	color: #333;
+	font-family: "微软雅黑", "宋体", Arial;
+	font-size: 14px;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+a {
+	color: #2980b9;
+	text-decoration: none;
+}
+* {
+	outline: none;
+}
+h1, h2, h3, h4, h5, p, ul, ol, li, dl, dt, dd, form {
+	margin: 0;
+	padding: 0;
+}
+ul, ol, dl {
+	list-style: none;
+}
+img {
+	border: 0;
+}
+.clear {
+	clear: both;
+	height: 0;
+	overflow: hidden;
+}
+.l {
+	float: left;
+}
+.r {
+	float: right;
+}
+.inputtitle{
+	color:#666;
+	width:90px;
+	height:36px;
+	line-height:18px;
+	padding:0 10px 0 0;
+	text-align:right;
+	vertical-align:middle;
+}
+.inputcont{
+	color:#666;
+	width:140px;
+	height:36px;
+	line-height:18px;
+	padding:0 10px 0 0;
+	text-align:left;
+	vertical-align:middle;
+}
+.inputtip{
+	color:#999;
+	width:200px;
+	height:36px;
+	line-height:18px;
+	text-align:left;
+	vertical-align:middle;
+}
+.inputtip img{
+	vertical-align:text-bottom;
+	padding:0 5px 0 0;
+}
+.inputtip i{
+	color:#999999;
+	font-style:normal;
+	font-weight:normal;
+}
+.inputtip b{
+	color:#e74c3c;
+	font-style:normal;
+	font-weight:normal;
+}
+.inputtext{
+	display:block;
+	width:144px;
+	padding:0 2px;
+	line-height:24px;
+	height:24px;
+	color:#000;
+	font-family: "微软雅黑", "宋体", Arial;
+	font-size: 12px;
+	vertical-align:middle;
+}
+.inputselect{
+	border:solid 1px #ddd;
+	display:block;
+	width:150px;
+	padding:0 2px;
+	line-height:24px;
+	height:26px;
+	color:#000;
+	font-family: "微软雅黑", "宋体", Arial;
+	font-size: 12px;
+	vertical-align:middle;
+}

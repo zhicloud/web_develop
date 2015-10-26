@@ -4,11 +4,19 @@ import java.util.Date;
 
 public class ServiceInfoExt extends ServiceInfo {
 
+  private String sessionId;//gw回调消息ID
 	private long lastUpdateTime = 0;// 最近更新时间
 	private long exceptionTime = 0;// 异常状态下，异常开始时间
 	private long exceptionDurationTime = 0;// 异常状态下后，恢复正常状态后，异常持续时间
   private int asyncStatus = -1;   // 异步通讯状态，-1：正在等待回调，0：操作失败，1：操作成功
 
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
     public void updateTime() {
 		this.lastUpdateTime = new Date().getTime();

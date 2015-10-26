@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.BillMapper">
+
+	<resultMap type="com.zhicloud.op.vo.BillVO" id="BillVO">
+		<id     column="id"             property="id" />
+		<result column="user_id"        property="userId" />
+		<result column="is_paid"        property="isPaid" />
+		<result column="region"         property="region" />
+		<result column="resource_name"  property="resourceName" />
+		<result column="payable_time"   property="payableTime" />
+		<result column="payment_time"   property="paymentTime" />
+		<result column="create_time"    property="createTime" />
+	</resultMap>
+
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from bill b
+		join sys_user u
+		on b.user_id = u.id
+		<where>
+			<if test="userName!=null and userName!='%%'">
+				and u.account like #{userName}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryPage" resultMap="BillVO">
+		select 
+			b.id                 ,
+			u.account userAccount, 
+			b.fee                ,
+			b.payable_time       , 
+			b.payment_time        
+		from bill b
+		join sys_user u
+			on b.user_id = u.id
+		<where>
+			<if test="account!=null and account!='%%'">
+				u.account like #{account}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryPageForAgent" resultMap="BillVO">
+		select 
+			b.id                 ,
+			u.account userAccount, 
+			b.fee                ,
+			b.payable_time       , 
+			b.payment_time        
+		from bill b
+		join sys_user u
+			on b.user_id = u.id
+		join terminal_user t
+			on t.belonging_id = #{agentId}
+		<where>
+			u.id = t.id
+			<if test="account!=null and account!='%%'">
+				and u.account like #{account}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryPageForTerminal" resultMap="BillVO">
+		select 
+			b.id                 ,
+			u.account userAccount, 
+			b.fee                ,
+			b.payable_time       , 
+			b.payment_time        
+		from bill b
+		join sys_user u
+			on b.user_id = u.id
+		<where>
+			b.user_id = #{userId}
+			<if test="account!=null and account!='%%'">
+				and u.account like #{account}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getByUserId" resultMap="BillVO">
+		select
+			b.id                 ,
+			b.fee                ,
+			b.payable_time       , 
+			b.payment_time        
+		from bill b
+		where b.user_id = #{userId}
+	</select>
+	
+	<!-- *********************** -->
+	
+	<insert id="addBill">
+		insert into bill
+		       (  id,    user_id,   fee,    is_paid,   payable_time,   payment_time,   create_time )
+		values (#{id}, #{userId}, #{fee}, #{isPaid}, #{payableTime}, #{paymentTime}, #{createTime} )
+	</insert>
+	
+	<delete id="deleteByIds">
+		delete from bill b
+		where b.id in 
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	<select id="getIncomeByTime" resultType="BigDecimal">
+		select sum(b.fee)
+		from bill b
+		where b.user_id = #{userId}
+		and b.create_time like #{time}
+		and b.is_paid = 2
+		<if test="region!=''and region!=null and region!=0">
+			and b.region = #{region}
+		</if>
+	</select>
+	<select id="getIncomeByTimeAndRegion" resultType="BigDecimal">
+		select sum(b.fee)
+		from bill b
+		join bill_detail t
+		on b.id = t.bill_id
+		where b.user_id = #{id}
+		and b.is_paid = 2
+		and t.item_type = #{type}
+		and b.region = #{region}
+		<if test="startTime!=null"> 
+           and b.create_time>#{startTime}
+		</if>
+	</select>
+	
+	<select id="getDetailByMonthly" resultMap="BillVO">
+	<![CDATA[
+		select sum(a.fee) as fee,  
+		       date_format(a.create_time, '%Y%m')  as createTime
+		from bill a where a.is_paid=2
+
+        and a.user_id=#{id} 
+        
+        group by date_format(a.create_time, '%Y%m')
+        
+        limit #{start_row}, #{row_count}
+        ]]>
+	</select>
+	
+	<select id="getDetailByMonthlyCount" resultType="int">
+	<![CDATA[
+		select count(1) from (select  date_format(a.create_time, '%Y%m') from bill a where a.is_paid=2 
+	and a.user_id=#{id}  group by date_format(a.create_time, '%Y%m')) d
+	]]>
+	</select>
+	
+	<select id="countMonthlyBill" resultType="BigDecimal">
+	<![CDATA[
+		select sum(a.fee) as fee
+		from bill a 
+		where a.is_paid=2
+        and a.user_id=#{id} and a.create_time like #{createTime} 
+        ]]>
+	</select>
+	
+	<select id="getDetailByHostMonthlyCount" resultType="int">
+	select count(1) 
+		from bill a 
+		where a.is_paid=2
+        and a.user_id = #{id} 
+        and a.create_time like #{createTime}
+	</select>
+	
+	<select id="getDetailByHostMonthly" resultMap="BillVO">
+		select a.fee, 
+		a.resource_name, 
+		a.region 
+		from bill a 
+		where a.is_paid=2
+        and a.user_id = #{id} 
+        and a.create_time like #{createTime}
+        <if test="start_row!=null">
+        	limit #{start_row}, #{row_count}
+        </if> 
+	</select>
+</mapper>

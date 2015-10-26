@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.TerminalUserMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.TerminalUserVO" id="TerminalUserVO">
+		<id     column="id"                  property="id" />
+		<result column="group_id"            property="groupId" />
+		<result column="id_card"             property="idCard" />
+		<result column="email_verified"      property="emailVerified" />
+		<result column="phone_verified"      property="phoneVerified" />
+		<result column="create_time"         property="createTime" />
+		<result column="belonging_type"      property="belongingType" />
+		<result column="belonging_id"        property="belongingId" />
+		<result column="belonging_account"   property="belongingAccount" />
+		<result column="balance_update_time" property="balanceUpdateTime" />
+		<result column="account_balance"     property="accountBalance" />
+		<result column="percent_off"         property="percentOff" />
+	</resultMap>
+
+	<select id="getAll" resultMap="TerminalUserVO">
+		select 
+			u.id, 
+			u.account,
+			u.group_id, 
+			t.name, 
+			t.id_card, 
+			t.email, 
+			t.phone, 
+			t.create_time,
+			t.belonging_type,
+			t.status,
+			t.percent_off,
+			t.account_balance
+		from sys_user u
+		left join terminal_user t
+			on u.id = t.id
+		where u.type=4
+		order by t.name
+	</select>
+	
+	<select id="getTerminalUserFromAgent" resultMap="TerminalUserVO">
+		select 
+			u.id, 
+			u.account,
+			u.group_id, 
+			t.name, 
+			t.id_card, 
+			t.email, 
+			t.phone, 
+			t.create_time,
+			t.belonging_type,
+			t.status,
+			t.account_balance
+		from sys_user u
+		 left join terminal_user t
+			on u.id = t.id
+	    join agent a
+	     on a.id=t.belonging_id
+		where u.type=4 and a.id=#{agentId}
+		order by t.name
+	</select>
+
+	
+	
+	
+	
+	<select id="terminalUserCount" resultType="int">
+		select count(1)
+		from terminal_user t
+		where t.belonging_id = #{userId}
+	</select>
+	
+	<select id="newTerminalUserCount" resultType="int">
+		select count(1)
+		from terminal_user t
+		where t.belonging_id = #{userId}
+			and t.create_time like #{currentMonth}
+	</select>
+	
+	<select id="getTerminalUserCountByTime" resultType="int">
+		select count(1)
+		from terminal_user t
+		where t.belonging_id = #{userId}
+			and t.create_time like #{time}
+	</select>
+	
+	<!-- **************** -->
+	
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from terminal_user t
+		left join sys_user u
+			on t.id = u.id
+		left join sys_user bu
+			on t.belonging_id = bu.id
+		<where>
+			<if test="belongingId!=null">
+				t.belonging_id = #{belongingId}
+			</if>
+			<if test="terminalUserAccount!=null and terminalUserAccount!='%%'">
+				and u.account like #{terminalUserAccount}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryPage" resultMap="TerminalUserVO">
+		select 
+			t.id, 
+			u.account,
+			u.group_id,
+			t.name, 
+			t.id_card, 
+			t.email, 
+			t.phone, 
+			t.create_time,
+			t.account_balance,
+			t.status,
+			t.percent_off,
+			bu.account belonging_account
+		from terminal_user t
+		left join sys_user u
+			on t.id = u.id
+		left join sys_user bu
+			on t.belonging_id = bu.id
+		<where>
+			<if test="belongingId!=null">
+				t.belonging_id = #{belongingId}
+			</if>
+			<if test="terminalUserAccount!=null and terminalUserAccount!='%%'">
+				and u.account like #{terminalUserAccount}
+			</if>
+		</where>
+		order by t.create_time desc
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	<!-- **************** -->
+	
+	<select id="getTerminalUserById" resultMap="TerminalUserVO">
+		select 
+			u.id id, 
+			u.account, 
+			u.group_id, 
+			t.name,
+			u.password,
+			t.id_card,
+			t.email,
+			t.email_verified, 
+			t.phone phone, 
+			t.phone_verified, 
+			t.create_time,
+			t.status status,
+			t.belonging_id,
+			t.percent_off,
+			t.account_balance
+		from sys_user u 
+		left join terminal_user t
+			on u.id = t.id
+		where u.type = 4
+		and u.id = #{id}	
+	</select>
+	
+	<select id="getBaseInfoById" resultMap="TerminalUserVO">
+		select 
+			u.id, 
+			u.account, 
+			u.group_id,
+			t.name,
+			t.id_card,
+			t.email, 
+			t.phone,
+			t.percent_off,
+			t.account_balance
+		from sys_user u
+		join terminal_user t 
+			on u.id = t.id
+		where u.id = #{id}
+	</select>
+	
+	<select id="getTerminalUserByAccount" resultMap="TerminalUserVO">
+		select 
+			t.id, 
+			u.account, 
+			t.name,
+			u.password,
+			t.id_card,
+			t.email,
+			t.email_verified, 
+			t.phone, 
+			t.phone_verified, 
+			t.create_time,
+			t.status status
+		from sys_user u 
+		left join terminal_user t
+			on u.id = t.id
+		where u.type = 4
+		and u.account = #{account}
+		limit 1
+	</select>
+	
+	<select id="getTerminalUserByAccountToAgentApi" resultMap="TerminalUserVO">
+		select 
+			t.id, 
+			u.account, 
+			t.name,
+			u.password,
+			t.id_card,
+			t.email,
+			t.email_verified, 
+			t.phone, 
+			t.phone_verified, 
+			t.create_time,
+			t.status status
+		from sys_user u 
+		left join terminal_user t
+			on u.id = t.id
+		where u.type = 4
+		and u.account = #{account}
+		and t.belonging_id =#{belongingId}
+		limit 1
+	</select>
+	
+	<select id="getTerminalUserByAccountForgetPassword" resultMap="TerminalUserVO">
+		select 
+			t.id, 
+			u.account, 
+			t.email,
+			t.phone
+		from sys_user u 
+		left join terminal_user t
+			on u.id = t.id
+		where u.type = 4
+		and u.account = #{account}
+	</select>
+	
+	<select id="getTerminalUserByPhone" resultMap="TerminalUserVO">
+		select 
+			t.id, 
+			t.id_card,
+			t.email,
+			t.email_verified, 
+			t.phone, 
+			t.phone_verified, 
+			t.create_time,
+			t.status status
+		from terminal_user t
+		where t.phone = #{phone}
+		limit 1
+	</select>
+	
+	<select id="getTerminalUserByEmail" resultMap="TerminalUserVO">
+		select 
+			t.id, 
+			t.id_card,
+			t.email,
+			t.email_verified, 
+			t.phone, 
+			t.phone_verified, 
+			t.create_time,
+			t.status status
+		from terminal_user t
+		where t.email = #{email}
+		limit 1
+	</select>
+	
+	<select id="getTerminalUserByName" resultMap="TerminalUserVO">
+		select 
+			u.id id,
+			u.account account, 
+			t.name name,
+			t.email email, 
+			t.phone phone, 
+			t.create_time createTime,
+			t.status status
+		from sys_user u
+		left join terminal_user t
+			on u.id = t.id
+		where u.type = 4
+		and binary u.account = #{account}
+	</select>
+	
+	<select id="getTerminalUserByIdCard" resultMap="TerminalUserVO">
+		select 
+			u.id id,
+			u.account account, 
+			t.name name,
+			t.email email, 
+			t.status status
+		from sys_user u
+		left join terminal_user t
+			on u.id = t.id
+		where u.type = 4
+		and binary t.id_card = #{idCard}
+		limit 1
+	</select>
+	
+	<select id="getBalanceById" resultMap="TerminalUserVO">
+		select 
+			 account_balance,
+			 balance_update_time,
+			 percent_off
+		from  terminal_user 
+		where 
+		   id = #{id}	
+	</select>
+	
+	<!-- ********************* -->
+	
+	<insert id="addTerminalUser">
+		insert into terminal_user (id, name, id_card, email, email_verified, phone,phone_verified, status, belonging_type, belonging_id, account_balance, create_time, percent_off) 
+		values (#{id}, #{name}, #{idCard}, #{email}, #{emailVerified}, #{phone}, #{phoneVerified}, #{status}, #{belongingType}, #{belongingId}, #{accountBalance}, #{createTime} ,#{percentOff})
+	</insert>
+	
+	<!-- ********************* -->
+	
+	<update id="updateBalanceById">
+		update terminal_user set  
+			account_balance = #{accountBalance},
+			balance_update_time    = #{balanceUpdateTime}
+		where id = #{id} 	
+	</update>
+	
+	<update id="updateTerminalUser">
+		update terminal_user set 
+			name           = #{name}, 
+			id_card        = #{idCard},
+			email          = #{email},
+			email_verified = #{emailVerified}, 
+			phone          = #{phone}, 
+			phone_verified = #{phoneVerified}, 
+			status         = #{status},
+			belonging_type = #{belongingType},
+			<if test="createTime!=null and createTime!=''">
+			create_time    = #{createTime},
+			</if> 
+			<if test="percentOff!=null and percentOff!=''">
+				percent_off =#{percentOff}  
+			</if>
+		where id = #{id} 
+	</update>
+	
+	<update id="updateTerminalUserBaseInfo">
+		update terminal_user set 
+			name           = #{name}, 
+			id_card        = #{idCard},
+			email          = #{email},
+			phone          = #{phone}, 
+			status         = #{status}
+		where id = #{id} 
+	</update>
+	
+	<update id="updateTerminalUserBaseInfoEmail">
+		update terminal_user set 
+			         email = #{email},
+			email_verified = #{emailVerified}
+		where id = #{id} 
+	</update>
+	
+	<update id="updateTerminalUserBaseInfoPhone">
+		update terminal_user set 
+					 phone = #{phone},
+			phone_verified = #{phoneVerified}
+		where id = #{id} 
+	</update>
+	
+	<update id="activaTerminalUserByStr">
+		update terminal_user set 
+			email_verified = #{emailVerified},
+			status         = #{status}
+		where id = #{id} 
+	</update>
+	
+	<update id="updateAccountBalanceById">
+		update terminal_user
+		<set>
+			account_balance = #{accountBalance}
+		</set>
+		where id = #{id}
+	</update>
+
+	<!-- ********************* -->
+	
+	<delete id="deleteTerminalUser">
+		delete from terminal_user
+		where id=#{id}
+	</delete>
+
+	<delete id="deleteTerminalUserByIds">
+		delete
+		from terminal_user
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

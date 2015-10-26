@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.InviteCodeMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.InviteCodeVO" id="InviteCodeVO">
+		<id     column="id"                property="id" />
+		<result column="creater_id"        property="createrId" />
+		<result column="user_id"           property="userId" />
+		<result column="code"              property="code" />
+		<result column="create_time"       property="createTime" />
+		<result column="send_time"         property="sendTime" />
+		<result column="phone"             property="phone" />
+		<result column="email"             property="email" />
+		<result column="status"            property="status" />
+	</resultMap>
+	
+	
+	<!-- **************** -->
+	
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from invite_code i
+		<where>
+		i.creater_id = #{createrId}
+		</where>
+	</select>
+	
+	<select id="queryPage" resultMap="InviteCodeVO">
+		select 
+			i.id, 
+			i.code,
+			i.creater_id,
+			i.user_id,
+			i.create_time,
+			i.send_time,
+			i.phone,
+			i.email,
+			i.status
+		from invite_code i
+		<where>
+			i.creater_id = #{createrId}
+		</where>
+		order by i.create_time desc
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	<select id="getInviteCodeById" resultMap="InviteCodeVO">
+		select 
+			i.id, 
+			i.code,
+			i.creater_id,
+			i.user_id,
+			i.create_time,
+			i.send_time,
+			i.phone,
+			i.email,
+			i.status
+		from invite_code i 
+		<where>
+		i.id = #{id}	
+		</where>
+	</select>
+	
+	<select id="getInviteCodeByCode" resultMap="InviteCodeVO">
+		select 
+			i.id, 
+			i.code,
+			i.creater_id,
+			i.user_id,
+			i.create_time,
+			i.send_time,
+			i.phone,
+			i.email,
+			i.status
+		from invite_code i 
+		<where>
+		i.code = #{code}	
+		and i.status=2
+		</where>
+	</select>
+	
+	<!-- **************** -->
+	
+	<update id="updateSendTimeAndStatusAndPhone">
+		update invite_code set 
+			send_time = #{sendTime},
+			phone     = #{phone},
+			status    = #{status}
+			<where>
+		    id = #{id} 
+			</where>
+	</update>
+	
+	<update id="updateSendTimeAndStatusAndEmail">
+		update invite_code set 
+			send_time = #{sendTime},
+			email     = #{email},
+			status    = #{status}
+			<where>
+			 id = #{id} 
+			</where>
+	</update>
+	
+	<update id="updateByRegisterTerminalUser">
+		update invite_code set 
+			user_id = #{userId},
+			status  = #{status}
+		<where>
+		code = #{code} 
+		</where>
+	</update>
+	
+	<!-- ********************* -->
+	
+	<insert id="addInviteCode">
+		insert into invite_code (id, creater_id, user_id,code, create_time, send_time,phone,email, status) 
+		values (#{id}, #{createrId}, #{userId}, #{code}, #{createTime}, #{sendTime}, #{phone}, #{email}, #{status})
+	</insert>
+	
+	<!-- ********************* -->
+
+	<delete id="deleteInviteCodeByIds">
+		delete
+		from invite_code
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteInviteByCreaterId">
+		delete
+		from invite_code
+		where creater_id in
+		<foreach collection="list" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	
+	
+</mapper>

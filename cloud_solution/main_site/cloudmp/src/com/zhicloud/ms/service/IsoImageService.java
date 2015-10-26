@@ -7,7 +7,7 @@ import com.zhicloud.ms.app.pool.isoImagePool.IsoImageProgressData;
  
 public interface IsoImageService {
 	
-	public String upload(Integer region, String fileName, InputStream fileStream, String name, String description, String group, String user);
+	public String upload(String name,String realImageId,String url,String type,String description);
 	public IsoImageProgressData getProgressData(String sessionId, String name);
 
 }

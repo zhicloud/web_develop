@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<regions>      
+ 	<region id="1" name="defaultaddress" http_gateway_addr="61.142.65.3:9081" />
+<!--  	<region id="1" name="defaultaddress" http_gateway_addr="124.156.128.246:9081" />  -->
+<!-- <region id="1" name="defaultaddress" http_gateway_addr="172.16.7.8:9081" /> -->
+	
+</regions>

@@ -162,5 +162,5 @@ public interface ManSysUserService {
      * @param newpassword
      * @return String
      */
-    public String manualPassword(String billid, String newpassword);
+    public String manualPassword(String billid, String newpassword, String email);
 }

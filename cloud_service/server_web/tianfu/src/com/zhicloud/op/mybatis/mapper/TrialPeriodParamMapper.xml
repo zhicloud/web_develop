@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.TrialPeriodParamMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.TrialPeriodParamVO" id="TrialPeriodParamVO">
+		<id     column="id"   property="id" />
+	</resultMap>
+	
+	<!-- ******************* -->
+	
+	<select id="getOne" resultMap="TrialPeriodParamVO">
+		select
+			t.id,
+			t.type,
+			t.day
+		from trial_period_param t 
+		where t.type = #{type}
+		limit 1
+	</select>
+	
+	<!-- ******************* -->
+	
+	<insert id="addTrialPeriodParam">
+		insert into trial_period_param (id, type, day)
+		values (#{id}, #{type}, #{day})
+	</insert>
+	
+	<!-- ******************* -->
+	
+	<update id="updateTrialPeriodParam">
+		update trial_period_param set
+			day = #{day}
+		where id = #{id} and type = #{type}
+	</update>
+	
+	<!-- ******************* -->
+	
+</mapper>

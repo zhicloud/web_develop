@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.InvoiceMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.InvoiceVO" id="InvoiceVO">
+		<id     column="id"         property="id" />
+		<result column="user_id" property="userId" />
+		<result column="total_amount" property="totalAmount" />
+		<result column="invoice_title" property="invoiceTitle" />
+		<result column="submit_time" property="submitTime" />
+	</resultMap>
+	
+	<!-- ********************* -->
+	
+	<insert id="addInvoice">
+		insert into invoice (id, user_id, total_amount, invoice_title, address, recipients, phone, status, submit_time) 
+		values (#{id}, #{userId}, #{totalAmount}, #{invoiceTitle}, #{address}, #{recipients}, #{phone}, #{status}, #{submitTime})
+	</insert>
+	
+	<!-- ********************* -->
+
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from invoice 
+		<where>
+			user_id = #{userId}
+		</where>
+	</select>
+
+	<select id="queryPage" resultMap="InvoiceVO">
+		select 
+			id,
+			user_id,
+			total_amount,
+			invoice_title,
+			address,
+			recipients,
+			phone,
+			status,
+			submit_time
+		from invoice 
+		<where>
+			user_id = #{userId}
+		</where>
+		order by submit_time desc
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	<!-- ********************* -->
+
+	<select id="queryAllPageCount" resultType="int">
+		select count(1)
+		from invoice 
+		<where>
+			status = #{status}
+			<if test="invoiceTitle!=null and invoiceTitle!='%%'">
+			and invoice_title like #{invoiceTitle}
+			</if> 
+		</where>
+	</select>
+
+	<select id="queryAllPage" resultMap="InvoiceVO">
+		select 
+			id,
+			user_id,
+			total_amount,
+			invoice_title,
+			address,
+			recipients,
+			phone,
+			status,
+			submit_time
+		from invoice 
+		<where>
+			status = #{status} 
+			<if test="invoiceTitle!=null and invoiceTitle!='%%'">
+			and invoice_title like #{invoiceTitle}
+			</if>
+		</where>
+		order by submit_time desc
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	<!-- ********************* -->
+	<select id="getInvoiceById" resultMap="InvoiceVO">
+		select 
+			id,
+			user_id,
+			total_amount,
+			invoice_title,
+			address,
+			recipients,
+			phone,
+			status,
+			submit_time
+		from invoice 
+		<where>
+			id = #{id}
+		</where>
+	</select>
+	
+	<!-- ********************* -->
+	
+	<update id="updateInvoiceStatus" >
+		update invoice set 
+		status = #{status}
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	<!-- ********************* -->
+	
+</mapper>

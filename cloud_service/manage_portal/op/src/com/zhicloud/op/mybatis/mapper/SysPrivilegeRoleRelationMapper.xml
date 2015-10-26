@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.SysPrivilegeRoleRelationMapper">
+	
+	
+	<resultMap type="com.zhicloud.op.vo.SysPrivilegeRoleRelationVO" id="SysPrivilegeRoleRelationVO">
+		<id column="id" property="id" />
+		<result column="role_id" property="roleId" />
+		<result column="privilege_id" property="privilegeId" />
+	</resultMap>
+	
+	<!-- *********************** -->
+	
+	<select id="getByRoleId" resultMap="SysPrivilegeRoleRelationVO">
+		select r.*
+		from sys_privilege_role_relation r
+		where role_id=#{roleId}
+	</select>
+	
+	<!-- *********************** -->
+	
+	<insert id="add">
+		insert into sys_privilege_role_relation (id, role_id, privilege_id)
+		values (#{id}, #{roleId}, #{privilegeId})
+	</insert>
+	
+	<!-- *********************** -->
+	
+	<delete id="deleteByRoleId">
+		delete from sys_privilege_role_relation
+		where role_id=#{roleId}
+	</delete>
+	
+	
+	<!-- 删除一些没用的记录，指的是role_id或privilege_id在对应的主表找不到相应的记录 -->
+	<delete id="deleteUselessRecords">
+		delete from prr 
+		using sys_privilege_role_relation as prr
+		where not exists (
+			select 1 from sys_privilege p
+			where p.id = prr.privilege_id
+		)
+		or not exists (
+			select 1 from sys_role r
+			where r.id = prr.role_id
+		)
+	</delete>
+	
+	
+	<!-- *********************** -->
+	
+</mapper>

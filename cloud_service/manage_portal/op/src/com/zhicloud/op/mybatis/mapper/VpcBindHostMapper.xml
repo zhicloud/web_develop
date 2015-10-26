@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.VpcBindHostMapper"> 
+	
+	 <resultMap type="com.zhicloud.op.vo.VpcBindHostVO" id="VpcBindHostVO">
+		<id     column="id"           property="id" />
+		<result column="vpc_id"       property="vpcId" />
+		<result column="host_id"      property="hostId" />
+		<result column="create_time"  property="createTime" /> 
+		<result column="remove_time"  property="removeTime" /> 
+		<result column="flag"     property="flag"/> 
+ 	</resultMap>
+	 <!-- ********************* -->
+	<select id="getByVpcId" resultMap="VpcBindHostVO">
+		select vbh.id,
+			vbh.vpc_id,
+			vbh.host_id,
+			vbh.create_time,
+			vbh.remove_time,
+			vbh.flag
+		from vpc_bind_host vbh
+		where vbh.vpc_id = #{vpcId}
+	</select>
+	
+	<insert id="add">
+		insert into vpc_bind_host (id,vpc_id,host_id,flag,create_time) 
+		values (#{id}, #{vpcId},#{hostId},0, #{createTime})
+	</insert>
+	
+	<!-- ********************* -->
+	
+	
+	<update id="deleteLogical">
+		update vpc_bind_host
+		set 
+		    flag = 1,
+			remove_time = #{removeTime}
+		where  host_id in
+		<foreach collection="hostIds" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</update>
+	
+	 
+</mapper>

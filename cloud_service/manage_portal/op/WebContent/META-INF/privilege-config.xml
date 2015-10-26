@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<privileges updateDatabase="true">
+	
+	
+	<privilege code="privilege_of_admin" type="function" name="超级管理员的权限">
+		
+		<privilege code="admin_basic_information_page" type="function" name="基本资料"></privilege>
+		<privilege code="admin_change_password_page"   type="function" name="修改密码"></privilege>
+		
+		<privilege code="sys_role_manage" type="function" name="系统角色管理">
+			<privilege code="sys_role_manage_page"          type="function" name="系统角色管理页面" />
+			<privilege code="sys_role_manage_add"           type="function" name="添加" />
+			<privilege code="sys_role_manage_modify"        type="function" name="修改" />
+			<privilege code="sys_role_manage_delete"        type="function" name="删除" />
+			<privilege code="sys_role_manage_set_privilege" type="function" name="设置权限" />
+		</privilege>
+		
+		<privilege code="sys_group_manage" type="function" name="系统权限组管理">
+			<privilege code="sys_group_manage_page"       type="function" name="系统权限组管理页面" />
+			<privilege code="sys_group_manage_add"        type="function" name="添加" />
+			<privilege code="sys_group_manage_modify"     type="function" name="修改" />
+			<privilege code="sys_group_manage_delete"     type="function" name="删除" />
+			<privilege code="sys_group_manage_set_member" type="function" name="设置组员" />
+			<privilege code="sys_group_manage_set_role"   type="function" name="设置角色" />
+		</privilege>
+		
+		<privilege code="operator_manage" type="function" name="运营商员工管理">
+			<privilege code="operator_manage_page"    type="function" name="运营商员工管理页面" />
+			<privilege code="operator_manage_add"     type="function" name="添加" />
+			<privilege code="operator_manage_modify"  type="function" name="修改" />
+			<privilege code="operator_manage_delete"  type="function" name="删除" />
+			<privilege code="operator_reset_password" type="function" name="重置密码"/>
+		</privilege>
+		
+		<privilege code="app_porpertise_manage" type="function" name="全局属性管理">
+			<privilege code="app_porpertise_manage_page" type="function" name="全局属性管理'页面" />
+		</privilege>
+	
+	</privilege>
+	
+	
+	<privilege code="privilege_of_operator" type="function" name="运营商的权限">
+		
+		<privilege code="operator_basic_information_page" type="function" name="基本资料"></privilege>
+		<privilege code="operator_change_password_page"   type="function" name="修改密码"></privilege>
+		<privilege code="mark_manage_page"                type="function" name="标签管理页面"></privilege>
+		<privilege code="cloud_host_manage" type="function" name="云主机管理">
+			<privilege code="self_use_cloud_host_page" type="function" name="自用云主机页面" />
+			<privilege code="cloud_host_create"        type="function" name="创建云主机" />
+			<privilege code="cloud_host_view_detail"   type="function" name="云主机查看详情" />
+			<privilege code="cloud_host_manage_page"   type="function" name="云主机管理页面" />
+			<privilege code="vpc_manage_page"          type="function" name="VPC管理页面" />
+			<privilege code="operator_self_use_cloud_host_start_page" type="function" name="启动云主机" />
+			<privilege code="operator_self_use_cloud_host_insert_iso_image_page" type="function" name="加载光盘" />
+			<privilege code="operator_self_use_cloud_host_add_port_page" type="function" name="开放端口" />
+			<privilege code="operator_self_use_cloud_host_terminal_binding_page" type="function" name="绑定终端" />
+			<privilege code="operator_self_use_cloud_host_update_password" type="function" name="修改监控密码" />
+		</privilege>
+		
+		<privilege code="agent_manage" type="function" name="代理商管理">
+			<privilege code="agent_manage_page"    type="function" name="代理商管理页面" />
+			<privilege code="agent_manage_add"     type="function" name="添加" />
+			<privilege code="agent_manage_modify"  type="function" name="修改" />
+			<privilege code="agent_manage_delete"  type="function" name="删除" />
+			<privilege code="agent_reset_password" type="function" name="重置密码"/>
+			<privilege code="operator_agent_recharge" type="function" name="充值"/>
+		</privilege>
+		
+		<privilege code="terminal_user_manage" type="function" name="终端用户管理">
+			<privilege code="terminal_user_manage_page_for_operator" type="function" name="终端用户管理页面" />
+			<privilege code="terminal_user_manage_add"               type="function" name="添加" />
+			<privilege code="terminal_user_manage_modify"            type="function" name="修改" />
+			<privilege code="terminal_user_manage_delete"            type="function" name="删除" />
+			<privilege code="operator_terminal_user_reset_password"  type="function" name="重置密码"/>
+		</privilege>
+		
+		<privilege code="package_item_manage" type="function" name="套餐项管理">
+			<privilege code="package_item_manage_page"        type="function" name="套餐项管理页面" />
+			<privilege code="package_price_manage_page"       type="function" name="套餐价格管理页面" />
+			<privilege code="cpu_package_option_add"          type="function" name="CPU套餐项添加" />
+			<privilege code="cpu_package_option_delete"       type="function" name="CPU套餐项删除" />
+			<privilege code="memory_package_option_add"       type="function" name="内存套餐项添加" />
+			<privilege code="memory_package_option_delete"    type="function" name="内存套餐项删除" />
+			<privilege code="disk_package_option_modify"      type="function" name="磁盘套餐项修改" />
+			<privilege code="bandwidth_package_option_modify" type="function" name="宽带套餐项修改" />
+			<privilege code="trial_period_manage"             type="function" name="试用期修改" />
+			
+		</privilege>
+		
+		<privilege code="sys_disk_image_manage" type="function" name="系统镜像管理">
+			<privilege code="sys_disk_image_manage_page"   type="function" name="系统镜像管理页面" />
+			<privilege code="sys_disk_image_manage_add"    type="function" name="添加" />
+			<privilege code="sys_disk_image_manage_modify" type="function" name="修改" />
+			<privilege code="sys_disk_image_manage_delete" type="function" name="删除" />
+		</privilege>
+		<!-- <privilege code="order_cloud_host_manage" type="function" name="订购云主机管理">
+			<privilege code="order_cloud_host_manage_page"   type="function" name="订购云主机管理页面" /> 
+			<privilege code="order_cloud_host_manage_modify" type="function" name="修改" /> 
+		</privilege> -->
+		
+		<privilege code="bill_manage" type="function" name="账单管理">
+			<privilege code="bill_manage_page"            type="function" name="账单管理页面" />
+			<privilege code="bill_manage_modify"          type="function" name="修改" />
+			<privilege code="bill_manage_delete"          type="function" name="删除" />
+			<privilege code="bill_part_page"              type="function" name="账单部份" />
+			<privilege code="bill_detail_page"            type="function" name="账单详情" />
+			<privilege code="cloud_host_bill_detail_page" type="function" name="云主机账单详情" />
+		</privilege>
+		
+<!-- 		<privilege code="operator_invite_code_manage" type="function" name="邀请码管理"> -->
+<!-- 			<privilege code="operator_invite_code_manage_page" type="function" name="邀请码管理页面"/> -->
+<!-- 			<privilege code="operator_invite_code_add"         type="function" name="添加"/> -->
+<!-- 			<privilege code="operator_invite_code_delete"      type="function" name="删除"/> -->
+<!-- 			<privilege code="operator_invite_code_send_phone"  type="function" name="发送到手机"/> -->
+<!-- 			<privilege code="operator_invite_code_send_email"  type="function" name="发送到邮箱"/> -->
+<!-- 		</privilege> -->
+		
+		<privilege code="operator_cash_coupon_manage" type="function" name="代金券管理">
+			<privilege code="operator_cash_coupon_manage_page" type="function" name="代金券管理页面"/>
+			<privilege code="operator_cash_coupon_add"         type="function" name="添加"/>
+			<privilege code="operator_cash_coupon_delete"      type="function" name="删除"/>
+			<privilege code="operator_cash_coupon_send_phone"  type="function" name="发送到手机"/>
+			<privilege code="operator_cash_coupon_send_email"  type="function" name="发送到邮箱"/>
+		</privilege>
+
+		<privilege code="warehouse_manage" type="function" name="库存类型管理">
+			<privilege code="warehouse_manage_page"      type="function" name="库存类型管理页面" />
+			<privilege code="warehouse_manage_add"       type="function" name="添加库存类型页面" />
+			<privilege code="warehouse_manage_detail"    type="function" name="库存类型详情页面" />
+			<privilege code="warehouse_manage_modify"    type="function" name="修改库存类型页面" />
+		</privilege>
+		
+		<privilege code="invoice_manage_page_operator"  type="function" name="发票管理" />
+		
+		<privilege code="statement_manage_page_operator"  type="function" name="报表统计页面" />
+		<privilege code="suggestion_manage_page_operator"  type="function" name="意见反馈" />
+		<privilege code="view_all_user_oper_log"  type="function" name="用户日志" />
+
+		<privilege code="message_mail_manage" type="function" name="邮件管理">
+
+			<privilege code="message_mail_config_manage" type="function" name="邮件配置管理">
+				<privilege code="message_mail_config_manage_page" 	type="function" name="配置管理"/>
+				<privilege code="message_mail_config_manage_add"    type="function" name="新增配置"/>
+				<privilege code="message_mail_config_manage_modify" type="function" name="修改配置"/>
+				<privilege code="message_mail_config_manage_delete" type="function" name="删除配置"/>
+			</privilege>
+
+			<privilege code="message_mail_template_manage" type="function" name="邮件模版管理">
+				<privilege code="message_mail_template_manage_page"   type="function" name="模版管理"/>
+				<privilege code="message_mail_template_manage_add"    type="function" name="新增模版"/>
+				<privilege code="message_mail_template_manage_modify" type="function" name="修改模版"/>
+				<privilege code="message_mail_template_manage_delete" type="function" name="删除模版"/>
+			</privilege>
+
+			<privilege code="message_mail_record_manage" type="function" name="邮件发送纪录查看">
+				<privilege code="message_mail_record_manage_page" 	type="function" name="发送纪录查看"/>
+				<privilege code="message_mail_record_manage_add"    type="function" name="新增纪录"/>
+				<privilege code="message_mail_record_manage_delete" type="function" name="删除纪录"/>
+			</privilege>
+
+		</privilege>
+		<!-- 监控模块权限start -->
+		<privilege code="monitor_manage" type="function" name="监控信息管理">
+			<privilege code="monitor_area" type="function" name="总体概况监控" />
+			<privilege code="monitor_room" type="function" name="机房信息监控" />
+			<privilege code="monitor_rack" type="function" name="机架信息监控" />
+			<privilege code="monitor_server" type="function" name="服务器信息监控" />
+			<privilege code="monitor_cloudhost" type="function" name="云主机信息监控" />
+			<privilege code="monitor_rule_manage" type="function" name="预警规则管理">
+				<privilege code="monitor_rule_query" type="function" name="查询" />
+				<privilege code="monitor_rule_add" type="function" name="新增" />
+				<privilege code="monitor_rule_modify" type="function" name="修改" />
+				<privilege code="monitor_rule_delete" type="function" name="删除" />
+			</privilege>
+			<privilege code="monitor_resource" type="function" name="资源监控" />
+		</privilege>
+		<!-- 监控模块权限end -->		
+	</privilege>
+	
+	
+	<privilege code="privilege_of_agent" type="function" name="代理商的权限">
+	
+		<privilege code="agent_basic_information_page" type="function" name="基本资料"></privilege>
+		<privilege code="agent_change_password_page"   type="function" name="修改密码"></privilege>
+		<privilege code="agent_recharge"   type="function" name="账户充值"></privilege>
+		<privilege code="cloud_host_manage_agent" type="function" name="云主机管理">
+			<privilege code="self_use_cloud_host_page_agent" type="function" name="自用云主机页面" />
+			<privilege code="cloud_host_create_agent"        type="function" name="创建云主机" />
+			<privilege code="cloud_host_view_detail_agent"   type="function" name="云主机查看详情" />
+			<privilege code="cloud_host_manage_page_agent"   type="function" name="云主机管理页面" />
+			<privilege code="vpc_manage_page_agent"   type="function" name="VPC管理页面" />
+		</privilege>
+		
+		<privilege code="terminal_user_manage_agent" type="function" name="终端用户管理">
+			<privilege code="terminal_user_manage_page_for_agent"  type="function" name="终端用户管理页面" />
+			<privilege code="terminal_user_manage_add_agent"    type="function" name="添加" />
+			<privilege code="terminal_user_manage_modify_agent" type="function" name="修改" />
+			<privilege code="terminal_user_manage_delete_agent" type="function" name="删除" />
+		</privilege>
+		
+		<privilege code="bill_manage_agent" type="function" name="账单管理">
+			<privilege code="bill_manage_page_agent"            type="function" name="账单管理页面" />
+			<privilege code="bill_manage_modify_agent"          type="function" name="修改" />
+			<privilege code="bill_manage_delete_agent"          type="function" name="删除" />
+			<privilege code="bill_part_page_agent"              type="function" name="账单部份" />
+			<privilege code="bill_detail_page_agent"            type="function" name="账单详情" />
+			<privilege code="cloud_host_bill_detail_page_agent" type="function" name="云主机账单详情" />
+		</privilege>
+		
+<!-- 		<privilege code="agent_invite_code_manage" type="function" name="邀请码管理"> -->
+<!-- 			<privilege code="agent_invite_code_manage_page" type="function" name="邀请码管理页面"/> -->
+<!-- 			<privilege code="agent_invite_code_add"         type="function" name="添加"/> -->
+<!-- 			<privilege code="agent_invite_code_delete"      type="function" name="删除"/> -->
+<!-- 			<privilege code="agent_invite_code_send_phone"  type="function" name="发送到手机"/> -->
+<!-- 			<privilege code="agent_invite_code_send_email"  type="function" name="发送到邮箱"/> -->
+<!-- 		</privilege> -->
+
+		<privilege code="invoice_manage_agent"           type="function" name="发票管理"/>
+		<privilege code="agent_business_graphics_page"   type="function" name="业务图表"/>
+		<privilege code="business_statistics_agent"      type="function" name="业务统计"/>
+		<privilege code="service_detail_agent"           type="function" name="业务明细"/>
+		<privilege code="recharge_detail_agent"           type="function" name="充值明细"/>
+		<privilege code="consumption_detail_agent"           type="function" name="消费明细"/>
+		
+		<privilege code="statement_manage_agent"         type="function" name="报表管理"/>
+		<privilege code="statement_manage_page_agent"    type="function" name="报表统计页面"/>
+		
+	</privilege>
+	
+</privileges>

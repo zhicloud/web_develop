@@ -22,37 +22,30 @@ public class IsoImageServiceImpl implements IsoImageService {
 	private final static Logger logger = Logger.getLogger(IsoImageServiceImpl.class);
 
 	@Override
-	public String upload(Integer region, String fileName, InputStream fileStream, String name, String description, String group, String user) {
+	public String upload(String name,String realImageId,String url,String type,String description) {
 		//file upload
 		HttpGatewayAsyncChannel channel = null;
 		
 		try {
-			channel = HttpGatewayManager.getAsyncChannel(region);
-			JSONObject fileUploadResult = channel.fileUpload("file_path", fileName, fileStream);
-			logger.info("upload file to http gateway. region[" + region + "], iso_image_name[" + name + "],  file_name[" + fileName + "], success[" + HttpGatewayResponseHelper.isSuccess(fileUploadResult) + "]");
+			channel = HttpGatewayManager.getAsyncChannel(1);
+ 			 
+			JSONObject isoImageUploadResult = channel.isoImageUpload(name, url, description, "system", "system",2,"");
+			logger.info("upload iso image to http gateway.  , iso_image_name[" + name + "], success[" + HttpGatewayResponseHelper.isSuccess(isoImageUploadResult) + "]");
 			
-			if (HttpGatewayResponseHelper.isSuccess(fileUploadResult) == true) {
-				//iso image upload
-				String target = fileUploadResult.getString("uuid");
-				JSONObject isoImageUploadResult = channel.isoImageUpload(name, target, description, group, user,1,"");
-				logger.info("upload iso image to http gateway. region[" + region + "], iso_image_name[" + name + "], success[" + HttpGatewayResponseHelper.isSuccess(isoImageUploadResult) + "]");
+			if (HttpGatewayResponseHelper.isSuccess(isoImageUploadResult) == true) {
+				IsoImageProgressData isoImage = new IsoImageProgressData();
+				isoImage.setName(name);
+				isoImage.setUser("system");
+				isoImage.setGroup("system");
+				isoImage.setRealImageId(realImageId);
+				isoImage.setSessionId(channel.getSessionId());
+				IsoImageProgressPool pool = IsoImageProgressPoolManager.singleton().getPool();
+				pool.put(isoImage);
 				
-				if (HttpGatewayResponseHelper.isSuccess(isoImageUploadResult) == true) {
-					IsoImageProgressData isoImage = new IsoImageProgressData();
-					isoImage.setName(name);
-					isoImage.setUser(user);
-					isoImage.setGroup(group);
-					isoImage.setSessionId(channel.getSessionId());
-					IsoImageProgressPool pool = IsoImageProgressPoolManager.singleton().getPool();
-					pool.put(isoImage);
-					
-					return isoImage.getSessionId();
-				} else {
-					channel.release();
-				}
+				return isoImage.getSessionId();
 			} else {
 				channel.release();
-			}
+			} 
 		} catch (IOException e) {
 			logger.error("error occurs when upload iso image.", e);
 			channel.release();
