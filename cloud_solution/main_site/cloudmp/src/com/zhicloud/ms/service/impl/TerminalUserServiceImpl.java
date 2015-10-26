@@ -160,6 +160,7 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return new MethodResult(MethodResult.SUCCESS, "添加成功，未检测到邮件模板，如需发送邮件，请创建相关模板");
         }
 
 

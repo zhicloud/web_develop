@@ -160,7 +160,8 @@ public interface ManSysUserService {
      * @Description:直接修改密码,不进行对比
      * @param billid
      * @param newpassword
+     * @param email
      * @return String
      */
-    public String manualPassword(String billid, String newpassword);
+    public String manualPassword(String billid, String newpassword, String email);
 }

@@ -1071,10 +1071,11 @@ public class TransFormRoleController extends TransFormBaseAction {
     public void manualPassword(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String billid = request.getParameter("billid");
         String manualpass = request.getParameter("manualpass");
+        String email = request.getParameter("email");
         String result = "";
         boolean flag = isHasPrivilege(request, TransFormPrivilegeConstant.transform_user_resetpassword);
         if (flag) {
-            result = manSysUserService.manualPassword(billid, manualpass);
+            result = manSysUserService.manualPassword(billid, manualpass, email);
         } else {
             result = "您没有操作权限";
         }
