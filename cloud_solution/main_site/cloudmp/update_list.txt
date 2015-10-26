@@ -22,3 +22,28 @@ cloud_solution/main_site/cloudmp/WebContent/views/service/service_and_version_mo
 
 兼容性说明：
 无
+******************************************************
+版本号：版本号：【云平台web】verion(2.0)(build 20151026-1) 
+修改时间：2015/10/26
+修改人：张本缘
+修改文件：
+无
+
+新增文件：
+cloud_solution/main_site/cloudmp/WebContent/views/loadbanlance/bind_eip.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/loadbanlance/create_elb.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/loadbanlance/ecs_edit.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/loadbanlance/healthy_edit.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/loadbanlance/manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/loadbanlance/port_edit.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/loadbanlance/unbind_edit.jsp
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/LoadBalanceController.java
+
+删除文件：
+无
+
+主要变更：
+1.负载均衡页面设计
+
+兼容性说明：
+无
