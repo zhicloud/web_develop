@@ -26,3 +26,32 @@ iso_image_add.jsp
 
 兼容性说明：
 无
+
+******************************************************
+版本号：版本号：【云平台web】verion(2.0)(build 20151012-1) 
+修改时间：2015/10/26
+修改人：张翔
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/transform/admin/system_user_manage.jsp
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/message/email/EmailSendService.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/message/email/EmailTemplateConstant.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/message/sms/SmsInterfaceQuery.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/TerminalUserServiceImpl.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/transform/controller/TransFormRoleController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/transform/service/ManSysUserService.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/transform/serviceimpl/ManSysUserServiceImpl.java
+
+
+新增文件：
+无
+
+删除文件：
+无
+
+主要变更：
+1.用户创建无邮件模板的异常处理
+2.用户修改密码发送邮件
+3.定时开关机异常
+
+兼容性说明：
+无
