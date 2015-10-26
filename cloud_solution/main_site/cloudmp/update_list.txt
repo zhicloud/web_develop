@@ -1,28 +1,24 @@
+
 ******************************************************
-°æ±¾ºÅ£º°æ±¾ºÅ£º¡¾ÔÆÆ½Ì¨web¡¿verion(2.0)(build 20151012-1) 
-ĞŞ¸ÄÊ±¼ä£º2015/10/23
-ĞŞ¸ÄÈË£ºÎâÀòÉ¯
-ĞŞ¸ÄÎÄ¼ş£º
-StringUtil.java
-CloudHostController
-CloudServerController
-IsoImageController
-HttpGateAsyncMessageHandlerImpl.java
-IsoImageService.java
-CloudHostServiceImpl.java
-IsoImageServiceImpl.java
-SharesMemoryServiceImpl.java
+ç‰ˆæœ¬å·ï¼šç‰ˆæœ¬å·ï¼šã€äº‘å¹³å°webã€‘verion(2.0)(build 20151026-1) 
+ä¿®æ”¹æ—¶é—´ï¼š2015/10/26
+ä¿®æ”¹äººï¼šå¼ ç¿”
+ä¿®æ”¹æ–‡ä»¶ï¼š
+cloud_solution/main_site/cloudmp/WebContent/views/service/service_and_version_manage.jsp
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/app/pool/serviceInfoPool/ServiceInfoExt.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/app/pool/serviceInfoPool/ServiceInfoPool.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/httpGateway/HttpGatewayAsyncMessageHandlerImpl.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/httpGateway/HttpGatewayHelper.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/PlatformResourceServiceImpl.java
 
+æ–°å¢æ–‡ä»¶ï¼š
+cloud_solution/main_site/cloudmp/WebContent/views/service/service_and_version_mod.jsp
 
-ĞÂÔöÎÄ¼ş£º
-iso_image_add.jsp
+åˆ é™¤æ–‡ä»¶ï¼š
+æ— 
 
-É¾³ıÎÄ¼ş£º
-ÎŞ
+ä¸»è¦å˜æ›´ï¼š
+1.ncã€sså­˜å‚¨æ¨¡å¼ä¿®æ”¹
 
-Ö÷Òª±ä¸ü£º
-1¡¢Ö÷»ú±¸·İ100%¿¨ËÀÎÊÌâ
-2¡¢¾µÏñÉÏ´«¹¦ÄÜ
-
-¼æÈİĞÔËµÃ÷£º
-ÎŞ
+å…¼å®¹æ€§è¯´æ˜ï¼š
+æ— 

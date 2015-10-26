@@ -347,14 +347,20 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             new SendMail().sendPasswordEmail(user);*/
             if (n > 0 && m > 0) {
                 // 发送注册通知邮件
-                if(!StringUtil.isBlank(email)) {
-                    Map<String, Object> param = new LinkedHashMap<>();
-                    param.put("name", usercount);
-                    param.put("password", password);
-                    param.put("url", AppProperties.getValue("address_of_this_system", ""));
-                    EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
-                    emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_ADMIN_REGISTER, email, param);
+                try {
+                    if(!StringUtil.isBlank(email)) {
+                        Map<String, Object> param = new LinkedHashMap<>();
+                        param.put("name", usercount);
+                        param.put("password", password);
+                        param.put("url", AppProperties.getValue("address_of_this_system", ""));
+                        EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
+                        emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_ADMIN_REGISTER, email, param);
+                    }
+                } catch (Exception e) {
+                    logger.error(e);
+                    return TransformConstant.success;
                 }
+
                 return TransformConstant.success;
             } else {
                 return "添加失败";
@@ -447,11 +453,19 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             operatorData.put("type", TransformConstant.transform_log_user);
             this.addSystemLogInfo(operatorData);
             // 发送新密码邮件
-            Map<String, Object> user = new LinkedHashMap<String, Object>();
-            user.put("password", password);
-            user.put("email", manSystemUserVO.getEmail());
-            user.put("usercount", manSystemUserVO.getUsercount());
-            new SendMail().resetPasswordEmail(user);
+            try {
+                String email = manSystemUserVO.getEmail();
+                Map<String, Object> user = new LinkedHashMap<String, Object>();
+                user.put("password", password);
+                //                user.put("email", manSystemUserVO.getEmail());
+                //                user.put("usercount", manSystemUserVO.getUsercount());
+                EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
+                emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_RESET_PASSWORD_RANDOM, email, user);
+            } catch (Exception e) {
+                logger.error(e);
+                e.printStackTrace();
+                return TransformConstant.success;
+            }
             return TransformConstant.success;
 
         } catch (Exception e) {
@@ -903,14 +917,19 @@ public class ManSysUserServiceImpl implements ManSysUserService {
      * @return
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public String manualPassword(String billid, String newpassword) {
+    public String manualPassword(String billid, String newpassword, String email) {
         logger.debug("SysUserServiceImpl.manualPassword()");
         try {
-            ManSystemUserMapper systemUserMapper = this.sqlSession.getMapper(ManSystemUserMapper.class);
-            LinkedHashMap<String, Object> condition = new LinkedHashMap<String, Object>();
-            condition.put("password", TransFormLoginHelper.md5(AppConstant.PASSWORD_MD5_STR, newpassword));
-            condition.put("billid", billid);
-            systemUserMapper.updateSystemUser(condition);
+            try {
+                Map<String, Object> user = new LinkedHashMap<String, Object>();
+                user.put("password", newpassword);
+                EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
+                emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_RESET_PASSWORD_MANUAL, email, user);
+            } catch (Exception e) {
+                logger.error(e);
+                return TransformConstant.success;
+            }
+
             return TransformConstant.success;
         } catch (Exception e) {
             logger.error(e);
