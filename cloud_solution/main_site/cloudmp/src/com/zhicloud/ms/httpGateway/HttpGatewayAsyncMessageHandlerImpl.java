@@ -474,17 +474,18 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		HostBackupProgressData hostBackup = pool.get(uuid);
 				
 		//对象不存在
-		if(hostBackup == null){
-			hostBackup = new HostBackupProgressData();
-			hostBackup.setSessionId(sessionId);
-			hostBackup.setUuid(uuid);
-			pool.put(hostBackup);
+		if(hostBackup != null){
+//			hostBackup = new HostBackupProgressData();
+//			hostBackup.setSessionId(sessionId);
+//			hostBackup.setUuid(uuid);
+//			pool.put(hostBackup);
+		    pool.remove(hostBackup);
 		}
 		
-		hostBackup.setFinished(true);
-		AppInconstant.hostBackupProgress.put(uuid+"backup", "backup_false");
-		hostBackup.updateTime();
-		hostBackup.setBackupStatus(0);
+//		hostBackup.setFinished(true);
+//		AppInconstant.hostBackupProgress.put(uuid+"backup", "backup_false");
+//		hostBackup.updateTime();
+//		hostBackup.setBackupStatus(0);
 		
 		if (HttpGatewayResponseHelper.isSuccess(messageData) == true) {
 			hostBackup.setSuccess(true);

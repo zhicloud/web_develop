@@ -1610,7 +1610,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             if(server.getIsAutoStartup()!=1){
                 isAutoStart = 0;
             } 
-            options = new Integer[] { 1, isUseDataDisk, isAutoStart,1,1 }; 
+            options = new Integer[] { 1, isUseDataDisk, isAutoStart,0,1 }; 
             SysDiskImageVO sysDiskImageVO = sysDiskImageMapper.getById(server.getSysImageId());
             if(sysDiskImageVO != null){
                 realDiskImageId = sysDiskImageVO.getRealImageId();
