@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.SuggestionMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.SuggestionVO" id="SuggestionVO">
+		<id     column="id"       property="id" />
+		<result column="user_id" property="userId" />
+		<result column="submit_time" property="submitTime" />
+		<result column="content" property="content" />
+		<result column="type" property="type" />
+		<result column="status" property="status" />
+		<result column="result" property="result" /> 
+		<result column="account" property="account" /> 
+		<result column="reply_time" property="replyTime" /> 
+	</resultMap> 
+
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from suggestion s 
+		left join sys_user u
+			on s.user_id = u.id
+		<where>
+			<if test="userId!=null">
+				s.user_id = #{userId}
+			</if>
+			<if test="type!=null and type!=''">
+				and s.type = #{type}
+			</if>
+			<if test="status!=null and status!=''">
+				and s.status = #{status}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryPage" resultMap="SuggestionVO">
+		select 
+			s.id,  
+			s.content,
+			u.account,   
+			s.type,
+			s.submit_time,
+			s.status
+		from suggestion s 
+		left join sys_user u
+			on s.user_id = u.id
+		<where>
+			<if test="userId!=null">
+				s.user_id = #{userId}
+			</if>
+			<if test="type!=null and type!=''">
+				and s.type = #{type}
+			</if>
+			<if test="status!=null and status!=''">
+				and s.status = #{status}
+			</if>
+		</where>
+		order by s.submit_time desc
+		limit #{start_row}, #{row_count}
+	</select>
+	<select id="queryPageAll" resultMap="SuggestionVO">
+		select 
+			s.id,  
+			s.content,
+			u.account,   
+			s.type,
+			s.submit_time,
+			s.status,
+			s.result,
+			s.reply_time
+		from suggestion s 
+		left join sys_user u
+			on s.user_id = u.id
+		<where>
+			<if test="userId!=null">
+				s.user_id = #{userId}
+			</if> 
+		</where>
+		order by s.submit_time asc 
+	</select>
+
+	<select id="getSuggestionById" resultMap="SuggestionVO">
+		select 
+			s.id,  
+			s.content,    
+			s.type,
+			s.result,
+			s.status
+		from suggestion s  
+		where   s.id = #{suggestionId} 
+	</select>
+	
+	 
+
+	<!-- ***************** -->
+	
+
+	<insert id="addSuggestion">
+		insert into suggestion (id, user_id, content, type, status, submit_time) 
+		values (#{id}, #{userId}, #{content}, #{type}, #{status}, #{submitTime})
+	</insert>
+
+	<!-- ***************** -->
+	<update id="updateSuggestion">
+	   update suggestion set status = #{status},result = #{result},reply_time = #{replyTime}
+	   where id = #{id}
+	</update>
+	
+	 
+
+</mapper>

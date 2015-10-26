@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.VpcPriceMapper"> 
+	
+	 <resultMap type="com.zhicloud.op.vo.VpcPriceVO" id="VpcPriceVO">
+		<id     column="id"         property="id" />
+		<result column="region"     property="region" />
+		<result column="vpc_amount" property="vpcAmount" />
+		<result column="price"      property="price" />
+	</resultMap>
+	 <!-- ********************* -->
+	 <select id="getCount" resultType="int">
+		select count(1)
+		from vpc_price v
+		where v.region = #{region}
+	</select>
+	
+	<select id="queryAllVpcPriceByRegion" resultMap="VpcPriceVO">
+		select v.id,
+			v.vpc_amount,
+			v.region,
+			v.price
+		from vpc_price v
+		where v.region = #{region} 
+		order by v.vpc_amount
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	<select id="getAmountAndRegion" resultMap="VpcPriceVO">
+		select v.id,
+			v.vpc_amount,
+			v.region,
+			v.price
+		from vpc_price v
+		where v.region = #{region} 
+		and v.vpc_amount = #{vpcAmount}
+	</select>
+	
+	<select id="getById" resultMap="VpcPriceVO">
+		select v.id,
+			v.vpc_amount,
+			v.region,
+			v.price
+		from vpc_price v
+		where v.id = #{id}
+	</select>
+	
+	<insert id="addVpcPrice">
+		insert into vpc_price (id,region,vpc_amount,price) 
+		values (#{id}, #{region},#{vpcAmount}, #{price})
+	</insert>
+	
+	<!-- ********************* -->
+	
+	
+	<delete id="deleteVpcPrice">
+		delete from vpc_price
+		where  id = #{id}
+	</delete>
+	
+	 <update id="updateVpcPrice">
+	 	update vpc_price set
+	 		vpc_amount = #{vpcAmount},
+	 		price = #{price}
+	 	where id = #{id}
+	 </update>
+</mapper>

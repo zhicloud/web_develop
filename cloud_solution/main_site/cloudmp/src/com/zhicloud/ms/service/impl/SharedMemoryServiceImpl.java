@@ -1,17 +1,23 @@
 
 package com.zhicloud.ms.service.impl;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.mapper.SharedMemoryMapper;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.SharedMemoryService;
@@ -118,9 +124,47 @@ public class SharedMemoryServiceImpl implements SharedMemoryService {
 		 SharedMemoryMapper mapper = sqlSession.getMapper(SharedMemoryMapper.class);
 		 mapper.setDisable();
 		 int n = mapper.updateAvailable(id);
+		 SharedMemoryVO vo = mapper.queryAvailable();
+		 //执行
+		 try {
+            this.executeShellOfMount(vo.getUrl());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 		 if(n>0){
 			 return new MethodResult(MethodResult.SUCCESS,"设置成功");
 		 }
 		 return new MethodResult(MethodResult.FAIL,"设置失败");
 	}
+	
+	@Override
+	public SharedMemoryVO queryAvailable() {
+		 SharedMemoryMapper mapper = sqlSession.getMapper(SharedMemoryMapper.class);
+		 return mapper.queryAvailable();
+	}
+	
+	private int executeShellOfMount(String url) throws IOException { 
+        Map<String,String> temp = new HashMap<String,String>();
+        try {
+            Process pro = Runtime.getRuntime().exec("mount -t nfs "+url+" /image");
+            BufferedReader br = new BufferedReader(new InputStreamReader(pro.getInputStream()));
+             int i = 0;
+            String str = br.readLine();
+            while(!StringUtils.isBlank(str)){
+                if(i == 0){
+                    continue;
+                }else{
+                    String [] ips = StringUtil.getIpFromUrl(str); 
+                    if(ips != null && ips.length >= 1){
+                        temp.put(ips[0], str.replace(ips[0], ""));
+                    } 
+                }                 
+                str = br.readLine();
+            }
+        } catch (Exception ioe) {
+            ioe.printStackTrace();
+        }  
+        return 1;
+     } 
 }

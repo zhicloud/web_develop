@@ -1,0 +1,74 @@
+/* 我的云端-概览样式 */
+.mc-ucenter{border-top:1px solid #e5e5e5;}
+.mc-slider{margin-bottom:28px;}
+a.greenbutton:hover,a.bluebutton:hover{color: #fff;}
+a.graybutton:hover{color: #626262;}
+a.disabledbutton:hover{color: #999;}
+a.ibluebtn:hover{color:#fff;}
+
+
+/* ICP备案系统 */
+.float-right {float: right !important;}
+.link-default {font-size: 12px !important;}
+.link-color, .link-default {color: #00a1cc !important;}
+.icp-form-type-block {font-size: 14px;}
+.icp-form {display: block;}
+.width-303 {width: 303px !important;}
+.margin-left-10 {margin-left: 10px !important;}
+.icp-content .icp-content-wrapper:after, .icp-content .icp-content-block:after, .icp-content .icp-content-block .icp-content-block-child:after {display: block;content: ".";height: 0;clear: both;visibility: hidden;}
+.icp-icon-small-ok, .icp-icon-small-ok-2, .icp-icon-small-ok-3, .icp-icon-small-info, .icp-icon-small-info-2, .icp-icon-small-info-3, .icp-icon-small-info-4, .icp-icon-small-error, .icp-icon-small-error-2, .icp-icon-small-error-3, .icp-icon-small-error-4, .icp-icon-small-error-6, .icp-icon-small-error-5, .icp-icon-small-plus, .icp-icon-small-plus-2, .icp-icon-small-plus-3, .icp-icon-small-minus, .icp-icon-small-alert, .icp-icon-small-alert-2, .icp-icon-small-alert-3, .icp-icon-small-alert-4, .icp-icon-small-alert-5, .icp-icon-small-question, .icp-icon-small-list-anchor {background: url("../img/tps.png") no-repeat;width: 16px;height: 16px;display: inline-block;vertical-align: middle;}
+.icp-tipmessage-yellow, .icp-tipmessage-yellow-multibottom, .icp-tipmessage-green {display: block;margin: 12px auto;-moz-border-radius: 3px / 3px;-webkit-border-radius: 3px 3px;border-radius: 3px / 3px;font-size: 14px;line-height: 20px;padding: 6px 20px;text-align: center;}
+.display-none {display: none;}
+.icp-icon-small-ok, .icp-icon-small-ok-2, .icp-icon-small-ok-3, .icp-icon-small-info, .icp-icon-small-info-2, .icp-icon-small-info-3, .icp-icon-small-info-4, .icp-icon-small-error, .icp-icon-small-error-2, .icp-icon-small-error-3, .icp-icon-small-error-4, .icp-icon-small-error-6, .icp-icon-small-error-5, .icp-icon-small-plus, .icp-icon-small-plus-2, .icp-icon-small-plus-3, .icp-icon-small-minus, .icp-icon-small-alert, .icp-icon-small-alert-2, .icp-icon-small-alert-3, .icp-icon-small-alert-4, .icp-icon-small-alert-5, .icp-icon-small-question, .icp-icon-small-list-anchor {background: url("../img/tps.png") no-repeat;width: 16px;height: 16px;display: inline-block;vertical-align: middle;}
+.icp-icon {display: inline-block;vertical-align: middle;}
+.icp-icon-small-error {background-position: 0 -73px;width: 16px;height: 16px;}
+.icp-form-type-block .icp-form-item-right-tip .icp-form-item-right-message {display: inline-block;vertical-align: middle;}
+.icp-form-type-block .icp-form-item:after {display: block;content: ".";height: 0;clear: both;visibility: hidden;}
+
+
+
+.icp-content {background: #fff;color:#323232;}
+.icp-content .icp-content-wrapper {width: 1000px;margin: 0 auto;padding: 0;}
+.icp-content .icp-content-block-title {padding: 0;margin-bottom:12px;font-size: 18px;line-height: 18px;clear: both;}
+.icp-icon-small-question {background-position: 0 -300px;width: 14px;height: 14px;}
+
+.icp-content .icp-content-block {border: solid 1px #ccc;padding: 15px 29px;margin: 0 auto;width: 940px;}
+.icp-tipmessage-yellow {border: solid 1px #fbc490;background: #fffcf4;color: #f96900;}
+.icp-form-type-block .icp-form-item {padding: 12px 0;clear: both;}
+.icp-form-type-block .icp-form-item-left-title {float: left;width: 210px;text-align: right;line-height: 32px;}
+.icp-form .i-must {color: #f06;margin-right: 5px;}
+
+.icp-form-type-block .icp-form-item-center-content {float: left;margin-left: 15px;width: 363px;line-height: 32px;}
+.icp-form-type-block .icp-form-item-center-content .icp-form-item-text, .icp-form-type-block .icp-form-item-center-content .icp-form-item-textarea, .icp-form-type-block .icp-form-item-center-content .icp-form-item-select {width: 341px;margin: 0;padding: 4px 10px;font-size: 14px;border: 1px solid #CCC;-moz-border-radius: 3px / 3px;-webkit-border-radius: 3px 3px;border-radius: 3px / 3px;background: #FFF url("../img/i1.gif") 0 0 no-repeat;box-shadow: 0 1px 2px #f4f4f4 inset;}
+.icp-form-type-block .icp-form-item-center-content .icp-form-item-select {font-size: 14px;border: 1px solid #CCC;background: #FFF url("../img/i1.gif") 0 0 no-repeat;-moz-border-radius: 3px / 3px;-webkit-border-radius: 3px 3px;border-radius: 3px / 3px;width: 363px;height: 32px;line-height: 32px;}
+.icp-form-type-block .icp-form-item-center-content .select-district {width: 111px !important;}
+.icp-form-type-block .icp-form-item-center-content .icp-form-item-select[disabled] {background-image: none !important;background-color: #ddd !important;color: #7D7D7D;}
+.icp-form-type-block .icp-form-item-center-content .icp-form-item-center-tip {color: #0083ad;border: solid 1px #49c0ec;background: #f4fbff;-moz-border-radius: 3px / 3px;-webkit-border-radius: 3px 3px;border-radius: 3px / 3px;position: relative;margin-top: 8px;font-size: 12px;line-height: 18px;padding: 10px;width: 341px;}
+.icp-form-type-block .icp-form-item-center-content .icp-form-item-text {height: 22px;line-height: 22px;vertical-align: middle;}
+.icp-form-type-block .icp-form-item-center-content .icp-form-item-text[disabled] {vertical-align:top;background-image: none !important;background-color: #ddd !important;color: #7D7D7D;}
+.icp-form-type-block .icp-form-item-center-content .authcode-text {width: 100px;vertical-align:top;}
+.icp-form-type-block .icp-form-item-center-content .authcode-img {width: 100px;height: 30px;vertical-align: middle;margin-left: 10px;cursor: pointer;}
+
+
+.icp-form-type-block .icp-form-item-right-tip {float: left;margin-left: 10px;width: 341px;line-height: 18px;position: relative;font-size: 12px;}
+.icp-form-type-block .icp-form-item-right-tip .icp-icon-small-error {vertical-align: top;margin-top: 9px;}
+
+
+.icp-form-type-block-bottom-operation {display: block;border: none;width: 745px;padding: 12px 0 12px 255px;}
+.icp-button-main, .icp-button-main-green, .icp-button-minor, .icp-button-main-invert, .icp-button-minor-invert, .icp-button-main-netcn, .icp-button-minor-netcn {display: inline-block;vertical-align: middle;-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius: 4px;text-align: center;white-space: nowrap;text-decoration: none;vertical-align: middle;}
+.icp-button-main {color: #fff;border: 1px solid #00a1cc;background-color: #00a1cc;}
+.icp-button-size-large {font-size: 14px;height: 38px;line-height: 38px;padding: 0 24px;}
+.icp-form-type-block-bottom-operation>button[class*='icp-button'], .icp-form-type-block-bottom-operation>a[class*='icp-button'] {margin-right: 10px;}
+
+
+
+
+
+
+
+
+
+
+
+
+

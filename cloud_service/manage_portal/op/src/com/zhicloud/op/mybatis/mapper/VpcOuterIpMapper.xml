@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.VpcOuterIpMapper"> 
+	
+	 <resultMap type="com.zhicloud.op.vo.VpcOuterIpVO" id="VpcOuterIpVO">
+		<id     column="id"          property="id" />
+		<result column="vpc_id"      property="vpcId" />
+		<result column="create_time" property="createTime" />
+		<result column="ip"          property="ip" />
+	</resultMap>
+	 <!-- ********************* -->
+	<select id="getAllIpByVpcId" resultMap="VpcOuterIpVO">
+		select i.id,
+			i.vpc_id,
+			i.create_time,
+			i.ip
+		from vpc_outer_ip i
+		where i.vpc_id = #{vpcId}
+		<if test="start_row!=null">
+			limit #{start_row}, #{row_count}
+		</if>
+	</select>
+	<select id="getCountByVpcId" resultType="int">
+		select count(1)
+		from vpc_outer_ip
+		where vpc_id = #{vpcId}  
+	</select>
+	<insert id="add">
+		insert into vpc_outer_ip (id,vpc_id,ip,create_time) 
+		values (#{id}, #{vpcId},#{ip}, #{createTime})
+	</insert>
+	
+	<!-- ********************* -->
+	
+	<delete id="deleteIps">
+		delete
+		from vpc_outer_ip
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	 
+</mapper>

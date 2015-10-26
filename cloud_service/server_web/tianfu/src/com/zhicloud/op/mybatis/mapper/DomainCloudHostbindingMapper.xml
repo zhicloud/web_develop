@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.DomainCloudHostbindingMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.DomainCloudHostBindingVO" id="DomainCloudHostBindingVO">
+		<id     column="id"         property="id" />
+		<result column="host_id"   property="hostId" />
+		<result column="admin_name"   property="adminName" />
+		<result column="create_time"   property="createTime" />
+		<result column="modified_time" property="modifiedTime" />
+	</resultMap>
+	
+	<!-- ********************* -->
+	
+	<select id="queryPageCount" resultType="int">
+		select count(id)
+		from domain_cloud_host_binding d
+		<where>
+			d.host_id = #{hostId}
+			<if test="name !=null and name !='%%'">
+				and d.name like #{name}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryPage" resultMap="DomainCloudHostBindingVO">
+		select 
+			d.id,
+			d.domain,
+			host_id,
+			d.name,
+			d.admin_name,
+			d.phone,
+			d.email,
+			d.create_time,
+			d.modified_time
+		from domain_cloud_host_binding d
+		<where>
+			d.host_id = #{hostId}
+			<if test="name !=null and name !='%%'">
+				and d.name like #{name}
+			</if>
+		</where>
+		order by d.create_time desc
+		limit #{start_row}, #{row_count}
+	</select>
+
+	<select id="queryDomainByDomain" resultMap="DomainCloudHostBindingVO">
+		select 
+			d.id,
+			d.domain,
+			host_id,
+			d.name,
+			d.admin_name,
+			d.phone,
+			d.email,
+			d.create_time,
+			d.modified_time
+		from domain_cloud_host_binding d
+		<where>
+			d.domain = #{domain}
+		</where>
+		limit 1
+	</select>
+	
+	<!-- ********************* -->
+	
+	<insert id="addDomain">
+		insert into domain_cloud_host_binding (id, domain, host_id, name, admin_name, phone, email, create_time, modified_time) 
+		values (#{id}, #{domain}, #{hostId}, #{name}, #{adminName}, #{phone}, #{email}, #{createTime}, #{modifiedTime})
+	</insert>
+	
+	<delete id="deleteDomainByIds">
+		delete
+		from domain_cloud_host_binding
+		where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,24 @@
+
+******************************************************
+版本号：版本号：【云平台web】verion(2.0)(build 20151026-1) 
+修改时间：2015/10/26
+修改人：张翔
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/service/service_and_version_manage.jsp
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/app/pool/serviceInfoPool/ServiceInfoExt.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/app/pool/serviceInfoPool/ServiceInfoPool.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/httpGateway/HttpGatewayAsyncMessageHandlerImpl.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/httpGateway/HttpGatewayHelper.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/PlatformResourceServiceImpl.java
+
+新增文件：
+cloud_solution/main_site/cloudmp/WebContent/views/service/service_and_version_mod.jsp
+
+删除文件：
+无
+
+主要变更：
+1.nc、ss存储模式修改
+
+兼容性说明：
+无

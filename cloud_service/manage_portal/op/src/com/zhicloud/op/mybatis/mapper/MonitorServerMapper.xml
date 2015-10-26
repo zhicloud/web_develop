@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.MonitorServerMapper">
+
+	<resultMap type="com.zhicloud.op.vo.MonitorServerVO" id="MonitorVO">
+		<id     column="id"          property="id" />
+		<result column="areaid"        property="areaid" />
+		<result column="roomid"        property="roomid" />
+		<result column="rackid"        property="rackid" />
+		<result column="serverid"        property="serverid" />
+		<result column="servername"        property="servername" />
+		<result column="cpu_usage"        property="cpu_usage" />
+		<result column="memory_usage"        property="memory_usage" />
+		<result column="disk_usage"        property="disk_usage" />
+		<result column="insert_date"        property="insert_date" />
+		<result column="monitor_type"        property="monitor_type" />
+		<result column="server_type"        property="server_type" />
+		<result column="shield"        property="shield" />
+	</resultMap>
+	
+	<select id="queryPageCount" resultType="int">
+		select  count(1)
+		from monitor_server 
+	</select> 
+	
+	<select id="queryPage" resultMap="MonitorVO">
+		select *
+		from monitor_server m
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	<select id="getDataByDay" resultMap="MonitorVO">
+		select id,
+			   areaid,
+			   serverid,
+			   roomid,	
+			   rackid,
+			   servername,
+			   cpu_usage,
+			   memory_usage,
+			   disk_usage
+		from monitor_server m
+		where date_format(insert_date,'%Y-%m-%d') = #{insert_date}
+			  and monitor_type = #{monitor_type}
+			  and server_type = #{server_type}
+	</select> 	 
+	
+	<select id="queryAverage" resultMap="MonitorVO">
+		select serverid,avg(cpu_usage) cpu_usage,avg(memory_usage) memory_usage,avg(disk_usage) disk_usage
+		from monitor_server_temp m where monitor_type = #{monitor_type} and server_type = #{server_type} group by serverid
+	</select> 	
+	
+	<insert id="addMonitor">
+		insert into monitor_server (id, areaid, roomid,rackid,serverid,servername,cpu_usage,memory_usage,disk_usage,insert_date,monitor_type,server_type) 
+		values (#{id}, #{areaid}, #{roomid}, #{rackid}, #{serverid}, #{servername}, #{cpu_usage}, #{memory_usage}, #{disk_usage}, #{insert_date}, #{monitor_type}, #{server_type})
+	</insert>
+	
+	<insert id="addMonitorTemp">
+		insert into monitor_server_temp (id,serverid,cpu_usage,memory_usage,disk_usage,monitor_type,server_type) 
+		values (#{id},#{serverid}, #{cpu_usage}, #{memory_usage}, #{disk_usage}, #{monitor_type},#{server_type})
+	</insert>	
+	
+	 <delete id="deleteMonitors">
+	 	delete from monitor_server
+	 	where id in
+	 	<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	 </delete>
+	 
+	 <delete id="deleteMonitorTemp">
+	 	delete from monitor_server_temp where monitor_type = #{monitor_type} and server_type = #{server_type}
+	 </delete>	 
+	 <!-- 保存屏蔽关联关系 -->
+	<select id="queryShieldByID" resultMap="MonitorVO">
+		select shield
+		from
+		monitor_shield m
+		where uuid = #{id}
+	</select>
+	
+	<select id="queryShield" resultMap="MonitorVO">
+		select uuid id,shield
+		from
+		monitor_shield m
+	</select>		
+	 
+	<insert id="addShield">
+		insert into monitor_shield (uuid,shield) 
+		values (#{id}, #{shield})
+	</insert>
+	
+	<update id="updateShield">
+		update monitor_shield set 
+			shield = #{shield}
+		where uuid = #{id}
+	</update>
+</mapper>

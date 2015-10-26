@@ -18,6 +18,7 @@
 
 package com.zhicloud.ms.service.impl;
 
+import com.zhicloud.ms.app.listener.task.LoadBalanceRunnable;
 import com.zhicloud.ms.app.pool.CloudHostData;
 import com.zhicloud.ms.app.pool.CloudHostPoolManager;
 import com.zhicloud.ms.app.pool.hostMonitorInfoPool.HostMonitorInfo;
@@ -1163,6 +1164,12 @@ public class CloudHostServiceImpl implements ICloudHostService {
         cloudHost.setInnerPort(displayPort[0]);
         cloudHost.setOuterIp(ip[1]);
         cloudHost.setCreateTime(strNow); 
+        //启动新线程来处理负载均衡的主机
+        /*if(cloudHost.getType()!=null && cloudHost.getType()==4){
+        	Thread t = new Thread(new LoadBalanceRunnable(),"Thread-LoadBalance");
+        	t.setDaemon(false);
+        	t.start();
+        }*/
         if(cloudHost.getIsAutoStartup() == AppConstant.CLOUD_HOST_IS_AUTO_STARTUP_YES){
             HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
             JSONObject startResullt = channel.hostStart(realHostId, 0, "");
@@ -1603,7 +1610,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             if(server.getIsAutoStartup()!=1){
                 isAutoStart = 0;
             } 
-            options = new Integer[] { 1, isUseDataDisk, isAutoStart,1,1 }; 
+            options = new Integer[] { 1, isUseDataDisk, isAutoStart,0,1 }; 
             SysDiskImageVO sysDiskImageVO = sysDiskImageMapper.getById(server.getSysImageId());
             if(sysDiskImageVO != null){
                 realDiskImageId = sysDiskImageVO.getRealImageId();

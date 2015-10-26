@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.CloudDiskMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.CloudDiskVO" id="CloudDiskVO">
+		<id     column="id"         property="id" />
+		<result column="real_disk_id" property="realDiskId" />
+		<result column="name"  property="name" />
+		<result column="user_id" property="userId" />
+		<result column="running_status" property="runningStatus" />
+		<result column="inner_ip" property="innerIp" />
+		<result column="inner_port" property="innerPort" />
+		<result column="outer_ip" property="outerIp" />
+		<result column="outer_port" property="outerPort" />
+		<result column="create_time" property="createTime" />
+		<result column="inactivate_time" property="inactiveTime" />
+		<result column="reactivate_time" property="reactiveTime" />
+		<result column="monthly_price" property="monthlyPrice" />
+	</resultMap>
+	
+	<!-- ********************* -->
+	
+	<insert id="addCloudDisk">
+		insert into cloud_disk (id, real_disk_id, user_id, name, account, disk, running_status, status, create_time, region,iqn,ip,password,type) 
+		values (#{id}, #{realDiskId}, #{userId}, #{name}, #{account}, #{disk}, #{runningStatus}, #{status}, #{createTime}, #{region},#{iqn},#{ip},#{password},#{type})
+	</insert>
+	
+	<!-- ********************* -->
+
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from cloud_disk 
+		<where>
+			user_id = #{userId}
+			and status!=4
+			<if test="region!=null and region!='%%'">
+				 and region = #{region}
+			</if>
+		</where>
+	</select>
+	<select id="queryAllCount" resultType="int">
+		select count(1)
+		from cloud_disk cd
+		left join (select id, case  when type=1 then x.account 
+when type=2 then x.operatorname 
+when type=3 then x.agentname
+when type=4 then x.username end name,type,account from (
+select a.id,a.type,a.account,b.name agentname,c.name operatorname,d.name username from sys_user a left join agent b on a.id = b.id
+left join operator c on a.id = c.id
+left join terminal_user d on a.id = d.id) x) u
+			on cd.user_id = u.id
+		left join mark_bind_user mbu
+			on u.id = mbu.user_id
+		left join mark m
+			on mbu.mark_id = m.id
+		left join (select a.id, a.belonging_id,b.account from terminal_user a left join sys_user b on a.id = b.id) t on t.id = cd.user_id			
+		<where>
+			cd.status!=4
+			<if test="diskName!=null and diskName!='%%'">
+				 and cd.name like #{diskName}
+			</if>
+			<if test="queryStatus==2">
+				and (cd.inactivate_time is null or (cd.inactivate_time > #{time} and cd.status =2) or cd.status!=2)
+			</if>
+			<if test="queryStatus==3">
+				and (cd.status=2 and #{time} > cd.inactivate_time)
+			</if>
+			<if test="markId!=null and markId!=''">
+				and m.id = #{markId}
+			</if>
+			<if test="accountname!=null and accountname!='%%'">
+				and u.name like #{accountname}
+			</if>
+			<if test="belongaccount!=null and belongaccount!='%%'">
+				and t.account like #{belongaccount}
+			</if>			
+		</where> 
+	</select>
+
+	<select id="queryPage" resultMap="CloudDiskVO">
+		select 
+			id, 
+			real_disk_id, 
+			type,
+			user_id, 
+			name, 
+			account,
+			password,
+			disk, 
+			running_status, 
+			status, 
+			inner_ip,
+			inner_port,
+			outer_ip,
+			outer_port,
+			create_time,
+			inactivate_time,
+			reactivate_time,
+			monthly_price,
+			region,
+			iqn,
+			ip
+		from cloud_disk
+		<where>
+			status!=4
+			and user_id = #{userId}
+			<if test="region!=null">
+				 and region = #{region}
+			</if>
+		</where>
+		order by create_time desc
+		<if test="start_row!=null and row_count!=null ">
+ 		limit #{start_row}, #{row_count}
+			</if>
+	</select>
+	
+	<select id="queryAllCloudDisk" resultMap="CloudDiskVO">
+		select 
+			cd.id, 
+			cd.real_disk_id, 
+			cd.type,
+			cd.user_id, 
+			cd.name, 
+			cd.account,
+			cd.password,
+			cd.disk, 
+			cd.running_status, 
+			cd.status, 
+			cd.inner_ip,
+			cd.inner_port,
+			cd.outer_ip,
+			cd.outer_port,
+			cd.create_time,
+			cd.inactivate_time,
+			cd.reactivate_time,
+			cd.monthly_price,
+			cd.region,
+			cd.iqn,
+			cd.ip,
+			u.account userName,
+			u.name accountname,
+			m.name markname,
+			t.account belongaccount
+		from cloud_disk cd
+		left join (select id, case  when type=1 then x.account 
+when type=2 then x.operatorname 
+when type=3 then x.agentname
+when type=4 then x.username end name,type,account from (
+select a.id,a.type,a.account,b.name agentname,c.name operatorname,d.name username from sys_user a left join agent b on a.id = b.id
+left join operator c on a.id = c.id
+left join terminal_user d on a.id = d.id) x) u
+			on cd.user_id = u.id
+		left join mark_bind_user mbu
+			on u.id = mbu.user_id
+		left join mark m
+			on mbu.mark_id = m.id
+		left join (select a.id, a.belonging_id,b.account from terminal_user a left join sys_user b on a.id = b.id) t on t.id = cd.user_id			
+		<where>
+			cd.status!=4
+			<if test="diskName!=null and diskName!='%%'">
+				 and cd.name like #{diskName}
+			</if>
+			<if test="queryStatus==2">
+				and (cd.inactivate_time is null or (cd.inactivate_time > #{time} and cd.status =2) or cd.status!=2)
+			</if>
+			<if test="queryStatus==3">
+				and (cd.status=2 and #{time} > cd.inactivate_time)
+			</if>
+			<if test="markId!=null and markId!=''">
+				and m.id = #{markId}
+			</if>
+			<if test="accountname!=null and accountname!='%%'">
+				and u.name like #{accountname}
+			</if>
+			<if test="belongaccount!=null and belongaccount!='%%'">
+				and t.account like #{belongaccount}
+			</if>				
+		</where>
+		order by create_time desc
+		<if test="start_row!=null and row_count!=null ">
+ 		limit #{start_row}, #{row_count}
+		</if>
+	</select>
+	
+	<select id="getCloudDiskByUserId" resultMap="CloudDiskVO">
+		select 
+			id, 
+			real_disk_id, 
+			user_id, 
+			type,
+			name, 
+			account,
+			password,
+			disk, 
+			running_status, 
+			status, 
+			inner_ip,
+			inner_port,
+			outer_ip,
+			outer_port,
+			create_time,
+			inactivate_time,
+			reactivate_time,
+			monthly_price,
+			region
+		from cloud_disk
+		where user_id = #{userId}
+		and status!=4
+		order by create_time desc
+<!-- 		limit #{start_row}, #{row_count} -->
+	</select>
+	
+	<select id="getCloudDiskById" resultMap="CloudDiskVO">
+		select 
+			id, 
+			real_disk_id, 
+			user_id, 
+			type,
+			name, 
+			account,
+			password,
+			disk, 
+			running_status, 
+			status, 
+			inner_ip,
+			inner_port,
+			outer_ip,
+			outer_port,
+			create_time,
+			inactivate_time,
+			reactivate_time,
+			monthly_price,
+			region
+		from cloud_disk
+		<where>
+			id = #{id}
+			and status!=4
+		</where>
+	</select>
+	
+	<!-- ********************* -->
+	
+	<update id="updateCloudDisk">
+		update cloud_disk set 
+			disk = #{disk}
+		<where>
+			id = #{id}
+			and status!=4
+		</where>
+	</update>
+	
+	<!-- ********************* -->
+	<delete id="deleteCloudDiskById">
+		delete
+		from cloud_disk
+		<where>
+			id = #{id}
+			and status!=4
+		</where>
+	</delete>
+	<!-- ********************* -->
+	
+	<update id="updateStatusById">
+		update cloud_disk
+		<set>
+			status = #{status},
+			<if test="inactivateTime!=null">
+				inactivate_time = #{inactivateTime},
+			</if>
+			<if test="reactivateTime!=null">
+				reactivate_time = #{reactivateTime},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<update id="updateStatusByUserId">
+		update cloud_disk
+		<set>
+			status = #{status},
+			<if test="inactivateTime!=null">
+				inactivate_time = #{inactivateTime},
+			</if>
+			<if test="reactivateTime!=null">
+				reactivate_time = #{reactivateTime},
+			</if>
+		</set>
+		where user_id = #{userId}
+		and type = #{type}
+	</update>
+	<select id="getCloudDiskForRegion" resultMap="CloudDiskVO">
+		select
+			cd.name
+		from cloud_disk cd
+		where cd.user_id = #{userId} and cd.region = #{region} and status!=4
+	</select>
+	
+	<update id="logicDeleteDiskByIds">
+		update  cloud_disk 
+		<set>
+		     status = 4 
+		</set>
+		where id in 
+		<foreach collection="list" item="item" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+	</update>
+</mapper>

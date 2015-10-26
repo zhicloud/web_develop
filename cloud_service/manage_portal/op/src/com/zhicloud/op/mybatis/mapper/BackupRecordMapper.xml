@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.BackupRecordMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.BackupRecordVO" id="BackupRecordVO">
+		<id     column="id"       property="id" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+
+
+	<select id="queryBackupRecordById" resultMap="BackupRecordVO">
+		SELECT
+            id,
+            mode,
+            disk,
+            create_time
+		FROM backup_record
+		WHERE id = #{id}
+
+	</select>
+
+    <!-- ***************** -->
+
+    <update id="updateBackupRecord">
+		REPLACE INTO backup_record(id, mode, disk, create_time) values(#{id}, #{mode}, #{disk}, #{create_time});
+	</update>
+	
+	<!-- ***************** -->
+
+</mapper>

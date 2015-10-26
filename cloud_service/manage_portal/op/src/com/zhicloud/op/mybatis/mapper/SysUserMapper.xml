@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.SysUserMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.SysUserVO" id="SysUserVO">
+		<id     column="id"       property="id" />
+		<result column="group_id" property="groupId" />
+		<result column="password" property="password" />
+	</resultMap>
+	
+	<!-- ******************* -->
+	
+	<select id="getById" resultMap="SysUserVO">
+		select 
+			u.id,
+			u.type,
+			u.account,
+			u.password,
+			u.group_id
+		from sys_user u
+		where u.id = #{id}
+	</select>
+	
+	<select id="getAllOperator" resultMap="SysUserVO">
+		select 
+			u.id,
+			u.type,
+			u.account,
+			u.password,
+			u.group_id
+		from sys_user u
+		where u.type=2
+	</select>
+	<select id="getAll" resultMap="SysUserVO">
+		select 
+			u.id,
+			u.type,
+			u.account,
+			u.group_id
+		from sys_user u
+		order by u.account
+	</select>
+	
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from sys_user u
+		<where>
+			u.type != 1			<!-- 不能为超级管理员 -->
+			<if test="type!=null">
+				and u.type = #{type}
+			</if>
+			<if test="account!=null and account!='%%'">
+				and u.account like #{account}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryPage" resultMap="SysUserVO">
+		select 
+			u.id,
+			u.type,
+			u.account,
+			u.group_id
+		from sys_user u
+		<where>
+			u.type != 1			<!-- 不能为超级管理员 -->
+			<if test="type!=null">
+				and u.type = #{type}
+			</if>
+			<if test="account!=null and account!='%%'">
+				and u.account like #{account}
+			</if>
+		</where>
+		order by u.account
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	
+	
+	<select id="queryPageNotInGroupIdCount" resultType="int">
+		select count(1)
+		from sys_user u
+		<where>
+			u.type != 1			<!-- 不能为超级管理员 -->
+			and (
+				u.group_id is null
+				or u.group_id != #{groupId}
+			)
+			<if test="type!=null">
+				and u.type = #{type}
+			</if>
+			<if test="account!=null and account!='%%'">
+				and u.account like #{account}
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryPageNotInGroupId" resultMap="SysUserVO">
+		select 
+			u.id,
+			u.type,
+			u.account,
+			u.group_id
+		from sys_user u
+		<where>
+			u.type != 1			<!-- 不能为超级管理员 -->
+			and (
+				u.group_id is null
+				or u.group_id != #{groupId}
+			)
+			<if test="type!=null">
+				and u.type = #{type}
+			</if>
+			<if test="account!=null and account!='%%'">
+				and u.account like #{account}
+			</if>
+		</where>
+		order by u.account
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	
+	<select id="getUserFromGroupItem" resultMap="SysUserVO">
+		select 
+			u.id,
+			u.type,
+			u.account,
+			u.group_id
+		from sys_user u
+		where u.group_id = #{groupId} 
+		order by u.account 
+	</select>
+
+	<select id="getByTypeAndAccount" resultMap="SysUserVO">
+		select 
+			u.id,
+			u.type,
+			u.account,
+			u.group_id
+		from sys_user u
+		where u.type = #{type}
+		and u.account = #{account}
+	</select>
+	
+	<select id="getByTypeAndAccountAndPassword" resultMap="SysUserVO">
+		select 
+			u.id,
+			u.type,
+			u.account,
+			<if test="type != 1">
+				t.status status,
+			</if>
+			u.group_id
+		from sys_user u
+		<if test="type == 2">
+			join operator t
+				on u.id = t.id
+		</if>
+		<if test="type == 3">
+			join agent t
+				on u.id = t.id
+		</if>
+		<if test="type == 4">
+			join terminal_user t
+				on u.id = t.id
+		</if>
+		where u.type = #{type}
+		and u.account = #{account}
+		and u.password = #{password}
+	</select>
+	
+	<select id="getByAccount" resultMap="SysUserVO">
+		select 
+			u.id,
+			u.type,
+			u.account,
+			u.group_id
+		from sys_user u
+		where u.account = #{account}
+	</select>
+	
+	<select id="getByGroupId" resultMap="SysUserVO">
+		select 
+			u.id,
+			u.type,
+			u.account,
+			u.group_id
+		from sys_user u
+		where u.group_id = #{groupId}
+	</select>
+	
+	<select id="getUserPassword" resultMap="SysUserVO">
+		select 
+			u.password
+		from sys_user u
+		where u.id = #{id}  
+	</select>
+	
+	
+	<select id="queryPageNotInImageIdCount" resultType="int">
+		select count(1)
+		from sys_user u 
+		<where>
+			u.type = 3			<!-- 暂时只考虑代理商 -->
+			and id not in(
+			select user_id from sys_user_image_relation 
+			where sys_image_id = #{imageId}
+			) 
+			<if test="alreadyChecked!=null and alreadyChecked!=''">
+			and u.id not in (${alreadyChecked})
+			</if>
+		</where>
+	</select>
+	
+	<select id="queryPageNotInImageId" resultMap="SysUserVO">
+		select 
+			u.id,
+			u.type,
+			u.account
+		from sys_user u 
+		<where>
+			u.type = 3			<!-- 暂时只考虑代理商 -->
+			and u.id not in(
+			select user_id from sys_user_image_relation 
+			where sys_image_id = #{imageId}
+			) 
+			<if test="alreadyChecked!=null and alreadyChecked!=''">
+			and u.id not in (${alreadyChecked})
+			</if>
+		</where>
+		order by u.account
+		limit #{start_row}, #{row_count}
+	</select>
+	<select id="queryUserInImageId" resultMap="SysUserVO">
+		select 
+			u.id,
+			u.type,
+			u.account
+		from sys_user u 
+		left join sys_user_image_relation i
+		on u.id = i.user_id
+		<where>
+			u.type = 3			<!-- 暂时只考虑代理商 -->
+			and i.sys_image_id = #{sysImageId}
+		</where>
+		order by u.account 
+	</select>
+
+	
+	<!-- ******************* -->
+	
+	<insert id="addSysUser">
+		insert into sys_user (id, account, password, type, group_id) values
+		(#{id}, #{account}, #{password}, #{type}, #{groupId})
+	</insert>
+
+	<update id="updateSysUser">
+		update sys_user 
+		<set>
+			account = #{account},  
+			<if test="groupId!=null and groupId!=''">
+			group_id = #{groupId},
+			</if>
+			<if test="password!=null and password!=''">
+				password = #{password}  
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateSysUserPassword">
+		update sys_user 
+		<set>
+			password = #{password}
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateSysUserAccount">
+		update sys_user 
+		<set>
+			account = #{account}
+		</set>
+		where id = #{id}
+	</update>
+	<!-- ******************* -->
+	
+	<update id="updateGroupId" >
+		update sys_user set 
+			group_id = #{groupId} 
+		where account = #{account}
+	</update>
+	
+	<update id="updateGroupIdById" >
+		update sys_user set 
+			group_id = #{groupId} 
+		where id = #{id}
+	</update>
+	
+	<update id="updateGroupIdByGroupId" >
+		update sys_user set 
+			group_id = #{newGroupId} 
+		where group_id = #{oldGroupId} 
+	</update>
+	
+	<!-- ******************* -->
+	
+	<delete id="deleteSysUser" >
+		delete from
+		sys_user where id=#{id}
+	</delete>
+
+	<delete id="deleteSysUsers">
+		delete
+		from sys_user
+		where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

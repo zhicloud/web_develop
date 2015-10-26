@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.VpcBaseInfoMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.VpcBaseInfoVO" id="VpcBaseInfoVO">
+		<id     column="id"            property="id" />
+		<result column="user_id"       property="userId" />
+		<result column="real_vpc_id"   property="realVpcId" />
+		<result column="name"          property="name" />
+		<result column="display_name"  property="displayName" />
+		<result column="description"   property="description" /> 
+		<result column="create_time"   property="createTime" /> 
+		<result column="status"        property="status"/>
+		<result column="region"        property="region"/>
+		<result column="monthly_price" property="monthlyPrice"/>
+		<result column="modified_time"   property="modifyTime"/>
+		<result column="host_amount"   property="hostAmount"/>
+		<result column="ip_amount"     property="ipAmount"/>
+	</resultMap> 
+	
+	<!-- ***************** -->
+
+	<select id="queryUserVpcsByUserId" resultMap="VpcBaseInfoVO">
+		select 
+			id,
+			real_vpc_id,
+			name,
+			display_name,
+			description,
+			status,
+			user_id,
+			region,
+			monthly_price,
+			host_amount,
+			ip_amount,
+			create_time 
+		from vpc_base_info
+		where user_id = #{userId}	
+		<if test="region!=null">
+		   and region = #{region}		
+		</if>	 
+		order by create_time desc
+ 	</select>
+	<select id="queryVpcById" resultMap="VpcBaseInfoVO">
+		select 
+			v.id,
+			v.real_vpc_id,
+			v.name,
+			v.display_name,
+			v.description,
+			v.status,
+			v.user_id,
+			v.region,
+			v.monthly_price,
+			v.host_amount,
+			v.ip_amount,
+			v.create_time,
+			s.account userName 
+		from vpc_base_info v
+		join sys_user s
+		on v.user_id = s.id
+		where v.id = #{id}		 
+		limit 1
+ 	</select>
+	<select id="queryVpcByHostId" resultMap="VpcBaseInfoVO">
+		select 
+			i.id,
+			i.real_vpc_id,
+			i.name,
+			i.display_name,
+			i.description,
+			i.status,
+			i.user_id,
+			i.region,
+			i.monthly_price,
+			i.host_amount,
+			i.ip_amount,
+			i.create_time  
+		from vpc_base_info i
+		left join vpc_bind_host h
+		on i.id = h.vpc_id and flag = 0 
+		where h.host_id = #{hostId}	 
+		limit 1
+ 	</select>
+	 <select id="getCount" resultType="int">
+		select count(1)
+		from vpc_base_info vbi
+		<where>
+			<if test="vpcName!=null and vpcName!='%%'">
+				vbi.display_name like #{vpcName}
+			</if>
+		</where>
+	</select>
+	 <select id="getAllVpc" resultMap="VpcBaseInfoVO">
+		select 
+			vbi.id,
+			vbi.real_vpc_id,
+			vbi.name,
+			vbi.display_name,
+			vbi.description,
+			vbi.status,
+			vbi.user_id,
+			vbi.region,
+			vbi.monthly_price,
+			vbi.host_amount,
+			vbi.ip_amount,
+			vbi.create_time, 	
+			vbi.modified_time 	
+		from vpc_base_info vbi
+		<where>
+			<if test="vpcName!=null and vpcName!='%%'">
+				 vbi.display_name like #{vpcName}
+			</if>
+		</where>
+		order by vbi.display_name
+		limit #{start_row}, #{row_count}
+	</select>
+	 <!-- ********************* -->
+	
+	<insert id="addVpc">
+		insert into vpc_base_info (id,real_vpc_id,user_id,name,display_name,description,status,region,monthly_price,host_amount,ip_amount,create_time) 
+		values (#{id},#{realVpcId}, #{userId},#{name},#{displayName},#{description},#{status},#{region},#{monthlyPrice},#{hostAmount},#{ipAmount}, #{createTime})
+	</insert>
+	
+	<!-- ********************* -->
+	
+	
+	<update id="updateVpc">
+		update vpc_base_info
+		set 
+		    <if test="displayName!=null">
+				display_name = #{displayName},
+			</if>
+		    <if test="description!=null">
+				description = #{description},
+			</if>
+		    <if test="status!=null">
+				status = #{status},
+			</if>
+		    <if test="monthly_price!=null">
+				monthly_price = #{monthlyPrice},
+			</if>
+			modified_time = #{modifyTime}
+		where  id = #{id}
+	</update>
+	
+	<update id="updateVpcIpAmount">
+		update vpc_base_info
+		set 
+		    ip_amount = ip_amount + #{amount},
+			modified_time = #{modifyTime}
+		where  id = #{id}
+	</update>
+	<update id="updateVpcHostAmount">
+		update vpc_base_info
+		set 
+		    host_amount = host_amount + #{amount},
+			modified_time = #{modifyTime}
+		where  id = #{id}
+	</update>
+	
+	
+	<!-- ********************* -->
+	<delete id="deleteVpc">
+		delete from user_message
+		where  id = #{id}
+	</delete> 
+
+	<delete id="deleteVpcByIds">
+		delete
+		from vpc_base_info
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+</mapper>

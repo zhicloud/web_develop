@@ -28,6 +28,7 @@ import com.zhicloud.ms.app.pool.rule.RulePoolManager;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoExt;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoPool;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoPoolManager;
+import com.zhicloud.ms.app.pool.snapshot.SnapshotManager;
 import com.zhicloud.ms.app.pool.storage.StorageManager;
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
 import com.zhicloud.ms.constant.AppConstant;
@@ -36,18 +37,9 @@ import com.zhicloud.ms.constant.MonitorConstant;
 import com.zhicloud.ms.constant.StaticReportHandle;
 import com.zhicloud.ms.service.IBackUpDetailService;
 import com.zhicloud.ms.util.CapacityUtil;
-import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.PlatformResourceMonitorVO;
-import com.zhicloud.ms.app.pool.snapshot.SnapshotManager;
-
- 
- 
-
-
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -474,17 +466,18 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		HostBackupProgressData hostBackup = pool.get(uuid);
 				
 		//对象不存在
-		if(hostBackup == null){
-			hostBackup = new HostBackupProgressData();
-			hostBackup.setSessionId(sessionId);
-			hostBackup.setUuid(uuid);
-			pool.put(hostBackup);
+		if(hostBackup != null){
+//			hostBackup = new HostBackupProgressData();
+//			hostBackup.setSessionId(sessionId);
+//			hostBackup.setUuid(uuid);
+//			pool.put(hostBackup);
+		    pool.remove(hostBackup);
 		}
 		
-		hostBackup.setFinished(true);
-		AppInconstant.hostBackupProgress.put(uuid+"backup", "backup_false");
-		hostBackup.updateTime();
-		hostBackup.setBackupStatus(0);
+//		hostBackup.setFinished(true);
+//		AppInconstant.hostBackupProgress.put(uuid+"backup", "backup_false");
+//		hostBackup.updateTime();
+//		hostBackup.setBackupStatus(0);
 		
 		if (HttpGatewayResponseHelper.isSuccess(messageData) == true) {
 			hostBackup.setSuccess(true);
@@ -1834,11 +1827,10 @@ public class HttpGatewayAsyncMessageHandlerImpl {
     public void modifyService(HttpGatewayAsyncChannel channel, JSONObject messageData) {
         //获取数据
         String sessionId = channel.getSessionId();
-        String target = messageData.getString("target");
 
         // 获取对象
         ServiceInfoPool pool = ServiceInfoPoolManager.singleton().getPool();
-        ServiceInfoExt serviceInfoExt = pool.get(target);
+        ServiceInfoExt serviceInfoExt = pool.get(sessionId);
 
         if (serviceInfoExt == null) {
             serviceInfoExt = new ServiceInfoExt();

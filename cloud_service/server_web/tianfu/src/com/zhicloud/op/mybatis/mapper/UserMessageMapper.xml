@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.UserMessageMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.UserMessageVO" id="UserMessageVO">
+		<id     column="id"           property="id" />
+		<result column="user_id"      property="userId" />
+		<result column="content"      property="content" />
+		<result column="create_time"  property="createTime" /> 
+		<result column="status"       property="status"/>
+	</resultMap>
+	
+	<!-- ***************** -->
+
+	<select id="getUserMessageCount" resultType="int">
+		select count(1)
+		from user_message 
+		where	 user_id = #{userId}  
+	</select> 
+	
+	<!-- ***************** -->
+
+	<select id="getUserMessage" resultMap="UserMessageVO">
+		select 
+			id,
+			user_id,
+			content,
+			create_time 
+		from user_message
+		where user_id = #{userId}
+		 
+		order by create_time desc
+		limit #{start_row}, #{row_count}
+	</select>
+	
+	<select id="getUserInitPasswordMessage" resultMap="UserMessageVO">
+		select 
+			id,
+			user_id,
+			content,
+			create_time,
+			status
+		from user_message
+		where user_id = #{userId}
+		and status=1
+		
+	</select>
+	
+	 <!-- ********************* -->
+	
+	<insert id="insertReg">
+		insert into user_message (id,user_id,content,create_time,status) 
+		values (#{id}, #{userId}, #{content}, #{createTime}, #{status})
+	</insert>
+	
+	<!-- ********************* -->
+	
+	
+	<delete id="deleteUserMessage">
+		delete from user_message
+		where  id = #{id}
+	</delete>
+	
+	<delete id="deleteUserMessageByStatus">
+		delete from user_message
+		where  user_id = #{userId} and status = #{status}
+	</delete>
+
+</mapper>

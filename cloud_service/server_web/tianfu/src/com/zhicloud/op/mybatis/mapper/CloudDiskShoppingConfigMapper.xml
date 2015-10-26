@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.op.mybatis.mapper.CloudDiskShoppingConfigMapper">
+
+
+	<resultMap type="com.zhicloud.op.vo.CloudDiskShoppingConfigVO" id="CloudDiskShoppingConfigVO">
+		<id     column="id"         property="id" />
+		<result column="disk_id" property="diskId" />
+		<result column="user_id" property="userId" />
+		<result column="start_time" property="startTime" />
+		<result column="end_time" property="endTime" />
+		<result column="create_time" property="createTime" />
+		<result column="process_status" property="processStatus" />
+		<result column="process_message" property="processMessage" />
+	</resultMap>
+	
+	<!-- ********************* -->
+	
+	<insert id="addCloudDiskShoppingConfig">
+		insert into cloud_disk_shopping_config (id, disk_id, user_id, disk, start_time, end_time, price, create_time, process_status, process_message, region) 
+		values (#{id}, #{diskId}, #{userId}, #{disk}, #{startTime}, #{endTime}, #{price}, #{createTime}, #{processStatus}, #{processMessage}, #{region})
+	</insert>
+	
+	<!-- ********************* -->
+
+	<update id="updateProcessStatusById"  >
+		update cloud_disk_shopping_config
+		<set>
+			process_status = #{processStatus}, 
+			process_message = #{processMessage}
+		</set>
+		<where>
+			id = #{id}
+		</where>
+	</update>
+	
+	<!-- ********************* -->
+	
+	<update id="updateCloudDiskById">
+		update cloud_disk_shoppping_config set 
+			disk = #{disk}
+		<where>
+			disk_id = #{diskId}
+		</where>
+	</update>
+	
+	<!-- ********************* -->
+	
+</mapper>
