@@ -1,30 +1,7 @@
 
 package com.zhicloud.ms.transform.serviceimpl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import com.zhicloud.ms.app.propeties.AppProperties;
-import com.zhicloud.ms.message.MessageServiceManager;
-import com.zhicloud.ms.message.email.EmailSendService;
-import com.zhicloud.ms.message.email.EmailTemplateConstant;
-
-import org.apache.ibatis.session.SqlSession;
-import org.apache.log4j.Logger;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import com.zhicloud.ms.common.util.RandomPassword;
 import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.common.util.constant.MailConstant;
@@ -32,6 +9,9 @@ import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.exception.AppException;
 import com.zhicloud.ms.mapper.SysUserMapper;
 import com.zhicloud.ms.mapper.TerminalUserMapper;
+import com.zhicloud.ms.message.MessageServiceManager;
+import com.zhicloud.ms.message.email.EmailSendService;
+import com.zhicloud.ms.message.email.EmailTemplateConstant;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.transform.constant.TransformConstant;
@@ -40,7 +20,6 @@ import com.zhicloud.ms.transform.mapper.ManSystemMenuMapper;
 import com.zhicloud.ms.transform.mapper.ManSystemRightMapper;
 import com.zhicloud.ms.transform.mapper.ManSystemUserMapper;
 import com.zhicloud.ms.transform.service.ManSysUserService;
-import com.zhicloud.ms.transform.util.SendMail;
 import com.zhicloud.ms.transform.util.TransFormLoginHelper;
 import com.zhicloud.ms.transform.util.TransFormLoginInfo;
 import com.zhicloud.ms.transform.vo.ManSystemMenuVO;
@@ -50,6 +29,16 @@ import com.zhicloud.ms.util.MD5;
 import com.zhicloud.ms.vo.OperLogVO;
 import com.zhicloud.ms.vo.SysUser;
 import com.zhicloud.ms.vo.TerminalUserVO;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
  * @ClassName: SysUserServiceImpl
@@ -243,7 +232,7 @@ public class ManSysUserServiceImpl implements ManSysUserService {
     /**
      * 注销
      * @return
-     * @see com.zhicloud.ms.transform.service.ManSysUserService#logout()
+     * @see com.zhicloud.ms.transform.service.ManSysUserService#logout(java.lang.String)
      */
     @Transactional(readOnly = false)
     public Map<String, Object> logout(String sessionID) {
@@ -347,14 +336,20 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             new SendMail().sendPasswordEmail(user);*/
             if (n > 0 && m > 0) {
                 // 发送注册通知邮件
-                if(!StringUtil.isBlank(email)) {
-                    Map<String, Object> param = new LinkedHashMap<>();
-                    param.put("name", usercount);
-                    param.put("password", password);
-                    param.put("url", AppProperties.getValue("address_of_this_system", ""));
-                    EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
-                    emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_ADMIN_REGISTER, email, param);
+                try {
+                    if(!StringUtil.isBlank(email)) {
+                        Map<String, Object> param = new LinkedHashMap<>();
+                        param.put("name", usercount);
+                        param.put("password", password);
+                        param.put("url", AppProperties.getValue("address_of_this_system", ""));
+                        EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
+                        emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_ADMIN_REGISTER, email, param);
+                    }
+                } catch (Exception e) {
+                    logger.error(e);
+                    return TransformConstant.success;
                 }
+
                 return TransformConstant.success;
             } else {
                 return "添加失败";
@@ -447,11 +442,20 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             operatorData.put("type", TransformConstant.transform_log_user);
             this.addSystemLogInfo(operatorData);
             // 发送新密码邮件
-            Map<String, Object> user = new LinkedHashMap<String, Object>();
-            user.put("password", password);
-            user.put("email", manSystemUserVO.getEmail());
-            user.put("usercount", manSystemUserVO.getUsercount());
-            new SendMail().resetPasswordEmail(user);
+            try {
+                String email = manSystemUserVO.getEmail();
+                Map<String, Object> user = new LinkedHashMap<String, Object>();
+                user.put("password", password);
+//                user.put("email", manSystemUserVO.getEmail());
+//                user.put("usercount", manSystemUserVO.getUsercount());
+                EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
+                emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_RESET_PASSWORD_RANDOM, email, user);
+            } catch (Exception e) {
+                logger.error(e);
+                e.printStackTrace();
+                return TransformConstant.success;
+            }
+
             return TransformConstant.success;
 
         } catch (Exception e) {
@@ -903,7 +907,7 @@ public class ManSysUserServiceImpl implements ManSysUserService {
      * @return
      */
     @Transactional(propagation = Propagation.REQUIRED)
-    public String manualPassword(String billid, String newpassword) {
+    public String manualPassword(String billid, String newpassword, String email) {
         logger.debug("SysUserServiceImpl.manualPassword()");
         try {
             ManSystemUserMapper systemUserMapper = this.sqlSession.getMapper(ManSystemUserMapper.class);
@@ -911,6 +915,18 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             condition.put("password", TransFormLoginHelper.md5(AppConstant.PASSWORD_MD5_STR, newpassword));
             condition.put("billid", billid);
             systemUserMapper.updateSystemUser(condition);
+
+            // 发送新密码邮件
+            try {
+                Map<String, Object> user = new LinkedHashMap<String, Object>();
+                user.put("password", newpassword);
+                EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
+                emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_RESET_PASSWORD_MANUAL, email, user);
+            } catch (Exception e) {
+                logger.error(e);
+                return TransformConstant.success;
+            }
+
             return TransformConstant.success;
         } catch (Exception e) {
             logger.error(e);

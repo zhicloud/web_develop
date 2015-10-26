@@ -90,7 +90,7 @@ public class SmsInterfaceQuery {
      * @Description:检测短信账户是否正常和可用短信数量是否达到临界值
      * @throws
      */
-    public static void checkBalanceNum() {
+    public static void checkBalanceNum() throws Exception {
         Map<String, Object> map = getBalance();
         Integer state = Integer.parseInt(map.get("State").toString());
         EmailSendService mailSendService = MessageServiceManager.singleton().getMailService();
@@ -120,7 +120,7 @@ public class SmsInterfaceQuery {
      * @Description:根据发送短信返回的状态判断短信通道时候可用
      * @param state
      */
-    public static void checkReturnState(String state) {
+    public static void checkReturnState(String state) throws Exception {
         if (!"1".equals(state)) {
             EmailSendService mailSendService = MessageServiceManager.singleton().getMailService();
             Map<String, Object> parameter = new LinkedHashMap<>();
