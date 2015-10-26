@@ -3904,7 +3904,7 @@ public JSONObject hostMigrate(String uuid, String target, int type, String callb
 
     public JSONObject serviceModify(int type, String target, int diskType, String diskSource, String crypt, String callback) throws MalformedURLException, IOException {
         String url = this.baseUrl + "service?";
-        url += "command=modify_service&";
+        url += "command=modify&";
         url += "session_id=" + this.sessionId + "&";
 
         if (logger.isDebugEnabled()) {

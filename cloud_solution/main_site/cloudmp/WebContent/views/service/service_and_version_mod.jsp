@@ -110,15 +110,15 @@
                       </div>
                       
 					<div class="form-group">
-					    <label for="optionsRadios10" class="col-sm-2 control-label">存储模式*</label>
+					    <label for="optionsRadios0" class="col-sm-2 control-label">存储模式*</label>
 					    <div class="col-sm-8">  
 					        <div class="radio radio-transparent col-md-2">
-					        	<input type="radio" name="diskType" id="optionsRadios10" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');" checked="checked">
-					       		<label for="optionsRadios10">本地</label>
+					        	<input type="radio" name="diskType" id="optionsRadios0" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');" checked="checked">
+					       		<label for="optionsRadios0">本地</label>
 					     	</div>
 					     	<div class="radio radio-transparent col-md-4">
-					       		<input type="radio" name="diskType" id="optionsRadios11" value="1" onclick="$('#divNas').removeAttr('hidden');$('#divNas').attr('class','show');">
-					       		<label for="optionsRadios11">共享存储</label>
+					       		<input type="radio" name="diskType" id="optionsRadios1" value="1" onclick="$('#divNas').removeAttr('hidden');$('#divNas').attr('class','show');">
+					       		<label for="optionsRadios1">共享存储</label>
 					     	</div>                          
 					   	</div>
 					</div>
@@ -248,63 +248,10 @@
 
 
     $(function(){
-        <%--$("#port_pool").hide();--%>
-        <%--$("#ip_pool").hide();--%>
-        <%--$("#network_ip").attr("disabled",true);--%>
-        <%--$("#network_port").attr("disabled",true);--%>
-        <%--$("#disk_pool").hide();--%>
-        <%--$("#optionsRadios"+${computeInfoExt.networkType}).click();--%>
-        <%--$("#optionsRadios1"+${computeInfoExt.diskType}).click();--%>
-        <%--$("#mode0"+${computeInfoExt.mode0}).attr("checked", true);--%>
-        <%--$("#mode1"+${computeInfoExt.mode1}).attr("checked", true);--%>
-        <%--$("#mode2"+${computeInfoExt.mode2}).attr("checked", true);--%>
-        <%--$("#mode3"+${computeInfoExt.mode3}).attr("checked", true);--%>
-        <%--if($('#optionsRadios12').is(':checked')) {--%>
-        	<%--$("#divNas").show();--%>
-        <%--}--%>
-        <%--$("#option"+${computeInfoExt.option}).attr("checked", true);--%>
+
+        $("#optionsRadios"+${service_info.diskType}).attr("checked", true);
+
     });
-
-    function networkCheck(id) {
-        if (id == 'optionsRadios0') {
-            $("#port_pool").hide();
-            $("#ip_pool").hide();
-            $("#no_pool").attr("disabled",false);
-            $("#network_ip").attr("disabled",true);
-            $("#network_port").attr("disabled",true);
-        }
-
-
-
-        if (id == 'optionsRadios1' ) {
-            $("#port_pool").hide();
-            $("#ip_pool").show();
-            $("#no_pool").attr("disabled",true);
-            $("#network_ip").attr("disabled",false);
-            $("#network_port").attr("disabled",true);
-        }
-        if (id == 'optionsRadios2') {
-            $("#port_pool").show();
-            $("#ip_pool").hide();
-            $("#no_pool").attr("disabled",true);
-            $("#network_ip").attr("disabled",true);
-            $("#network_port").attr("disabled",false);
-        }
-    }
-
-//    function diskCheck(id) {
-//        if (id == 'optionsRadios10') {
-//            $("#disk_pool").hide();
-//            $("#no_pool").attr("disabled",false);
-//            $("#sys_image_id").attr("disabled",true);
-//        }
-//        if (id == 'optionsRadios11' ) {
-//            $("#disk_pool").show();
-//            $("#no_pool").attr("disabled",true);
-//            $("#sys_image_id").attr("disabled",false);
-//        }
-//    }
-
 
     function saveForm(){
 		jQuery.ajax({
