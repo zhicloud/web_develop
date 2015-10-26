@@ -1,10 +1,13 @@
 package com.zhicloud.ms.quartz;
 
 import com.zhicloud.ms.constant.AppConstant;
-import com.zhicloud.ms.remote.MethodResult;
+import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
+import com.zhicloud.ms.httpGateway.HttpGatewayManager;
+import com.zhicloud.ms.httpGateway.HttpGatewayResponseHelper;
 import com.zhicloud.ms.service.ICloudHostService;
 import com.zhicloud.ms.service.ISetTimeOperationDetailService;
 import com.zhicloud.ms.vo.CloudHostVO;
+import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -41,15 +44,18 @@ public class OperationJob implements Job {
             while (it.hasNext()) {
                 CloudHostVO cloudHostVO = it.next();
                 Integer runningStatus = cloudHostVO.getRunningStatus();
-                String id = cloudHostVO.getId();
-                MethodResult result = null;
+                String realHostId = cloudHostVO.getRealHostId();
+                JSONObject result = null;
+                HttpGatewayChannelExt channel = HttpGatewayManager
+                    .getChannel(cloudHostVO.getRegion());
+
                 switch (key) {
                     //执行开机操作
                     case AppConstant.STARTUP_TIMER: {
                         //若关机则发送开机命令
                         if (AppConstant.CLOUD_HOST_RUNNING_STATUS_SHUTDOWN == runningStatus) {
-                            result = cloudHostService.operatorCloudHost(id, "1");
-                            if (MethodResult.SUCCESS.equals(result.status)) {
+                            result = channel.hostStart(realHostId, 0, "");
+                            if (HttpGatewayResponseHelper.isSuccess(result)) {
                                 setTimeOperationDetailService
                                     .insertDetail(cloudHostVO.getRealHostId(), AppConstant.RESULT_SUCCESS,
                                         AppConstant.MESSAGE_TYPE_STARTUP);
@@ -70,8 +76,8 @@ public class OperationJob implements Job {
                     //执行关机操作
                     case AppConstant.SHUTDOWN_TIMER: {
                         if (AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING == runningStatus) {
-                            result = cloudHostService.operatorCloudHost(id, "2");
-                            if (MethodResult.SUCCESS.equals(result.status)) {
+                            result = channel.hostStop(realHostId);
+                            if (HttpGatewayResponseHelper.isSuccess(result)) {
                                 setTimeOperationDetailService
                                     .insertDetail(cloudHostVO.getRealHostId(), AppConstant.RESULT_SUCCESS,
                                         AppConstant.MESSAGE_TYPE_SHUTDOWN);

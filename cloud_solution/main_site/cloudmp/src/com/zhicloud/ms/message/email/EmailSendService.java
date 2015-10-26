@@ -50,7 +50,7 @@ public class EmailSendService {
      * @param parameter 模板内容关键字参数
      * @return Email正文内容
      */
-    private String generateEmailContent(String path, Map<String, Object> parameter) {
+    private String generateEmailContent(String path, Map<String, Object> parameter) throws Exception{
 
         emailHtmlContentGenerator = new EmailHtmlContentGenerator(path);
 
@@ -76,7 +76,7 @@ public class EmailSendService {
      * @param code 邮件模板标识码
      * @param parameter 模板内容关键字参数
      */
-    public void sendMail(String code, Map<String, Object> parameter) {
+    public void sendMail(String code, Map<String, Object> parameter) throws Exception{
 
         if (parameter == null) {
             parameter = new LinkedHashMap<>();
@@ -130,7 +130,7 @@ public class EmailSendService {
      * @param receiver 收件人
      * @param parameter 模板内容关键字参数
      */
-    public void sendMail(String code, String receiver, Map<String, Object> parameter) {
+    public void sendMail(String code, String receiver, Map<String, Object> parameter) throws Exception{
         if (parameter == null) {
             parameter = new LinkedHashMap<>();
         }
@@ -181,7 +181,7 @@ public class EmailSendService {
      * @param receiver 收件人
      * @param parameter 模板内容关键字参数
      */
-    public void sendMailWithBcc(String code, String receiver, Map<String, Object> parameter) {
+    public void sendMailWithBcc(String code, String receiver, Map<String, Object> parameter) throws Exception{
 
         if (parameter == null) {
             parameter = new LinkedHashMap<>();
