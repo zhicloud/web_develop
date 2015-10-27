@@ -248,7 +248,7 @@ public class CheckServerRoomsListener implements ServletContextListener {
         RegionData[] regionDatas = RegionHelper.singleton.getAllResions();
         HttpGatewayChannelExt channel =null;
         for (RegionData regionData : regionDatas) {
-            System.out.println("区域:" + regionData.getName() + ",更新硬件信息");
+            //System.out.println("区域:" + regionData.getName() + ",更新硬件信息");
             MonitorConstant.nameMap.put(regionData.getId() + "", regionData.getName());
             channel = HttpGatewayManager.getChannel(regionData.getId());
             HttpGatewayAsyncChannel channel_asy = HttpGatewayManager.getAsyncChannel(regionData.getId());
@@ -1059,7 +1059,7 @@ public class CheckServerRoomsListener implements ServletContextListener {
         HttpGatewayChannelExt channel = null;
         HttpGatewayAsyncChannel channel_asy = null;
         for (RegionData regionData : regionDatas) {
-            System.out.println("区域：" + regionData.getName() + ",更新云主机信息");
+            //System.out.println("区域：" + regionData.getName() + ",更新云主机信息");
             // 广州暂时跳过不处理
             channel = HttpGatewayManager.getChannel(regionData.getId());
             channel_asy = HttpGatewayManager.getAsyncChannel(regionData.getId());
@@ -1067,7 +1067,7 @@ public class CheckServerRoomsListener implements ServletContextListener {
                 // 获取该区域所有的资源池
                 JSONObject object = channel.computePoolQuery();
                 JSONArray pools = object.getJSONArray("compute_pools");
-                System.out.println("区域:" + regionData.getName() + ",资源池数量:" + pools.size());
+                //System.out.println("区域:" + regionData.getName() + ",资源池数量:" + pools.size());
                 if (pools != null && pools.size() > 0) {
                     for (int i = 0; i < pools.size(); i++) {
                         // 单个资源池
