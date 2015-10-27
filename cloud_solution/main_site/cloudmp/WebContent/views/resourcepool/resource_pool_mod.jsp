@@ -164,7 +164,7 @@
                       </div>
                       
 					<div class="form-group">
-					    <label for="input01" class="col-sm-2 control-label">磁盘模式*</label>
+					    <label for="diskType" class="col-sm-2 control-label">磁盘模式*</label>
 					    <div class="col-sm-8">  
 					        <div class="radio radio-transparent col-md-2">
 					        	<input type="radio" name="diskType" id="optionsRadios10" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');" checked>
@@ -187,13 +187,13 @@
                       
 					<div id="divNas" class="hidden">
 						<div class="form-group">
-						<label for="input01" class="col-sm-2 control-label">存储路径</label>
+						<label for="path" class="col-sm-2 control-label">存储路径</label>
 							<div class="col-sm-4">
 							     <input type="text" class="form-control" id="path" name="path" value="${computeInfoExt.path}" parsley-trigger="change" parsley-type="nochinese" parsley-maxlength="50" />
 							</div>
 						</div>                      
 						<div class="form-group">
-							<label for="input01" class="col-sm-2 control-label">连接信息</label>
+							<label for="crypt" class="col-sm-2 control-label">连接信息</label>
 							<div class="col-sm-4">
 							     <input type="text" class="form-control" id="crypt" name="crypt" value="${computeInfoExt.crypt}" parsley-trigger="change" parsley-type="nochinese" parsley-maxlength="50" />
 							</div>
@@ -223,11 +223,11 @@
                             <div class="col-sm-16">
                                 <div class="radio radio-transparent col-md-2">
                                     <input type="radio" name="mode0" id="mode00" value="0">
-                                    <label for="mode0">否</label>
+                                    <label for="mode00">否</label>
                                 </div>
                                 <div class="radio radio-transparent col-md-2">
                                     <input type="radio" name="mode0" id="mode01" value="1">
-                                    <label for="mode1">是</label>
+                                    <label for="mode01">是</label>
                                 </div>
                             </div>
                         </div>

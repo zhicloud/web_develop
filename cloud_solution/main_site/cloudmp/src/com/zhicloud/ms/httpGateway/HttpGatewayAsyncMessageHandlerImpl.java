@@ -1585,22 +1585,14 @@ public class HttpGatewayAsyncMessageHandlerImpl {
             computeInfoExt.setDiskType(diskType);
             computeInfoExt.setDiskSource(diskSource);
             computeInfoExt.setMode(modeArr);
-            computeInfoExt.setMode0(modeArr[0]);
-            computeInfoExt.setMode1(modeArr[1]);
-            computeInfoExt.setMode2(modeArr[2]);
-            computeInfoExt.setMode3(modeArr[3]);
             computeInfoExt.setPath(path);
             computeInfoExt.setCrypt(crypt);
             computeInfoExt.success();
 
-            System.err.println(String.format(
-                "[%s]query compute pool detail success, uuid '%s', name '%s', network_type '%d', network '%s', disk_type '%d', disk_source '%s', mode '%s', path '%s', crypt '%s'",
-                sessionId, uuid, name, networkType, network, diskType, diskSource, mode, path, crypt));
         } else {
             String message = messageData.getString("message");
             computeInfoExt.fail();
             computeInfoExt.setMessage(message);
-            System.err.println(String.format("[%s]query compute pool detail fail, uuid '%s', message '%s'", sessionId, uuid, HttpGatewayResponseHelper.getMessage(messageData)));
 
         }
     }
