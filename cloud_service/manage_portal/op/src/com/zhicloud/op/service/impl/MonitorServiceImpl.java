@@ -791,8 +791,8 @@ public class MonitorServiceImpl extends BeanDirectCallableDefaultImpl implements
                     } else if (MonitorConstant.status_stop.equals(status)) {
                         r_stop++;
                     }
-                    System.out.println("计算数量,云主机:" + JSONLibUtil.getString(host, "name") + ",status:" + status + ",json:"
-                            + host);
+/*                    System.out.println("计算数量,云主机:" + JSONLibUtil.getString(host, "name") + ",status:" + status + ",json:"
+                            + host);*/
                     String regionid = JSONLibUtil.getString(host, "areaid");
                     String hostname = JSONLibUtil.getString(host, "name");
                     String serverIP = JSONLibUtil.getStringArray(host, "ip")[0];
