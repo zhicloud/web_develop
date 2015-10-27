@@ -47,3 +47,21 @@ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/LoadBalanceContr
 
 兼容性说明：
 无
+******************************************************
+版本号：版本号：【云平台web】verion(2.0)(build 20151027-1) 
+修改时间：2015/10/27
+修改人：张本缘
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/transform/sharedmemory/shared_memory_edit.jsp
+cloud_solution/main_site/cloudmp/WebContent/assets/js/vendor/parsley/parsley.min.js
+
+新增文件：
+无
+删除文件：
+无
+
+主要变更：
+1.共享存储编辑页面路径格式限制
+
+兼容性说明：
+无
