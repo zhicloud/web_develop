@@ -178,6 +178,7 @@ public class TransFormPrivilegeConstant {
     public static final String server_host_bind_tenant = "server_host_bind_tenant";     //云服务器绑定租户
     public static final String server_host_unbound_tenant = "server_host_unbound_tenant";     //云服务器解绑租户
     public static final String server_resource_pool_query = "server_resource_pool_query";     //资源池查询
+    public static final String server_resource_pool_mod = "server_resource_pool_mod";   //服务器资源池移除
     public static final String server_resource_pool_remove = "server_resource_pool_remove";   //服务器资源池移除
     public static final String server_resource_node_add = "server_resource_node_add";   //服务器资源池节点新增
     public static final String server_resource_node_remove = "server_resource_node_remove";   //服务器资源池节点移除

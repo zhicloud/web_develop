@@ -91,14 +91,14 @@
 
                   <!-- tile header -->
                   <div class="tile-header">
-                      <h3><a href="<%=request.getContextPath() %>/cdrpm/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-arrow-left"></i></a>输入主机资源池信息</h3>
+                      <h3><a href="<%=request.getContextPath() %>/csrpm/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-arrow-left"></i></a>输入主机资源池信息</h3>
                   </div>
                   <!-- /tile header -->
 
                   <!-- tile body -->
                   <div class="tile-body">
                     
-                    <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="${pageContext.request.contextPath }/cdrpm/mod" method="post">
+                    <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="${pageContext.request.contextPath }/csrpm/mod" method="post">
                       <input name="uuid" type="hidden" value="${computeInfoExt.uuid}"/>
                       
                       <div class="form-group">
@@ -164,7 +164,7 @@
                       </div>
                       
 					<div class="form-group">
-					    <label for="diskType" class="col-sm-2 control-label">磁盘模式*</label>
+					    <label for="input01" class="col-sm-2 control-label">磁盘模式*</label>
 					    <div class="col-sm-8">  
 					        <div class="radio radio-transparent col-md-2">
 					        	<input type="radio" name="diskType" id="optionsRadios10" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');" checked>
@@ -434,7 +434,7 @@
                                             $("#tipscontent").html(data.message);
 							     		      $("#dia").click();  		        							
  		        						}else{
-                                            location.href = path + "/cdrpm/all";
+                                            location.href = path + "/csrpm/all";
  		        						}
  		        					},
  		        					dataType:'json',
