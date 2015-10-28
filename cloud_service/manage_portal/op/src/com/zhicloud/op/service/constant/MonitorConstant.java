@@ -263,7 +263,7 @@ public class MonitorConstant {
             return MonitorConstant.status_warn;
         }
         Integer error = AnalyzeStaticRule(monitor_rule_error, json);
-        System.out.println(",解析告警规则返回值:" + warn + ",解析故障规则返回值:" + error + ",data:" + json);
+        //System.out.println(",解析告警规则返回值:" + warn + ",解析故障规则返回值:" + error + ",data:" + json);
         if (error > 0) {
             return MonitorConstant.status_error;
         }

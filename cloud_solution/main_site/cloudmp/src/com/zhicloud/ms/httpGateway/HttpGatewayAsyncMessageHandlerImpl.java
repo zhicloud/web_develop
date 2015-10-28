@@ -28,6 +28,7 @@ import com.zhicloud.ms.app.pool.rule.RulePoolManager;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoExt;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoPool;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoPoolManager;
+import com.zhicloud.ms.app.pool.snapshot.SnapshotManager;
 import com.zhicloud.ms.app.pool.storage.StorageManager;
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
 import com.zhicloud.ms.constant.AppConstant;
@@ -36,18 +37,9 @@ import com.zhicloud.ms.constant.MonitorConstant;
 import com.zhicloud.ms.constant.StaticReportHandle;
 import com.zhicloud.ms.service.IBackUpDetailService;
 import com.zhicloud.ms.util.CapacityUtil;
-import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.PlatformResourceMonitorVO;
-import com.zhicloud.ms.app.pool.snapshot.SnapshotManager;
-
- 
- 
-
-
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -1593,22 +1585,14 @@ public class HttpGatewayAsyncMessageHandlerImpl {
             computeInfoExt.setDiskType(diskType);
             computeInfoExt.setDiskSource(diskSource);
             computeInfoExt.setMode(modeArr);
-            computeInfoExt.setMode0(modeArr[0]);
-            computeInfoExt.setMode1(modeArr[1]);
-            computeInfoExt.setMode2(modeArr[2]);
-            computeInfoExt.setMode3(modeArr[3]);
             computeInfoExt.setPath(path);
             computeInfoExt.setCrypt(crypt);
             computeInfoExt.success();
 
-            System.err.println(String.format(
-                "[%s]query compute pool detail success, uuid '%s', name '%s', network_type '%d', network '%s', disk_type '%d', disk_source '%s', mode '%s', path '%s', crypt '%s'",
-                sessionId, uuid, name, networkType, network, diskType, diskSource, mode, path, crypt));
         } else {
             String message = messageData.getString("message");
             computeInfoExt.fail();
             computeInfoExt.setMessage(message);
-            System.err.println(String.format("[%s]query compute pool detail fail, uuid '%s', message '%s'", sessionId, uuid, HttpGatewayResponseHelper.getMessage(messageData)));
 
         }
     }
@@ -1835,11 +1819,10 @@ public class HttpGatewayAsyncMessageHandlerImpl {
     public void modifyService(HttpGatewayAsyncChannel channel, JSONObject messageData) {
         //获取数据
         String sessionId = channel.getSessionId();
-        String target = messageData.getString("target");
 
         // 获取对象
         ServiceInfoPool pool = ServiceInfoPoolManager.singleton().getPool();
-        ServiceInfoExt serviceInfoExt = pool.get(target);
+        ServiceInfoExt serviceInfoExt = pool.get(sessionId);
 
         if (serviceInfoExt == null) {
             serviceInfoExt = new ServiceInfoExt();

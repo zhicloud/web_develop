@@ -177,7 +177,8 @@
                       <ul class="dropdown-menu" role="menu">
 <!--                       	<li><a href="#">新增资源节点</a></li> -->
                       	<li><a href="javascript:void(0);" cur_id="${cp.uuid }" class="query_detail">查看资源节点</a></li>
-                        <li><a href="javascript:void(0);" cur_id="${cp.uuid }" class="delete_resource_pool">删除该资源池</a></li>
+                          <li><a href="javascript:void(0);" cur_id="${cp.uuid }" class="modify_resource_pool" host_count = "${cp.getAllHost()}">编辑该资源池</a></li>
+                          <li><a href="javascript:void(0);" cur_id="${cp.uuid }" class="delete_resource_pool">删除该资源池</a></li>
 <!--                         <li><a href="#">删除该资源池</a></li> -->
                       </ul>
                     </div>
@@ -332,6 +333,19 @@
     	$("#create_resource_pool").click(function(){
 		    window.location.href = path+"/csrpm/add";
  	    });
+        //检测是否有云主机
+        //编辑资源池
+        jQuery(".modify_resource_pool").click(function(){
+            var uuid = jQuery(this).attr("cur_id");
+            var host_count = jQuery(this).attr("host_count");
+            if (host_count > 0) {
+                $("#tipscontent").html("仅资源池内无主机时允许修改计算资源网络类型以及磁盘模式");
+                $("#dia").click();
+                return;
+            }
+            cur_id = uuid;
+            window.location.href = path+"/csrpm/"+cur_id+"/mod";
+        });
     	//删除资源池
 	    jQuery(".delete_resource_pool").click(function(){
 	    	var uuid = jQuery(this).attr("cur_id");

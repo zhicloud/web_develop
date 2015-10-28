@@ -18,6 +18,12 @@ public class ServiceInfoPool {
 
 	public  void put(ServiceInfoExt serviceInfo) {
 		String name = serviceInfo.getName();
+    String sessionId = serviceInfo.getSessionId();
+
+    //用于gw获取数据
+    if (sessionId != null && sessionId.trim().length() != 0) {
+        this.servicePool.put(sessionId, serviceInfo);
+    }
 
 		if (name != null && name.trim().length() != 0) {
 			this.servicePool.put(name, serviceInfo);

@@ -1,28 +1,125 @@
 ******************************************************
-�汾�ţ��汾�ţ�����ƽ̨web��verion(2.0)(build 20151012-1) 
-�޸�ʱ�䣺2015/10/23
-�޸��ˣ�����ɯ
-�޸��ļ���
-StringUtil.java
-CloudHostController
-CloudServerController
-IsoImageController
-HttpGateAsyncMessageHandlerImpl.java
-IsoImageService.java
-CloudHostServiceImpl.java
-IsoImageServiceImpl.java
-SharesMemoryServiceImpl.java
+版本号：版本号：【云平台web】verion(2.1)(build 20151027-1)
+修改时间：2015/10/27
+修改人：张翔
+修改文件：
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/ServerResourcePoolController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/transform/constant/TransFormPrivilegeConstant.java
+cloud_solution/main_site/cloudmp/WebContent/views/server_resource_pool_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/resourcepool/server_resource_pool_add.jsp
+
+新增文件：
+cloud_solution/main_site/cloudmp/WebContent/views/resourcepool/server_resource_pool_mod.jsp
+
+删除文件：
+无
+
+主要变更：
+1.新增云服务器计算资源池修改
+
+兼容性说明：
+        1、node_client 2.0#20151012-1
+       	2、data_server 2.0#20151012-1
+       	3、storage_server 2.0#20151012-1
+       	4、control_server 2.0#20151020-1
+       	5、intelligent_router 2.0#20150627-1
+
+******************************************************
+版本号：版本号：【云桌面web】verion(2.1)(build 20151027-1)
+修改时间：2015/10/27
+修改人：张翔
+修改文件：
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/app/pool/computePool/ComputeInfoExt.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/ResourcePoolController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/httpGateway/HttpGatewayAsyncMessageHandlerImpl.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/IComputePoolService.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/ComputePoolServiceImpl.java
+cloud_solution/main_site/cloudmp/WebContent/views/resourcepool/resource_pool_add.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/resourcepool/resource_pool_mod.jsp
 
 
-�����ļ���
-iso_image_add.jsp
+新增文件：
+无
 
-ɾ���ļ���
-��
+删除文件：
+无
 
-��Ҫ�����
-1����������100%��������
-2�������ϴ�����
+主要变更：
+1.修复云桌面新建计算资源池失败问题
 
-������˵����
-��
+兼容性说明：
+        1、node_client 2.0#20151012-1
+       	2、data_server 2.0#20151012-1
+       	3、storage_server 2.0#20151012-1
+       	4、control_server 2.0#20151020-1
+       	5、intelligent_router 2.0#20150627-1
+
+******************************************************
+版本号：版本号：【云平台web】verion(2.0)(build 20151027-1)
+修改时间：2015/10/27
+修改人：张本缘
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/transform/sharedmemory/shared_memory_edit.jsp
+cloud_solution/main_site/cloudmp/WebContent/assets/js/vendor/parsley/parsley.min.js
+
+新增文件：
+无
+删除文件：
+无
+
+主要变更：
+1.共享存储编辑页面路径格式限制
+
+兼容性说明：
+无
+
+******************************************************
+版本号：版本号：【云平台web】verion(2.0)(build 20151026-1)
+修改时间：2015/10/26
+修改人：张本缘
+修改文件：
+无
+
+新增文件：
+cloud_solution/main_site/cloudmp/WebContent/views/loadbanlance/bind_eip.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/loadbanlance/create_elb.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/loadbanlance/ecs_edit.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/loadbanlance/healthy_edit.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/loadbanlance/manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/loadbanlance/port_edit.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/loadbanlance/unbind_edit.jsp
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/LoadBalanceController.java
+
+删除文件：
+无
+
+主要变更：
+1.负载均衡页面设计
+
+兼容性说明：
+无
+
+
+******************************************************
+版本号：版本号：【云平台web】verion(2.0)(build 20151026-1) 
+修改时间：2015/10/26
+修改人：张翔
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/service/service_and_version_manage.jsp
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/app/pool/serviceInfoPool/ServiceInfoExt.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/app/pool/serviceInfoPool/ServiceInfoPool.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/httpGateway/HttpGatewayAsyncMessageHandlerImpl.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/httpGateway/HttpGatewayHelper.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/PlatformResourceServiceImpl.java
+
+新增文件：
+cloud_solution/main_site/cloudmp/WebContent/views/service/service_and_version_mod.jsp
+
+删除文件：
+无
+
+主要变更：
+1.nc、ss存储模式修改
+
+兼容性说明：
+无

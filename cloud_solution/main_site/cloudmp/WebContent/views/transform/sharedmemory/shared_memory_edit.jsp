@@ -121,7 +121,7 @@ function backhome(){
                       <div class="form-group">
                         <label for="url" class="col-sm-2 control-label">路径URL*</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="url" parsley-required="true"  parsley-maxlength="100">
+                          <input type="text" class="form-control" id="url" parsley-required="true"  parsley-maxlength="100" parsley-type="sharedurl">
                         </div>
                       </div>   
                       <div class="form-group">
@@ -154,7 +154,7 @@ function backhome(){
                       <div class="form-group">
                         <label for="url" class="col-sm-2 control-label">路径URL*</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="url" parsley-required="true"  parsley-maxlength="100" value="${sharedmeomory.url }">
+                          <input type="text" class="form-control" id="url" parsley-required="true"  parsley-maxlength="100" value="${sharedmeomory.url }" parsley-type="sharedurl">
                         </div>
                       </div>   
                       <div class="form-group">

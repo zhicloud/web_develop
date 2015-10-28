@@ -176,7 +176,9 @@
 		                                    <li><a href="javascript:void(0);"  onclick="updateshield('${sl.name}',0)">取消屏蔽</a></li>
 		                                    <li><a href="javascript:void(0);"  onclick="enableService('${sl.name}')">启用服务</a></li>
 		                                    <li><a href="javascript:void(0);"  onclick="disableService('${sl.name}')">禁用服务</a></li>
-                                            <li><a href="#"  onclick="modService(${sl.type}, ${sl.name}, ${sl.diskType})">修改服务</a></li>
+                                            <c:if test="${sl.type == 3 or sl.type == 4}">
+                                                <li><a href="#"  onclick="modService('${sl.type}', '${sl.name}', '${sl.diskType}')">修改存储模式</a></li>
+                                            </c:if>
 		                                  </ul>
 		                              </div>  
 								  </td>
