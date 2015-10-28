@@ -132,6 +132,8 @@
                           <tr> 
                               <th class="sortable sort-alpha">主机名</th>
                               <th class="sortable sort-alpha">所属用户</th>
+                              <th class="sortable sort-alpha">备份模式</th>
+                              <th class="sortable sort-alpha">备份磁盘</th>
                               <th class="sortable sort-amount">备份完成时间</th>
                               <th class="sortable sort-amount">备份状态</th> 
                               <th class="sortable sort-amount">操作</th> 
@@ -143,6 +145,8 @@
                     		 
                                 <td class="cut">${detail.displayName}</td>
                                 <td class="cut">${detail.userName}</td>
+                                <td class="cut">${detail.modeFormat()}</td>
+                                <td class="cut">${detail.diskFormat()}</td>
                                  <td class="cut"><fmt:formatDate
                                         value="${detail.backUpTimeDate}"
                                         pattern="yyyy-MM-dd HH:mm:ss"/></td>
