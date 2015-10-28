@@ -1,5 +1,5 @@
 ******************************************************
-版本号：版本号：【云平台web】verion(2.0)(build 20151012-1) 
+版本号：版本号：【云平台web】verion(2.0)(build 20151026-1) 
 修改时间：2015/10/23
 修改人：吴莉莎
 修改文件：
@@ -28,7 +28,7 @@ iso_image_add.jsp
 无
 
 ******************************************************
-版本号：版本号：【云平台web】verion(2.0)(build 20151012-1) 
+版本号：版本号：【云z桌面web】verion(2.0)(build 20151012-1) 
 修改时间：2015/10/26
 修改人：张翔
 修改文件：
@@ -54,4 +54,33 @@ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/transform/serviceimpl/ManSy
 3.定时开关机异常
 
 兼容性说明：
+无 
+
+******************************************************
+版本号：版本号：【云桌面web】verion(2.0)(build 20151026-1) 
+修改时间：2015/10/26
+修改人：张翔
+修改文件：
+BackUpController.java
+CloudHostMapper.java
+BackUpJob.java
+CloudHostServiceImpl.java
+app-properties.xml
+desktop/back_up_manage.jsp
+admin/system_user_edit.jsp
+      
+
+新增文件：
 无
+
+删除文件：
+无
+
+主要变更：
+1.创建管理员用户减掉租户选择
+2.恢复100%卡住
+3.iso镜像要求xml格式规范
+4.定时备份不可用问题
+
+兼容性说明：
+无 

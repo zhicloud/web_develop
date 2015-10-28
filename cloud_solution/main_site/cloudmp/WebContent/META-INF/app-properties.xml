@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="gbk"?>
 <properties>
 	
-	<property key="address_of_this_system" name="本系统（运营管理平台）的地址" type="String" 
-		description="本系统（运营管理平台）的地址">
+	<property key="address_of_this_system" name="address_of_this_system" type="String" 
+		description="address_of_this_system">
 		http://182.138.102.39:40803/ms/
 	</property>
 	

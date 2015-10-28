@@ -241,7 +241,7 @@ public interface CloudHostMapper {
 	* @return List<CloudHostVO>     
 	* @throws
 	 */
-    public List<CloudHostVO> getCloudHostInTimerBackUpStart(String timerKey);
+    public List<CloudHostVO> getDesktopCloudHostInTimerBackUpStart(String timerKey);
     /**
      * 
     * @Title: getDesktopCloudHostInTimerBackUpStop 
