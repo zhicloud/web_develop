@@ -168,6 +168,8 @@ public class ComputeInfoExt extends ComputeInfo implements JSONBean {
         duplication.setMode(this.getMode());
         duplication.setMode0(this.getMode0());
         duplication.setMode1(this.getMode1());
+        duplication.setMode2(this.getMode2());
+        duplication.setMode3(this.getMode3());
 
         return duplication;
     }
