@@ -32,6 +32,7 @@
 		<result column="account"     property="account"/>
 		<result column="vpc_ip"     property="vpcIp"/>
 		<result column="name"     property="name"/>
+		<result column="inactivate_time"     property="inactivateTime"/>
 	</resultMap>
 	
 	
@@ -330,11 +331,31 @@
 			<if test="hostName!=null and hostName!='%%'">
 				and (ch.host_name like #{hostName} or ch.display_name like #{hostName})
 			</if>
-			<if test="queryStatus==2">
+<!-- 			<if test="queryStatus==2">
 				and (ch.inactivate_time is null or (ch.inactivate_time > #{time} and ch.status =2) or ch.status!=2)
+			</if> -->
+			<if test="queryStatus!=null and queryStatus!='' and queryStatus !=1 and queryStatus !=2 and queryStatus !=5 and queryStatus !=7 and queryStatus !=8 and queryStatus !=9 and queryStatus !='all'">
+				and ch.running_status = #{queryStatus}
 			</if>
-			<if test="queryStatus==3">
+			<if test="queryStatus==1">
+				and ch.status=1 and ch.running_status = 1 and ch.real_host_id is not null
+			</if>
+			<if test="queryStatus==2">
+				and ch.status=1 and ch.running_status = 2
+			</if>
+			<if test="queryStatus==5">
+				and ch.status=2
+			</if>
+			<if test="queryStatus==7">
+				and ch.status=3
+			</if>
+			<if test="queryStatus==8">
 				and (ch.status=2 and #{time} > ch.inactivate_time)
+			</if>
+			<if test="queryStatus==9">
+				and (ch.real_host_id is null or 
+				exists (select 1 from (select a.host_id from cloud_host_shopping_config a where a.process_status in ('0','3') ) b
+				where b.host_id = ch.id))
 			</if>
 			<if test="region!=null">
 				and ch.region = #{region}
@@ -346,10 +367,10 @@
 				and u.name like #{username}
 			</if>
 			<if test="belongaccount!=null and belongaccount!='%%'">
-				and t.account like #{belongaccount}
+				and t.account like #{belongaccount} or u.phone like #{belongaccount}
 			</if>
 			<if test="outerIp!=null and outerIp!='%%'">
-				and ch.outer_ip like #{outerIp}
+				and ch.outer_ip like #{outerIp} or ch.inner_ip like #{outerIp}
 			</if>	
 			and s.type = 4			
 			and ch.status!=4
@@ -462,17 +483,24 @@
 			ch.status status, 
 			ch.is_auto_startup, 
 			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_port,
 			ch.outer_ip,
 			ch.description,
 			ch.user_id,
+			ch.monthly_price,
+			ch.inactivate_time,
+			ch.sys_image_name,
 			u.name username,
 			m.name markname	,
 			t.account belong_account,
 			u.phone,
 			u.email,
 			u.account_balance,
-			u.create_time createTime
+			ch.create_time createTime
 		from cloud_host ch
+		left join cloud_host_shopping_config config 
+			on ch.id=config.host_id
 		left join sys_user s on ch.user_id = s.id
 		left join terminal_user u
 			on ch.user_id = u.id
@@ -486,11 +514,31 @@
 			<if test="hostName!=null and hostName!='%%'">
 				 and (ch.host_name like #{hostName} or ch.display_name like #{hostName})
 			</if>
-			<if test="queryStatus==2">
+<!-- 			<if test="queryStatus==2">
 				and (ch.inactivate_time is null or (ch.inactivate_time > #{time} and ch.status =2) or ch.status!=2)
+			</if> -->
+			<if test="queryStatus!=null and queryStatus!='' and queryStatus !=1 and queryStatus !=2 and queryStatus !=5 and queryStatus !=7 and queryStatus !=8 and queryStatus !=9 and queryStatus !='all'">
+				and ch.running_status = #{queryStatus}
 			</if>
-			<if test="queryStatus==3">
+			<if test="queryStatus==1">
+				and ch.status=1 and ch.running_status = 1 and ch.real_host_id is not null
+			</if>
+			<if test="queryStatus==2">
+				and ch.status=1 and ch.running_status = 2
+			</if>
+			<if test="queryStatus==5">
+				and ch.status=2
+			</if>
+			<if test="queryStatus==7">
+				and ch.status=3
+			</if>
+			<if test="queryStatus==8">
 				and (ch.status=2 and #{time} > ch.inactivate_time)
+			</if>
+			<if test="queryStatus==9">
+				and (ch.real_host_id is null or 
+				exists (select 1 from (select a.host_id from cloud_host_shopping_config a where a.process_status in ('0','3') ) b
+				where b.host_id = ch.id))
 			</if>
 			<if test="region!=null">
 				and ch.region = #{region}
@@ -502,15 +550,15 @@
 				and u.name like #{username}
 			</if>
 			<if test="belongaccount!=null and belongaccount!='%%'">
-				and t.account like #{belongaccount}
+				and t.account like #{belongaccount} or u.phone like #{belongaccount}
 			</if>
 			<if test="outerIp!=null and outerIp!='%%'">
-				and ch.outer_ip like #{outerIp}
+				and ch.outer_ip like #{outerIp} or ch.inner_ip like #{outerIp}
 			</if>
 			and s.type = 4						
 			and ch.status!=4
 		</where>
-		order by ch.host_name
+		order by ch.create_time desc
 		limit #{start_row}, #{row_count}
 	</select>
 	

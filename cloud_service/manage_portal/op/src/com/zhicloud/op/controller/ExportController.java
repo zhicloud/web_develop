@@ -193,6 +193,11 @@ public class ExportController {
             response.setContentType("text/json; charset=utf-8");
             CloudHostService cloudHostService = CoreSpringContextManager.getCloudHostService();
             List<CloudHostVO> cloudHostList = cloudHostService.queryCloudHostForExport(request, response);
+            String outerport = "";
+            String innerport = "";
+            String temp_name = "";
+            String outerip = "";
+            String innerip = "";
             for (CloudHostVO host : cloudHostList) {
                 if (!"".equals(host.getCpuCore())) {
                     host.setCpuname(host.getCpuCore() + "核");
@@ -224,14 +229,56 @@ public class ExportController {
                     host.setCreateTime(DateUtil.dateToString(
                             DateUtil.stringToDate(host.getCreateTime(), "yyyyMMddHHmmssSSS"), "yyyy-MM-dd HH:mm:ss"));
                 }
+
+                host.setHostanddisplay(host.getHostName() + "\r\n" + host.getDisplayName());
+                host.setSystemanddatadisk(CapacityUtil.toCapacityLabel(host.getSysDisk(), 0) + "\r\n"
+                        + CapacityUtil.toCapacityLabel(host.getDataDisk(), 0));
+                if (host.getOuterPort() == null || "null".equals(host.getOuterPort())) {
+                    outerport = "无";
+                } else {
+                    outerport = host.getOuterPort() + "";
+                }
+                if (host.getInnerPort() == null || "null".equals(host.getInnerPort())) {
+                    innerport = "无";
+                } else {
+                    innerport = host.getInnerPort() + "";
+                }
+                if (host.getPhone() == null || "".equals(host.getPhone())) {
+                    temp_name = "无";
+                } else {
+                    temp_name = host.getPhone();
+                }
+                if (host.getInnerIp() == null || "".equals(host.getInnerIp())) {
+                    innerip = "无";
+                } else {
+                    innerip = host.getInnerIp();
+                }
+                if (host.getOuterIp() == null || "".equals(host.getOuterIp())) {
+                    outerip = "无";
+                } else {
+                    outerip = host.getOuterIp();
+                }
+                if (host.getDescription() == null || host.getDescription().isEmpty()) {
+                    host.setDescription("无");
+                }
+                host.setOuterandinnerip(innerip + ":" + outerport + "\r\n" + outerip + ":" + innerport);
+                host.setBelong_accountandusername(host.getBelong_account() + "\r\n" + temp_name);
+                host.setEverymonth(host.getMonthlyPrice() + "\r\n" + host.getAccount_balance());
+
             }
-            String[][] columns = new String[][] { {"所属用户", "UserAccount" }, {"昵称", "Username" },{"手机","Phone"}
+/*            String[][] columns = new String[][] { {"所属用户", "UserAccount" }, {"昵称", "Username" },{"手机","Phone"}
                     ,{"邮箱","Email"},{"账户余额","Account_balance"},{"用户标签", "Markname" },{"地域","Regionname"},{"账户创建时间","CreateTime"},
                     {"归属", "Belong_account" }, {"真实主机名", "HostName" }, {"显示名称", "DisplayName" },
                     {"CPU核心数量", "Cpuname" }, {"内存", "Memoryname" }, {"系统磁盘", "Sysdiskname" },
                     {"数据磁盘", "Datadiskname" }, {"网络带宽", "Bandwidthname" }, {"内部监控地址", "InnerMonitorAddr" },
                     {"外部监控地址", "OuterMonitorAddr" }, {"备注", "Description" } };
-            ExportExcelUtils.export(request, response, cloudHostList, "用户云主机数据", columns, CloudHostVO.class);
+            */
+            String[][] columns = new String[][] { {"云服务器名/用户定义名", "Hostanddisplay" }, {"CPU", "Cpuname" },{"内存","Memoryname"}
+            ,{"系统磁盘", "Sysdiskname" },{"数据磁盘", "Datadiskname" },{"网络带宽","Bandwidthname"},{"系统镜像","SysImageNameOld"},
+            {"内网IP/外网IP", "Outerandinnerip" },{"每月资费","MonthlyPrice"},{"用户余额","Account_balance"},{"地域","Regionname"},
+            {"所属用户/手机", "Belong_accountandusername" }, {"别名","Username"},{"用户类型", "Markname" }, {"创建时间", "CreateTime" },
+            {"备注", "Description" } };
+            ExportExcelUtils.export(request, response, cloudHostList, "用户云服务器数据", columns, CloudHostVO.class);
         } catch (Exception e) {
             logger.error("AgentServiceImpl.exporCloudHostData()", e);
             throw new AppException("导出失败");
