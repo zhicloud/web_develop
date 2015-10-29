@@ -17,7 +17,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=9;IE=8;IE=7;" />
 		
-		<title>运营商 - 用户云主机管理</title>
+		<title>运营商 - 云服务器管理</title>
 		
 		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/default/easyui.css">
 		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css">
@@ -52,7 +52,7 @@
 	<body style="visibility:hidden;">
 		<form id="big_form"  method="post">
 	
-			<table id="cloud_host_datagrid" class="easyui-datagrid" title="用户云主机管理"
+			<table id="cloud_host_datagrid" class="easyui-datagrid" title="用户云服务器管理"
 				data-options="
 					url: '<%=request.getContextPath()%>/bean/ajax.do?userType=<%=userType%>&bean=cloudHostService&method=queryCloudHost',
 					queryParams: {},
@@ -70,25 +70,39 @@
 				<thead>
 					<tr>
 						<th data-options="checkbox:true"></th>
+						<th field="hostanddisplay" formatter="formatdetail" width="200px" sortable=true>云服务器名/用户定义名</th> 
+						<th field="cpuCore" formatter="formatCpuCore" width="40px" sortable=true>CPU</th>
+						<th field="memory" formatter="formatCapacity" width="40px" sortable=true>内存</th>
+						<th field="sysDisk" width="60px" formatter="formatCapacity" sortable=true>系统磁盘</th>
+						<th field="dataDisk" width="60px" formatter="formatCapacity" sortable=true>数据磁盘</th>
+						<th field="bandwidth" formatter="formatFlow" width="60px" sortable=true>网络带宽</th>
+						<th field="sysImageNameOld" width="150px">系统镜像</th>
+						<th field="outerandinnerip" width="120px">内网IP/外网IP</th>
+						<th field="monthlyPrice" width="60px">每月资费</th>
+						<th field="account_balance" width="60px">用户余额</th>
+						<th field="region" formatter="formatRegion" width="60px" >地域</th>
+						<th field="belong_accountandusername" formatter="userFormatter"  width="100px" >所属用户/手机</th>
+						<th field="username"  width="80px" >别名</th>
+						<th field="markname"  width="80px" >用户类型</th>
+						<th field="createTime" formatter="formatCreateTime" width="120px" >创建时间</th>
+						<th field="description" width="100px" formatter="formatRemark">备注</th>
+						<th field="inactivateTimeText" width="120px">状态</th>
+						<!-- 
 						<th field="userAccount" formatter="userFormatter" width="100px" sortable=true>所属用户</th>
-						<th field="username"  width="100px" >用户昵称</th>
+						<th field="username"  width="100px" >用户名</th>
 						<th field="phone"  width="80px" >手机</th>
 						<th field="email"  width="100px" >邮箱</th>
 						<th field="account_balance"  width="80px" >账户余额</th>
-						<th field="markname"  width="80px" >用户标签</th>
-						<th field="region" formatter="formatRegion" width="60px" >地域</th>
+						<th field="markname"  width="80px" >用户类型</th>
+						
 						<th field="createTime" formatter="formatCreateTime" width="120px" >账户创建时间</th>
 						<th field="belong_account"  width="80px" >归属</th>
-						<th field="hostName" width="120px" sortable=true>真实主机名</th> 
-						<th field="displayName" width="120px" sortable=true>显示名称</th> 
-						<th field="cpuCore" formatter="formatCpuCore" width="30px" sortable=true>CPU核心数量</th>
-						<th field="memory" formatter="formatCapacity" width="30px" sortable=true>内存</th>
-						<th field="sysDisk" formatter="formatCapacity" width="30px" sortable=true>系统磁盘</th>
-						<th field="dataDisk" formatter="formatCapacity" width="30px" sortable=true>数据磁盘</th>
-						<th field="bandwidth" formatter="formatFlow" width="30px" sortable=true>网络带宽</th>
+
+
+						
 						<th field="innerMonitorAddr" width="60px">内部监控地址</th>
-						<th field="outerMonitorAddr" width="60px">外部监控地址</th>
-						<th field="description" width="100px">备注</th>
+						<th field="outerMonitorAddr" width="60px">外部监控地址</th> -->
+						
 						<th field="operate" formatter="operateColumnFormatter" width="240px">操作</th>
 					</tr>
 				</thead>
@@ -101,7 +115,7 @@
 						<a href="#" class="easyui-linkbutton" iconCls="icon-print" plain="true" id="export_data_btn">导出数据</a>
 					</div>
 					<div style="margin-left:5px;">
-						<span style="position: relative; top: 2px;">标签</span>
+						<span style="position: relative; top: 2px;">用户类型</span>
 						<select id="query_by_mark" style="position: relative; top: 2px;">
 							<option value="all">全部</option>
 							<%
@@ -113,14 +127,23 @@
 								} 
 						    %>
 						</select>
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<span style="position: relative; top: 2px;">主机状态</span>
+						
+						<span style="position: relative; top: 2px;">状态</span>
 						<select id="query_by_status" style="position: relative; top: 2px;">
-						   <option value="1">全部</option>
+						   <option value="all">全部</option>
+						   <option value="1">关机</option>
+						   <option value="2">运行</option>
+						   <option value="3">告警</option>
+						   <option value="4">故障</option>
+						   <option value="5">停机</option>
+						   <option value="7">欠费</option>
+						   <option value="8">已过期</option>
+						   <option value="9">创建中</option>
+<!-- 						   <option value="1">全部</option>
 						   <option value="2">正常</option>
-						   <option value="3">已过期</option>
+						   <option value="3">已过期</option> -->
 						</select>
-						&nbsp;&nbsp;&nbsp;&nbsp;
+						
 						<span style="position: relative; top: 2px;">地域</span>
 						<select id="region" style="position: relative; top: 2px;">
 						   <option value="">全部</option>
@@ -128,14 +151,13 @@
 						   <option value="2">成都</option>
 						   <option value="4">香港</option>
 						</select>
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<span style="position: relative; top: 2px;">主机名</span> 
+						<span style="position: relative; top: 2px;">云服务器名</span> 
 						<input type="text" id="host_name" class="messager-input" /> 
-						<span style="position: relative; top: 2px;">昵称</span> 
+						<span style="position: relative; top: 2px;">别名</span> 
 						<input type="text" id="username" class="messager-input" /> 
-						<span style="position: relative; top: 2px;">归属</span> 
+						<span style="position: relative; top: 2px;">所属用户/手机</span> 
 						<input type="text" id="belongaccount" class="messager-input" />
-						<span style="position: relative; top: 2px;">外网IP</span> 
+						<span style="position: relative; top: 2px;">IP</span> 
 						<input type="text" id="outer_ip" class="messager-input" /> 
 						<a href="#" class="easyui-linkbutton" iconCls="icon-search" id="query_cloud_host_btn">查询</a>
 						<a href="#" class="easyui-linkbutton" iconCls="icon-redo" id="clear_cloud_host_btn">清除</a>
@@ -180,7 +202,18 @@
 	}	
 	function formatCreateTime(val, row)
 	{
+		if(val==null||val==""){
+			return "";
+		}
 		return $.formatDateString(val, "yyyyMMddHHmmssSSS", "yyyy-MM-dd HH:mm:ss");
+	}
+	function formatRemark(val, row,index){
+		if(val==""||val==null){
+			val = "无";
+		}
+		return "<div row_index='"+index+"'>\
+			<a href='javascript:void(0);' class='datagrid_row_linkbutton description_host_btn'>"+val+"</a>\
+		</div>";
 	}
 	function userFormatter(value, row, index)
 	{
@@ -194,6 +227,11 @@
 		return CapacityUtil.toCapacityLabel(val, 0);
 	}
 
+	function formatdetail(value, row, index){
+		return "<div row_index='"+index+"'>\
+		<a href='#' class='datagrid_row_linkbutton view-detail'>"+value+"</a>\
+		</div>";
+	}
 	function formatFlow(val)
 	{
 		return FlowUtil.toFlowLabel(val, 0);
@@ -235,7 +273,103 @@
 		var runningStatus = $("#cloud_host_datagrid").datagrid("getData").rows[index].runningStatus;
 		var processStatus = $("#cloud_host_datagrid").datagrid("getData").rows[index].processStatus;
 		var region = $("#cloud_host_datagrid").datagrid("getData").rows[index].region;
- 		if(status==2){
+		
+		if(status==2){
+			return "<div row_index='"+index+"'>\
+			<a href='#' class='datagrid_row_linkbutton start_host_btn' style=\"color:gray;\" >开机</a>\
+			<a href='#' class='datagrid_row_linkbutton shutdown_host_btn' style=\"color:gray;\">关机</a>\
+			<a href='#' class='datagrid_row_linkbutton halt_host_btn' style=\"color:gray;\">强制关机</a>\
+			<a href='#' class='datagrid_row_linkbutton restart_host_btn' style=\"color:gray;\">重启</a>\
+			<a href='#' class='datagrid_row_linkbutton force_restart_host_btn' style=\"color:gray;\">强制重启</a><br>\
+			<a href='#' class='datagrid_row_linkbutton inactivate_host_btn' style=\"color:gray;\">停用</a>\
+			<a href='#' class='datagrid_row_linkbutton reinactivate_host_btn'>恢复</a>\
+			<a href='#' class='datagrid_row_linkbutton open-port' style=\"color:gray;\">端口配置</a>\
+			</div>";
+		}
+		if(processStatus != null && (processStatus == 0 || processStatus == 3 || processStatus==2)){
+			return "<div row_index='"+index+"'>\
+			<a href='#' class='datagrid_row_linkbutton start_host_btn' style=\"color:gray;\">开机</a>\
+			<a href='#' class='datagrid_row_linkbutton shutdown_host_btn' style=\"color:gray;\">关机</a>\
+			<a href='#' class='datagrid_row_linkbutton halt_host_btn' style=\"color:gray;\">强制关机</a>\
+			<a href='#' class='datagrid_row_linkbutton restart_host_btn' style=\"color:gray;\">重启</a>\
+			<a href='#' class='datagrid_row_linkbutton force_restart_host_btn' style=\"color:gray;\">强制重启</a><br>\
+			<a href='#' class='datagrid_row_linkbutton inactivate_host_btn' style=\"color:gray;\">停用</a>\
+			<a href='#' class='datagrid_row_linkbutton reinactivate_host_btn' style=\"color:gray;\">恢复</a>\
+			<a href='#' class='datagrid_row_linkbutton open-port' style=\"color:gray;\">端口配置</a>\
+			</div>";		
+		}
+		if(realHostId==null){
+			return "<div row_index='"+index+"'>\
+			<a href='#' class='datagrid_row_linkbutton start_host_btn' style=\"color:gray;\">开机</a>\
+			<a href='#' class='datagrid_row_linkbutton shutdown_host_btn' style=\"color:gray;\">关机</a>\
+			<a href='#' class='datagrid_row_linkbutton halt_host_btn' style=\"color:gray;\">强制关机</a>\
+			<a href='#' class='datagrid_row_linkbutton restart_host_btn' style=\"color:gray;\">重启</a>\
+			<a href='#' class='datagrid_row_linkbutton force_restart_host_btn' style=\"color:gray;\">强制重启</a><br>\
+			<a href='#' class='datagrid_row_linkbutton inactivate_host_btn' style=\"color:gray;\">停用</a>\
+			<a href='#' class='datagrid_row_linkbutton reinactivate_host_btn' style=\"color:gray;\">恢复</a>\
+			<a href='#' class='datagrid_row_linkbutton open-port' style=\"color:gray;\">端口配置</a>\
+			</div>";
+		}
+		if(status==1 && runningStatus==1 && region ==2){
+			return "<div row_index='"+index+"'>\
+			<a href='#' class='datagrid_row_linkbutton start_host_btn'>开机</a>\
+			<a href='#' class='datagrid_row_linkbutton shutdown_host_btn' style=\"color:gray;\">关机</a>\
+			<a href='#' class='datagrid_row_linkbutton halt_host_btn' style=\"color:gray;\">强制关机</a>\
+			<a href='#' class='datagrid_row_linkbutton restart_host_btn' style=\"color:gray;\">重启</a>\
+			<a href='#' class='datagrid_row_linkbutton force_restart_host_btn' style=\"color:gray;\">强制重启</a><br>\
+			<a href='#' class='datagrid_row_linkbutton inactivate_host_btn'>停用</a>\
+			<a href='#' class='datagrid_row_linkbutton reinactivate_host_btn' style=\"color:gray;\">恢复</a>\
+			<a href='#' class='datagrid_row_linkbutton open-port'>端口配置</a>\
+			</div>";
+		}
+		if(status==1 && runningStatus==1){
+			return "<div row_index='"+index+"'>\
+			<a href='#' class='datagrid_row_linkbutton start_host_btn'>开机</a>\
+			<a href='#' class='datagrid_row_linkbutton shutdown_host_btn' style=\"color:gray;\">关机</a>\
+			<a href='#' class='datagrid_row_linkbutton halt_host_btn' style=\"color:gray;\">强制关机</a>\
+			<a href='#' class='datagrid_row_linkbutton restart_host_btn' style=\"color:gray;\">重启</a>\
+			<a href='#' class='datagrid_row_linkbutton force_restart_host_btn' style=\"color:gray;\">强制重启</a><br>\
+			<a href='#' class='datagrid_row_linkbutton inactivate_host_btn'>停用</a>\
+			<a href='#' class='datagrid_row_linkbutton reinactivate_host_btn' style=\"color:gray;\">恢复</a>\
+			<a href='#' class='datagrid_row_linkbutton open-port' style=\"color:gray;\">端口配置</a>\
+			</div>";
+		}
+		if(status==1 && runningStatus==2 && region == 2){
+			return "<div row_index='"+index+"'>\
+			<a href='#' class='datagrid_row_linkbutton start_host_btn'>开机</a>\
+			<a href='#' class='datagrid_row_linkbutton shutdown_host_btn'>关机</a>\
+			<a href='#' class='datagrid_row_linkbutton halt_host_btn'>强制关机</a>\
+			<a href='#' class='datagrid_row_linkbutton restart_host_btn'>重启</a>\
+			<a href='#' class='datagrid_row_linkbutton force_restart_host_btn'>强制重启</a><br>\
+			<a href='#' class='datagrid_row_linkbutton inactivate_host_btn'>停用</a>\
+			<a href='#' class='datagrid_row_linkbutton reinactivate_host_btn' style=\"color:gray;\">恢复</a>\
+			<a href='#' class='datagrid_row_linkbutton open-port'>端口配置</a>\
+			</div>";
+		}
+		if(status==1 && runningStatus==2 ){
+			return "<div row_index='"+index+"'>\
+			<a href='#' class='datagrid_row_linkbutton start_host_btn' style=\"color:gray;\">开机</a>\
+			<a href='#' class='datagrid_row_linkbutton shutdown_host_btn'>关机</a>\
+			<a href='#' class='datagrid_row_linkbutton halt_host_btn'>强制关机</a>\
+			<a href='#' class='datagrid_row_linkbutton restart_host_btn'>重启</a>\
+			<a href='#' class='datagrid_row_linkbutton force_restart_host_btn'>强制重启</a><br>\
+			<a href='#' class='datagrid_row_linkbutton inactivate_host_btn'>停用</a>\
+			<a href='#' class='datagrid_row_linkbutton reinactivate_host_btn' style=\"color:gray;\">恢复</a>\
+			<a href='#' class='datagrid_row_linkbutton open-port' style=\"color:gray;\">端口配置</a>\
+			</div>";
+		}
+		return "<div row_index='"+index+"'>\
+		<a href='#' class='datagrid_row_linkbutton start_host_btn' style=\"color:gray;\">开机</a>\
+		<a href='#' class='datagrid_row_linkbutton shutdown_host_btn' style=\"color:gray;\">关机</a>\
+		<a href='#' class='datagrid_row_linkbutton halt_host_btn' style=\"color:gray;\">强制关机</a>\
+		<a href='#' class='datagrid_row_linkbutton restart_host_btn' style=\"color:gray;\">重启</a>\
+		<a href='#' class='datagrid_row_linkbutton force_restart_host_btn' style=\"color:gray;\">强制重启</a><br>\
+		<a href='#' class='datagrid_row_linkbutton inactivate_host_btn' style=\"color:gray;\">停用</a>\
+		<a href='#' class='datagrid_row_linkbutton reinactivate_host_btn' style=\"color:gray;\">恢复</a>\
+		<a href='#' class='datagrid_row_linkbutton open-port' style=\"color:gray;\">端口配置</a>\
+		</div>";
+		
+ 		/* if(status==2){
 			return "<div row_index='"+index+"'> \<a href='#' class='datagrid_row_linkbutton view-detail'>查看详情</a> \<a href='#' class='datagrid_row_linkbutton reinactivate_host_btn'>恢复</a> \<a href='#' class='datagrid_row_linkbutton description_host_btn'>备注</a>\</div>";
 		}
 		if(processStatus != null && (processStatus == 0 || processStatus == 3)){
@@ -286,7 +420,7 @@
 		}
 		if(realHostId==null){
 			return "<div row_index='"+index+"'> \<a href='#' class='datagrid_row_linkbutton view-detail'>查看详情</a> \<a href='#' class='datagrid_row_linkbutton description_host_btn'>备注</a>\</div>";
-		}
+		} */
 		
 	}
 	
@@ -319,6 +453,9 @@
 		});
 		// 每一行的'查看详情'按钮
 		$("a.view-detail").click(function(){
+			if($(this).css("color")=="gray"||$(this).css("color")=="rgb(128, 128, 128)"){
+				return;
+			}
 			$this = $(this);
 			rowIndex = $this.parent().attr("row_index");
 			var data = $("#cloud_host_datagrid").datagrid("getData");
@@ -335,6 +472,9 @@
 		});
 		// 每一行的'用户详情'按钮
 		$("a.user-detail").click(function(){
+			if($(this).css("color")=="gray"||$(this).css("color")=="rgb(128, 128, 128)"){
+				return;
+			}
 			$this = $(this);
 			rowIndex = $this.parent().attr("row_index");
 			var data = $("#cloud_host_datagrid").datagrid("getData");
@@ -351,6 +491,9 @@
 		});
 		// 每一行的'查看详情'按钮
 		$("a.description_host_btn").click(function(){
+			if($(this).css("color")=="gray"||$(this).css("color")=="rgb(128, 128, 128)"){
+				return;
+			}
 			$this = $(this);
 			rowIndex = $this.parent().attr("row_index");
 			var data = $("#cloud_host_datagrid").datagrid("getData");
@@ -366,6 +509,9 @@
 			});
 		});
 		$("a.open-port").click(function(){
+			if($(this).css("color")=="gray"||$(this).css("color")=="rgb(128, 128, 128)"){
+				return;
+			}
 			$this = $(this);
 			rowIndex = $this.parent().attr("row_index");
 			var data = $("#cloud_host_datagrid").datagrid("getData");
@@ -385,6 +531,9 @@
 		});
 		//启动
 		$("a.start_host_btn").click(function(){
+			if($(this).css("color")=="gray"||$(this).css("color")=="rgb(128, 128, 128)"){
+				return;
+			}
 			$this = $(this);
 			rowIndex = $this.parent().attr("row_index");
 			var data = $("#cloud_host_datagrid").datagrid("getData");
@@ -422,6 +571,9 @@
 		});
 		//关机
 		$("a.shutdown_host_btn").click(function(){
+			if($(this).css("color")=="gray"||$(this).css("color")=="rgb(128, 128, 128)"){
+				return;
+			}
 			$this = $(this);
 			rowIndex = $this.parent().attr("row_index");
 			var data = $("#cloud_host_datagrid").datagrid("getData");
@@ -459,6 +611,9 @@
 		});
 		//强制关机
 		$("a.halt_host_btn").click(function(){
+			if($(this).css("color")=="gray"||$(this).css("color")=="rgb(128, 128, 128)"){
+				return;
+			}
 			$this = $(this);
 			rowIndex = $this.parent().attr("row_index");
 			var data = $("#cloud_host_datagrid").datagrid("getData");
@@ -497,6 +652,9 @@
 		});
 		//重启
 		$("a.restart_host_btn").click(function(){
+			if($(this).css("color")=="gray"||$(this).css("color")=="rgb(128, 128, 128)"){
+				return;
+			}
 			$this = $(this);
 			rowIndex = $this.parent().attr("row_index");
 			var data = $("#cloud_host_datagrid").datagrid("getData");
@@ -538,6 +696,9 @@
 		
 		//重启
 		$("a.force_restart_host_btn").click(function(){
+			if($(this).css("color")=="gray"||$(this).css("color")=="rgb(128, 128, 128)"){
+				return;
+			}
 			$this = $(this);
 			rowIndex = $this.parent().attr("row_index");
 			var data = $("#cloud_host_datagrid").datagrid("getData");
@@ -579,6 +740,9 @@
 		
 		//停用
 		$("a.inactivate_host_btn").click(function(){
+			if($(this).css("color")=="gray"||$(this).css("color")=="rgb(128, 128, 128)"){
+				return;
+			}
 			$this = $(this);
 			rowIndex = $this.parent().attr("row_index");
 			var data = $("#cloud_host_datagrid").datagrid("getData");
@@ -616,6 +780,9 @@
 		});
 		//恢复停用
 		$("a.reinactivate_host_btn").click(function(){
+			if($(this).css("color")=="gray"||$(this).css("color")=="rgb(128, 128, 128)"){
+				return;
+			}
 			$this = $(this);
 			rowIndex = $this.parent().attr("row_index");
 			var data = $("#cloud_host_datagrid").datagrid("getData");
@@ -696,7 +863,7 @@
 		
 		$("#clear_cloud_host_btn").click(function(){
 			$("#query_by_mark").val("all");//.combobox("setValue","all");
-			$("#query_by_status").val("1");//.combobox("setValue","1");
+			$("#query_by_status").val("all");//.combobox("setValue","1");
 			$("#region").val("");//.combobox("setValue","");
 			$("#host_name").val("");
 			$("#username").val("");

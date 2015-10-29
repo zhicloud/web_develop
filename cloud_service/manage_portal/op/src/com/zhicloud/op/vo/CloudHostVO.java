@@ -88,6 +88,12 @@ public class CloudHostVO implements JSONBean
 	private String phone;
 	private String email;
 	private BigDecimal account_balance;
+	private String hostanddisplay;
+	private String systemanddatadisk;
+	private String outerandinnerip;
+	private String belong_accountandusername;
+	private String everymonth;
+	private String inactivateTimeText;
 	
 	public String getId()
 	{
@@ -609,8 +615,54 @@ public class CloudHostVO implements JSONBean
     public void setAccount_balance(BigDecimal account_balance) {
         this.account_balance = account_balance;
     }
-	
-	
+
+    public String getHostanddisplay() {
+        return hostanddisplay;
+    }
+
+    public void setHostanddisplay(String hostanddisplay) {
+        this.hostanddisplay = hostanddisplay;
+    }
+
+    public String getSystemanddatadisk() {
+        return systemanddatadisk;
+    }
+
+    public void setSystemanddatadisk(String systemanddatadisk) {
+        this.systemanddatadisk = systemanddatadisk;
+    }
+
+    public String getOuterandinnerip() {
+        return outerandinnerip;
+    }
+
+    public void setOuterandinnerip(String outerandinnerip) {
+        this.outerandinnerip = outerandinnerip;
+    }
+
+    public String getBelong_accountandusername() {
+        return belong_accountandusername;
+    }
+
+    public void setBelong_accountandusername(String belong_accountandusername) {
+        this.belong_accountandusername = belong_accountandusername;
+    }
+
+    public String getEverymonth() {
+        return everymonth;
+    }
+
+    public void setEverymonth(String everymonth) {
+        this.everymonth = everymonth;
+    }
+
+    public String getInactivateTimeText() {
+        return inactivateTimeText;
+    }
+
+    public void setInactivateTimeText(String inactivateTimeText) {
+        this.inactivateTimeText = inactivateTimeText;
+    }
 	
 	
 }
