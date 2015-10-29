@@ -1,5 +1,6 @@
 package com.zhicloud.ms.controller;
 
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.storage.StorageManager;
 import com.zhicloud.ms.app.pool.storage.StorageResult;
 import com.zhicloud.ms.httpGateway.HttpGatewayAsyncChannel;
@@ -8,33 +9,29 @@ import com.zhicloud.ms.httpGateway.HttpGatewayManager;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.ICloudHostService;
 import com.zhicloud.ms.service.ICloudHostWarehouseService;
+import com.zhicloud.ms.service.IComputePoolService;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.*;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -50,6 +47,10 @@ public class ServerResourcePoolController {
 	
     @Resource
     private IOperLogService operLogService;
+
+    @Resource
+    private IComputePoolService computePoolService;
+
 	/**
 	 * 查询所有资源池
 	 * @param model
@@ -359,56 +360,267 @@ public class ServerResourcePoolController {
 		}
 		return "resourcepool/server_resource_pool_add";
 	}
-	
-	@RequestMapping(value="/add",method=RequestMethod.POST)
-	@ResponseBody
-	public MethodResult addResourcePool(String name,String networkType,String networkId,String diskType,String diskId,String prefixion, 
-   		 int mode0, int mode1, int mode2, int mode3,String path,String crypt,HttpServletRequest request){
-	    if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_resource_pool_add)){
-	          return new MethodResult(MethodResult.FAIL,"您没有添加资源池的权限，请联系管理员");
-	      }
-		if(StringUtil.isBlank(name)){
-            operLogService.addLog("计算资源池", "创建计算资源池失败", "1", "2", request);
-			return new MethodResult(MethodResult.FAIL,"资源池名不能为空");
-		}
-		if(StringUtil.isBlank(networkType)){
-            operLogService.addLog("计算资源池", "创建计算资源池"+name+"失败", "1", "2", request);
-			return new MethodResult(MethodResult.FAIL,"网络类型不能为空");
-		}
-		if(!"0".equals(networkType) && StringUtil.isBlank(networkId)){
-            operLogService.addLog("计算资源池", "创建计算资源池"+name+"失败", "1", "2", request);
-			return new MethodResult(MethodResult.FAIL,"IP或端口资源池不能为空");
-		}
-		if(StringUtil.isBlank(diskType)){
-            operLogService.addLog("计算资源池", "创建计算资源池"+name+"失败", "1", "2", request);
-			return new MethodResult(MethodResult.FAIL,"存储类型不能为空");
-		}
-		if(!"0".equals(diskType) && StringUtil.isBlank(diskId)){
-            operLogService.addLog("计算资源池", "创建计算资源池"+name+"失败", "1", "2", request);
-			return new MethodResult(MethodResult.FAIL,"资源池名不能为空");
-		}
-        Integer[] mode = new Integer[4];
-        mode[0] = mode0;
-        mode[1] = mode1;
-        mode[2] = mode2;
-        mode[3] = mode3;
-		try {
-				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-				if(channel!=null){
-					JSONObject result = channel.computePoolCreate(prefixion+name, Integer.parseInt(networkType), networkId, Integer.parseInt(diskType), diskId,mode,path,crypt);
-					if("success".equals(result.get("status"))){
-			            operLogService.addLog("计算资源池", "创建计算资源池"+name+"成功", "1", "1", request);
-						return new MethodResult(MethodResult.SUCCESS,"创建成功");
-					}
-                    operLogService.addLog("计算资源池", "创建计算资源池"+name+"失败", "1", "2", request);
-					return new MethodResult(MethodResult.FAIL,"创建失败");
-				}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-        operLogService.addLog("计算资源池", "创建计算资源池"+name+"失败", "1", "2", request);
-		return new MethodResult(MethodResult.FAIL,"创建失败");
-	}
+
+    @RequestMapping(value="/add",method=RequestMethod.POST)
+    @ResponseBody
+    public MethodResult addResourcePool(ComputeInfoExt computeInfoExt, String prefixion, HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_resource_pool_add)){
+            return new MethodResult(MethodResult.FAIL,"您没有添加资源池的权限，请联系管理员");
+        }
+
+        String name = prefixion+computeInfoExt.getName();
+        Integer networkType = computeInfoExt.getNetworkType();
+        String network = computeInfoExt.getNetwork();
+        Integer diskType = computeInfoExt.getDiskType();
+        String diskSource = computeInfoExt.getDiskSource();
+        int mode0 = computeInfoExt.getMode0();
+        int mode1 = computeInfoExt.getMode1();
+        int mode2 = computeInfoExt.getMode2();
+        int mode3 = computeInfoExt.getMode3();
+//        String path = computeInfoExt.getPath();
+
+        if(StringUtil.isBlank(name)){
+            return new MethodResult(MethodResult.FAIL,"资源池名不能为空");
+        }
+        if(StringUtil.isBlank(String.valueOf(networkType))){
+            return new MethodResult(MethodResult.FAIL,"网络类型不能为空");
+        }
+        if(("1".equals(networkType) || "2".equals(networkType)) && StringUtil.isBlank(network)){
+            return new MethodResult(MethodResult.FAIL,"IP或端口资源池不能为空");
+        }
+        if(StringUtil.isBlank(String.valueOf(diskType))){
+            return new MethodResult(MethodResult.FAIL,"存储类型不能为空");
+        }
+        if(!("0".equals(String.valueOf(diskType))) && StringUtil.isBlank(diskSource)){
+            return new MethodResult(MethodResult.FAIL,"存储资源池不能为空");
+        }
+
+        if(StringUtil.isBlank(String.valueOf(mode0))){
+            return new MethodResult(MethodResult.FAIL,"高可用选项不能为空");
+        }
+        if(StringUtil.isBlank(String.valueOf(mode1))){
+            return new MethodResult(MethodResult.FAIL,"自动Qos选项不能为空");
+        }
+
+        if(StringUtil.isBlank(String.valueOf(mode2))){
+            return new MethodResult(MethodResult.FAIL,"thin provioning选项不能为空");
+        }
+        if(StringUtil.isBlank(String.valueOf(mode3))){
+            return new MethodResult(MethodResult.FAIL,"backing image选项不能为空");
+        }
+
+        try {
+
+            Map<String, Object> data = new LinkedHashMap<String, Object>();
+            data.put("name", name);
+            data.put("network_type", networkType);
+            data.put("network", network);
+            data.put("disk_type", diskType);
+            data.put("disk_source", diskSource);
+            data.put("mode0", mode0);
+            data.put("mode1", mode1);
+            data.put("mode2", mode0);
+            data.put("mode3", mode1);
+            //            data.put("path", path);
+            //            data.put("crypt", crypt);
+
+
+            MethodResult result = computePoolService.createComputePoolSync(data);
+            if("success".equals(result.status)){
+                operLogService.addLog("桌面云资源池管理", "创建计算资源池", "1", "1", request);
+                return new MethodResult(result.status, result.message);
+
+            }
+
+
+        }  catch (Exception e) {
+            e.printStackTrace();
+            operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "2", request);
+            return new MethodResult(MethodResult.FAIL,"资源池创建失败");
+        }
+
+        operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "2", request);
+        return new MethodResult(MethodResult.FAIL,"资源池创建失败");
+    }
+
+    /**
+     * 修改资源池页面
+     * @author 张翔
+     * @param uuid
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="/{uuid}/mod",method=RequestMethod.GET)
+    public String modifyResourcePool(@PathVariable("uuid") String uuid, Model model, HttpServletRequest request)
+        throws IOException {
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_resource_pool_mod)){
+            return "not_have_access";
+        }
+        try {
+            HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
+            ComputeInfoExt computeInfoExt = computePoolService.getComputePoolDetailSync(uuid);
+            if(channel!=null) {
+
+                if (computeInfoExt == null) {
+                    logger.error("ResourcePoolController.modifyResourcePool>>>获取资源池失败");
+                    return "not_responsed";
+                }
+                //
+                Integer[] mode = computeInfoExt.getMode();
+
+                computeInfoExt.setMode0(computeInfoExt.getMode()[0]);
+                computeInfoExt.setMode1(computeInfoExt.getMode()[1]);
+                if (mode.length == 4) {
+                    computeInfoExt.setMode2(computeInfoExt.getMode()[2]);
+                    computeInfoExt.setMode3(computeInfoExt.getMode()[3]);
+                }else {
+                    computeInfoExt.setMode2(0);
+                    computeInfoExt.setMode3(0);
+                }
+
+                List<IpPoolVO> ipList = new ArrayList<>();
+                List<PortPoolVO> portList = new ArrayList<>();
+                JSONObject resultIp = channel.addressPoolQuery();
+                if ("fail".equals(resultIp.getString("status"))) {
+                    logger.error("ResourcePoolController.modifyResourcePool>>>获取IP失败");
+                    return "not_responsed";
+                }
+                JSONObject resultPort = channel.portPoolQuery();
+                if ("fail".equals(resultPort.getString("status"))) {
+                    logger.error("ResourcePoolController.modifyResourcePool>>>获取端口失败");
+                    return "not_responsed";
+                }
+
+                JSONArray IpPoolList = resultIp.getJSONArray("addressPools");
+                JSONArray portPoolList = resultPort.getJSONArray("portPools");
+                for (int i = 0; i < IpPoolList.size(); i ++) {
+                    JSONObject ipObject = IpPoolList.getJSONObject(i);
+                    String name = ipObject.getString("name");
+                    String uid = ipObject.getString("uuid");
+                    int status = ipObject.getInt("status");
+
+                    JSONArray countList = ipObject.getJSONArray("count");
+                    Integer[] ccount = new Integer[countList.size()];
+                    for(int j=0;j<countList.size();j++){
+                        ccount[j] = countList.getInt(j);
+                    }
+
+                    IpPoolVO vo = new IpPoolVO();
+                    vo.setName(name);
+                    vo.setStatus(status);
+                    vo.setUuid(uid);
+                    vo.setCount(ccount);
+                    ipList.add(vo);
+                }
+                for (int i = 0; i < portPoolList.size(); i ++) {
+                    JSONObject portObject = portPoolList.getJSONObject(i);
+                    String name = portObject.getString("name");
+                    String uid = portObject.getString("uuid");
+                    int status = portObject.getInt("status");
+
+                    JSONArray countList = portObject.getJSONArray("count");
+                    Integer[] pcount = new Integer[countList.size()];
+                    for (int j = 0; j < countList.size(); j++) {
+                        pcount[j] = countList.getInt(j);
+                    }
+
+                    PortPoolVO vo = new PortPoolVO();
+                    vo.setName(name);
+                    vo.setStatus(status);
+                    vo.setUuid(uid);
+                    vo.setCount(pcount);
+                    portList.add(vo);
+                }
+                model.addAttribute("ipList", ipList);
+                model.addAttribute("portList", portList);
+                model.addAttribute("computeInfoExt", computeInfoExt);
+
+                return "resourcepool/server_resource_pool_mod";
+            }
+        }catch (MalformedURLException e){
+            e.printStackTrace();
+        }
+        return "not_responsed";
+    }
+
+    /**
+     * 修改资源池
+     * @author 张翔
+     * @param computeInfoExt
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="/mod",method=RequestMethod.POST)
+    @ResponseBody
+    public MethodResult modifyComputePool(ComputeInfoExt computeInfoExt, HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_resource_pool_mod)){
+            return new MethodResult(MethodResult.FAIL,"您没有修改资源池的权限，请联系管理员");
+        }
+        try {
+            //  获取参数
+            String uuid = computeInfoExt.getUuid();
+            String name = computeInfoExt.getName();
+            Integer networkType = computeInfoExt.getNetworkType();
+            String network = computeInfoExt.getNetwork();
+            Integer diskType = computeInfoExt.getDiskType();
+            String diskSource = computeInfoExt.getDiskSource();
+            int mode0 = computeInfoExt.getMode0();
+            int mode1 = computeInfoExt.getMode1();
+            int mode2 = computeInfoExt.getMode2();
+            int mode3 = computeInfoExt.getMode3();
+            String path = computeInfoExt.getPath();
+
+            if(StringUtil.isBlank(uuid)){
+                return new MethodResult(MethodResult.FAIL,"资源池uuid不能为空");
+            }
+            if(StringUtil.isBlank(name)){
+                return new MethodResult(MethodResult.FAIL,"资源池名不能为空");
+            }
+            if(StringUtil.isBlank(String.valueOf(networkType))){
+                return new MethodResult(MethodResult.FAIL,"网络类型不能为空");
+            }
+            if(("1".equals(networkType) || "2".equals(networkType)) && StringUtil.isBlank(network)){
+                return new MethodResult(MethodResult.FAIL,"IP或端口资源池不能为空");
+            }
+            if(StringUtil.isBlank(String.valueOf(diskType))){
+                return new MethodResult(MethodResult.FAIL,"存储类型不能为空");
+            }
+            if("1".equals(diskType) && StringUtil.isBlank(diskSource)){
+                return new MethodResult(MethodResult.FAIL,"云存储不能为空");
+            }
+            if(StringUtil.isBlank(String.valueOf(mode0))){
+                return new MethodResult(MethodResult.FAIL,"高可用选项不能为空");
+            }
+            if(StringUtil.isBlank(String.valueOf(mode1))){
+                return new MethodResult(MethodResult.FAIL,"自动Qos选项不能为空");
+            }
+
+            Map<String, Object> data = new LinkedHashMap<String, Object>();
+            data.put("uuid", uuid);
+            data.put("name", name);
+            data.put("network_type", networkType);
+            data.put("network", network);
+            data.put("disk_type", diskType);
+            data.put("disk_source", diskSource);
+            data.put("mode0", mode0);
+            data.put("mode1", mode1);
+            data.put("mode2", mode2);
+            data.put("mode3", mode3);
+            data.put("path", path);
+            MethodResult result = computePoolService.modifyComputePoolSync(data);
+            if("success".equals(result.status)){
+                operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "1", request);
+                return new MethodResult(MethodResult.SUCCESS,"资源池修改成功");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "2", request);
+            return new MethodResult(MethodResult.FAIL,"资源池修改失败");
+        }
+
+        operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "2", request);
+        return new MethodResult(MethodResult.FAIL,"资源池修改失败");
+    }
 	
 	/**
 	 * 删除资源池
