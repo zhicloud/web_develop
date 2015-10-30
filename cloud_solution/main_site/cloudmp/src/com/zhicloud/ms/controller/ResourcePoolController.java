@@ -7,18 +7,13 @@ import com.zhicloud.ms.httpGateway.HttpGatewayAsyncChannel;
 import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
 import com.zhicloud.ms.remote.MethodResult;
-import com.zhicloud.ms.service.ICloudHostService;
-import com.zhicloud.ms.service.ICloudHostWarehouseService;
-import com.zhicloud.ms.service.IComputePoolService;
-import com.zhicloud.ms.service.IOperLogService;
+import com.zhicloud.ms.service.*;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.*;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -44,17 +38,19 @@ public class ResourcePoolController {
     public static final Logger logger = Logger.getLogger(ResourcePoolController.class);
 
     @Resource
-      ICloudHostService cloudHostService;
+    private ICloudHostService cloudHostService;
 
     @Resource
-    IComputePoolService computePoolService;
+    private IComputePoolService computePoolService;
     
     @Resource
     private ICloudHostWarehouseService  CloudHostWarehouseService;
 
-    @Resource 
-    
+    @Resource
     private IOperLogService operLogService;
+
+    @Resource
+    private SharedMemoryService sharedMemoryService;
  
 
  
@@ -70,7 +66,7 @@ public class ResourcePoolController {
             return "not_have_access";
         }
         try {
-            List<ComputerPoolVO> cList = new ArrayList<>();
+            List<ComputeInfoExt> cList = new ArrayList<>();
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){
                     JSONObject result = channel.computePoolQuery();
@@ -115,7 +111,8 @@ public class ResourcePoolController {
                         for(int j=0;j<hList.size();j++){
                             hcount[j] = hList.getInt(j);
                         }
-                        ComputerPoolVO computer = new ComputerPoolVO();
+
+                        ComputeInfoExt computer = computePoolService.getComputePoolDetailSync(uuid);
                         computer.setCpuCount(cpuCount);
                         computer.setCpuUsage(cpuUsage);
                         computer.setDiskUsage(diskUsage);
@@ -155,8 +152,8 @@ public class ResourcePoolController {
         }
         String searchName = request.getParameter("sn");
         try {
-            List<ComputerPoolDetailVO> cList = new ArrayList<>();
-            List<ComputerPoolDetailVO> curList = new ArrayList<>();
+            List<ComputeInfoExt> cList = new ArrayList<>();
+            List<ComputeInfoExt> curList = new ArrayList<>();
             String flag = "no";
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){
@@ -188,7 +185,7 @@ public class ResourcePoolController {
                             dcount[j] = new BigInteger(diskList.getString(j));
                         }
                         
-                        ComputerPoolDetailVO computer = new ComputerPoolDetailVO();
+                        ComputeInfoExt computer = new ComputeInfoExt();
                         computer.setCpuCount(cpuCount);
                         computer.setCpuUsage(cpuUsage);
                         computer.setDiskUsage(diskUsage);
@@ -201,7 +198,7 @@ public class ResourcePoolController {
                         cList.add(computer);
                     }
                     if(searchName!=null && searchName!="" && cList.size()>0){
-                        for(ComputerPoolDetailVO cp : cList){
+                        for(ComputeInfoExt cp : cList){
                             if(cp.getName()!=null && cp.getName().toLowerCase().contains(searchName.toLowerCase())){
                                 curList.add(cp);
                             }
@@ -399,6 +396,13 @@ public class ResourcePoolController {
                         portList.add(vo);
                     }
                 }
+            //获取共享存储路径
+            String path = null;
+            SharedMemoryVO sharedMemoryVO = sharedMemoryService.queryAvailable();
+            if (sharedMemoryVO != null){
+                path = sharedMemoryVO.getUrl();
+            }
+            model.addAttribute("path", path);
             model.addAttribute("ipList", ipList);
             model.addAttribute("portList", portList);
         } catch (MalformedURLException e) {
@@ -428,10 +432,10 @@ public class ResourcePoolController {
         String network = computeInfoExt.getNetwork();
         Integer diskType = computeInfoExt.getDiskType();
         String diskSource = computeInfoExt.getDiskSource();
-        int mode0 = computeInfoExt.getMode0();
+        int mode0 = computeInfoExt.getMode0()== null ? 0:computeInfoExt.getMode0();
         int mode1 = computeInfoExt.getMode1();
         int mode2 = computeInfoExt.getMode2();
-        int mode3 = computeInfoExt.getMode3();
+        int mode3 = computeInfoExt.getMode3()== null ? 0:computeInfoExt.getMode3();
         String path = computeInfoExt.getPath();
 
         if(StringUtil.isBlank(name)){
@@ -473,8 +477,8 @@ public class ResourcePoolController {
             data.put("disk_source", diskSource);
             data.put("mode0", mode0);
             data.put("mode1", mode1);
-            data.put("mode2", mode0);
-            data.put("mode3", mode1);
+            data.put("mode2", mode2);
+            data.put("mode3", mode3);
             data.put("path", path);
 
 
@@ -618,6 +622,15 @@ public class ResourcePoolController {
                     vo.setCount(pcount);
                     portList.add(vo);
                 }
+
+                //获取共享存储路径
+                String path = null;
+                SharedMemoryVO sharedMemoryVO = sharedMemoryService.queryAvailable();
+                if (sharedMemoryVO != null){
+                    path = sharedMemoryVO.getUrl();
+                }
+                model.addAttribute("path", path);
+
                 model.addAttribute("ipList", ipList);
                 model.addAttribute("portList", portList);
                 model.addAttribute("computeInfoExt", computeInfoExt);
@@ -651,10 +664,10 @@ public class ResourcePoolController {
             String network = computeInfoExt.getNetwork();
             Integer diskType = computeInfoExt.getDiskType();
             String diskSource = computeInfoExt.getDiskSource();
-            int mode0 = computeInfoExt.getMode0();
+            int mode0 = computeInfoExt.getMode0()== null ? 0:computeInfoExt.getMode0();
             int mode1 = computeInfoExt.getMode1();
             int mode2 = computeInfoExt.getMode2();
-            int mode3 = computeInfoExt.getMode3();
+            int mode3 = computeInfoExt.getMode3()== null ? 0:computeInfoExt.getMode3();
             String path = computeInfoExt.getPath();
 
             if(StringUtil.isBlank(uuid)){
@@ -744,7 +757,7 @@ public class ResourcePoolController {
      */
     @RequestMapping(value="/{uuid}/an",method=RequestMethod.GET)
     public String addNodePage(@PathVariable("uuid") String uuid,Model model){
-        List<ComputerPoolDetailVO> curList = new ArrayList<>();
+        List<ComputeInfoExt> curList = new ArrayList<>();
         HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
         try {
             if(channel!=null){
@@ -757,7 +770,7 @@ public class ResourcePoolController {
                 for (int i = 0; i < computerList.size(); i ++) {
                     JSONObject computerObject = computerList.getJSONObject(i);
                     String name = computerObject.getString("name");
-                    ComputerPoolDetailVO computer = new ComputerPoolDetailVO();
+                    ComputeInfoExt computer = new ComputeInfoExt();
                     computer.setName(name);
                     curList.add(computer);
                 }

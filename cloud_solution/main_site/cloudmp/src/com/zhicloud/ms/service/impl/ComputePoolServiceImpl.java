@@ -137,10 +137,9 @@ public class ComputePoolServiceImpl implements IComputePoolService {
         mode[1] = mode1;
         mode[2] = mode2;
         mode[3] = mode3;
-//        String path = StringUtil.trim(parameter.get("path"));
+        String path = StringUtil.trim(parameter.get("path"));
 //        String crypt = StringUtil.trim(parameter.get("crypt"));
-        String path = "";
-        String crypt = "";
+        String crypt = "crypt";
 
 
         HttpGatewayChannel channel = HttpGatewayManager.getChannel(1);
@@ -215,10 +214,9 @@ public class ComputePoolServiceImpl implements IComputePoolService {
         int mode1 = Integer.valueOf(StringUtil.trim(parameter.get("mode1")));
         int mode2 = Integer.valueOf(StringUtil.trim(parameter.get("mode2")));
         int mode3 = Integer.valueOf(StringUtil.trim(parameter.get("mode3")));        
-//        String path = StringUtil.trim(parameter.get("path"));
+        String path = StringUtil.trim(parameter.get("path"));
 //        String crypt = StringUtil.trim(parameter.get("crypt"));
-        String path = "";
-        String crypt = "";
+        String crypt = "crypt";
         Integer[] mode = new Integer[4];
         mode[0] = mode0;
         mode[1] = mode1;

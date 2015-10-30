@@ -85,6 +85,7 @@ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/BackUpDetailVO.java
        	3、storage_server 2.0#20151012-1
        	4、control_server 2.0#20151020-1
        	5、intelligent_router 2.0#20150627-1
+
 ******************************************************
 版本号：版本号：【云平台web】verion(2.1)(build 20151027-1)
 修改时间：2015/10/27
