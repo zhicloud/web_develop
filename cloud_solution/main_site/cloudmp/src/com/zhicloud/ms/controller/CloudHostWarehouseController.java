@@ -13,7 +13,7 @@ import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.CloudHostConfigModel;
 import com.zhicloud.ms.vo.CloudHostWarehouse;
-import com.zhicloud.ms.vo.ComputerPoolVO;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfo;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.quartz.*;
@@ -53,7 +53,7 @@ public class CloudHostWarehouseController {
 		model.addAttribute("cloudHostConfigModeList",chcmList);
 		try {
 
-			List<ComputerPoolVO> cList = new ArrayList<ComputerPoolVO>();
+			List<ComputeInfo> cList = new ArrayList<ComputeInfo>();
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				if(channel!=null){
 					JSONObject result = channel.computePoolQuery();
@@ -71,7 +71,7 @@ public class CloudHostWarehouseController {
 						String uuid = computerObject.getString("uuid");
 						int status = computerObject.getInt("status");
 						 
-						ComputerPoolVO computer = new ComputerPoolVO(); 
+						ComputeInfo computer = new ComputeInfo(); 
 						computer.setName(name);
  						computer.setStatus(status);
 						computer.setUuid(uuid);
@@ -98,7 +98,7 @@ public class CloudHostWarehouseController {
 		model.addAttribute("cloudHostConfigModeList",chcmList);
 		try {
 
-			List<ComputerPoolVO> cList = new ArrayList<ComputerPoolVO>();
+			List<ComputeInfo> cList = new ArrayList<ComputeInfo>();
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				if(channel!=null){
 					JSONObject result = channel.computePoolQuery();
@@ -116,7 +116,7 @@ public class CloudHostWarehouseController {
 						String uuid = computerObject.getString("uuid");
 						int status = computerObject.getInt("status");
 						 
-						ComputerPoolVO computer = new ComputerPoolVO(); 
+						ComputeInfo computer = new ComputeInfo(); 
 						computer.setName(name);
  						computer.setStatus(status);
 						computer.setUuid(uuid);
@@ -157,7 +157,7 @@ public class CloudHostWarehouseController {
 		model.addAttribute("hostWarehouse",cloudHostWarehouse);
 		try {
 
-			List<ComputerPoolVO> cList = new ArrayList<ComputerPoolVO>();
+			List<ComputeInfo> cList = new ArrayList<ComputeInfo>();
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				if(channel!=null){
 					JSONObject result = channel.computePoolQuery();
@@ -174,7 +174,7 @@ public class CloudHostWarehouseController {
 						String uuid = computerObject.getString("uuid");
 						int status = computerObject.getInt("status");
 						 
-						ComputerPoolVO computer = new ComputerPoolVO(); 
+						ComputeInfo computer = new ComputeInfo(); 
 						computer.setName(name);
  						computer.setStatus(status);
 						computer.setUuid(uuid);
@@ -416,7 +416,7 @@ public class CloudHostWarehouseController {
     	model.addAttribute("id", id);
     	model.addAttribute("poolId", chw.getPoolId());
     	try {
-			List<ComputerPoolVO> cList = new ArrayList<>();
+			List<ComputeInfo> cList = new ArrayList<>();
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				if(channel!=null){
 					JSONObject result = channel.computePoolQuery();
@@ -433,7 +433,7 @@ public class CloudHostWarehouseController {
 						String uuid = computerObject.getString("uuid");
 						int status = computerObject.getInt("status");
 						 
-						ComputerPoolVO computer = new ComputerPoolVO(); 
+						ComputeInfo computer = new ComputeInfo(); 
 						computer.setName(name);
  						computer.setStatus(status);
 						computer.setUuid(uuid);

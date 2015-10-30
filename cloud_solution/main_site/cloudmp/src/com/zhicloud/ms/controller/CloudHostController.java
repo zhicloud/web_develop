@@ -29,7 +29,7 @@ import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.BackUpDetailVO;
 import com.zhicloud.ms.vo.CloudHostVO;
 import com.zhicloud.ms.vo.CloudHostWarehouse;
-import com.zhicloud.ms.vo.ComputerPoolVO;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfo;
 import com.zhicloud.ms.vo.SysDiskImageVO;
 
 import net.sf.json.JSONArray;
@@ -146,7 +146,7 @@ public class CloudHostController {
  		model.addAttribute("cloudHostList", newCloudServerList);
 		model.addAttribute("warehouseId", id);
 		try {
-            List<ComputerPoolVO> cList = new ArrayList<>();
+            List<ComputeInfo> cList = new ArrayList<>();
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){
                     JSONObject result = channel.computePoolQuery();
@@ -165,7 +165,7 @@ public class CloudHostController {
                         String uuid = computerObject.getString("uuid");
                         int status = computerObject.getInt("status");
                          
-                        ComputerPoolVO computer = new ComputerPoolVO(); 
+                        ComputeInfo computer = new ComputeInfo(); 
                         computer.setName(name);
                         computer.setStatus(status);
                         computer.setUuid(uuid);
