@@ -23,8 +23,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -83,6 +85,9 @@ public class ExportExcelUtils {
                 sheet.setColumnWidth(i, columns[i][0].getBytes().length * 800);
             }
             String cellValue = "";
+            CellStyle cellStyle=wb.createCellStyle();       
+            cellStyle.setWrapText(true); 
+
             // 填充内容
             for (int i = (k * constant); i < ((k + 1) * constant > datalist.size() ? datalist.size() : (k + 1)
                     * constant); i++) {
@@ -91,6 +96,8 @@ public class ExportExcelUtils {
                 row = sheet.createRow(tempcount);
                 for (int j = 0; j < columns.length; j++) {
                     Method method = entityclass.getMethod("get" + columns[j][1]);
+                    HSSFCell cell = (HSSFCell)row.createCell(j);
+                    //HSSFCell cell = (HSSFCell) row.createCell((short) 0);
                     if (method.invoke(clazz) == null) {
                         row.createCell(j).setCellValue("");
                         // sheet.setColumnWidth(j, 3000);
@@ -105,7 +112,9 @@ public class ExportExcelUtils {
                         if ("java.math.BigDecimal".equals(r.getName())) {
                             cellValue = ((BigDecimal) method.invoke(clazz)).toString();
                         }
-                        row.createCell(j).setCellValue(cellValue);
+                        //row.createCell(j).setCellValue(cellValue);
+                        cell.setCellStyle(cellStyle);
+                        cell.setCellValue(new HSSFRichTextString(cellValue));
                         // sheet.setColumnWidth(j, cellValue.getBytes().length * 512);
                     }
                 }

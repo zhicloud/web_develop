@@ -749,7 +749,7 @@ public class CloudHostServiceImpl extends BeanDirectCallableDefaultImpl implemen
             Integer page =
                 StringUtil.parseInteger(request.getParameter("page"), 1) - 1; // 前台过来的是从1开始，需要的是从0开始
             Integer rows = StringUtil.parseInteger(request.getParameter("rows"), 10);
-            if ("1".equals(queryStatus)) {
+            if ("all".equals(queryStatus)) {
                 queryStatus = null;
             }
             if ("all".equals(queryMark)) {
@@ -785,7 +785,58 @@ public class CloudHostServiceImpl extends BeanDirectCallableDefaultImpl implemen
                 total = cloudHostMapper.queryPageCount(condition); // 总行数
                 cloudHostList = cloudHostMapper.queryPage(condition);// 分页结果
             }
-
+            String outerport = "";
+            String innerport = "";
+            String temp_name = "";
+            String outerip = "";
+            String innerip = "";
+            // 处理特殊合并项字段
+            if (cloudHostList != null && cloudHostList.size() > 0) {
+                for (CloudHostVO host : cloudHostList) {
+                    host.setHostanddisplay(host.getHostName() + "<br>" + host.getDisplayName());
+                    host.setSystemanddatadisk(CapacityUtil.toCapacityLabel(host.getSysDisk(), 0) + "<br>"
+                            + CapacityUtil.toCapacityLabel(host.getDataDisk(), 0));
+                    if (host.getOuterPort() == null || "null".equals(host.getOuterPort())) {
+                        outerport = "无";
+                    } else {
+                        outerport = host.getOuterPort() + "";
+                    }
+                    if (host.getInnerPort() == null || "null".equals(host.getInnerPort())) {
+                        innerport = "无";
+                    } else {
+                        innerport = host.getInnerPort() + "";
+                    }
+                    if (host.getPhone() == null || "".equals(host.getPhone())) {
+                        temp_name = "无";
+                    } else {
+                        temp_name = host.getPhone();
+                    }
+                    if (host.getInnerIp() == null || "".equals(host.getInnerIp())) {
+                        innerip = "无";
+                    } else {
+                        innerip = host.getInnerIp();
+                    }
+                    if (host.getOuterIp() == null || "".equals(host.getOuterIp())) {
+                        outerip = "无";
+                    } else {
+                        outerip = host.getOuterIp();
+                    }
+                    if ("停机".equals(host.getSummarizedStatusText())) {
+                        host.setInactivateTimeText(host.getSummarizedStatusText()
+                                + "<br>"
+                                + DateUtil.dateToString(
+                                        DateUtil.stringToDate(host.getInactivateTime(), "yyyyMMddHHmmssSSS"),
+                                        "yyyy-MM-dd HH:mm:ss"));
+                    } else {
+                        host.setInactivateTimeText(host.getSummarizedStatusText());
+                    }
+                    host.setOuterandinnerip(innerip + ":" + outerport + "<br>" + outerip + ":"
+                            + innerport);
+                    host.setBelong_accountandusername(host.getBelong_account() + "<br>" + temp_name);
+                    host.setEverymonth(host.getMonthlyPrice() + "<br>" + host.getAccount_balance());
+                }
+            }
+           
             // 输出json数据
             ServiceHelper
                 .writeDatagridResultAsJsonTo(response.getOutputStream(), total, cloudHostList);
@@ -4149,7 +4200,7 @@ public class CloudHostServiceImpl extends BeanDirectCallableDefaultImpl implemen
             String hostName = StringUtil.trim(request.getParameter("host_name"));
             String username = StringUtil.trim(request.getParameter("username"));
             String belongaccount = StringUtil.trim(request.getParameter("belongaccount"));
-            if ("1".equals(queryStatus)) {
+            if ("all".equals(queryStatus)) {
                 queryStatus = null;
             }
             if ("all".equals(queryMark)) {

@@ -65,7 +65,7 @@
 					    <li><a><span>+</span>产品管理</a>
 					      <ul>
 					      	<li><a href="#" id="self_use_cloud_host_link">自用云主机</a></li>
-							<li><a href="#" id="cloud_host_manage_link">用户云主机管理</a></li>
+							<li><a href="#" id="cloud_host_manage_link">云服务器管理</a></li>
 							<li><a href="#" id="vpc_manage_link">用户专属云管理</a></li>
 							<li><a href="#" id="cloud_disk_manage_link">云硬盘管理</a></li>
 					      </ul>
@@ -116,6 +116,7 @@
 				    		<li><a href="#" id="operator_basic_information_link" class="navbarnavactive">基本信息</a></li>
 							<li><a href="#" id="operator_update_password_link">修改密码</a></li>
 							<li><a href="#" id="operator_suggestion_link">意见反馈</a></li>
+							<li><a href="#" id="operator_logout_link">注销</a></li>
 					      </ul>
 					    </li>
  						<li><a><span>+</span>邮件管理</a> 
@@ -152,8 +153,8 @@
 				</td>
 				<td id="c2" class="control" style="width:-1px; vertical-align:top;">
 				
-					<div id="c2_r1" class="controlheader" style="height:60px; position:relative; background:#fcfcfc; border-bottom:solid 1px #acc0b7;">
-						<%-- <div class="controlheaderbutton l">
+					<%-- <div id="c2_r1" class="controlheader" style="height:60px; position:relative; background:#fcfcfc; border-bottom:solid 1px #acc0b7;">
+						<div class="controlheaderbutton l">
 							<a href="<%=request.getContextPath()%>/" style="width: 28px;">首页</a>
 						</div>
 						<div class="controlheaderbutton productbutton l">
@@ -166,13 +167,13 @@
 						<div class="controlheaderbutton l">
 							<a href="<%=request.getContextPath()%>/public/downloadPage.do"
 								style="width: 56px;">相关下载</a>
-						</div> --%>
+						</div>
 						<div class="controlheaderlogout r">
 							<a href="#" id="logout_link">注销</a>
 						</div>
 						<div class="controlheaderuser r"><%=loginInfo.getAccount()%>
 						</div>
-						<%-- <div id="productmenu" style="position:absolute; left:69px; top:60px; width:96px; height:180px;
+						<div id="productmenu" style="position:absolute; left:69px; top:60px; width:96px; height:180px;
 							background:#acc0b7; border:solid 1px #acc0b7; display:none;">
 							<div>
 								<a href="<%=request.getContextPath()%>/user/cloudsever.do">云主机</a>
@@ -192,8 +193,8 @@
 							<div>
 								<a href="<%=request.getContextPath()%>/user/recovery.do">云容灾</a>
 							</div>
-						</div> --%>
-					</div>
+						</div>
+					</div> --%>
 					
 					<div id="c2_r2" style="height:-1px;">
 						<iframe id="content_frame" scrolling="no" frameborder="0" hspace="0" vspace="0" style="width:100%; height:100%; border:0px solid #005500;"
@@ -201,14 +202,14 @@
 							></iframe>
 					</div>
 					
-					<div id="c2_r3" style="height:60px; line-height:60px; background:#f0f0f0; text-align:center; border-top:solid 1px #acc0b7;">
+<!-- 					<div id="c2_r3" style="height:60px; line-height:60px; background:#f0f0f0; text-align:center; border-top:solid 1px #acc0b7;">
 						<div style="color:#668e90;">
 							Copyright &copy; 2014 
 							<a href="http://www.zhicloud.com" target="_blank" style="color:#00ab51;">致云科技有限公司</a>,
 							All rights reserved.
 							蜀ICP备14004217号-1
 						</div>
-					</div>
+					</div> -->
 				</td>
 			</tr>
 		</table>
@@ -509,6 +510,11 @@
 		{
 			$("#content_frame").attr("src", "<%=request.getContextPath()%>/bean/page.do?userType=<%=userType%>&bean=monitorService&method=systemMonitorPage");
 		}		
+		//系统管理——注销
+		else if( target.id=="operator_logout_link")
+		{
+			logout();
+		}
 	}
 	
 	$(function(){
