@@ -49,7 +49,7 @@
 					rownumbers: true,
 					striped: true,
 					remoteSort:false,
-					fitColumns: true,
+					fitColumns: false,
 					pagination: true,
 					pageList: [10, 20, 50, 100, 200],
 					pageSize: 200,
@@ -59,17 +59,17 @@
 				<thead>
 					<tr>
 <!-- 						<th data-options="checkbox:true"></th> -->
-						<th field="name" width="10px" sortable=true>资源池名</th>
-						<th field="region" formatter="formatRegion" width="10px">地域</th>
-						<th field="cpuCount" formatter="formatCpuCore"  width="10px" sortable=true>CPU核数</th>
-						<th field="cpuUsage" formatter="formatUsage"  width="10px" sortable=true>CPU利用率</th>
-						<th field="memory" formatter="formatArray" width="30px" sortable=true>内存[可用,总量]</th>
-						<th field="memoryUsage" formatter="formatUsage"  width="10px" sortable=true>内存利用率</th>
-						<th field="diskVolume" formatter="formatArray"  width="30px" sortable=true>磁盘[可用,总量]</th>
-						<th field="diskUsage" formatter="formatUsage"  width="10px" sortable=true>磁盘利用率</th>
-						<th field="host" width="30px" sortable=true>主机数[停止,告警,故障,正常]</th>
-						<th field="node" width="30px" sortable=true>节点数[停止,告警,故障,正常]</th>
-						<th field="status"  formatter="formatStatus" width="10px" sortable=true>状态</th>
+						<th field="name" width="60px" sortable=true>资源池名</th>
+						<th field="region" formatter="formatRegion" width="60px">地域</th>
+						<th field="cpu_count_text"   width="80px" sortable=true>CPU核数</th>
+						<th field="cpuUsage" formatter="formatUsage"  width="80px" sortable=true>CPU占用率</th>
+						<th field="memory_text"  width="100px" sortable=true>内存[可用,总量]</th>
+						<th field="memoryUsage" formatter="formatUsage"  width="80px" sortable=true>内存利用率</th>
+						<th field="disk_text"   width="100px" sortable=true>磁盘[可用,总量]</th>
+						<th field="diskUsage" formatter="formatUsage"  width="80px" sortable=true>磁盘利用率</th>
+						<th field="host" width="60px" sortable=true>主机数[停止,告警,故障,正常]</th>
+						<th field="node" width="60px" sortable=true>节点数[停止,告警,故障,正常]</th>
+						<th field="status"  formatter="formatStatus" width="40px" sortable=true>状态</th>
 <!-- 						<th field="host" formatter="formatFlow"  width="30px" sortable=true>带宽</th> -->
 					</tr>
 				</thead>
