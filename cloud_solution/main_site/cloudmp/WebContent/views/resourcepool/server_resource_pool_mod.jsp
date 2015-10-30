@@ -189,7 +189,7 @@
 						<div class="form-group">
 						<label for="path" class="col-sm-2 control-label">存储路径</label>
 							<div class="col-sm-4">
-							     <input type="text" class="form-control" id="path" name="diskSource" value="${computeInfoExt.path}" parsley-trigger="change" parsley-type="nochinese" parsley-maxlength="50" />
+							     <input type="text" class="form-control" id="path" name="path" value="${path}" readonly="readonly" />
 							</div>
 						</div>                      
 						<%--<div class="form-group">--%>
@@ -218,19 +218,19 @@
                          <%--</div>--%>
                       <%--</div>--%>
 
-                        <div class="form-group">
-                            <label for="optionsRadios10" class="col-sm-2 control-label">开启高可用</label>
-                            <div class="col-sm-16">
-                                <div class="radio radio-transparent col-md-2">
-                                    <input type="radio" name="mode0" id="mode00" value="0">
-                                    <label for="mode00">否</label>
-                                </div>
-                                <div class="radio radio-transparent col-md-2">
-                                    <input type="radio" name="mode0" id="mode01" value="1">
-                                    <label for="mode01">是</label>
-                                </div>
-                            </div>
-                        </div>
+                        <%--<div class="form-group">--%>
+                            <%--<label for="optionsRadios10" class="col-sm-2 control-label">开启高可用</label>--%>
+                            <%--<div class="col-sm-16">--%>
+                                <%--<div class="radio radio-transparent col-md-2">--%>
+                                    <%--<input type="radio" name="mode0" id="mode00" value="0">--%>
+                                    <%--<label for="mode00">否</label>--%>
+                                <%--</div>--%>
+                                <%--<div class="radio radio-transparent col-md-2">--%>
+                                    <%--<input type="radio" name="mode0" id="mode01" value="1">--%>
+                                    <%--<label for="mode01">是</label>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
 
                         <div class="form-group">
                             <label for="optionsRadios10" class="col-sm-2 control-label">开启自动QoS调整</label>
@@ -260,19 +260,19 @@
                             </div>
 						</div>
 
-                        <div class="form-group">
-                            <label for="optionsRadios10" class="col-sm-2 control-label">开启backing image</label>
-                            <div class="col-sm-16">
-                                <div class="radio radio-transparent col-md-2">
-                                    <input type="radio" name="mode3" id="mode30" value="0" >
-                                    <label for="mode30">否</label>
-                                </div>
-                                <div class="radio radio-transparent col-md-2">
-                                    <input type="radio" name="mode3" id="mode31" value="1" >
-                                    <label for="mode31">是</label>
-                                </div>
-                            </div>
-						</div>
+                        <%--<div class="form-group">--%>
+                            <%--<label for="optionsRadios10" class="col-sm-2 control-label">开启backing image</label>--%>
+                            <%--<div class="col-sm-16">--%>
+                                <%--<div class="radio radio-transparent col-md-2">--%>
+                                    <%--<input type="radio" name="mode3" id="mode30" value="0" >--%>
+                                    <%--<label for="mode30">否</label>--%>
+                                <%--</div>--%>
+                                <%--<div class="radio radio-transparent col-md-2">--%>
+                                    <%--<input type="radio" name="mode3" id="mode31" value="1" >--%>
+                                    <%--<label for="mode31">是</label>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+						<%--</div>--%>
 
                      <div class="form-group form-footer footer-white">
                         <div class="col-sm-offset-4 col-sm-8">

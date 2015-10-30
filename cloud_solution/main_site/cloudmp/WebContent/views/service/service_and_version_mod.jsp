@@ -127,7 +127,7 @@
 						<div class="form-group">
 						<label for="disk_source" class="col-sm-2 control-label">存储路径</label>
 							<div class="col-sm-4">
-							     <input type="text" class="form-control" id="disk_source" name="diskSource" value="${url}" readonly="readonly" />
+							     <input type="text" class="form-control" id="disk_source" name="diskSource" value="${path}" readonly="readonly" />
 							</div>
 						</div>
 					</div>
