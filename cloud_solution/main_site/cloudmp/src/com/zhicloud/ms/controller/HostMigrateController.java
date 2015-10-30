@@ -34,7 +34,7 @@ import com.zhicloud.ms.service.ICloudHostService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.vo.CloudHostVO;
-import com.zhicloud.ms.vo.ComputerPoolDetailVO;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 /**
  * 
 * @ClassName: HostMigrateController 
@@ -70,7 +70,7 @@ public class HostMigrateController {
         try {
             JSONObject result = channel.computePoolQueryResource(realdata.getPoolId());
             JSONArray computerList = result.getJSONArray("compute_resources");
-            List<ComputerPoolDetailVO> cList = new ArrayList<>();
+            List<ComputeInfoExt> cList = new ArrayList<>();
             for (int i = 0; i < computerList.size(); i ++) {
                 JSONObject computerObject = computerList.getJSONObject(i);
                 String name = computerObject.getString("name");
@@ -83,7 +83,7 @@ public class HostMigrateController {
                     continue;
                 } 
                 
-                ComputerPoolDetailVO computer = new ComputerPoolDetailVO(); 
+                ComputeInfoExt computer = new ComputeInfoExt();
                 computer.setName(name); 
                 cList.add(computer);
             }
