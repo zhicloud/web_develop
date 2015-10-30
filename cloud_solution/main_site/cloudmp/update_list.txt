@@ -1,4 +1,67 @@
 ******************************************************
+版本号：版本号：【云平台web】verion(2.0)(build 20151030-1)
+修改时间：2015/10/30
+修改人：张本缘
+修改文件：
+无
+
+新增文件：
+cloud_solution/main_site/cloudmp/WebContent/views/loadbanlance/create_elb.jsp
+
+删除文件：
+无
+
+主要变更：
+1.负载均衡页面设计修改
+
+兼容性说明：
+无
+
+******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151030-1)
+修改时间：2015/10/30
+修改人：张翔
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/resource_pool_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/resourcepool/resource_pool_add.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/resourcepool/resource_pool_mod.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/resourcepool/server_resource_pool_add.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/resourcepool/server_resource_pool_mod.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/server_resource_pool_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/service/service_and_version_mod.jsp
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/app/pool/computePool/ComputeInfo.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/app/pool/computePool/ComputeInfoExt.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/CloudHostController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/CloudHostWarehouseController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/CloudServerController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/ComputeResourcePoolController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/HostMigrateController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/PlatformResourceController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/ResourcePoolController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/ServerResourcePoolController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/SysTenantController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/ComputePoolServiceImpl.java
+
+
+新增文件：
+无
+
+删除文件：
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/ComputerPoolDetailVO.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/ComputerPoolVO.java
+
+
+主要变更：
+1.计算资源池页面样式，重构ComputeInfo、ComputeInfoExt
+
+兼容性说明：
+        1、node_client 2.1#20151012-1
+       	2、data_server 2.0#20151012-1
+       	3、storage_server 2.1#20151027-1
+       	4、control_server 2.0#20151029-4
+       	5、intelligent_router 2.0#20151012-1
+
+******************************************************
 版本号：版本号：【云平台web】verion(2.1)(build 20151028-1)
 修改时间：2015/10/28
 修改人：周亚锋
