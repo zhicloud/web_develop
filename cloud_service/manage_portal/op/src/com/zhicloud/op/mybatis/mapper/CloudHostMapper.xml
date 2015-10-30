@@ -370,7 +370,7 @@
 				and t.account like #{belongaccount} or u.phone like #{belongaccount}
 			</if>
 			<if test="outerIp!=null and outerIp!='%%'">
-				and ch.outer_ip like #{outerIp} or ch.inner_ip like #{outerIp}
+				and (ch.outer_ip like #{outerIp} or ch.inner_ip like #{outerIp})
 			</if>	
 			and s.type = 4			
 			and ch.status!=4
@@ -553,7 +553,7 @@
 				and t.account like #{belongaccount} or u.phone like #{belongaccount}
 			</if>
 			<if test="outerIp!=null and outerIp!='%%'">
-				and ch.outer_ip like #{outerIp} or ch.inner_ip like #{outerIp}
+				and (ch.outer_ip like #{outerIp} or ch.inner_ip like #{outerIp})
 			</if>
 			and s.type = 4						
 			and ch.status!=4
