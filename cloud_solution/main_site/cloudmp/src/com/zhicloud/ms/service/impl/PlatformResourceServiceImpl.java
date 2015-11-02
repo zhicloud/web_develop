@@ -26,7 +26,7 @@ public class PlatformResourceServiceImpl implements IPlatformResourceService {
      * @function　修改服务（异步）
      * @param type 服务类型
      * @param target 服务名
-     * @param diskType 存储模式 0: 本地存储 1:共享存储
+     * @param diskType 存储模式 0: 本地存储 2:共享存储
      * @param diskSource 存储源信息，比如共享路径
      * @param crypt 存储校验信息
      * @return

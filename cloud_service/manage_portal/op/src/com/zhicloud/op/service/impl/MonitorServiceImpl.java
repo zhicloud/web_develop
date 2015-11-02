@@ -1179,6 +1179,7 @@ public class MonitorServiceImpl extends BeanDirectCallableDefaultImpl implements
                             status = MonitorConstant.judgeThresholdUseRule(json, MonitorConstant.server_flag);
                             objectdata.put("type", type);
                             objectdata.put("name", JSONLibUtil.getString(json, "name"));
+                            objectdata.put("ip", JSONLibUtil.getString(json, "ip"));
                             if (MonitorConstant.status_normal.equals(status)) {
                                 objectdata.put("status", "正常");
                             } else if (MonitorConstant.status_error.equals(status)) {
@@ -1223,6 +1224,7 @@ public class MonitorServiceImpl extends BeanDirectCallableDefaultImpl implements
                             status = MonitorConstant.judgeThresholdUseRule(json, MonitorConstant.host_flag);
                             objectdata.put("type", type);
                             objectdata.put("name", JSONLibUtil.getString(json, "name"));
+                            //objectdata.put("ip", JSONLibUtil.getStringArray(json, "ip")[1]);
                             if (MonitorConstant.status_normal.equals(status)) {
                                 objectdata.put("status", "正常");
                             } else if (MonitorConstant.status_error.equals(status)) {

@@ -1614,6 +1614,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             if(server.getIsAutoStartup()!=1){
                 isAutoStart = 0;
             } 
+
             if(server.getSupportH264()!=0){
             	supportH264 = 1;
             } 

@@ -16,26 +16,25 @@ public class IsoImageProgressPool {
 	}
 	
 	public void put(IsoImageProgressData isoImage) {
-		String sessionId = isoImage.getSessionId();
-		String name = isoImage.getName();
+		String sessionId = isoImage.getSessionId(); 
 		
-		if (sessionId != null && sessionId.trim().length() != 0 && name != null && name.trim().length() != 0) {
-			String key = sessionId + "_" + name;
+		if (sessionId != null && sessionId.trim().length() != 0 ) {
+			String key = sessionId ;
 			pool.put(key, isoImage);
 		}
 	}
 	
-	public IsoImageProgressData get(String sessionId, String name) {
-		if (sessionId != null && sessionId.trim().length() != 0 && name != null && name.trim().length() != 0) {
-			String key = sessionId + "_" + name;
+	public IsoImageProgressData get(String sessionId) {
+		if (sessionId != null && sessionId.trim().length() != 0 ) {
+			String key = sessionId ;
 			return pool.get(key);
 		}
 		
 		return null;
 	}
 	
-	public IsoImageProgressData getDuplication(String sessionId, String name) {
-		IsoImageProgressData self = this.get(sessionId, name);
+	public IsoImageProgressData getDuplication(String sessionId) {
+		IsoImageProgressData self = this.get(sessionId);
 		if (self != null) {
 			return self.clone();
 		}

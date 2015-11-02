@@ -2,6 +2,9 @@ package com.zhicloud.ms.httpGateway;
 
 import com.zhicloud.ms.app.pool.CloudHostData;
 import com.zhicloud.ms.app.pool.CloudHostPoolManager;
+import com.zhicloud.ms.app.pool.IsoImagePool;
+import com.zhicloud.ms.app.pool.IsoImagePoolManager;
+import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
@@ -159,13 +162,17 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 	@HttpGatewayMessageHandler(messageType = "iso_image_upload_progress")
 	public void isoImageUploadProgress(HttpGatewayAsyncChannel channel, JSONObject messageData) {
 		logger.debug("start to process iso image upload progress data.");
+        logger.info("iso_image_upload_result  ,"+messageData.getString("message"));
+
 		// 获取数据
 		String name = messageData.getString("name");
 		int progress = messageData.getInt("progress");
 		String sessionId = channel.getSessionId();
+        logger.info("iso_image_upload_progress  ,"+progress);
+
 		// 获取对象
 		IsoImageProgressPool pool = IsoImageProgressPoolManager.singleton().getPool();
-		IsoImageProgressData isoImage = pool.get(sessionId, name);
+		IsoImageProgressData isoImage = pool.get(sessionId);
 		//对象不存在
 		if (isoImage == null) {
 			isoImage = new IsoImageProgressData();
@@ -178,46 +185,73 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		isoImage.setProgress(progress);
 		isoImage.setFinished(false);
 		isoImage.updateTime();
+		isoImage.setStatus(2);
 	}
 
 	@HttpGatewayMessageHandler(messageType = "iso_image_upload_result")
 	public void isoImageUploadResult(HttpGatewayAsyncChannel channel, JSONObject messageData) {
 		logger.debug("start to process iso image upload result data.");
+        logger.info("iso_image_upload_result "+messageData);
 
 		String sessionId = channel.getSessionId();
+	    IsoImageProgressPool pool = IsoImageProgressPoolManager.singleton().getPool();
+
+		if (HttpGatewayResponseHelper.isSuccess(messageData) == false) {
+		    IsoImageProgressData data = pool.get(sessionId);
+		    if(data != null){
+		        data.setFinished(true);
+		        data.setStatus(3);
+		    }
+		    channel.release();
+		    logger.info("iso_image_upload_result false ");
+		    return;
+        }
+		
 		// 获取数据
-		String name = messageData.getString("name");
-		String message = messageData.getString("message");
+//		String name = messageData.getString("name");
+//		String message = messageData.getString("message");
 
 		// 获取对象
-		IsoImageProgressPool pool = IsoImageProgressPoolManager.singleton().getPool();
-		IsoImageProgressData isoImage = pool.get(sessionId, name);
+		IsoImageProgressData isoImage = pool.get(sessionId);
 		//对象不存在
 		if (isoImage == null) {
 			isoImage = new IsoImageProgressData();
 			isoImage.setSessionId(sessionId);
-			isoImage.setName(name);
+//			isoImage.setName(name);
 			
 			pool.put(isoImage);
 		}
 
 		// 更新
 		isoImage.setFinished(true);
-		isoImage.setMessage(message);
+//		isoImage.setMessage(message);
 		isoImage.updateTime();
 		if (HttpGatewayResponseHelper.isSuccess(messageData) == false) {
 			isoImage.setSuccess(false);
 		} else {
+		    isoImage.setStatus(0);
 			isoImage.setSuccess(true);
 			String uuid = messageData.getString("uuid");
 			String ip = messageData.getString("ip");
 			String port = messageData.getString("port");
-			BigInteger size = JSONLibUtil.getBigInteger(messageData, "size");
+ 			BigInteger size = JSONLibUtil.getBigInteger(messageData, "size");
 
 			isoImage.setRealImageId(uuid);
 			isoImage.setIp(ip);
 			isoImage.setPort(port);
 			isoImage.setSize(size);
+//			isoImage.setName(name);
+			
+	        IsoImagePool isopool = IsoImagePoolManager.getSingleton().getIsoImagePool();
+
+			String name = messageData.getString("name");
+			IsoImageData isoImageData = new IsoImageData();
+            isoImageData.setRealImageId(uuid);
+            isoImageData.setName(name);
+            isoImageData.setSize(size);
+            isoImageData.setStatus(0);
+            isoImageData.setRegion(1);
+            isopool.put(isoImageData);
 		}
 		// 释放资源
 		channel.release();

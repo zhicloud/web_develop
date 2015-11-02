@@ -5,22 +5,31 @@
     <title>创建ELB</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8" />
+    <style>
+    .test {
+    background-image: url(../assets/images/noise.png), url(../assets/images/backgrounds/1.jpg);
+    background-repeat: repeat, no-repeat;
+    background-position: left top;
+    background-size: auto, cover; }
+    .testinput{
+   	background-color : rgba(0, 0, 0, 0.3);
+   	border:0px;
+   	color:rgba(255,255,255,0.8);
+    }
+    .modal-footer {
+      border-top-color:red;
+      bordor-top-width:0px;
+     }
+    </style>
   </head>
 <script type="text/javascript">
 //增加表格行数
 function addRow(){
 	var len = $("#porttable tbody tr").length+1;
-	var trhtml = "<tr><td><select class=\"chosen-select chosen-transparent form-control\" name=\"elb_protocol\" id=\"elb_protocol"+len+"\">";
-		trhtml += "<option>HTTP</option><option>ARP</option><option>FTP</option><option>TCP</option><option>UDP</option><option>HTTPS</option><option>DNS</option><option>TCPS</option>";
-		trhtml += "</select></td><td><input type=\"text\"  class=\"form-control\" id=\"elb_port"+len+"\" ></td>";
-		trhtml += "<td><select class=\"chosen-select chosen-transparent form-control\" name=\"instance_protocol\" id=\"instance_protocol"+len+"\">";
-		trhtml += "<option>HTTP</option><option>ARP</option><option>FTP</option><option>TCP</option><option>UDP</option><option>HTTPS</option><option>DNS</option><option>TCPS</option>";
-		trhtml += "</select></td><td><input type=\"text\"  class=\"form-control\" id=\"instance_port"+len+"\" ></td>";
-		trhtml += "</tr>";
-
-$("#porttable tbody").append(trhtml);
-$("#elb_protocol"+len).chosen({disable_search:true});
-$("#instance_protocol"+len).chosen({disable_search:true});
+	var trhtml = "<tr><td>http</td><td>8080</td><td>udp</td><td>25</td><td>40,000</td>";
+		trhtml += "<td>是</td><td>10分钟</td><td>2次</td><td>10次</td><td><button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"addWeight()\">设置</button></td></tr>";
+	$("#porttable tbody").append(trhtml);
+	$("#loadbalance").find("button[class='close']").click();
 }
 //删除表格行
 function deleteRow(){
@@ -39,12 +48,26 @@ function checkmaxcontact(obj){
 		
 	});
 }
+
 function displaydiv(obj){
 	if(obj==true){
+		$("#keepsession1").attr("class","btn btn-success btn-sm margin-bottom-20");
+		$("#keepsession2").attr("class","btn btn-default btn-sm margin-bottom-20");
 		$("#hiddendiv").css("display","block");
 	}else{
+		$("#keepsession2").attr("class","btn btn-success btn-sm margin-bottom-20");
+		$("#keepsession1").attr("class","btn btn-default btn-sm margin-bottom-20");
 		$("#hiddendiv").css("display","none");
 	}
+}
+function addLoadBalance(){
+	$("#con").click();
+}
+function addWeight(){
+	$("#we").click();
+}
+function saveWeight(){
+	$("#weight").find("button[class='close']").click();
 }
 </script>  
   <body class="bg-1">
@@ -103,7 +126,7 @@ function displaydiv(obj){
                   <div class="tile-widget nopadding color transparent-black rounded-top-corners">
                     <ul>
                       <li><a href="#tab1" data-toggle="tab">添加ECS</a></li>
-                      <li><a href="#tab2" data-toggle="tab">配置健康检查</a></li>
+                      <!-- <li><a href="#tab2" data-toggle="tab">配置健康检查</a></li> -->
                       <li><a href="#tab3" data-toggle="tab">定义负载均衡</a></li>
                       <li><a href="#tab4" data-toggle="tab">确认提交</a></li>
                     </ul>
@@ -175,166 +198,54 @@ function displaydiv(obj){
 	                    </div>
                       </div>
 
-                      <div class="tab-pane" id="tab2">
-
-                        <form class="form-horizontal form2" role="form" parsley-validate id="contact" style="width:60%;">
-                         <p>负载均衡器将自动对ECS进行健康检查，它只将网络访问指向通过了健康检查的ECS。如果一个ECS的健康检查失败，负载均衡器将不会将网络访问指向这个ECS。请根据您的具体需求自定义健康检查的具体指标。</p>
-                          <div class="form-group">
-                            <label for="checkprotocol" class="col-sm-3 control-label">检查协议</label>
-                            <div class="col-sm-2" id="tab2group1">
-								<select class="chosen-select chosen-transparent form-control" style="width:100px;" id="checkprotocol" parsley-trigger="change" parsley-required="true" parsley-error-container="#tab2group1">
-		                            <option>ping</option>  
-		                            <option>HTTP</option> 
-		                            <option>ARP</option>
-		                            <option>FTP</option>
-		                            <option>TCP</option>
-		                            <option>UDP</option>
-		                            <option>UDP</option>
-		                            <option>HTTPS</option>
-		                            <option>DNS</option>
-		                            <option>TCPS</option>
-		                        </select>  
-	                        </div>
-                          </div>
-
-                          <div class="form-group">
-                            <label for="timeout" class="col-sm-3 control-label">响应超时时间</label>
-                            <div class="col-sm-4" id="tab2group2" style="width:230px;">
-                              <input type="text" class="form-control" id="timeout" parsley-trigger="change" parsley-minlength="4" parsley-type="number" parsley-error-container="#tab2group2" parsley-validation-minlength="1">
-                            </div>
-                          </div>
-
-                          <div class="form-group">
-                            <label for="healthycheck" class="col-sm-3 control-label">健康检查间隔</label>
-                            <div class="col-sm-4" id="tab2group3" style="width:230px;">
-                              <input type="text" class="form-control" id="healthycheck" parsley-trigger="change" parsley-type="number" parsley-validation-minlength="0" placeholder="30" parsley-error-container="#tab2group3">
-                            </div>
-                          </div>  
-                          
-                          <div class="form-group">
-                            <label for="nothealthy" class="col-sm-3 control-label">不健康阀值</label>
-                            <div class="col-sm-4" id="tab2group4">
-								<select class="chosen-select chosen-transparent form-control" id="nothealthy" parsley-trigger="change" parsley-required="true" parsley-error-container="#tab2group4">
-		                            <option>2</option>  
-		                            <option>3</option> 
-		                            <option>4</option>
-		                            <option>5</option>
-		                            <option>6</option>
-		                            <option>7</option>
-		                            <option>8</option>
-		                            <option>9</option>
-		                            <option>10</option>
-		                        </select>  
-	                        </div>
-                          </div>
-                          <div class="form-group">
-                            <label for="thealthyvalue" class="col-sm-3 control-label">健康阀值</label>
-                            <div class="col-sm-4" id="tab2group5">
-								<select class="chosen-select chosen-transparent form-control" id="thealthyvalue" parsley-trigger="change" parsley-required="true" parsley-error-container="#tab2group5">
-		                            <option>2</option>  
-		                            <option>3</option> 
-		                            <option>4</option>
-		                            <option>5</option>
-		                            <option>6</option>
-		                            <option>7</option>
-		                            <option>8</option>
-		                            <option>9</option>
-		                            <option>10</option>
-		                        </select>  
-	                        </div>
-                          </div>                          
-                        </form>
-
-                      </div>
                       
-                      <div class="tab-pane" id="tab3" style="height:500px;">
-                        <div style="width:70%;float: left;">
+                      <div class="tab-pane" id="tab3" style="height:300px;">
+                        <div style="width:98%;float: left;">
                         	<span>定义负债均衡</span>
                         	<p>请定义您要创建的负载均衡器名称及监听端口等。</p>
                         	<form class="form-horizontal form3" role="form" parsley-validate id="tab3form">
-	                          <div class="form-group">
-	                            <label for="elb_name" class="col-sm-3 control-label">ELB名称</label>
-	                            <div class="col-sm-4" id="tab3group1" style="width:230px;">
-	                              <input type="text" class="form-control" id="elb_name" parsley-trigger="change"   parsley-error-container="#tab3group1">
-	                            </div>
-	                          </div>
-	                         <div class="form-group">
-	                            <label for="tab3group2" class="col-sm-3 control-label">最大并发连接数</label>
-	                            <div class="col-sm-6" id="tab3group2" style="width:480px;float: left;">
-	                            	<div style="float:left;">
-	                            	<button type="button" id="maxcontact1" onclick="checkmaxcontact(this)" class="btn btn-default btn-sm margin-bottom-20">5,000</button>
-	                            	<button type="button" id="maxcontact2" onclick="checkmaxcontact(this)" class="btn btn-default btn-sm margin-bottom-20">10,000</button>
-	                            	<button type="button" id="maxcontact3" onclick="checkmaxcontact(this)" class="btn btn-default btn-sm margin-bottom-20">20,000</button>
-	                            	<button type="button" id="maxcontact4" onclick="checkmaxcontact(this)" class="btn btn-default btn-sm margin-bottom-20">40,000</button>
-	                            	</div>
-	                          </div>
-	                          </div>
-		                      <div class="form-group">
-		                        <label for="elb_name" class="col-sm-3 control-label">是否保持回话</label>
-		                        <div class="col-sm-8">
-		                          <div class="radio radio-transparent">
-		                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" onclick="displaydiv(true)">
-		                            <label for="optionsRadios1">是</label>
-		                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2" onclick="displaydiv(false)" checked>
-		                            <label for="optionsRadios2">否</label>
-		                          </div>
-		                        </div>
-		                      </div>
-		                      <div class="form-group" id="hiddendiv" style="display:none;">
-			                        <label for="sessionkeep" class="col-sm-3 control-label">保持回话时长</label>
-		                            <div class="col-sm-4" id="tab3group4" style="width:230px;">
-		                              <input type="text" class="form-control" id="sessionkeep" parsley-trigger="change"   parsley-error-container="#tab3group4">
-		                            </div>
-		                      </div>		                      
 		                      <div class="form-group" style="margin-left:0px;">
-		                        <p style="padding-left:20px;">编辑服务端口</p>
-		                        <div class="col-sm-8" style="padding-left:20px;height:150px;" id="portdiv">
+		                        <div class="col-sm-12" style="height:150px;" id="portdiv">
 					              <table  class="table table-datatable table-custom" id="porttable" style="font-size: 6px;">
 			                      <thead>
 			                          <tr>
-									  <th style="width:30%;">负载均衡器协议</th>
-									  <th style="width:30%;">负载均衡器端口</th>
-									  <th style="width:20%;">实例协议</th>
-									  <th style="width:20%;">实例端口</th>
+									  <th style="width:12%;">负载均衡器协议</th>
+									  <th style="width:12%;">负载均衡器端口</th>
+									  <th style="width:10%;">实例协议</th>
+									  <th style="width:10%;">实例端口</th>
+									  <th style="width:12%;">最大并发连接数</th>
+									  <th style="width:10%;">是否保持会话</th>
+									  <th style="width:10%;">保持会话时长</th>
+<!-- 									  <th style="width:10%;">响应超时时间</th>
+									  <th style="width:10%;">健康检查间隔</th> -->
+									  <th style="width:10%;">不健康阀值</th>
+									  <th style="width:10%;">健康阀值</th>
+									  <th>操作</th>
 			                          </tr>
 			                        </thead>
 									<tbody>   
 									<tr>
+									<td>http</td>
+									<td>8080</td>
+									<td>udp</td>
+									<td>25</td>
+									<td>40,000</td>
+									<td>是</td>
+									<td>10分钟</td>
+<!-- 									<td>5S</td>
+									<td>30S</td> -->
+									<td>2次</td>
+									<td>10次</td>
 									<td>
-										<select class="chosen-select chosen-transparent form-control" name="elb_protocol" id="elb_protocol">
-				                            <option>HTTP</option> 
-				                            <option>ARP</option>
-				                            <option>FTP</option>
-				                            <option>TCP</option>
-				                            <option>UDP</option>
-				                            <option>UDP</option>
-				                            <option>HTTPS</option>
-				                            <option>DNS</option>
-				                            <option>TCPS</option>
-				                        </select>
+									<button type="button" class="btn btn-primary btn-xs" onclick="addWeight()">设置</button>
 									</td>
-									<td><input type="text"  class="form-control" id="elb_port" ></td>
-									<td>
-										<select class="chosen-select chosen-transparent form-control" name="instance_protocol" id="instance_protocol">
-				                            <option>HTTP</option> 
-				                            <option>ARP</option>
-				                            <option>FTP</option>
-				                            <option>TCP</option>
-				                            <option>UDP</option>
-				                            <option>UDP</option>
-				                            <option>HTTPS</option>
-				                            <option>DNS</option>
-				                            <option>TCPS</option>
-				                        </select>
-									</td>
-									<td><input type="text"  class="form-control" id="instance_port" ></td>
-									</tr>    
+									</tr>  
 			                      </tbody>
 			                       </table>    	
 		                        </div>
 		                       <div class="form-group" style="margin-bottom:5px;position: relative;margin-top:5px;margin-left:0px;">
 			                        <div class="col-sm-8">
-			                          <button type="button" class="btn btn-greensea" onclick="addRow()"><i class="fa fa-plus"></i>
+			                          <button type="button" class="btn btn-greensea" onclick="addLoadBalance()"><i class="fa fa-plus"></i>
 			                              <span> 增加 </span></button>
 			                          <button type="button" class="btn btn-greensea" onclick="deleteRow()"><i class="fa fa-remove"></i>
                               			  <span> 删除 </span></button>    
@@ -442,7 +353,210 @@ function displaydiv(obj){
                     </ul>
                   </div>
                   <!-- /tile footer -->
-                  
+                  <div class="tile-body" style="padding:0px;">
+
+                    <a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>
+                    <a href="#loadbalance" id="con" role="button"   data-toggle="modal"> </a>
+                    <a href="#weight" id="we" role="button"   data-toggle="modal"> </a>
+                    
+                    <div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content" style="width:60%;margin-left:20%;">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <h3 class="modal-title" id="modalDialogLabel"><strong>提示</strong></h3>
+                          </div>
+                          <div class="modal-body">
+                            <p id="tipscontent"></p>
+                          </div>
+                        </div><!-- /.modal-content -->
+                      </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
+                    <div class="modal fade" id="loadbalance" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true">
+                       <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <h3 class="modal-title" id="modalConfirmLabelthrees">增加负载均衡</h3>
+                          </div>
+                          <div class="modal-body" id="loadbalance_div" style="height:300px;overflow:auto;">
+                            <form role="form" id="userusbstatusforms" class="form-horizontal">
+                             
+                          <div class="form-group">
+                            <label for="balance_protocol" class="col-sm-3 control-label">负载均衡器协议</label>
+                            <div class="col-sm-4" id="tab2group5">
+								<select class="chosen-select chosen-transparent form-control" id="balance_protocol" parsley-trigger="change" parsley-required="true" parsley-error-container="#tab2group5">
+		                            <option>HTTP</option> 
+		                            <option>ARP</option>
+		                            <option>FTP</option>
+		                            <option>TCP</option>
+		                            <option>UDP</option>
+		                            <option>UDP</option>
+		                            <option>HTTPS</option>
+		                            <option>DNS</option>
+		                            <option>TCPS</option>
+		                        </select>  
+	                        </div>
+                          </div>   
+                          <div class="form-group">
+                            <label for="timeout" class="col-sm-3 control-label">负载均衡器端口</label>
+                            <div class="col-sm-4" id="tab3group1">
+                              <input type="text" class="form-control" style="" id="balance_port" parsley-trigger="change" parsley-minlength="4" parsley-type="number" parsley-error-container="#tab3group1">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="instance_protocol" class="col-sm-3 control-label">实例协议</label>
+                            <div class="col-sm-4" id="tab3group2">
+								<select class="chosen-select chosen-transparent form-control" id="instance_protocol" parsley-trigger="change" parsley-required="true" parsley-error-container="#tab3group2">
+		                            <option>HTTP</option> 
+		                            <option>ARP</option>
+		                            <option>FTP</option>
+		                            <option>TCP</option>
+		                            <option>UDP</option>
+		                            <option>UDP</option>
+		                            <option>HTTPS</option>
+		                            <option>DNS</option>
+		                            <option>TCPS</option>
+		                        </select>  
+	                        </div>
+                          </div>  
+                          <div class="form-group">
+                            <label for="instance" class="col-sm-3 control-label">实例端口</label>
+                            <div class="col-sm-4" id="tab3group3">
+                              <input type="text" class="form-control" id="instance_port" parsley-trigger="change" parsley-minlength="4" parsley-type="number" parsley-error-container="#tab3group3">
+                            </div>
+                          </div>  
+                          <div class="form-group">
+                            <label for="maxcontact" class="col-sm-3 control-label">最大并发连接数</label>
+                            <div class="col-sm-8" id="tab3group4">
+                            	    <button type="button" id="maxcontact1" onclick="checkmaxcontact(this)" class="btn btn-default btn-sm margin-bottom-20">5,000</button>
+	                            	<button type="button" id="maxcontact2" onclick="checkmaxcontact(this)" class="btn btn-default btn-sm margin-bottom-20">10,000</button>
+	                            	<button type="button" id="maxcontact3" onclick="checkmaxcontact(this)" class="btn btn-default btn-sm margin-bottom-20">20,000</button>
+	                            	<button type="button" id="maxcontact4" onclick="checkmaxcontact(this)" class="btn btn-default btn-sm margin-bottom-20">40,000</button>
+                            </div>
+                          </div>                            
+                          <div class="form-group">
+                            <label for="maxcontact" class="col-sm-3 control-label">是否保持会话</label>
+                            <div class="col-sm-4">
+	                                <button type="button" id="keepsession1" onclick="displaydiv(true)" class="btn btn-default btn-sm margin-bottom-20">是</button>
+	                            	<button type="button" id="keepsession2" onclick="displaydiv(false)" class="btn btn-default btn-sm margin-bottom-20">否</button>
+                            </div>
+                          </div>                              
+                          <div class="form-group" id="hiddendiv" style="display:none;">
+	                        <label for="sessionkeep" class="col-sm-3 control-label">保持回话时长</label>
+                            <div class="col-sm-4" id="tab3group5">
+                              <input type="text" class="form-control" id="sessionkeep" parsley-trigger="change"   parsley-error-container="#tab3group5">
+                            </div>
+		                   </div>	
+                         <div class="form-group">
+                            <label for="timeout" class="col-sm-3 control-label">响应超时时间</label>
+                            <div class="col-sm-4" id="tab3group6">
+                              <input type="text" class="form-control" id="timeout" parsley-trigger="change" parsley-minlength="4" parsley-type="number" parsley-error-container="#tab3group6">
+                            </div>
+                          </div>        
+                          <div class="form-group">
+                            <label for="healthycheck" class="col-sm-3 control-label">健康检查间隔</label>
+                            <div class="col-sm-4" id="tab3group7">
+                              <input type="text" class="form-control" id="healthycheck" parsley-trigger="change" parsley-type="number"  parsley-error-container="#tab3group7">
+                            </div>
+                          </div>  
+                          <div class="form-group">
+                            <label for="nothealthy" class="col-sm-3 control-label">不健康阀值</label>
+                            <div class="col-sm-4" id="tab3group8">
+								<select class="chosen-select chosen-transparent form-control" id="nothealthy" parsley-trigger="change" parsley-required="true" parsley-error-container="#tab3group8">
+		                            <option>2</option>  
+		                            <option>3</option> 
+		                            <option>4</option>
+		                            <option>5</option>
+		                            <option>6</option>
+		                            <option>7</option>
+		                            <option>8</option>
+		                            <option>9</option>
+		                            <option>10</option>
+		                        </select>  
+	                        </div>
+                          </div>       
+                          <div class="form-group">
+                            <label for="thealthyvalue" class="col-sm-3 control-label">健康阀值</label>
+                            <div class="col-sm-4" id="tab3group9">
+								<select class="chosen-select chosen-transparent form-control" id="thealthyvalue" parsley-trigger="change" parsley-required="true" parsley-error-container="#tab3group9">
+		                            <option>2</option>  
+		                            <option>3</option> 
+		                            <option>4</option>
+		                            <option>5</option>
+		                            <option>6</option>
+		                            <option>7</option>
+		                            <option>8</option>
+		                            <option>9</option>
+		                            <option>10</option>
+		                        </select>  
+	                        </div>
+                          </div>         
+                                  
+                            </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button class="btn btn-red" data-dismiss="modal" aria-hidden="true">关闭</button>
+                            <button class="btn btn-green" onclick="addRow()">确定</button>
+                          </div>
+                        </div><!-- /.modal-content -->
+                      </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->    
+                    <div class="modal fade" id="weight" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">
+                    	<div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header test">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <h3 class="modal-title" id="modalConfirmLabelthrees">设置权重</h3>
+                          </div>
+                          <div class="test" id="weight_div" style="height:200px;overflow:auto;background-color:rgba(0, 0, 0, 0.3);">
+		                     <section class="tile color transparent-black">
+
+                  <!-- tile body -->
+                  <div class="tile-body">
+                    <table  class="table table-datatable table-custom" id="weightTable" style="width:98%;">
+	                        <thead>
+	                          <tr>
+	                            <th class="no-sort">ID</th>
+	                            <th class="no-sort">名称</th>
+	                            <th class="no-sort">状态</th>
+	                            <th class="no-sort">权重</th>
+	                          </tr>
+	                        </thead>
+	                        <tbody>
+	                        <tr class="odd gradeX">
+	                             <td class="cut">ELB_123456</td>
+	                             <td class="cut">test_ELB</td>
+	                             <td class="cut">运行中</td>
+	                             <td class="cut">
+	                             <input type="text" class="form-control" id="weight_input" parsley-trigger="change" parsley-minlength="4" parsley-type="number">
+	                             </td>
+	                        </tr>
+	                        <tr class="odd gradeX">
+	                             <td class="cut">ELB_123456</td>
+	                             <td class="cut">test_ELB</td>
+	                             <td class="cut">运行中</td>
+	                             <td class="cut">
+	                             <input type="text" class="form-control" id="weight_input2" parsley-trigger="change" parsley-minlength="4" parsley-type="number">
+	                             </td>
+	                        </tr>
+	                        </tbody>
+	                      </table>
+
+                  </div>
+                  <!-- /tile body -->
+
+                </section>																																				
+                          </div>
+                          <div class="modal-footer test" style="margin-top:0px;">
+                            <button class="btn btn-red" data-dismiss="modal" aria-hidden="true">关闭</button>
+                            <button class="btn btn-green" onclick="saveWeight()">确定</button>
+                          </div>
+                        </div><!-- /.modal-content -->
+                      </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->                    
+                    </div>
                 
 
                 </section>
@@ -543,7 +657,7 @@ function displaydiv(obj){
         });
         // Initialize tabDrop
         $('.tabdrop').tabdrop({text: '<i class="fa fa-th-list"></i>'});
-		$("#ecsdiv,#portdiv,#confirmecs_table,#confirmelb_table").niceScroll({
+		$("#ecsdiv,#portdiv,#confirmecs_table,#confirmelb_table,#loadbalance,#loadbalance_div,#weight_div").niceScroll({
 			cursoropacitymin:0.5,
 			cursorcolor:"#424242",  
 			cursoropacitymax:0.5,  
@@ -552,13 +666,11 @@ function displaydiv(obj){
 			cursorborder:"0",  
 			cursorborderradius:"7px" ,
 		});
-		$("#checkprotocol").chosen({disable_search:true,width:'200px'});
-		$("#nothealthy").chosen({disable_search:true,width:'200px'});
-		$("#thealthyvalue").chosen({disable_search:true,width:'200px'});
-		
-		$("#price").chosen({disable_search_threshold: 10,width:'100px'});
-		$("#elb_protocol").chosen({disable_search_threshold: 10,width:'100px'});
-		$("#instance_protocol").chosen({disable_search_threshold: 10,width:'100px'});
+		var tempwidth = $("#balance_port").css("width");
+		$("#balance_protocol").chosen({disable_search_threshold: 10,width:tempwidth});
+		$("#instance_protocol").chosen({disable_search_threshold: 10,width:tempwidth});
+		$("#nothealthy").chosen({disable_search_threshold: 10,width:tempwidth});
+		$("#thealthyvalue").chosen({disable_search_threshold: 10,width:tempwidth});
       })
     </script>
     

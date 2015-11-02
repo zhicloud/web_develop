@@ -69,6 +69,7 @@ public class TransFormPrivilegeConstant {
     public static final String desktop_warehouse_allocate = "desktop_warehouse_allocate";     //仓库分配
     public static final String desktop_warehouse_host_allocate = "desktop_warehouse_host_allocate";     //主机分配
     public static final String desktop_warehouse_host_start = "desktop_warehouse_host_start";     //主机开机
+    public static final String desktop_host_start_from_iso = "desktop_host_start_from_iso";     //云服务器从光盘启动
     public static final String desktop_warehouse_host_stop = "desktop_warehouse_host_stop";     //主机关机
     public static final String desktop_warehouse_host_shut_down = "desktop_warehouse_host_shut_down";     //主机强制关机
     public static final String desktop_warehouse_host_restart = "desktop_warehouse_host_restart";     //主机重启
@@ -171,6 +172,7 @@ public class TransFormPrivilegeConstant {
     public static final String server_manage_detail = "server_manage_detail";     //云服务器详情
     public static final String server_host_reset = "server_host_reset";     //云服务器强制重启
     public static final String server_host_start = "server_host_start";     //云服务器启动
+    public static final String server_host_start_from_iso = "server_host_start_from_iso";     //云服务器从光盘启动
     public static final String server_host_shutdown = "server_host_shutdown";     //云服务器关机
     public static final String server_host_restart = "server_host_restart";     //云服务器重启
     public static final String server_host_halt = "server_host_halt";     //云服务器强制关机
@@ -389,6 +391,10 @@ public class TransFormPrivilegeConstant {
     public static final String desktop_resource_node_mount = "desktop_resource_node_mount";// 磁盘挂载
     public static final String desktop_resource_node_enabledisk = "desktop_resource_node_enabledisk";// 本地磁盘启用
     public static final String desktop_resource_node_disabledisk = "desktop_resource_node_disabledisk";// 本地磁盘禁用
+    
+    public static final String iso_image_add = "iso_image_add";// 镜像新增
+    public static final String iso_image_query = "iso_image_query";// 镜像查询
+    public static final String iso_image_delete = "iso_image_delete";// 镜像删除
 
 }
  
