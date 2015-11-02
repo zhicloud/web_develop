@@ -26,6 +26,7 @@ import com.zhicloud.op.app.pool.addressPool.AddressExt;
 import com.zhicloud.op.app.pool.addressPool.AddressPool;
 import com.zhicloud.op.app.pool.addressPool.AddressPoolManager;
 import com.zhicloud.op.app.pool.portPool.Port;
+import com.zhicloud.op.common.util.CapacityUtil;
 import com.zhicloud.op.exception.AppException;
 import com.zhicloud.op.httpGateway.HttpGatewayChannel;
 import com.zhicloud.op.httpGateway.HttpGatewayChannelExt;
@@ -68,6 +69,23 @@ public class ResourcePoolServiceImpl extends BeanDirectCallableDefaultImpl imple
 					for (int i = 0; i < computerList.size(); i ++) {
 						JSONObject computerObject = computerList.getJSONObject(i);
 						String uuid = computerObject.getString("uuid");
+						Integer cpu_cpucount_used = 0;
+                        // 查询该资源池主机,计算主机已分配的cpu核数
+                        JSONObject object_host = channel.hostQuery(uuid);
+                        JSONArray hosts;
+                        try {
+                            hosts = object_host.getJSONArray("hosts");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            continue;
+                        }
+                        if (hosts != null && !hosts.isEmpty()) {
+                            for (int m = 0; m < hosts.size(); m++) {
+                                JSONObject host = hosts.getJSONObject(m);
+                                cpu_cpucount_used += host.getInt("cpu_count");
+                            }
+                        }
+						
 						String name = computerObject.getString("name");
 						int status = computerObject.getInt("status");
 						Integer cpuCount = computerObject.getInt("cpu_count");
@@ -111,6 +129,14 @@ public class ResourcePoolServiceImpl extends BeanDirectCallableDefaultImpl imple
 						computer.setStatus(status);
 						computer.setUuid(uuid);
 						computer.setRegion(region);
+                        computer.setCpu_count_text("总共:" + cpuCount + "核<br>已分配:" + cpu_cpucount_used + "核<br>未分配:"
+                                + (cpuCount - cpu_cpucount_used) + "核");
+                        computer.setMemory_text("总共:" + CapacityUtil.toGB(mcount[1], 0) + "<br>已分配:"
+                                + CapacityUtil.toGB(mcount[1].subtract(mcount[0]), 0) + "<br>总空闲:"
+                                + CapacityUtil.toGB(mcount[0], 0));
+                        computer.setDisk_text("总共:" + CapacityUtil.toGB(dcount[1], 0) + "<br>已分配:"
+                                + CapacityUtil.toGB(dcount[1].subtract(dcount[0]), 0) + "<br>总空闲:"
+                                + CapacityUtil.toGB(dcount[0], 0));
 						cList.add(computer);
 					}
 				}

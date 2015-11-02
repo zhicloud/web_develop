@@ -45,10 +45,10 @@
 		<table id="main_table" border="0" cellspacing="0" cellpadding="0" style="height:100%;">
 			<tr>
 				<td id="c1" class="navbar" style="width:200px; vertical-align:top;">
-					<div class="navbarlogo">
+					<div class="navbarlogo" style="width:145px;height:30px;padding:15px 28px 15px 10px;">
 						<a href="<%=request.getContextPath()%>/"><img
 							src="<%=request.getContextPath()%>/control/logo_145_30.png"
-							width="145" height="30" alt="云端在线" />
+							 alt="云端在线" />
 						</a>
 					</div>
 					<ul>
@@ -78,9 +78,9 @@
 					      </ul>
 					    </li>					    
 
-					    <li><a><span>+</span>资源管理</a>
+					    <li><a><span>+</span>资源池管理</a>
 					      <ul>
-					      	<li><a href="#" id="computer_resource_manage_link">主机资源池管理</a></li>
+					      	<li><a href="#" id="computer_resource_manage_link">计算资源池管理</a></li>
 							<li><a href="#" id="storage_resource_manage_link">存储资源池管理</a></li>
 							<li><a href="#" id="address_resource_manage_link">地址资源池管理</a></li>
 							<li><a href="#" id="port_resource_manage_link"> 端口资源池管理</a></li>
