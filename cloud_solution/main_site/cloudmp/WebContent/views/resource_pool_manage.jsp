@@ -126,8 +126,38 @@
                           <p><strong>UUID：<br>${cp.uuid }</strong></p>
                           <p><strong>计算节点：</strong><a href="javascript:void(0);" cur_id="${cp.uuid }" class="query_detail"><span class="badge badge-greensea">${cp.getAllNode()}</span></a>节点</p>
                            <p><strong>资源池名：</strong>${cp.name }</p>
-                           <p><strong>网络模式：</strong>私有云</p>
-                           <p><strong>存储模式：</strong>本地存储</p>
+                              <p><strong>网络模式：</strong>
+                                  <c:choose>
+                                      <c:when test="${cp.networkType == 0 }">
+                                          私有云
+                                      </c:when>
+                                      <c:when test="${cp.networkType == 1 }">
+                                          独享公网地址(IP)
+                                      </c:when>
+                                      <c:when test="${cp.networkType == 2 }">
+                                          共享公网地址(端口)
+                                      </c:when>
+                                      <c:otherwise>
+                                          直连
+                                      </c:otherwise>
+                                  </c:choose>
+                              </p>
+                              <p><strong>存储模式：</strong>
+                                  <c:choose>
+                                      <c:when test="${cp.diskType == 0 }">
+                                          本地
+                                      </c:when>
+                                      <c:when test="${cp.diskType == 1 }">
+                                          云存储
+                                      </c:when>
+                                      <c:when test="${cp.diskType == 2 }">
+                                          nas磁盘
+                                      </c:when>
+                                      <c:otherwise>
+                                          ip san
+                                      </c:otherwise>
+                                  </c:choose>
+                              </p>
                            <p><strong>运行状态：${cp.getStatusText() }</strong></p>
                            <p><strong>云主机数量：</strong><a href="javascript:void(0);" cur_id="${cp.uuid }" cur_name="${cp.name }"  class="query_host_detail"><span class="badge badge-greensea">${cp.getAllHost()}</span></a>台</p>
                            
@@ -373,7 +403,7 @@
 	    jQuery(".delete_resource_pool").click(function(){
 	    	var uuid = jQuery(this).attr("cur_id");
 	    	cur_id = uuid;
-	    	$("#confirmcontent").html("确定要删除该资源池吗？<br>(删除资源池会删除资源池下所有节点及主机)");
+	    	$("#confirmcontent").html("确定要删除该资源池吗？");
 	    	$("#confirm_btn").attr("onclick","deleteResourcePool();");
 	    	$("#con").click();
 	    });

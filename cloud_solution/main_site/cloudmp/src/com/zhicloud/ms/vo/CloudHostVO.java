@@ -94,6 +94,8 @@ public class CloudHostVO implements JSONBean
     private String userid_name;
     /*CPU字段处理*/
     private String cpucore_name;
+    
+    private Integer supportH264;
  	
 	public String getId()
 	{
@@ -775,6 +777,16 @@ public class CloudHostVO implements JSONBean
     public String getDiskusage() {
         return getUsageFormat(3);
     }
+
+	public Integer getSupportH264() {
+		return supportH264;
+	}
+
+	public void setSupportH264(Integer supportH264) {
+		this.supportH264 = supportH264;
+	}
+    
+    
 }
 
 

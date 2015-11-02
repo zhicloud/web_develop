@@ -1,16 +1,14 @@
 package com.zhicloud.ms.controller;
 
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfo;
 import com.zhicloud.ms.app.pool.storage.StorageManager;
 import com.zhicloud.ms.app.pool.storage.StorageResult;
 import com.zhicloud.ms.httpGateway.HttpGatewayAsyncChannel;
 import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
 import com.zhicloud.ms.remote.MethodResult;
-import com.zhicloud.ms.service.ICloudHostService;
-import com.zhicloud.ms.service.ICloudHostWarehouseService;
-import com.zhicloud.ms.service.IComputePoolService;
-import com.zhicloud.ms.service.IOperLogService;
+import com.zhicloud.ms.service.*;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
@@ -40,7 +38,7 @@ public class ServerResourcePoolController {
 	public static final Logger logger = Logger.getLogger(ServerResourcePoolController.class);
 	
 	@Resource
-	ICloudHostService cloudHostService;
+	  private ICloudHostService cloudHostService;
 	
 	@Resource
     private ICloudHostWarehouseService  CloudHostWarehouseService;
@@ -50,6 +48,9 @@ public class ServerResourcePoolController {
 
     @Resource
     private IComputePoolService computePoolService;
+
+    @Resource
+    private SharedMemoryService sharedMemoryService;
 
 	/**
 	 * 查询所有资源池
@@ -63,7 +64,7 @@ public class ServerResourcePoolController {
 			return "not_have_access";
 		}
 		try {
-			List<ComputerPoolVO> cList = new ArrayList<>();
+			List<ComputeInfo> cList = new ArrayList<>();
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				if(channel!=null){
 					JSONObject result = channel.computePoolQuery();
@@ -105,7 +106,8 @@ public class ServerResourcePoolController {
 							for(int j=0;j<hList.size();j++){
 								hcount[j] = hList.getInt(j);
 							}
-							ComputerPoolVO computer = new ComputerPoolVO();
+
+              ComputeInfoExt computer = computePoolService.getComputePoolDetailSync(uuid);
 							computer.setCpuCount(cpuCount);
 							computer.setCpuUsage(cpuUsage);
 							computer.setDiskUsage(diskUsage);
@@ -139,8 +141,8 @@ public class ServerResourcePoolController {
 		}
 		String searchName = request.getParameter("sn");
 		try {
-			List<ComputerPoolDetailVO> cList = new ArrayList<>();
-			List<ComputerPoolDetailVO> curList = new ArrayList<>();
+			List<ComputeInfoExt> cList = new ArrayList<>();
+			List<ComputeInfoExt> curList = new ArrayList<>();
 			String flag = "no";
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				if(channel!=null){
@@ -168,7 +170,7 @@ public class ServerResourcePoolController {
 							dcount[j] = new BigInteger(diskList.getString(j));
 						}
 						
-						ComputerPoolDetailVO computer = new ComputerPoolDetailVO();
+						ComputeInfoExt computer = new ComputeInfoExt();
 						computer.setCpuCount(cpuCount);
 						computer.setCpuUsage(cpuUsage);
 						computer.setDiskUsage(diskUsage);
@@ -181,7 +183,7 @@ public class ServerResourcePoolController {
 						cList.add(computer);
 					}
 					if(searchName!=null && searchName!="" && cList.size()>0){
-						for(ComputerPoolDetailVO cp : cList){
+						for(ComputeInfoExt cp : cList){
 							if(cp.getName()!=null && cp.getName().toLowerCase().contains(searchName.toLowerCase())){
 								curList.add(cp);
 							}
@@ -351,9 +353,17 @@ public class ServerResourcePoolController {
 						portList.add(vo);
 					}
 				}
-			model.addAttribute("ipList", ipList);
-			model.addAttribute("portList", portList);
-		} catch (MalformedURLException e) {
+        //获取共享存储路径
+        String path = null;
+        SharedMemoryVO sharedMemoryVO = sharedMemoryService.queryAvailable();
+        if (sharedMemoryVO != null){
+            path = sharedMemoryVO.getUrl();
+        }
+        model.addAttribute("path", path);
+
+        model.addAttribute("ipList", ipList);
+        model.addAttribute("portList", portList);
+    } catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -373,10 +383,11 @@ public class ServerResourcePoolController {
         String network = computeInfoExt.getNetwork();
         Integer diskType = computeInfoExt.getDiskType();
         String diskSource = computeInfoExt.getDiskSource();
-        int mode0 = computeInfoExt.getMode0();
+        String path = computeInfoExt.getPath();
+        int mode0 = computeInfoExt.getMode0()== null ? 0:computeInfoExt.getMode0();
         int mode1 = computeInfoExt.getMode1();
         int mode2 = computeInfoExt.getMode2();
-        int mode3 = computeInfoExt.getMode3();
+        int mode3 = computeInfoExt.getMode3()== null ? 0:computeInfoExt.getMode3();
 //        String path = computeInfoExt.getPath();
 
         if(StringUtil.isBlank(name)){
@@ -391,8 +402,12 @@ public class ServerResourcePoolController {
         if(StringUtil.isBlank(String.valueOf(diskType))){
             return new MethodResult(MethodResult.FAIL,"存储类型不能为空");
         }
-        if(!("0".equals(String.valueOf(diskType))) && StringUtil.isBlank(diskSource)){
+        if(("1".equals(String.valueOf(diskType))) && StringUtil.isBlank(diskSource)){
             return new MethodResult(MethodResult.FAIL,"存储资源池不能为空");
+        }
+
+        if(("2".equals(String.valueOf(diskType))) && StringUtil.isBlank(path)){
+            return new MethodResult(MethodResult.FAIL,"共享存储路径不能为空");
         }
 
         if(StringUtil.isBlank(String.valueOf(mode0))){
@@ -417,11 +432,11 @@ public class ServerResourcePoolController {
             data.put("network", network);
             data.put("disk_type", diskType);
             data.put("disk_source", diskSource);
+            data.put("path", path);
             data.put("mode0", mode0);
             data.put("mode1", mode1);
-            data.put("mode2", mode0);
-            data.put("mode3", mode1);
-            //            data.put("path", path);
+            data.put("mode2", mode2);
+            data.put("mode3", mode3);
             //            data.put("crypt", crypt);
 
 
@@ -531,6 +546,15 @@ public class ServerResourcePoolController {
                     vo.setCount(pcount);
                     portList.add(vo);
                 }
+
+                //获取共享存储路径
+                String path = null;
+                SharedMemoryVO sharedMemoryVO = sharedMemoryService.queryAvailable();
+                if (sharedMemoryVO != null){
+                    path = sharedMemoryVO.getUrl();
+                }
+                model.addAttribute("path", path);
+
                 model.addAttribute("ipList", ipList);
                 model.addAttribute("portList", portList);
                 model.addAttribute("computeInfoExt", computeInfoExt);
@@ -564,10 +588,10 @@ public class ServerResourcePoolController {
             String network = computeInfoExt.getNetwork();
             Integer diskType = computeInfoExt.getDiskType();
             String diskSource = computeInfoExt.getDiskSource();
-            int mode0 = computeInfoExt.getMode0();
+            int mode0 = computeInfoExt.getMode0()== null ? 0:computeInfoExt.getMode0();
             int mode1 = computeInfoExt.getMode1();
             int mode2 = computeInfoExt.getMode2();
-            int mode3 = computeInfoExt.getMode3();
+            int mode3 = computeInfoExt.getMode3()== null ? 0:computeInfoExt.getMode3();
             String path = computeInfoExt.getPath();
 
             if(StringUtil.isBlank(uuid)){
@@ -588,6 +612,11 @@ public class ServerResourcePoolController {
             if("1".equals(diskType) && StringUtil.isBlank(diskSource)){
                 return new MethodResult(MethodResult.FAIL,"云存储不能为空");
             }
+
+            if(("2".equals(String.valueOf(diskType))) && StringUtil.isBlank(path)){
+                return new MethodResult(MethodResult.FAIL,"共享存储路径不能为空");
+            }
+
             if(StringUtil.isBlank(String.valueOf(mode0))){
                 return new MethodResult(MethodResult.FAIL,"高可用选项不能为空");
             }
@@ -637,31 +666,27 @@ public class ServerResourcePoolController {
 		try {
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				if(channel!=null){
-					JSONObject result = channel.hostQuery(uuid);
-					if("success".equals(result.get("status"))){
-						
-						JSONArray computerList = result.getJSONArray("hosts");
-						for (int i = 0; i < computerList.size(); i ++) {
-							JSONObject computerObject = computerList.getJSONObject(i);
-							String uid = computerObject.getString("uuid");
-							channel.hostDelete(uid);
-							//删除数据库的主机信息
-							cloudHostService.deleteByRealId(uid);
-						}
-					}
+					//查询资源池中是否有资源
 					JSONObject nodeResult = channel.computePoolQueryResource(uuid);
-					JSONArray nodeList = nodeResult.getJSONArray("compute_resources");
-					for (int i = 0; i < nodeList.size(); i ++) {
-						JSONObject nodeObject = nodeList.getJSONObject(i);
-						String name = nodeObject.getString("name");
-						channel.computePoolRemoveResource(uuid, name);
-					}	
+					if(nodeResult!=null){
+						JSONArray nodeList = nodeResult.getJSONArray("compute_resources");
+						if(nodeList!=null && nodeList.size()>0){
+							operLogService.addLog("计算资源池", "删除计算资源池失败,请先删除资源", "1", "2", request);
+							return new MethodResult(MethodResult.FAIL,"资源池删除失败，请先删除资源池中的资源");
+						}else{
+							JSONObject drp = channel.computePoolDelete(uuid);
+							if("success".equals(drp.getString("status"))){
+								operLogService.addLog("计算资源池", "删除计算资源池成功", "1", "1", request);
+								return new MethodResult(MethodResult.SUCCESS,"资源池删除成功");
+							}
+						}	
+					}else{
+						operLogService.addLog("计算资源池", "删除计算资源池失败", "1", "2", request);
+						return new MethodResult(MethodResult.FAIL,"资源池删除失败");
+					}
+					
 				}
-				JSONObject drp = channel.computePoolDelete(uuid);
-				if("success".equals(drp.getString("status"))){
-                    operLogService.addLog("计算资源池", "删除计算资源池成功", "1", "1", request);
-					return new MethodResult(MethodResult.SUCCESS,"资源池删除成功");
-				}
+				
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -679,7 +704,7 @@ public class ServerResourcePoolController {
 	 */
 	@RequestMapping(value="/{uuid}/an",method=RequestMethod.GET)
 	public String addNodePage(@PathVariable("uuid") String uuid,Model model){
-		List<ComputerPoolDetailVO> curList = new ArrayList<>();
+		List<ComputeInfoExt> curList = new ArrayList<>();
 		HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 		try {
 			if(channel!=null){
@@ -688,7 +713,7 @@ public class ServerResourcePoolController {
 				for (int i = 0; i < computerList.size(); i ++) {
 					JSONObject computerObject = computerList.getJSONObject(i);
 					String name = computerObject.getString("name");
-					ComputerPoolDetailVO computer = new ComputerPoolDetailVO();
+					ComputeInfoExt computer = new ComputeInfoExt();
 					computer.setName(name);
 					curList.add(computer);
 				}
@@ -1072,32 +1097,28 @@ public class ServerResourcePoolController {
 	    if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_resource_node_remove)){
             return new MethodResult(MethodResult.FAIL,"您没有删除资源的权限，请联系管理员");
         }
-		boolean flag = true;
 		try {
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				if(channel!=null){
 					JSONObject result = channel.hostQuery(poolId);
 					if("success".equals(result.get("status"))){
-						
+						//查询所有云主机
 						JSONArray computerList = result.getJSONArray("hosts");
 						for (int i = 0; i < computerList.size(); i ++) {
 							JSONObject computerObject = computerList.getJSONObject(i);
-							String uid = computerObject.getString("uuid");
 							JSONArray ips = computerObject.getJSONArray("ip");
+							//判断是否为该NC的云主机
 							if(ip.equals(ips.getString(0))){
-								JSONObject dhr = channel.hostDelete(uid);
-								if("fail".equals(dhr.getString("status"))){
-									flag = false;
-								}
+								operLogService.addLog("计算资源池", "移除计算节点失败，节点中存在云主机", "1", "2", request);
+								return new MethodResult(MethodResult.FAIL,"资源删除失败，请先删除资源中的云主机");
 							}
 						}
-					}
-				}
-				if(flag){
-					JSONObject dnr = channel.computePoolRemoveResource(poolId, name);
-					if("success".equals(dnr.getString("status"))){
-				        operLogService.addLog("计算资源池", "移除计算节点失败", "1", "1", request);
-						return new MethodResult(MethodResult.SUCCESS,"资源移除成功");
+						//如果nc中没有云主机，则直接删除nc
+						JSONObject dnr = channel.computePoolRemoveResource(poolId, name);
+						if("success".equals(dnr.getString("status"))){
+					        operLogService.addLog("计算资源池", "移除计算节点成功", "1", "1", request);
+							return new MethodResult(MethodResult.SUCCESS,"资源移除成功");
+						}
 					}
 				}
 		} catch (MalformedURLException e) {

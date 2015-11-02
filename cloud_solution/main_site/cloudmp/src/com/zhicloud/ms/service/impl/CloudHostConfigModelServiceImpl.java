@@ -79,6 +79,7 @@ public class CloudHostConfigModelServiceImpl implements CloudHostConfigModelServ
 		condition.put("sysImageName", sysDiskImage.getName());
 		condition.put("createTime", DateUtil.dateToString(new Date(),"yyyyMMddHHmmssSSS"));
 		condition.put("type", 1);
+		condition.put("supportH264",chcm.getSupportH264());
 		
 		chcmMapper.addType(condition);
 		return id;

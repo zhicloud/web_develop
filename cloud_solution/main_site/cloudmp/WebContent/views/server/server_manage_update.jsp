@@ -226,7 +226,19 @@
                         </div>
                       </div> --%>
                       
-                       
+                      <div class="form-group" id="h264">
+                        <label for="input01" class="col-sm-2 control-label">是否支持H264 *</label>
+                        <div class="col-sm-8"> 
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="supportH264" id="supportH264_1" value="0" checked>
+                            <label for="supportH264_1">否</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="supportH264" id="supportH264_2" value="1">
+                            <label for="supportH264_2">是</label>
+                          </div>
+                        </div>
+                      </div>
                       
 
                        
@@ -359,8 +371,10 @@
         if(run_status=="1"){
         	$("#no_cpu").attr("disabled",true);
         }else{
-        	$("#cpu_core").attr("disabled",false);
+        	$("#cpu_core").attr("disabled",true);
         	$("#cpu_core").hide();
+        	$("#h264").attr("disabled",true);
+        	$("#h264").hide();
         }
        
       
@@ -418,6 +432,7 @@
         $("input[name='cpuCore'][value='${cloudServer.cpuCore}']").attr("checked","checked");
         $("input[name='memory'][value='${cloudServer.getMemoryValue()}']").attr("checked","checked"); 
         $("input[name='bandwidth'][value='${cloudServer.getBandwidthValue()}']").attr("checked","checked");
+        $("input[name='supportH264'][value='${cloudServer.supportH264}']").attr("checked","checked");
         if($('input[name="bandwidth"]:checked').val()==null){
       	  $("#optionsRadios42").click();
       	  $("#optionsRadios42").attr("checked","checked");

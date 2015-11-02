@@ -347,7 +347,7 @@
 	    	var ip = jQuery(this).attr("cur_ip");
 	    	cur_name = name;
 	    	cur_ip = ip;
-	    	$("#confirmcontent").html("确定要删除该资源节点吗？<br>(删除资源节点会删除该资源下所有主机)");
+	    	$("#confirmcontent").html("确定要删除该资源节点吗？");
 	    	$("#confirm_btn").attr("onclick","deleteResourcePool();");
 	    	$("#con").click();
 	    });
