@@ -159,4 +159,23 @@ public class BackUpDetailVO {
         return status_name;
     }
     
+    public String modeFormat(){
+    	if(this.mode==0){
+    		return "全备份";
+    	}else{
+    		return "部分备份";
+    	}
+    }
+    
+    public String diskFormat(){
+    	if(this.mode==0){
+    		return "所有磁盘";
+    	}else{
+    		if(this.disk==0){
+    			return "系统磁盘";
+    		}else{
+    			return "数据磁盘"+this.disk;
+    		}
+    	}
+    }
 }

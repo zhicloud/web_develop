@@ -1,6 +1,7 @@
 package com.zhicloud.ms.controller;
 
 
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoExt;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoPool;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoPoolManager;
@@ -15,10 +16,8 @@ import com.zhicloud.ms.service.SharedMemoryService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.vo.*;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -88,7 +86,7 @@ public class PlatformResourceController {
 	public ComputeResourceViewVO getComputeResource(){
 		ComputeResourceViewVO cVO = new ComputeResourceViewVO();
 		try {
-			List<ComputerPoolVO> cList = new ArrayList<>();
+			List<ComputeInfoExt> cList = new ArrayList<>();
 			HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 			if(channel!=null) {
           JSONObject result = channel.computePoolQuery();
@@ -127,7 +125,7 @@ public class PlatformResourceController {
                   for (int j = 0; j < hList.size(); j++) {
                       hcount[j] = hList.getInt(j);
                   }
-                  ComputerPoolVO computer = new ComputerPoolVO();
+                  ComputeInfoExt computer = new ComputeInfoExt();
                   computer.setCpuCount(cpuCount);
                   computer.setCpuUsage(cpuUsage);
                   computer.setDiskUsage(diskUsage);
@@ -148,7 +146,7 @@ public class PlatformResourceController {
           BigDecimal memoryCount = new BigDecimal(0);
           BigDecimal memoryUsage = new BigDecimal(0);
           if (cList.size() > 0) {
-              for (ComputerPoolVO c : cList) {
+              for (ComputeInfoExt c : cList) {
                   cpuCount = cpuCount.add(new BigDecimal(c.getCpuCount()));
                   cpuUsage = cpuUsage.add(new BigDecimal(c.getCpuCount()).multiply(c.getCpuUsage()));
                   memoryCount = memoryCount.add(new BigDecimal(c.getMemory()[1]));
@@ -311,7 +309,7 @@ public class PlatformResourceController {
         json.put("error", error);
         json.put("stop", stop);
         model.addAttribute("statusdata", json);
-		return "service_and_version_manage";
+		return "service/service_and_version_manage";
 	}
 
     @RequestMapping(value="/mypaltform/service/mod",method=RequestMethod.GET)
@@ -333,15 +331,19 @@ public class PlatformResourceController {
         model.addAttribute("service_info", serviceInfo);
 
 
-        // 获取共享存储源列表
-        List<SharedMemoryVO> sharedMemoryVOList = sharedMemoryService.queryInfo(null);
-
-        model.addAttribute("shared_memory_vo_list", sharedMemoryVOList);
+        //获取共享存储路径
+        String path = null;
+        SharedMemoryVO sharedMemoryVO = sharedMemoryService.queryAvailable();
+        if (sharedMemoryVO != null){
+            path = sharedMemoryVO.getUrl();
+        }
+        model.addAttribute("path", path);
 
         return "service/service_and_version_mod";
     }
 
     @RequestMapping(value="/mypaltform/service/mod",method=RequestMethod.POST)
+    @ResponseBody
     public MethodResult serviceModify(ServiceInfoExt serviceInfo,HttpServletRequest request)
         throws IOException {
 
@@ -416,7 +418,7 @@ public class PlatformResourceController {
 		MethodResult mr = new MethodResult();
 		try {
 			List<StoragePoolVO> sList = new ArrayList<>();
-			List<ComputerPoolVO> cList = new ArrayList<>();
+			List<ComputeInfoExt> cList = new ArrayList<>();
 			HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 			if(channel!=null){
 				JSONObject result = channel.storagePoolQuery();
@@ -510,7 +512,7 @@ public class PlatformResourceController {
 						for(int j=0;j<hList.size();j++){
 							hcount[j] = hList.getInt(j);
 						}
-						ComputerPoolVO computer = new ComputerPoolVO();
+						ComputeInfoExt computer = new ComputeInfoExt();
 						computer.setCpuCount(cpuCount);
 						computer.setCpuUsage(cpuUsage);
 						computer.setDiskUsage(diskUsage);
@@ -584,7 +586,7 @@ public class PlatformResourceController {
 			BigDecimal tDiskUsage = new BigDecimal(0);
 			Integer totalTop = 0;
 			if(cList.size()>0){
-				for(ComputerPoolVO c : cList){
+				for(ComputeInfoExt c : cList){
 					if(c.getName().contains("desktop_pool")){
 						tCpuCount = tCpuCount.add(new BigDecimal(c.getCpuCount()));
 						tCpuUsage = tCpuUsage.add(new BigDecimal(c.getCpuCount()).multiply(c.getCpuUsage()));

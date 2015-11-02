@@ -791,8 +791,8 @@ public class MonitorServiceImpl extends BeanDirectCallableDefaultImpl implements
                     } else if (MonitorConstant.status_stop.equals(status)) {
                         r_stop++;
                     }
-                    System.out.println("计算数量,云主机:" + JSONLibUtil.getString(host, "name") + ",status:" + status + ",json:"
-                            + host);
+/*                    System.out.println("计算数量,云主机:" + JSONLibUtil.getString(host, "name") + ",status:" + status + ",json:"
+                            + host);*/
                     String regionid = JSONLibUtil.getString(host, "areaid");
                     String hostname = JSONLibUtil.getString(host, "name");
                     String serverIP = JSONLibUtil.getStringArray(host, "ip")[0];
@@ -1179,6 +1179,7 @@ public class MonitorServiceImpl extends BeanDirectCallableDefaultImpl implements
                             status = MonitorConstant.judgeThresholdUseRule(json, MonitorConstant.server_flag);
                             objectdata.put("type", type);
                             objectdata.put("name", JSONLibUtil.getString(json, "name"));
+                            objectdata.put("ip", JSONLibUtil.getString(json, "ip"));
                             if (MonitorConstant.status_normal.equals(status)) {
                                 objectdata.put("status", "正常");
                             } else if (MonitorConstant.status_error.equals(status)) {
@@ -1223,6 +1224,7 @@ public class MonitorServiceImpl extends BeanDirectCallableDefaultImpl implements
                             status = MonitorConstant.judgeThresholdUseRule(json, MonitorConstant.host_flag);
                             objectdata.put("type", type);
                             objectdata.put("name", JSONLibUtil.getString(json, "name"));
+                            //objectdata.put("ip", JSONLibUtil.getStringArray(json, "ip")[1]);
                             if (MonitorConstant.status_normal.equals(status)) {
                                 objectdata.put("status", "正常");
                             } else if (MonitorConstant.status_error.equals(status)) {

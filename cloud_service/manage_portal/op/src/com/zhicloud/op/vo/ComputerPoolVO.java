@@ -18,9 +18,13 @@ public class ComputerPoolVO implements JSONBean{
 	private BigDecimal diskUsage;//磁盘使用率
 	private int status;//资源池状态
 	private int region;
-	public String getUuid() {
-		return uuid;
-	}
+    private String cpu_count_text;// cpu已使用和未使用显示
+    private String memory_text;// 内存显示使用和未使用
+    private String disk_text;// 磁盘显示使用和未使用
+
+    public String getUuid() {
+        return uuid;
+    }
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
@@ -91,6 +95,23 @@ public class ComputerPoolVO implements JSONBean{
 	public void setRegion(int region) {
 		this.region = region;
 	}
-	
-	
+    public String getCpu_count_text() {
+        return cpu_count_text;
+    }
+    public void setCpu_count_text(String cpu_count_text) {
+        this.cpu_count_text = cpu_count_text;
+    }
+    public String getMemory_text() {
+        return memory_text;
+    }
+    public void setMemory_text(String memory_text) {
+        this.memory_text = memory_text;
+    }
+    public String getDisk_text() {
+        return disk_text;
+    }
+    public void setDisk_text(String disk_text) {
+        this.disk_text = disk_text;
+    }
+    
 }

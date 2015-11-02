@@ -126,8 +126,38 @@
                           <p><strong>UUID：<br>${cp.uuid }</strong></p>
                           <p><strong>计算节点：</strong><a href="javascript:void(0);" cur_id="${cp.uuid }" class="query_detail"><span class="badge badge-greensea">${cp.getAllNode()}</span></a>节点</p>
                            <p><strong>资源池名：</strong>${cp.name }</p>
-                           <p><strong>网络模式：</strong>私有云</p>
-                           <p><strong>存储模式：</strong>本地存储</p>
+                           <p><strong>网络模式：</strong>
+                               <c:choose>
+                                   <c:when test="${cp.networkType == 0 }">
+                                       私有云
+                                   </c:when>
+                                   <c:when test="${cp.networkType == 1 }">
+                                       独享公网地址(IP)
+                                   </c:when>
+                                   <c:when test="${cp.networkType == 2 }">
+                                       共享公网地址(端口)
+                                   </c:when>
+                                   <c:otherwise>
+                                       直连
+                                   </c:otherwise>
+                               </c:choose>
+                           </p>
+                           <p><strong>存储模式：</strong>
+                               <c:choose>
+                                   <c:when test="${cp.diskType == 0 }">
+                                       本地
+                                   </c:when>
+                                   <c:when test="${cp.diskType == 1 }">
+                                       云存储
+                                   </c:when>
+                                   <c:when test="${cp.diskType == 2 }">
+                                       nas磁盘
+                                   </c:when>
+                                   <c:otherwise>
+                                       ip san
+                                   </c:otherwise>
+                               </c:choose>
+                           </p>
                            <p><strong>运行状态：${cp.getStatusText() }</strong></p>
                            <p><strong>云主机数量：</strong><a href="javascript:void(0);" cur_id="${cp.uuid }" cur_name="${cp.name }"   class="query_host_detail"><span class="badge badge-greensea">${cp.getAllHost()}</span></a>台</p>
                            
@@ -177,7 +207,8 @@
                       <ul class="dropdown-menu" role="menu">
 <!--                       	<li><a href="#">新增资源节点</a></li> -->
                       	<li><a href="javascript:void(0);" cur_id="${cp.uuid }" class="query_detail">查看资源节点</a></li>
-                        <li><a href="javascript:void(0);" cur_id="${cp.uuid }" class="delete_resource_pool">删除该资源池</a></li>
+                          <li><a href="javascript:void(0);" cur_id="${cp.uuid }" class="modify_resource_pool" host_count = "${cp.getAllHost()}">编辑该资源池</a></li>
+                          <li><a href="javascript:void(0);" cur_id="${cp.uuid }" class="delete_resource_pool">删除该资源池</a></li>
 <!--                         <li><a href="#">删除该资源池</a></li> -->
                       </ul>
                     </div>
@@ -316,6 +347,7 @@
     <script>
     var path = '<%=request.getContextPath()%>'; 
     var cur_id = "";
+
     $(function(){
     	//查看节点详情
     	jQuery(".query_detail").click(function(){
@@ -332,6 +364,19 @@
     	$("#create_resource_pool").click(function(){
 		    window.location.href = path+"/csrpm/add";
  	    });
+        //检测是否有云主机
+        //编辑资源池
+        jQuery(".modify_resource_pool").click(function(){
+            var uuid = jQuery(this).attr("cur_id");
+            var host_count = jQuery(this).attr("host_count");
+            if (host_count > 0) {
+                $("#tipscontent").html("仅资源池内无主机时允许修改计算资源网络类型以及磁盘模式");
+                $("#dia").click();
+                return;
+            }
+            cur_id = uuid;
+            window.location.href = path+"/csrpm/"+cur_id+"/mod";
+        });
     	//删除资源池
 	    jQuery(".delete_resource_pool").click(function(){
 	    	var uuid = jQuery(this).attr("cur_id");
@@ -340,6 +385,7 @@
 	    	$("#confirm_btn").attr("onclick","deleteResourcePool();");
 	    	$("#con").click();
 	    });
+
     })
     function deleteResourcePool(){
     	jQuery.get(path+"/csrpm/"+cur_id+"/delete",function(data){

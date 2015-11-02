@@ -26,7 +26,7 @@ public class PlatformResourceServiceImpl implements IPlatformResourceService {
      * @function　修改服务（异步）
      * @param type 服务类型
      * @param target 服务名
-     * @param diskType 存储模式 0: 本地存储 1:共享存储
+     * @param diskType 存储模式 0: 本地存储 2:共享存储
      * @param diskSource 存储源信息，比如共享路径
      * @param crypt 存储校验信息
      * @return
@@ -48,16 +48,14 @@ public class PlatformResourceServiceImpl implements IPlatformResourceService {
 
         if (HttpGatewayResponseHelper.isSuccess(result) == true) {
             ServiceInfoExt serviceInfo = new ServiceInfoExt();
-            serviceInfo.setName(target);
+            serviceInfo.setSessionId(sessionId);
             serviceInfo.setType(type);
             serviceInfo.setDiskType(diskType);
             serviceInfo.setDiskSource(diskSource);
             serviceInfo.setCrypt(crypt);
             pool.put(serviceInfo);
-            return sessionId;
-
         }
-        return null;
+        return sessionId;
     }
 
     /**
@@ -78,12 +76,13 @@ public class PlatformResourceServiceImpl implements IPlatformResourceService {
         sessionId = this.modifyServiceAsync(type, target, diskType, diskSource, crypt);
 
         ServiceInfoExt serviceInfo = null;
+        ServiceInfoPool pool = ServiceInfoPoolManager.singleton().getPool();
+
 
         if (!StringUtil.isBlank(sessionId)) {
             try {
                 //获取对象
-                ServiceInfoPool pool = ServiceInfoPoolManager.singleton().getPool();
-                serviceInfo = pool.get(target);
+                serviceInfo = pool.get(sessionId);
 
                 synchronized (serviceInfo) {//wait for 5 second or notify by response message.
                     serviceInfo.wait(5 * 1000);
@@ -91,6 +90,8 @@ public class PlatformResourceServiceImpl implements IPlatformResourceService {
             } catch (InterruptedException e) {
                 logger.error("error occur when modify compute pool response call back.", e);
                 return new MethodResult(MethodResult.FAIL,"服务修改失败");
+            }finally  {
+                pool.remove(sessionId);
             }
 
             if (serviceInfo.isSuccess()) {//成功
@@ -102,6 +103,7 @@ public class PlatformResourceServiceImpl implements IPlatformResourceService {
         }else{
             return new MethodResult(MethodResult.FAIL,"服务修改失败");
         }
+
 
     }
 }

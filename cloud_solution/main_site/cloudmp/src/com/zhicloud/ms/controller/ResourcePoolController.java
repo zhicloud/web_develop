@@ -7,18 +7,13 @@ import com.zhicloud.ms.httpGateway.HttpGatewayAsyncChannel;
 import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
 import com.zhicloud.ms.remote.MethodResult;
-import com.zhicloud.ms.service.ICloudHostService;
-import com.zhicloud.ms.service.ICloudHostWarehouseService;
-import com.zhicloud.ms.service.IComputePoolService;
-import com.zhicloud.ms.service.IOperLogService;
+import com.zhicloud.ms.service.*;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.*;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -44,17 +38,19 @@ public class ResourcePoolController {
     public static final Logger logger = Logger.getLogger(ResourcePoolController.class);
 
     @Resource
-      ICloudHostService cloudHostService;
+    private ICloudHostService cloudHostService;
 
     @Resource
-    IComputePoolService computePoolService;
+    private IComputePoolService computePoolService;
     
     @Resource
     private ICloudHostWarehouseService  CloudHostWarehouseService;
 
-    @Resource 
-    
+    @Resource
     private IOperLogService operLogService;
+
+    @Resource
+    private SharedMemoryService sharedMemoryService;
  
 
  
@@ -70,7 +66,7 @@ public class ResourcePoolController {
             return "not_have_access";
         }
         try {
-            List<ComputerPoolVO> cList = new ArrayList<>();
+            List<ComputeInfoExt> cList = new ArrayList<>();
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){
                     JSONObject result = channel.computePoolQuery();
@@ -115,7 +111,8 @@ public class ResourcePoolController {
                         for(int j=0;j<hList.size();j++){
                             hcount[j] = hList.getInt(j);
                         }
-                        ComputerPoolVO computer = new ComputerPoolVO();
+
+                        ComputeInfoExt computer = computePoolService.getComputePoolDetailSync(uuid);
                         computer.setCpuCount(cpuCount);
                         computer.setCpuUsage(cpuUsage);
                         computer.setDiskUsage(diskUsage);
@@ -155,8 +152,8 @@ public class ResourcePoolController {
         }
         String searchName = request.getParameter("sn");
         try {
-            List<ComputerPoolDetailVO> cList = new ArrayList<>();
-            List<ComputerPoolDetailVO> curList = new ArrayList<>();
+            List<ComputeInfoExt> cList = new ArrayList<>();
+            List<ComputeInfoExt> curList = new ArrayList<>();
             String flag = "no";
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){
@@ -188,7 +185,7 @@ public class ResourcePoolController {
                             dcount[j] = new BigInteger(diskList.getString(j));
                         }
                         
-                        ComputerPoolDetailVO computer = new ComputerPoolDetailVO();
+                        ComputeInfoExt computer = new ComputeInfoExt();
                         computer.setCpuCount(cpuCount);
                         computer.setCpuUsage(cpuUsage);
                         computer.setDiskUsage(diskUsage);
@@ -201,7 +198,7 @@ public class ResourcePoolController {
                         cList.add(computer);
                     }
                     if(searchName!=null && searchName!="" && cList.size()>0){
-                        for(ComputerPoolDetailVO cp : cList){
+                        for(ComputeInfoExt cp : cList){
                             if(cp.getName()!=null && cp.getName().toLowerCase().contains(searchName.toLowerCase())){
                                 curList.add(cp);
                             }
@@ -339,9 +336,9 @@ public class ResourcePoolController {
      */
     @RequestMapping(value="/add",method=RequestMethod.GET)
     public String addResourcePool(Model model,HttpServletRequest request){
-//      if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_pool_add)){
-//          return "not_have_access";
-//      }
+      if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_pool_add)){
+          return "not_have_access";
+      }
         try {
             List<IpPoolVO> ipList = new ArrayList<>();
             List<PortPoolVO> portList = new ArrayList<>();
@@ -399,6 +396,13 @@ public class ResourcePoolController {
                         portList.add(vo);
                     }
                 }
+            //获取共享存储路径
+            String path = null;
+            SharedMemoryVO sharedMemoryVO = sharedMemoryService.queryAvailable();
+            if (sharedMemoryVO != null){
+                path = sharedMemoryVO.getUrl();
+            }
+            model.addAttribute("path", path);
             model.addAttribute("ipList", ipList);
             model.addAttribute("portList", portList);
         } catch (MalformedURLException e) {
@@ -409,54 +413,91 @@ public class ResourcePoolController {
         
         return "resourcepool/resource_pool_add";
     }
-    
+
     /**
      * 创建资源池
-     * @param name
-     * @param networkType
-     * @param networkId
-     * @param diskType
-     * @param diskId
+     * @param computeInfoExt
+     * @param prefixion
+     * @param request
      * @return
      */
     @RequestMapping(value="/add",method=RequestMethod.POST)
     @ResponseBody
-    public MethodResult addResourcePool(String name,String networkType,String networkId,String diskType,String diskId,String prefixion,
-    		 int mode0, int mode1, int mode2, int mode3,String path,String crypt){
+    public MethodResult addResourcePool(ComputeInfoExt computeInfoExt, String prefixion, HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_pool_add)){
+            return new MethodResult(MethodResult.FAIL,"您没有新增资源池的权限，请联系管理员");
+        }
+        String name = prefixion+computeInfoExt.getName();
+        Integer networkType = computeInfoExt.getNetworkType();
+        String network = computeInfoExt.getNetwork();
+        Integer diskType = computeInfoExt.getDiskType();
+        String diskSource = computeInfoExt.getDiskSource();
+        int mode0 = computeInfoExt.getMode0()== null ? 0:computeInfoExt.getMode0();
+        int mode1 = computeInfoExt.getMode1();
+        int mode2 = computeInfoExt.getMode2();
+        int mode3 = computeInfoExt.getMode3()== null ? 0:computeInfoExt.getMode3();
+        String path = computeInfoExt.getPath();
+
         if(StringUtil.isBlank(name)){
             return new MethodResult(MethodResult.FAIL,"资源池名不能为空");
         }
-        if(StringUtil.isBlank(networkType)){
+        if(StringUtil.isBlank(String.valueOf(networkType))){
             return new MethodResult(MethodResult.FAIL,"网络类型不能为空");
         }
-        if(("1".equals(networkType) || "2".equals(networkType)) && StringUtil.isBlank(networkType)){
+        if(("1".equals(networkType) || "2".equals(networkType)) && StringUtil.isBlank(network)){
             return new MethodResult(MethodResult.FAIL,"IP或端口资源池不能为空");
         }
-        if(StringUtil.isBlank(diskType)){
+        if(StringUtil.isBlank(String.valueOf(diskType))){
             return new MethodResult(MethodResult.FAIL,"存储类型不能为空");
         }
-        if(!"0".equals(diskType) && StringUtil.isBlank(diskId)){
-            return new MethodResult(MethodResult.FAIL,"资源池名不能为空");
+        if(!("0".equals(String.valueOf(diskType))) && StringUtil.isBlank(diskSource)){
+            return new MethodResult(MethodResult.FAIL,"存储资源池不能为空");
         }
-        Integer[] mode = new Integer[4];
-        mode[0] = mode0;
-        mode[1] = mode1;
-        mode[2] = mode2;
-        mode[3] = mode3;
+
+        if(StringUtil.isBlank(String.valueOf(mode0))){
+            return new MethodResult(MethodResult.FAIL,"高可用选项不能为空");
+        }
+        if(StringUtil.isBlank(String.valueOf(mode1))){
+            return new MethodResult(MethodResult.FAIL,"自动Qos选项不能为空");
+        }
+
+        if(StringUtil.isBlank(String.valueOf(mode2))){
+            return new MethodResult(MethodResult.FAIL,"thin provioning选项不能为空");
+        }
+        if(StringUtil.isBlank(String.valueOf(mode3))){
+            return new MethodResult(MethodResult.FAIL,"backing image选项不能为空");
+        }
         try {
-        	HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-                if(channel!=null){
-                    JSONObject result = channel.computePoolCreate(prefixion+name, Integer.parseInt(networkType), networkId, 
-                    		                                          Integer.parseInt(diskType), diskId, mode, path, crypt);
-                    if("success".equals(result.get("status"))){                    	
-                        return new MethodResult(MethodResult.SUCCESS,"创建成功");
-                    }
-                    return new MethodResult(MethodResult.FAIL,"创建失败");
-                }
-        } catch (Exception e) {
+
+            Map<String, Object> data = new LinkedHashMap<String, Object>();
+            data.put("name", name);
+            data.put("network_type", networkType);
+            data.put("network", network);
+            data.put("disk_type", diskType);
+            data.put("disk_source", diskSource);
+            data.put("mode0", mode0);
+            data.put("mode1", mode1);
+            data.put("mode2", mode2);
+            data.put("mode3", mode3);
+            data.put("path", path);
+
+
+            MethodResult result = computePoolService.createComputePoolSync(data);
+            if("success".equals(result.status)){
+                operLogService.addLog("桌面云资源池管理", "创建计算资源池", "1", "1", request);
+                return new MethodResult(result.status, result.message);
+
+            }
+
+
+        }  catch (Exception e) {
             e.printStackTrace();
+            operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "2", request);
+            return new MethodResult(MethodResult.FAIL,"资源池创建失败");
         }
-        return new MethodResult(MethodResult.FAIL,"创建失败");
+
+        operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "2", request);
+        return new MethodResult(MethodResult.FAIL,"资源池创建失败");
     }
     
     /**
@@ -516,11 +557,18 @@ public class ResourcePoolController {
                     return "not_responsed";
                 }
 //
+                Integer[] mode = computeInfoExt.getMode();
+
                 computeInfoExt.setMode0(computeInfoExt.getMode()[0]);
                 computeInfoExt.setMode1(computeInfoExt.getMode()[1]);
-                computeInfoExt.setMode2(computeInfoExt.getMode()[2]);
-                computeInfoExt.setMode3(computeInfoExt.getMode()[3]);
-                
+                if (mode.length == 4) {
+                    computeInfoExt.setMode2(computeInfoExt.getMode()[2]);
+                    computeInfoExt.setMode3(computeInfoExt.getMode()[3]);
+                }else {
+                    computeInfoExt.setMode2(0);
+                    computeInfoExt.setMode3(0);
+                }
+
                 List<IpPoolVO> ipList = new ArrayList<>();
                 List<PortPoolVO> portList = new ArrayList<>();
                 JSONObject resultIp = channel.addressPoolQuery();
@@ -574,6 +622,15 @@ public class ResourcePoolController {
                     vo.setCount(pcount);
                     portList.add(vo);
                 }
+
+                //获取共享存储路径
+                String path = null;
+                SharedMemoryVO sharedMemoryVO = sharedMemoryService.queryAvailable();
+                if (sharedMemoryVO != null){
+                    path = sharedMemoryVO.getUrl();
+                }
+                model.addAttribute("path", path);
+
                 model.addAttribute("ipList", ipList);
                 model.addAttribute("portList", portList);
                 model.addAttribute("computeInfoExt", computeInfoExt);
@@ -607,12 +664,12 @@ public class ResourcePoolController {
             String network = computeInfoExt.getNetwork();
             Integer diskType = computeInfoExt.getDiskType();
             String diskSource = computeInfoExt.getDiskSource();
-            int mode0 = computeInfoExt.getMode0();
+            int mode0 = computeInfoExt.getMode0()== null ? 0:computeInfoExt.getMode0();
             int mode1 = computeInfoExt.getMode1();
             int mode2 = computeInfoExt.getMode2();
-            int mode3 = computeInfoExt.getMode3();
+            int mode3 = computeInfoExt.getMode3()== null ? 0:computeInfoExt.getMode3();
             String path = computeInfoExt.getPath();
-            String crypt = computeInfoExt.getCrypt();            
+
             if(StringUtil.isBlank(uuid)){
                 return new MethodResult(MethodResult.FAIL,"资源池uuid不能为空");
             }
@@ -650,7 +707,6 @@ public class ResourcePoolController {
             data.put("mode2", mode2);
             data.put("mode3", mode3);            
             data.put("path", path);
-            data.put("crypt", crypt);
             MethodResult result = computePoolService.modifyComputePoolSync(data);
             if("success".equals(result.status)){
                 operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "1", request);
@@ -701,7 +757,7 @@ public class ResourcePoolController {
      */
     @RequestMapping(value="/{uuid}/an",method=RequestMethod.GET)
     public String addNodePage(@PathVariable("uuid") String uuid,Model model){
-        List<ComputerPoolDetailVO> curList = new ArrayList<>();
+        List<ComputeInfoExt> curList = new ArrayList<>();
         HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
         try {
             if(channel!=null){
@@ -714,7 +770,7 @@ public class ResourcePoolController {
                 for (int i = 0; i < computerList.size(); i ++) {
                     JSONObject computerObject = computerList.getJSONObject(i);
                     String name = computerObject.getString("name");
-                    ComputerPoolDetailVO computer = new ComputerPoolDetailVO();
+                    ComputeInfoExt computer = new ComputeInfoExt();
                     computer.setName(name);
                     curList.add(computer);
                 }

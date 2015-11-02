@@ -4,27 +4,21 @@ import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
 import com.zhicloud.ms.common.util.StringUtil;
-import com.zhicloud.ms.httpGateway.HttpGatewayAsyncChannel;
-import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
-import com.zhicloud.ms.httpGateway.HttpGatewayManager;
-import com.zhicloud.ms.httpGateway.HttpGatewayResponseHelper;
+import com.zhicloud.ms.httpGateway.*;
 import com.zhicloud.ms.mapper.CloudHostMapper;
 import com.zhicloud.ms.mapper.CloudHostWarehouseMapper;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.IComputePoolService;
 import com.zhicloud.ms.vo.CloudHostVO;
 import com.zhicloud.ms.vo.CloudHostWarehouse;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Map;
@@ -99,6 +93,69 @@ public class ComputePoolServiceImpl implements IComputePoolService {
         }
     }
 
+    @Override
+    public String createComputePoolAsync(String name, int networkType, String network,
+        int diskType, String diskSource, Integer[] mode, String path, String crypt)
+        throws IOException {
+        ComputeInfoPool pool = ComputeInfoPoolManager.singleton().getPool();
+
+        HttpGatewayAsyncChannel channel = HttpGatewayManager.getAsyncChannel(1);
+        JSONObject result = null;
+        String sessionId = null;
+        try {
+            result = channel.computePoolCreate(name, networkType, network, diskType, diskSource,
+                mode, path, crypt);
+            sessionId = channel.getSessionId();
+        } catch (Exception e) {
+            logger.error(String.format("fail to create compute pool. exception[%s]", e));
+            return null;
+        }
+
+        if (HttpGatewayResponseHelper.isSuccess(result) == true) {
+            ComputeInfoExt computeInfoExt = new ComputeInfoExt();
+            pool.put(sessionId, computeInfoExt);
+            return sessionId;
+
+        }
+        return null;
+    }
+
+    @Override public MethodResult createComputePoolSync(Map<String, Object> parameter)
+        throws IOException {
+        //获取参数
+        String name = StringUtil.trim(parameter.get("name"));
+        int networkType = Integer.valueOf(StringUtil.trim(parameter.get("network_type")));
+        String network = StringUtil.trim(parameter.get("network"));
+        int diskType = Integer.valueOf(StringUtil.trim(parameter.get("disk_type")));
+        String diskSource = StringUtil.trim(parameter.get("disk_source"));
+        int mode0 = Integer.valueOf(StringUtil.trim(parameter.get("mode0")));
+        int mode1 = Integer.valueOf(StringUtil.trim(parameter.get("mode1")));
+        int mode2 = Integer.valueOf(StringUtil.trim(parameter.get("mode2")));
+        int mode3 = Integer.valueOf(StringUtil.trim(parameter.get("mode3")));
+        Integer[] mode = new Integer[4];
+        mode[0] = mode0;
+        mode[1] = mode1;
+        mode[2] = mode2;
+        mode[3] = mode3;
+        String path = StringUtil.trim(parameter.get("path"));
+//        String crypt = StringUtil.trim(parameter.get("crypt"));
+        String crypt = "crypt";
+
+
+        HttpGatewayChannel channel = HttpGatewayManager.getChannel(1);
+        JSONObject result = null;
+
+        result = channel.computePoolCreate(name,networkType, network, diskType, diskSource ,mode,path,crypt);
+        if ("success".equals(result.getString("status"))){
+            return new MethodResult(MethodResult.SUCCESS,"资源池创建成功");
+        }
+
+        return new MethodResult(MethodResult.FAIL,"资源池创建失败");
+
+
+    }
+
+
     /**
      * @function 修改资源池(异步)
      * @param uuid
@@ -158,7 +215,8 @@ public class ComputePoolServiceImpl implements IComputePoolService {
         int mode2 = Integer.valueOf(StringUtil.trim(parameter.get("mode2")));
         int mode3 = Integer.valueOf(StringUtil.trim(parameter.get("mode3")));        
         String path = StringUtil.trim(parameter.get("path"));
-        String crypt = StringUtil.trim(parameter.get("crypt"));
+//        String crypt = StringUtil.trim(parameter.get("crypt"));
+        String crypt = "crypt";
         Integer[] mode = new Integer[4];
         mode[0] = mode0;
         mode[1] = mode1;

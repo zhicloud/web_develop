@@ -1,10 +1,11 @@
 package com.zhicloud.ms.controller;
 
 import com.zhicloud.ms.app.pool.CloudHostData;
-import com.zhicloud.ms.app.pool.CloudHostPoolManager;
+import com.zhicloud.ms.app.pool.CloudHostPoolManager; 
 import com.zhicloud.ms.app.pool.IsoImagePool;
 import com.zhicloud.ms.app.pool.IsoImagePoolManager;
 import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfo; 
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressData;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPool;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPoolManager;

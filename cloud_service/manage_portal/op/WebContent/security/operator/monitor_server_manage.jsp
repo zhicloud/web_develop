@@ -109,6 +109,7 @@
 						<th field="memory_usage"   width="100px" sortable="true">内存利用率</th>
 						<th field="disk_usage"   width="100px" sortable="true">磁盘利用率</th>
 						<th field="ip"   width="100px">IP</th> -->
+						<th field="ip"   width="100px">IP</th>
 						<th field="status" formatter="statusColumnFormatter"  width="80px" align="center">当前状态</th>
 						<th field="operate" formatter="agentColumnFormatter" width="200px">操作</th>
 					</tr>

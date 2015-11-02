@@ -205,7 +205,7 @@
                                   </button>
                                   <ul class="dropdown-menu" role="user"> 
                                     <li><a href="#"  onclick="updateuser('modify','${systemUser.billid}')">修改基本信息</a></li>
-                                    <li><a href="#" role="button" data-toggle="modal" onclick="beforeresetpassword('${systemUser.billid}')">重置用户密码</a></li>
+                                    <li><a href="#" role="button" data-toggle="modal" onclick="beforeresetpassword('${systemUser.billid}', '${systemUser.email }')">重置用户密码</a></li>
                                     <li><a href="#" onclick="deletedataone('${systemUser.billid}')">删除用户信息</a></li>
                                     <li><a href="#" onclick="setuserstatus('${systemUser.billid}','${systemUser.status }')">设置用户状态</a></li>
                                     <li><a href="#" onclick="getUserRoleGroup('${systemUser.billid}')">查看用户授权</a></li>
@@ -524,6 +524,7 @@
 
 	<script type="text/javascript">
 	var tempuserid = "";
+    var email="";
 	//修改信息页面跳转
 	function updateuser(obj,billid){
 		window.location.href = "<%=request.getContextPath()%>/transform/useradmin/beforeedit?type="+obj+"&billid="+billid;
@@ -793,8 +794,9 @@
 		tempuserid = obj;
 	}
 	//重置密码之前
-	function beforeresetpassword(obj){
+    function beforeresetpassword(obj, email){
 		tempuserid = obj;
+        this.email = email;
 		$("#randomdiv").css("display","block");
 		$("#manualdiv").css("display","none");
 		var pass_confirm_btn = $("#pass_confirm_btn");
@@ -848,8 +850,8 @@
 		var manualpass = $("#manualpass");
 		manualpass.parsley('validate');
 		if(manualpass.parsley('isValid')){
-			var param = "billid="+tempuserid+"&manualpass="+$(manualpass).val();
-			var url = "<%=request.getContextPath()%>/transform/admin/manualpassword";
+            var param = "billid="+tempuserid+"&manualpass="+$(manualpass).val()+"&email="+email;
+            var url = "<%=request.getContextPath()%>/transform/admin/manualpassword";
 			jQuery.ajax({
 		  	 	type: "POST",
 		  	 	async:false,
