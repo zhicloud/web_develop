@@ -1,35 +1,10 @@
 package com.zhicloud.ms.controller;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.zhicloud.ms.app.pool.CloudHostData;
 import com.zhicloud.ms.app.pool.CloudHostPoolManager;
+import com.zhicloud.ms.app.pool.IsoImagePool;
+import com.zhicloud.ms.app.pool.IsoImagePoolManager;
+import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressData;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPool;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPoolManager;
@@ -45,23 +20,27 @@ import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
 import com.zhicloud.ms.httpGateway.HttpGatewayResponseHelper;
 import com.zhicloud.ms.remote.MethodResult;
-import com.zhicloud.ms.service.CloudHostConfigModelService;
-import com.zhicloud.ms.service.IBackUpDetailService;
-import com.zhicloud.ms.service.ICloudHostService;
-import com.zhicloud.ms.service.ICloudHostWarehouseService;
-import com.zhicloud.ms.service.IOperLogService;
-import com.zhicloud.ms.service.ISysDiskImageService;
-import com.zhicloud.ms.service.ItenantService;
+import com.zhicloud.ms.service.*;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.CapacityUtil;
 import com.zhicloud.ms.util.StringUtil;
-import com.zhicloud.ms.vo.BackUpDetailVO;
-import com.zhicloud.ms.vo.CloudHostConfigModel;
-import com.zhicloud.ms.vo.CloudHostVO;
-import com.zhicloud.ms.vo.ComputerPoolVO;
-import com.zhicloud.ms.vo.SysDiskImageVO; 
-import com.zhicloud.ms.vo.SysTenant;    
+import com.zhicloud.ms.vo.*;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.text.DecimalFormat;
+import java.util.*;
 
 
 @Controller
@@ -114,6 +93,10 @@ public class CloudServerController {
             }
  			newCloudServerList.add(vo);
 		}
+		IsoImagePool isopool = IsoImagePoolManager.getSingleton().getIsoImagePool();
+        List<IsoImageData> isoList = isopool.getAllIsoImageData();
+        
+        model.addAttribute("isoList", isoList);
 		model.addAttribute("cloudServerList", newCloudServerList);
 		model.addAttribute("tenantList", tenantService.getAllSysTenant(new SysTenant()));
 		return "server_manage";
@@ -135,7 +118,7 @@ public class CloudServerController {
 		model.addAttribute("optionType",type);
  		try {
 
-			List<ComputerPoolVO> cList = new ArrayList<>();
+			List<ComputeInfo> cList = new ArrayList<>();
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				if(channel!=null){
 					JSONObject result = channel.computePoolQuery();
@@ -150,7 +133,7 @@ public class CloudServerController {
 							String uuid = computerObject.getString("uuid");
 							int status = computerObject.getInt("status");
 							
-							ComputerPoolVO computer = new ComputerPoolVO(); 
+							ComputeInfo computer = new ComputeInfo();
 							computer.setName(name);
 							computer.setStatus(status);
 							computer.setUuid(uuid);
@@ -1144,6 +1127,27 @@ public class CloudServerController {
         } catch (Exception e) {
             throw new AppException(e);
         }
+    }
+    
+    /**
+     * 
+    * @Title: startCloudHost 
+    * @Description: 从镜像启动 
+    * @param @param id
+    * @param @param imageId
+    * @param @param request
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    @RequestMapping(value="/{id}/{imageId}/start",method=RequestMethod.GET)
+    @ResponseBody
+    public MethodResult startCloudHost(@PathVariable("id") String id,@PathVariable("imageId") String imageId,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_host_start_from_iso)){
+            return new MethodResult(MethodResult.FAIL,"您没有启动主机的权限，请联系管理员");
+        }
+        MethodResult mr = cloudHostService.startCloudHostFromIso(id, imageId);
+        return mr;
     }
 
 }

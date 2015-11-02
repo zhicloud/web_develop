@@ -2,6 +2,9 @@ package com.zhicloud.ms.controller;
 
 import com.zhicloud.ms.app.pool.CloudHostData;
 import com.zhicloud.ms.app.pool.CloudHostPoolManager;
+import com.zhicloud.ms.app.pool.IsoImagePool;
+import com.zhicloud.ms.app.pool.IsoImagePoolManager;
+import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressData;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPool;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPoolManager;
@@ -29,7 +32,7 @@ import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.BackUpDetailVO;
 import com.zhicloud.ms.vo.CloudHostVO;
 import com.zhicloud.ms.vo.CloudHostWarehouse;
-import com.zhicloud.ms.vo.ComputerPoolVO;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfo;
 import com.zhicloud.ms.vo.SysDiskImageVO;
 
 import net.sf.json.JSONArray;
@@ -146,7 +149,7 @@ public class CloudHostController {
  		model.addAttribute("cloudHostList", newCloudServerList);
 		model.addAttribute("warehouseId", id);
 		try {
-            List<ComputerPoolVO> cList = new ArrayList<>();
+            List<ComputeInfo> cList = new ArrayList<>();
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){
                     JSONObject result = channel.computePoolQuery();
@@ -165,7 +168,7 @@ public class CloudHostController {
                         String uuid = computerObject.getString("uuid");
                         int status = computerObject.getInt("status");
                          
-                        ComputerPoolVO computer = new ComputerPoolVO(); 
+                        ComputeInfo computer = new ComputeInfo(); 
                         computer.setName(name);
                         computer.setStatus(status);
                         computer.setUuid(uuid);
@@ -175,6 +178,11 @@ public class CloudHostController {
                 }
             
             model.addAttribute("computerPool", cList);
+            
+            IsoImagePool isopool = IsoImagePoolManager.getSingleton().getIsoImagePool();
+            List<IsoImageData> isoList = isopool.getAllIsoImageData();
+            
+            model.addAttribute("isoList", isoList);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -1071,5 +1079,26 @@ public class CloudHostController {
         } catch (Exception e) {
             throw new AppException(e);
         }
+    }
+    
+    /**
+     * 
+    * @Title: startCloudHost 
+    * @Description: 从镜像启动 
+    * @param @param id
+    * @param @param imageId
+    * @param @param request
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    @RequestMapping(value="/{id}/{imageId}/start",method=RequestMethod.GET)
+    @ResponseBody
+    public MethodResult startCloudHost(@PathVariable("id") String id,@PathVariable("imageId") String imageId,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_start_from_iso)){
+            return new MethodResult(MethodResult.FAIL,"您没有启动主机的权限，请联系管理员");
+        }
+        MethodResult mr = cloudHostService.startCloudHostFromIso(id, imageId);
+        return mr;
     }
 }

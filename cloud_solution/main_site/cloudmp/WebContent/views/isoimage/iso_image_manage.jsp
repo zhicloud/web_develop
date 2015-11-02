@@ -142,7 +142,13 @@
                                     <c:if test="${image.getStatus() == 1}">
                                         <span class="label label-danger">禁用</span>
                                     </c:if>
-                                </td>  
+                                    <c:if test="${image.getStatus() == 3}">
+                                        <span class="label label-danger">上传失败</span>
+                                    </c:if>
+                                    <c:if test="${image.getStatus() == 2}">
+                                        <span class="label label-danger">正在上传:${image.getProgress() }</span>
+                                    </c:if>
+                                </td>   
                                 <td class="cut">${image.getDescription()}</td>
                                 
                                 <td>
@@ -153,6 +159,8 @@
                                             操作 <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu" role="menu">  
+                                          <li><a href="javascript:void(0);" onclick="deleteBtn('${image.getRealImageId()}');">删除</a></li>                        	
+                                          
                                          </ul>
                                     </div>
                                 </td>
@@ -286,6 +294,7 @@
         var curip1 = "";
         var curmode = "";
         var target = "";
+        var currentId = "";
    
     
     $(function(){
@@ -384,30 +393,24 @@
         
       });
 
-        function deleteRule(){
-        	 jQuery.ajax({
-                 url: '<%=request.getContextPath()%>/rule/delete',
-                 type: 'get',
-                 dataType: 'json',
-                 data:{target:curtarget,port:curport,ip0:curip0,ip1:curip1,mode:curmode},
-                 async: false,
-                 timeout: 10000,
-                 error: function()
-                 {
-                 },
-                 success: function(result)
-                 {
-                     if(result.status=="success"){
-                         location.href = path + "/rule/all";
-                     }else{
-                         $("#tipscontent").html(result.message);
-                         $("#dia").click();
-                     }
-                 }
-
-             });
-
-        } 
+    //删除镜像
+    function deleteBtn(id){
+    	currentId = id;
+    	$("#confirmcontent").html("确定要删除该镜像吗？");
+    	$("#confirm_btn").attr("onclick","deleteImage();");
+    	$("#con").click();
+    }
+    
+    function deleteImage(){
+    	jQuery.get(path + "/isoimage/"+currentId+"/delete",function(data){
+			if(data.status == "success"){   
+	    		location.href = path + "/isoimage/all";
+			}else{  
+				$("#tipscontent").html(data.message);
+				$("#dia").click();
+			}
+		});
+    }
       
     </script>
     

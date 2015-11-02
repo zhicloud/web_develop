@@ -2,6 +2,9 @@ package com.zhicloud.ms.httpGateway;
 
 import com.zhicloud.ms.app.pool.CloudHostData;
 import com.zhicloud.ms.app.pool.CloudHostPoolManager;
+import com.zhicloud.ms.app.pool.IsoImagePool;
+import com.zhicloud.ms.app.pool.IsoImagePoolManager;
+import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
@@ -28,6 +31,7 @@ import com.zhicloud.ms.app.pool.rule.RulePoolManager;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoExt;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoPool;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoPoolManager;
+import com.zhicloud.ms.app.pool.snapshot.SnapshotManager;
 import com.zhicloud.ms.app.pool.storage.StorageManager;
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
 import com.zhicloud.ms.constant.AppConstant;
@@ -36,18 +40,9 @@ import com.zhicloud.ms.constant.MonitorConstant;
 import com.zhicloud.ms.constant.StaticReportHandle;
 import com.zhicloud.ms.service.IBackUpDetailService;
 import com.zhicloud.ms.util.CapacityUtil;
-import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.PlatformResourceMonitorVO;
-import com.zhicloud.ms.app.pool.snapshot.SnapshotManager;
-
- 
- 
-
-
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -167,13 +162,17 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 	@HttpGatewayMessageHandler(messageType = "iso_image_upload_progress")
 	public void isoImageUploadProgress(HttpGatewayAsyncChannel channel, JSONObject messageData) {
 		logger.debug("start to process iso image upload progress data.");
+        logger.info("iso_image_upload_result  ,"+messageData.getString("message"));
+
 		// 获取数据
 		String name = messageData.getString("name");
 		int progress = messageData.getInt("progress");
 		String sessionId = channel.getSessionId();
+        logger.info("iso_image_upload_progress  ,"+progress);
+
 		// 获取对象
 		IsoImageProgressPool pool = IsoImageProgressPoolManager.singleton().getPool();
-		IsoImageProgressData isoImage = pool.get(sessionId, name);
+		IsoImageProgressData isoImage = pool.get(sessionId);
 		//对象不存在
 		if (isoImage == null) {
 			isoImage = new IsoImageProgressData();
@@ -186,46 +185,73 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		isoImage.setProgress(progress);
 		isoImage.setFinished(false);
 		isoImage.updateTime();
+		isoImage.setStatus(2);
 	}
 
 	@HttpGatewayMessageHandler(messageType = "iso_image_upload_result")
 	public void isoImageUploadResult(HttpGatewayAsyncChannel channel, JSONObject messageData) {
 		logger.debug("start to process iso image upload result data.");
+        logger.info("iso_image_upload_result "+messageData);
 
 		String sessionId = channel.getSessionId();
+	    IsoImageProgressPool pool = IsoImageProgressPoolManager.singleton().getPool();
+
+		if (HttpGatewayResponseHelper.isSuccess(messageData) == false) {
+		    IsoImageProgressData data = pool.get(sessionId);
+		    if(data != null){
+		        data.setFinished(true);
+		        data.setStatus(3);
+		    }
+		    channel.release();
+		    logger.info("iso_image_upload_result false ");
+		    return;
+        }
+		
 		// 获取数据
-		String name = messageData.getString("name");
-		String message = messageData.getString("message");
+//		String name = messageData.getString("name");
+//		String message = messageData.getString("message");
 
 		// 获取对象
-		IsoImageProgressPool pool = IsoImageProgressPoolManager.singleton().getPool();
-		IsoImageProgressData isoImage = pool.get(sessionId, name);
+		IsoImageProgressData isoImage = pool.get(sessionId);
 		//对象不存在
 		if (isoImage == null) {
 			isoImage = new IsoImageProgressData();
 			isoImage.setSessionId(sessionId);
-			isoImage.setName(name);
+//			isoImage.setName(name);
 			
 			pool.put(isoImage);
 		}
 
 		// 更新
 		isoImage.setFinished(true);
-		isoImage.setMessage(message);
+//		isoImage.setMessage(message);
 		isoImage.updateTime();
 		if (HttpGatewayResponseHelper.isSuccess(messageData) == false) {
 			isoImage.setSuccess(false);
 		} else {
+		    isoImage.setStatus(0);
 			isoImage.setSuccess(true);
 			String uuid = messageData.getString("uuid");
 			String ip = messageData.getString("ip");
 			String port = messageData.getString("port");
-			BigInteger size = JSONLibUtil.getBigInteger(messageData, "size");
+ 			BigInteger size = JSONLibUtil.getBigInteger(messageData, "size");
 
 			isoImage.setRealImageId(uuid);
 			isoImage.setIp(ip);
 			isoImage.setPort(port);
 			isoImage.setSize(size);
+//			isoImage.setName(name);
+			
+	        IsoImagePool isopool = IsoImagePoolManager.getSingleton().getIsoImagePool();
+
+			String name = messageData.getString("name");
+			IsoImageData isoImageData = new IsoImageData();
+            isoImageData.setRealImageId(uuid);
+            isoImageData.setName(name);
+            isoImageData.setSize(size);
+            isoImageData.setStatus(0);
+            isoImageData.setRegion(1);
+            isopool.put(isoImageData);
 		}
 		// 释放资源
 		channel.release();
@@ -1593,22 +1619,14 @@ public class HttpGatewayAsyncMessageHandlerImpl {
             computeInfoExt.setDiskType(diskType);
             computeInfoExt.setDiskSource(diskSource);
             computeInfoExt.setMode(modeArr);
-            computeInfoExt.setMode0(modeArr[0]);
-            computeInfoExt.setMode1(modeArr[1]);
-            computeInfoExt.setMode2(modeArr[2]);
-            computeInfoExt.setMode3(modeArr[3]);
             computeInfoExt.setPath(path);
             computeInfoExt.setCrypt(crypt);
             computeInfoExt.success();
 
-            System.err.println(String.format(
-                "[%s]query compute pool detail success, uuid '%s', name '%s', network_type '%d', network '%s', disk_type '%d', disk_source '%s', mode '%s', path '%s', crypt '%s'",
-                sessionId, uuid, name, networkType, network, diskType, diskSource, mode, path, crypt));
         } else {
             String message = messageData.getString("message");
             computeInfoExt.fail();
             computeInfoExt.setMessage(message);
-            System.err.println(String.format("[%s]query compute pool detail fail, uuid '%s', message '%s'", sessionId, uuid, HttpGatewayResponseHelper.getMessage(messageData)));
 
         }
     }
@@ -1835,11 +1853,10 @@ public class HttpGatewayAsyncMessageHandlerImpl {
     public void modifyService(HttpGatewayAsyncChannel channel, JSONObject messageData) {
         //获取数据
         String sessionId = channel.getSessionId();
-        String target = messageData.getString("target");
 
         // 获取对象
         ServiceInfoPool pool = ServiceInfoPoolManager.singleton().getPool();
-        ServiceInfoExt serviceInfoExt = pool.get(target);
+        ServiceInfoExt serviceInfoExt = pool.get(sessionId);
 
         if (serviceInfoExt == null) {
             serviceInfoExt = new ServiceInfoExt();
