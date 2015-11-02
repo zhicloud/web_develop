@@ -179,6 +179,9 @@
                                             <c:if test="${sl.type == 3 or sl.type == 4}">
                                                 <li><a href="#"  onclick="modService('${sl.type}', '${sl.name}', '${sl.diskType}')">修改存储模式</a></li>
                                             </c:if>
+                                              <%--<c:if test="${sl.type == 4}">--%>
+                                                  <%--<li><a href="#"  onclick="modService('${sl.type}', '${sl.name}', '${sl.diskType}')">修改存储模式</a></li>--%>
+                                              <%--</c:if>--%>
 		                                  </ul>
 		                              </div>  
 								  </td>

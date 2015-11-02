@@ -253,6 +253,7 @@
 		                            	</c:if>
 		                                 <c:if test="${hostList.runningStatus==1}">
 			                              <li><a href="javascript:void(0);" onclick="startHostBtn('${hostList.id }');" >开机</a></li>
+			                              <li><a href="javascript:void(0);" onclick="startHostISOBtn('${serverList.id }');" >从光盘启动</a></li>
 			                              <li><a href="javascript:void(0);" onclick="updateHostBtn('${hostList.id }','1');">配置修改</a></li>
 			                              <li><a href="javascript:void(0);" onclick="diskManageBtn('${hostList.id }');">磁盘管理</a></li>
 			                              <li><a href="javascript:void(0);" onclick="backupHostBtn('${hostList.id }');">备份与恢复</a></li> 
@@ -304,6 +305,8 @@
                     <a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>
                     <a href="#modalConfirm" id="con" role="button"   data-toggle="modal"> </a>
 					<a href="#modalForm" id="mform" role="button"   data-toggle="modal"> </a>
+					<a href="#modalhostallocate" id="tenant" role="button"   data-toggle="modal"> </a>
+					
                     
                     <div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">
                       <div class="modal-dialog">
@@ -382,6 +385,39 @@
                         </div><!-- /.modal-content -->
                       </div><!-- /.modal-dialog -->
                     </div><!-- /.modal -->
+                    
+                    <div class="modal fade" id="modaliso" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <h3 class="modal-title" id="modalConfirmLabel"><strong>从光盘启动</strong></h3>
+                          </div>
+                          <div class="modal-body">
+                            <form class="form-horizontal" role="form" parsley-validate id="basicvalidations_iso" action="<%=request.getContextPath() %>/cloudserver/settenant" method="post"   >
+                              <input type="hidden" name="hostId" id="hostId"> 
+                              <div class="form-group">
+		                        <label for="input07" class="col-sm-3 control-label">光盘镜像选择*</label>
+		                        <div class="col-sm-8" id="selectbox">
+		                          <select class="chosen-select   form-control" name="imageId"id="imageId" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
+		                            <option value="">请选择镜像</option> 
+		                            <c:forEach items="${isoList }" var="sdi">
+ 		                                 <option value="${sdi.realImageId }">${sdi.name}</option>
+ 		                             </c:forEach>   
+		                          </select>
+		                        </div>
+		                      </div>
+
+                            </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button class="btn btn-green" onclick="saveIsoStart();">保存</button>
+                            <button class="btn btn-red" data-dismiss="modal" aria-hidden="true">关闭</button>
+                          </div>
+                        </div><!-- /.modal-content -->
+                      </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal --> 
+                    
                   </div>
  
                 </section>
@@ -591,6 +627,12 @@
     	$("#confirm_btn").attr("onclick","startHost();");
     	$("#con").click();
     }
+    //从光盘启动云主机
+    function startHostISOBtn(id){
+    	currentId = id;
+    	$("#imageId_chosen").css("width","250px");
+     	$("#isoBTN").click();
+    }
     //关闭主机
     function shutdownHostBtn(id){
     	currentId = id;
@@ -753,6 +795,53 @@
 	        
 	     });  
     }
+    
+    function saveIsoStart(){
+		jQuery.ajax({
+	        url: path+'/main/checklogin',
+	        type: 'post', 
+	        dataType: 'json',
+	        timeout: 10000,
+	        async: true,
+	        error: function()
+	        {
+	            alert('Error!');
+	        },
+	        success: function(result)
+	        {
+	        	if(result.status == "fail"){ 
+	        		  $("#tipscontent").html("登录超时，请重新登录");
+	     		      $("#dia").click();
+		        	}else{ 
+   		        			var options = {
+   		        					success:function result(data){
+   		        						if(data.status == "fail"){
+							        		  $("#tipscontent").html(data.message);
+							     		      $("#dia").click();  		        							
+   		        						}else{  		        							
+	   		        						window.location.reload();
+   		        						}
+   		        					},
+   		        					dataType:'json',
+   		        					timeout:10000
+   		        			};
+   		        			var form = jQuery("#basicvalidations_iso");
+   		        			form.parsley('validate');
+   		        			if(form.parsley('isValid')){  		        				
+   		        				jQuery.get(path + "/warehouse/cloudhost/"+currentId+"/"+$("#imageId").val()+"/start",function(data){
+   		        					if(data.status == "success"){   
+   		        			    		location.href = path + "/cloudserver/all";
+   		        					}else{  
+   		        						$("#tipscontent").html(data.message);
+   		        						$("#dia").click();
+   		        					}
+   		        				});
+   		        			}
+ 		        	} 
+	        }
+	     }); 
+		
+	}
     
     $(function(){
 

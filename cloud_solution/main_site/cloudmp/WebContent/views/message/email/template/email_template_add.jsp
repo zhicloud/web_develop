@@ -274,7 +274,7 @@
                     var options = {
                         success:function result(data){
                             if(data.status == "fail"){
-                                $("#tipscontent").html("添加失败");
+                                $("#tipscontent").html(data.message);
                                 $("#dia").click();
                             }else{
                                 location.href = path + "/message/email/template/list";

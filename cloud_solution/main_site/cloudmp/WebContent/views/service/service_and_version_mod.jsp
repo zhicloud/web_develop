@@ -113,12 +113,12 @@
 					    <label for="optionsRadios0" class="col-sm-2 control-label">存储模式*</label>
 					    <div class="col-sm-8">  
 					        <div class="radio radio-transparent col-md-2">
-					        	<input type="radio" name="diskType" id="optionsRadios0" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');" checked="checked">
+					        	<input type="radio" name="diskType" id="optionsRadios0" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');">
 					       		<label for="optionsRadios0">本地</label>
 					     	</div>
 					     	<div class="radio radio-transparent col-md-4">
-					       		<input type="radio" name="diskType" id="optionsRadios1" value="1" onclick="$('#divNas').removeAttr('hidden');$('#divNas').attr('class','show');">
-					       		<label for="optionsRadios1">共享存储</label>
+					       		<input type="radio" name="diskType" id="optionsRadios2" value="2" onclick="$('#divNas').removeAttr('hidden');$('#divNas').attr('class','show');">
+					       		<label for="optionsRadios2">共享存储</label>
 					     	</div>                          
 					   	</div>
 					</div>
@@ -127,7 +127,7 @@
 						<div class="form-group">
 						<label for="disk_source" class="col-sm-2 control-label">存储路径</label>
 							<div class="col-sm-4">
-							     <input type="text" class="form-control" id="disk_source" name="diskSource" value="${url}" readonly="readonly" />
+							     <input type="text" class="form-control" id="disk_source" name="diskSource" value="${path}" readonly="readonly" />
 							</div>
 						</div>
 					</div>
@@ -248,8 +248,7 @@
 
 
     $(function(){
-
-        $("#optionsRadios"+${service_info.diskType}).attr("checked", true);
+        $("#optionsRadios"+${service_info.diskType}).click();
 
     });
 
