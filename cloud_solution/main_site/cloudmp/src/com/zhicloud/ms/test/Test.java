@@ -9,12 +9,17 @@
 
 package com.zhicloud.ms.test;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
+import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import com.zhicloud.ms.balancer.BalancerHelper;
+
+import net.sf.json.JSONObject;
 
 /**
  * ClassName: Test 
@@ -34,19 +39,49 @@ public class Test {
 	 * @since JDK 1.7
 	 */
 	public static void main(String[] args) {
-      ArrayList<Student> list= new ArrayList<Student>();
-      list.add(new Student(1,"张三",5));
-      list.add(new Student(2,"李四",4));
-      list.add(new Student(4,"小明",2));
-      list.add(new Student(5,"小黑",1));
-      list.add(new Student(3,"王五",3));
-
-      ListSort<Student> listSort= new ListSort<Student>();
-      listSort.Sort(list, "getAge", "desc");
-      for(Student s:list){
-          System.out.println(s.getId()+s.getName()+s.getAge());
-      }
-
+//      ArrayList<Student> list= new ArrayList<Student>();
+//      list.add(new Student(1,"张三",5));
+//      list.add(new Student(2,"李四",4));
+//      list.add(new Student(4,"小明",2));
+//      list.add(new Student(5,"小黑",1));
+//      list.add(new Student(3,"王五",3));
+//
+//      ListSort<Student> listSort= new ListSort<Student>();
+//      listSort.Sort(list, "getAge", "desc");
+//      for(Student s:list){
+//          System.out.println(s.getId()+s.getName()+s.getAge());
+//      }
+		int timeOutTimes = 0;
+		while(true){
+			JSONObject obj = new JSONObject();
+			obj.put("ip", "172.18.21.90");
+//			obj.put("ip", "172.16.2.111");
+			obj.put("port", "50000");
+			obj.put("session_id", "");
+			try {
+				JSONObject j = BalancerHelper.queryBalancerSummary(obj);
+				if(j.get("status").equals("success")){
+					System.out.println(j.get("message"));
+				}else{
+					System.out.println(j.get("message"));
+				}
+				
+			} catch (Exception e) {
+				//判断连接超时次数，每次超时后间隔一分钟再发请求，连续5次超时则放弃操作。
+				if(timeOutTimes<=4){
+					timeOutTimes++;
+					System.out.println("连接超时，次数【"+timeOutTimes+"】");
+					try {
+						Thread.sleep(1000*5);
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}
+				}else{
+					System.out.println("连接失败");
+					break;
+				}
+			}
+		}
 	}
 
 }

@@ -22,6 +22,10 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen-bootstrap.css">
 
     <link href="<%=request.getContextPath()%>/assets/css/zhicloud.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/assets/css/webuploader.css">
+    
+    
+    
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -93,7 +97,7 @@
 
                   <!-- tile header -->
                   <div class="tile-header">
-                    <h3><a href="<%=request.getContextPath() %>/isoimage/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入版本信息</h3>
+                    <h3><a href="<%=request.getContextPath() %>/isoimage/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入镜像信息</h3>
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                     </div>
@@ -102,16 +106,25 @@
 
                   <!-- tile body -->
                   <div class="tile-body">
+                  
                     
                     <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/isoimage/add" method="post"    >
                       
+                      
+                      
+                      <div class="form-group">
+                        <label for="input01" class="col-sm-2 control-label">镜像名*</label>
+                        <div class="col-sm-4">
+                          <input type="text" class="form-control" id="name" name="name"  parsley-trigger="change"      parsley-maxlength="50" parsley-validation-minlength="1">
+                        </div>
+                      </div>
                        
                       
                       <div class="form-group">
                         <label for="optionsRadios1" class="col-sm-2 control-label">挂载类型 *</label>
                         <div class="col-sm-10">  
                           <div class="radio radio-transparent col-md-3">
-                            <input type="radio" name="diskType" id="optionsRadios3" value="2">
+                            <input type="radio" name="diskType" id="optionsRadios3" checked="checked" value="2">
                             <label for="optionsRadios3">共享存储</label>
                           </div> 
                         </div>
@@ -120,21 +133,31 @@
                       <div class="form-group">
                         <label for="colorpicker-rgb" class="col-sm-2 control-label">版本上传*</label>
                         <div class="col-sm-4">
-                          <div class="input-group">
-                          <span class="input-group-btn">
-                            <span class="btn btn-primary btn-file">
-                              <i class="fa fa-upload"></i><input type="file" name="filename"  >
-                            </span>
-                          </span>
-                          <input type="text" class="form-control" readonly="">
-                        </div>
+                          <div id="uploader">
+				        <div class="queueList">
+				            <div id="dndArea" class="placeholder">
+				                <div id="filePicker"></div> 
+				            </div>
+				        </div>
+				        <div class="statusBar">
+				            <div class="progress">
+				                <span class="text">0%</span>
+				                <span class="percentage"></span>
+				            </div>
+				            <div class="info"></div>
+				            <div class="btns" style="display:none">
+				                <div id="filePicker2"></div>
+				                <div class="uploadBtn" id="be_upload">开始上传</div>
+				            </div>
+				        </div>
+				    </div>
                         </div>
                       </div>
                          
                      <div class="form-group">
                         <label for="input05" class="col-sm-2 control-label">描述</label>
                         <div class="col-sm-4">
-                          <textarea class="form-control" name="description" id="description" rows="6" parsley-maxlength="100"></textarea>
+                          <textarea class="form-control" name="description" id="description" rows="6" parsley-maxlength="100" parsley-validation-minlength="1"></textarea>
                         </div>
                       </div>
                       
@@ -148,7 +171,7 @@
                      <div class="form-group form-footer footer-white">
                         <div class="col-sm-offset-4 col-sm-8">
                           <button type="button" class="btn btn-greensea" onclick="saveForm();"><i class="fa fa-plus"></i>
-                              <span> 创 建 </span></button>
+                              <span> 上  传</span></button>
                           <button type="reset" class="btn btn-red" onclick="window.location.reload();"><i class="fa fa-refresh"></i>
                               <span> 重 置 </span></button>
                         </div>
@@ -266,7 +289,8 @@
     
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/plugins/jquery.form.js"></script>
     
-    <script src="<%=request.getContextPath()%>/assets/js/vendor/summernote/summernote.min.js"></script>
+     <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/dist/webuploader.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/assets/js/dist/upload.js"></script>
 
     <script>
     
@@ -274,6 +298,8 @@
     var filetype = "";
     var isGetFile = false;
     var isCommited = false;
+    var name = '';
+    var description = '';
     $(document)
     .on('change', '.btn-file :file', function() {
       var input = $(this),
@@ -346,7 +372,14 @@
 	   		        			var form = jQuery("#basicvalidations");
 	   		        			form.parsley('validate');
 	   		        			if(form.parsley('isValid')){  		        				
-				        			jQuery("#basicvalidations").ajaxSubmit(options); 
+// 				        			jQuery("#basicvalidations").ajaxSubmit(options); 
+                                    name = $("#name").val();
+                                    description = $("#description").val();
+                                    uploader.option( 'formData', {
+                                        "imagename": name,
+                                        "description": description
+                                    });
+                                    $("#be_upload").click();
 	   		        			}
 		        		  }
  		        	} 
@@ -356,15 +389,16 @@
 	}
     
     function beforeSubmit(){
-    	if(isGetFile == false){
-    		isCommited = false;
-    		$("#tipscontent").html("未选择文件");
-		      $("#dia").click();
-    		return false;
-    	} 
+//     	if(isGetFile == false){
+//     		isCommited = false;
+//     		$("#tipscontent").html("未选择文件");
+// 		      $("#dia").click();
+//     		return false;
+//     	} 
     	
     	return true;
     }
+     
       
     </script>
   </body>

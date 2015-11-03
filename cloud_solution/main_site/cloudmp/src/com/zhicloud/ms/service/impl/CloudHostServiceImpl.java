@@ -1166,7 +1166,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
         cloudHost.setCreateTime(strNow); 
         //启动新线程来处理负载均衡的主机
         /*if(cloudHost.getType()!=null && cloudHost.getType()==4){
-        	Thread t = new Thread(new LoadBalanceRunnable(),"Thread-LoadBalance");
+        	Thread t = new Thread(new LoadBalanceRunnable(realHostId,ip[0]));
         	t.setDaemon(false);
         	t.start();
         }*/
@@ -1237,9 +1237,12 @@ public class CloudHostServiceImpl implements ICloudHostService {
                 logger.info("CloudHostServiceImpl.createOneCloudHost():   no_more_uncreated_host_exsit");
                 return new MethodResult(MethodResult.SUCCESS, "no_more_uncreated_host_exsit");
             }  
+            Integer isUseDataDisk = 1;
+            if(cloudHostVO.getDataDisk().compareTo(BigInteger.ZERO)==0){
+            	isUseDataDisk = 0;
+            }
             
-            
-             
+            Integer[] options = new Integer[] { 1, isUseDataDisk, 0,0,1,cloudHostVO.getSupportH264() };
             
             // 获取订单里的磁盘镜像的信息
             SysDiskImageVO sysDiskImageVO = sysDiskImageMapper.getById(cloudHostVO.getSysImageId());
@@ -1274,7 +1277,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
                                                             cloudHostVO.getPoolId(), 
                                                             cloudHostVO.getCpuCore(), 
                                                             cloudHostVO.getMemory(), 
-                                                            new Integer[]{1, 1, 0},     // options
+                                                            options,     // options
                                                             sysDiskImageVO.getRealImageId(), 
                                                             new BigInteger[]{ cloudHostVO.getSysDisk(), cloudHostVO.getDataDisk() }, 
                                                             new Integer[]{}, 
@@ -1595,6 +1598,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             String sysDisk = "10GB";
             Integer isUseDataDisk = 1;
             Integer isAutoStart = 1;
+            Integer supportH264 = 0;
             if(chcm != null){
                 server.setDataDisk(chcm.getDataDisk());
                 server.setCpuCore(chcm.getCpuCore());
@@ -1610,7 +1614,11 @@ public class CloudHostServiceImpl implements ICloudHostService {
             if(server.getIsAutoStartup()!=1){
                 isAutoStart = 0;
             } 
-            options = new Integer[] { 1, isUseDataDisk, isAutoStart,0,1 }; 
+
+            if(server.getSupportH264()!=0){
+            	supportH264 = 1;
+            } 
+            options = new Integer[] { 0, isUseDataDisk, isAutoStart,0,1,supportH264 }; 
             SysDiskImageVO sysDiskImageVO = sysDiskImageMapper.getById(server.getSysImageId());
             if(sysDiskImageVO != null){
                 realDiskImageId = sysDiskImageVO.getRealImageId();
@@ -1736,6 +1744,23 @@ public class CloudHostServiceImpl implements ICloudHostService {
     public CloudHostVO getById(String id) {
         CloudHostMapper chMapper = this.sqlSession.getMapper(CloudHostMapper.class);
         CloudHostVO cloudHost = chMapper.getById(id);
+        HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
+        try {
+        	JSONObject result = channel.hostQueryInfo(cloudHost.getRealHostId());
+			JSONObject hostInfo = (JSONObject)result.get("host");
+			if(hostInfo!=null){
+				Integer[] option = JSONLibUtil.getIntegerArray(hostInfo, "option");
+				if(option.length==5){
+					cloudHost.setSupportH264(option[4]);
+				}
+			}else{
+				cloudHost.setSupportH264(0);
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         return cloudHost;
     }
 
@@ -1762,7 +1787,33 @@ public class CloudHostServiceImpl implements ICloudHostService {
             CloudHostMapper chMapper = this.sqlSession.getMapper(CloudHostMapper.class);
             CloudHostVO cloud = chMapper.getById(server.getId());
             HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-            JSONObject hostModifyResult = channel.hostModify(cloud.getRealHostId(), "", server.getCpuCore(), CapacityUtil.fromCapacityLabel(server.getMemory()+"GB"), new Integer[] {}, new Integer[0], "", "", "", new BigInteger("0"), new BigInteger("0"));
+            JSONObject result = channel.hostQueryInfo(cloud.getRealHostId());
+            //获取主机信息
+			JSONObject hostInfo = (JSONObject)result.get("host");
+			Integer[] options = new Integer[4];
+			int index = 0;
+			if(hostInfo!=null && server.getSupportH264()!=null){
+				//获取option
+				Integer[] option = JSONLibUtil.getIntegerArray(hostInfo, "option");
+				if(option.length==5){
+					//判断当前操作是否有修改，如果没有则传入空数组，表示不做修改
+					if(option[4]==server.getSupportH264()){
+						options = new Integer[]{};
+					}else{
+						for(int i=0;i<option.length;i++){
+							//移除数组的第二个值，因为查询接口返回的option数组中的第二个值与修改接口相比是多余的。
+							if(i == 1){
+								continue;
+							}else{
+								options[index++] = option[i];
+							}
+						}
+					}
+				}
+			}else{
+				options = new Integer[]{};
+			}
+            JSONObject hostModifyResult = channel.hostModify(cloud.getRealHostId(), "", server.getCpuCore(), CapacityUtil.fromCapacityLabel(server.getMemory()+"GB"), options, new Integer[0], "", "", "", new BigInteger("0"), new BigInteger("0"));
             if (HttpGatewayResponseHelper.isSuccess(hostModifyResult) == false) {
                 operLogService.addLog("云主机", "修改主机配置"+server.getDisplayName()+"失败", "1", "2", request);
                 return new MethodResult(MethodResult.FAIL, "配置修改失败");
@@ -2358,6 +2409,99 @@ public class CloudHostServiceImpl implements ICloudHostService {
         CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
         return cloudHostMapper.updateInnerIpByRealHostId(parameter);
      }
+
+    /**
+     * 从光盘启动云主机
+    * <p>Title: startCloudHostFromIso</p> 
+    * <p>Description: </p> 
+    * @param cloudHostId
+    * @param imageId
+    * @return 
+    * @see com.zhicloud.ms.service.ICloudHostService#startCloudHostFromIso(java.lang.String, java.lang.String)
+     */
+    @Transactional(readOnly=false)
+    public MethodResult startCloudHostFromIso(String cloudHostId, String imageId) {
+        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+        OperLogVO operLog = new OperLogVO();
+        operLog.setId(StringUtil.generateUUID());
+        operLog.setModule("云主机");
+        operLog.setOperTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+        try {
+            CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
+            Map<String, Object> data = new LinkedHashMap<String, Object>(); 
+            data.put("id", cloudHostId);
+            CloudHostVO cloudHost = cloudHostMapper.getCloudHostById(data); 
+            if(cloudHost == null){ 
+                operLog.setContent("启动云主机失败-找不到相应云主机");
+                operLog.setStatus(2);//1 ：成功 2：失败 3：异步
+                operLogService.addLog(operLog, request);
+                MethodResult result = new MethodResult(MethodResult.FAIL, "not found host info");
+                return result;
+            }
+            String realHostId = cloudHost.getRealHostId();
+            if (realHostId == null) {
+                operLog.setContent("启动云主机失败-云主机尚未创建成功");
+                operLog.setStatus(2);//1 ：成功 2：失败 3：异步
+                operLogService.addLog(operLog, request);
+                MethodResult result = new MethodResult(MethodResult.FAIL, "云主机尚未创建成功");
+                result.put("hostId", cloudHostId);
+                return result;
+            }
+            CloudHostData myCloudHostData = CloudHostPoolManager.getCloudHostPool().getByRealHostId(cloudHost.getRealHostId());
+            if (myCloudHostData != null && myCloudHostData.getRunningStatus() == 2) {
+                Map<String, Object> hostData = new LinkedHashMap<String, Object>();
+                hostData.put("runningStatus", AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING);
+                hostData.put("realHostId", realHostId);
+                cloudHostMapper.updateRunningStatusByRealHostId(hostData); 
+                MethodResult result = new MethodResult(MethodResult.SUCCESS, "启动成功");
+                result.put("hostId", cloudHostId);
+                operLog.setContent("启动云主机"+cloudHost.getDisplayName());
+                operLog.setStatus(1);//1 ：成功 2：失败 3：异步
+                operLogService.addLog(operLog, request);
+                return result;
+            }
+            HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(cloudHost.getRegion());
+            JSONObject startResullt = channel.hostStart(realHostId, 1, imageId);
+
+            Map<String, Object> cloudHostData = new LinkedHashMap<String, Object>();
+            cloudHostData.put("runningStatus", AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING);
+            cloudHostData.put("realHostId", realHostId);
+            if (HttpGatewayResponseHelper.isSuccess(startResullt)) { 
+                //更新缓存主机状态
+                CloudHostData newCloudHostData = myCloudHostData.clone();
+                newCloudHostData.setRunningStatus(AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING);
+                newCloudHostData.setLastStatus(AppConstant.CLOUD_HOST_RUNNING_STATUS_SHUTDOWN);
+                newCloudHostData.setLastOperTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+                CloudHostPoolManager.getCloudHostPool().put(newCloudHostData);
+                
+                cloudHostMapper.updateRunningStatusByRealHostId(cloudHostData);
+                logger.info("CloudHostServiceImpl.startCloudHost() > [" + Thread.currentThread().getId() + "] start host succeeded");
+                MethodResult result = new MethodResult(MethodResult.SUCCESS, "启动成功");
+                result.put("hostId", cloudHostId);
+                operLog.setContent("启动云主机"+cloudHost.getDisplayName());
+                operLog.setStatus(1);//1 ：成功 2：失败 3：异步
+                operLogService.addLog(operLog, request);
+                return result;
+            } else {
+                logger.warn("CloudHostServiceImpl.startCloudHost() > start host failed, message:[" + HttpGatewayResponseHelper.getMessage(startResullt) + "]");
+                MethodResult result = new MethodResult(MethodResult.FAIL, "启动失败");
+                result.put("hostId", cloudHostId);
+                operLog.setContent("启动云主机"+cloudHost.getDisplayName());
+                operLog.setStatus(2);//1 ：成功 2：失败 3：异步
+                operLogService.addLog(operLog, request);
+                return result;
+            }
+        } catch (ConnectException e) {
+            logger.error(e);
+            throw new MyException("启动失败");
+        } catch (MyException e) {
+            logger.error(e);
+            throw new MyException("启动失败");
+        } catch (Exception e) {
+            logger.error(e);
+            throw new MyException("启动失败");
+        }  
+    }
       
 }
 

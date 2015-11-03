@@ -438,5 +438,16 @@ public interface ICloudHostService {
     * @throws
      */
     public int updateInnerIpByRealHostId(Map<String, Object> parameter);
+    /**
+     * 
+    * @Title: startCloudHostFromIso 
+    * @Description: 从光盘启动云主机 
+    * @param @param cloudHostId
+    * @param @param imageId
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    public MethodResult startCloudHostFromIso(String cloudHostId,String imageId);
 }
 

@@ -1,8 +1,11 @@
 package com.zhicloud.ms.controller;
 
 import com.zhicloud.ms.app.pool.CloudHostData;
-import com.zhicloud.ms.app.pool.CloudHostPoolManager;
-import com.zhicloud.ms.app.pool.computePool.ComputeInfo;
+import com.zhicloud.ms.app.pool.CloudHostPoolManager; 
+import com.zhicloud.ms.app.pool.IsoImagePool;
+import com.zhicloud.ms.app.pool.IsoImagePoolManager;
+import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfo; 
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressData;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPool;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPoolManager;
@@ -91,6 +94,10 @@ public class CloudServerController {
             }
  			newCloudServerList.add(vo);
 		}
+		IsoImagePool isopool = IsoImagePoolManager.getSingleton().getIsoImagePool();
+        List<IsoImageData> isoList = isopool.getAllIsoImageData();
+        
+        model.addAttribute("isoList", isoList);
 		model.addAttribute("cloudServerList", newCloudServerList);
 		model.addAttribute("tenantList", tenantService.getAllSysTenant(new SysTenant()));
 		return "server_manage";
@@ -1121,6 +1128,27 @@ public class CloudServerController {
         } catch (Exception e) {
             throw new AppException(e);
         }
+    }
+    
+    /**
+     * 
+    * @Title: startCloudHost 
+    * @Description: 从镜像启动 
+    * @param @param id
+    * @param @param imageId
+    * @param @param request
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    @RequestMapping(value="/{id}/{imageId}/start",method=RequestMethod.GET)
+    @ResponseBody
+    public MethodResult startCloudHost(@PathVariable("id") String id,@PathVariable("imageId") String imageId,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_host_start_from_iso)){
+            return new MethodResult(MethodResult.FAIL,"您没有启动主机的权限，请联系管理员");
+        }
+        MethodResult mr = cloudHostService.startCloudHostFromIso(id, imageId);
+        return mr;
     }
 
 }

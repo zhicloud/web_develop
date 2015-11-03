@@ -45,21 +45,21 @@ public class IsoImagePoolManager
 	{
 		logger.info("IsoImagePoolManager.refreshIsoImagePool() > ["+Thread.currentThread().getId()+"] 获取光盘镜像信息");
 		
-		RegionData[] regionDatas = RegionHelper.singleton.getAllResions();
-		for( RegionData regionData : regionDatas)
-		{
+//		RegionData[] regionDatas = RegionHelper.singleton.getAllResions();
+//		for( RegionData regionData : regionDatas)
+//		{
 			try
 			{
-				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(regionData.getId());
+				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				JSONObject isoImageQueryResult = channel.isoImageQuery();
 				
 				if( HttpGatewayResponseHelper.isSuccess(isoImageQueryResult)==false )
 				{
-					logger.warn("IsoImagePoolManager.refreshIsoImagePool() > ["+Thread.currentThread().getId()+"] query iso images failed, message:["+HttpGatewayResponseHelper.getMessage(isoImageQueryResult)+"], region:["+String.format("%s:%s", regionData.getId(), regionData.getName()) +"]");
+					logger.warn("IsoImagePoolManager.refreshIsoImagePool() > ["+Thread.currentThread().getId()+"] query iso images failed, message:["+HttpGatewayResponseHelper.getMessage(isoImageQueryResult)+"], region:["+String.format("%s:%s", "1", "default") +"]");
 					return ;
 				}
 				
-				JSONArray isoImages = (JSONArray)isoImageQueryResult.get("iso_images");
+				JSONArray isoImages = (JSONArray)isoImageQueryResult.get("iso_images"); 
 				for( int i=0; i<isoImages.size(); i++ )
 				{
 					JSONObject isoImage = (JSONObject)isoImages.get(i);
@@ -76,23 +76,23 @@ public class IsoImagePoolManager
 					isoImageData.setDescription(description);
 					isoImageData.setSize(size);
 					isoImageData.setStatus(status);
-					isoImageData.setRegion(regionData.getId());
+					isoImageData.setRegion(1);
 					
 					isoImagePool.put(isoImageData);
 				}
 			}
 			catch( SocketException e )
 			{
-				logger.error("IsoImageInitializer.run() > ["+Thread.currentThread().getId()+"] connect to http gateway failed, exception:["+e.getMessage()+"], region:["+String.format("%s:%s", regionData.getId(), regionData.getName()) +"]");
+				logger.error("IsoImageInitializer.run() > ["+Thread.currentThread().getId()+"] connect to http gateway failed, exception:["+e.getMessage()+"], region:["+String.format("%s:%s", "1", "1") +"]");
 			}
 			catch (Exception e)
 			{
-				logger.error("IsoImageInitializer.run() > ["+Thread.currentThread().getId()+"] get iso images failed, exception:["+e.getMessage()+"], region:["+String.format("%s:%s", regionData.getId(), regionData.getName()) +"]");
+				logger.error("IsoImageInitializer.run() > ["+Thread.currentThread().getId()+"] get iso images failed, exception:["+e.getMessage()+"], region:["+String.format("%s:%s", "1", "1") +"]");
 			}
 		}
 		
 	}
-}
+//}
 
 
 
