@@ -529,12 +529,12 @@ function refreshResumeProgress(){
 					}
 				
 				}
-			 else if(result.properties.backup_status==null )
+			 else if(result.properties.resume_status==null )
 				{
 					
 					window.setTimeout(self.refreshResumeProgress, 5000);
 				}
-				else if(result.properties.backup_status==false )
+				else if(result.properties.resume_status==false )
 				{ 								
 					$("#backup_progress").html("恢复失败");
 					$("#backup_progressbar_id").hide();

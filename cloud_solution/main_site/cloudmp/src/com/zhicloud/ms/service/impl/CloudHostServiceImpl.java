@@ -1879,7 +1879,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
      */
     public List<CloudHostVO> getCloudHostInTimerBackUpStart(String timerKey) {
         CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
-        return cloudHostMapper.getCloudHostInTimerBackUpStart(timerKey);
+        return cloudHostMapper.getDesktopCloudHostInTimerBackUpStart(timerKey);
     }
     /**
      * 获取规定条数的已关机的云桌面主机,且备份记录中的时间大于当前时间或者为null

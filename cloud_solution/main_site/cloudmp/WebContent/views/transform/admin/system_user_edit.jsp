@@ -150,9 +150,9 @@ function backhome(){
                         <div class="col-sm-4"> 
                             <div class="col-sm-16" id="userTypebox">
                             <select class="chosen-select chosen-transparent form-control" id="userType" parsley-required="true" parsley-error-container="#userTypebox">
-                            <option value="">请选择</option>  
+<!--                             <option value="">请选择</option>   -->
                             <option value="0">管理员用户</option>  
-                            <option value="1">租户管理员用户</option> 
+<!--                             <option value="1">租户管理员用户</option>  -->
                           </select></div> 
                         </div>
                       </div>  
@@ -204,7 +204,7 @@ function backhome(){
                         <div class="col-sm-4"> 
                             <div class="col-sm-16" id="selectbox">
                             <select class="chosen-select chosen-transparent form-control" id="userType" parsley-required="true" parsley-error-container="#selectbox">
-                            <option value="">请选择</option>  
+<!--                             <option value="">请选择</option>   -->
                             <option value="0" <c:if test="${systemUser.userType==0 }">selected</c:if>>管理员用户</option>  
                             <option value="1" <c:if test="${systemUser.userType==1 }">selected</c:if>>租户管理员用户</option> 
                           </select></div> 

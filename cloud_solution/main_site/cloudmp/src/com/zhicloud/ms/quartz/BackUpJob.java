@@ -63,6 +63,7 @@ public class BackUpJob implements Job {
             }
         }catch(Exception e){
             logger.error(e);
+            e.printStackTrace();
         }
         
         while(AppInconstant.isTimerForBackUp)
