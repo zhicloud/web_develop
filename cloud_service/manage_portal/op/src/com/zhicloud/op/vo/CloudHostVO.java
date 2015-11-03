@@ -374,7 +374,7 @@ public class CloudHostVO implements JSONBean
 		{
 			return "创建中";
 		}
-		if (this.processStatus != null && this.processStatus == 2)
+		if (this.processStatus != null && this.processStatus == 2 && this.realHostId==null)
 		{
 			return "创建失败";
 		}
