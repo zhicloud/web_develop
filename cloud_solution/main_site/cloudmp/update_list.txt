@@ -1,3 +1,26 @@
+****************************************************** 
+版本号：版本号：【云平台web】verion(2.0)(build 20151103-2)
+修改时间：2015/11/03
+修改人：梁绍辉
+修改文件：
+/cloudmp/src/com/zhicloud/ms/transform/constant/TransFormPrivilegeConstant.java
+/cloudmp/src/com/zhicloud/ms/httpGateway/HttpGatewayHelper.java
+
+新增文件：
+/cloudmp/src/com/zhicloud/ms/controller/PortResourcePoolController.java
+/cloudmp/src/com/zhicloud/ms/vo/PortResourcePoolDetailVO.java
+/cloudmp/src/com/zhicloud/ms/vo/PortResourcePoolVO.java
+/cloudmp/WebContent/views/resourcepool/port_resource_pool_create.jsp
+/cloudmp/WebContent/views/resourcepool/port_resource_pool_detail_add.jsp
+/cloudmp/WebContent/views/resourcepool/port_resource_pool_detail.jsp
+/cloudmp/WebContent/views/resourcepool/all_port_resource_pool_manage.jsp
+
+主要变更：
+1.增加端口池的管理功能。
+
+兼容性说明：
+无
+
 ******************************************************
  
 版本号：版本号：【云平台web】verion(2.0)(build 20151103-1)
