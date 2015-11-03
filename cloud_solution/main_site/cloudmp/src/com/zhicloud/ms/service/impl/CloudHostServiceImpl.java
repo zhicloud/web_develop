@@ -1034,7 +1034,6 @@ public class CloudHostServiceImpl implements ICloudHostService {
                         }
                         
                         // 更新缓冲池的数据
-                        CloudHostPoolManager.getSingleton().updateRealCloudHost(regionData.getId(), host,poolId);
                         hostList.add(uuid);
                         
                         if (originalHostList != null && originalHostList.contains(uuid)) {
@@ -1050,6 +1049,8 @@ public class CloudHostServiceImpl implements ICloudHostService {
                             total++;
                             allHostNames.add(name);
                             _handleOrdinaryHostName(regionData.getId(), host);
+                        }else{
+                            CloudHostPoolManager.getSingleton().updateRealCloudHost(regionData.getId(), host,poolId);
                         }
                     }
                     logger.info(String.format("found new host. total[%s]: %s, region:[%s:%s]", total, allHostNames, regionData.getId(), regionData.getName()));
@@ -1166,7 +1167,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
         cloudHost.setCreateTime(strNow); 
         //启动新线程来处理负载均衡的主机
         /*if(cloudHost.getType()!=null && cloudHost.getType()==4){
-        	Thread t = new Thread(new LoadBalanceRunnable(),"Thread-LoadBalance");
+        	Thread t = new Thread(new LoadBalanceRunnable(realHostId,ip[0]));
         	t.setDaemon(false);
         	t.start();
         }*/
@@ -1181,6 +1182,9 @@ public class CloudHostServiceImpl implements ICloudHostService {
                 cloudHostMapper.updateRunningStatusByRealHostId(data);
                 CloudHostData myCloudHostData = CloudHostPoolManager.getCloudHostPool().getByRealHostId(cloudHost.getRealHostId());
 
+                if(myCloudHostData == null){
+                    myCloudHostData = new CloudHostData();
+                }
               //更新缓存主机状态
                 CloudHostData newCloudHostData = myCloudHostData.clone();
                 newCloudHostData.setRunningStatus(AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING);
@@ -1237,9 +1241,12 @@ public class CloudHostServiceImpl implements ICloudHostService {
                 logger.info("CloudHostServiceImpl.createOneCloudHost():   no_more_uncreated_host_exsit");
                 return new MethodResult(MethodResult.SUCCESS, "no_more_uncreated_host_exsit");
             }  
+            Integer isUseDataDisk = 1;
+            if(cloudHostVO.getDataDisk().compareTo(BigInteger.ZERO)==0){
+            	isUseDataDisk = 0;
+            }
             
-            
-             
+            Integer[] options = new Integer[] { 1, isUseDataDisk, 0,0,1,cloudHostVO.getSupportH264() };
             
             // 获取订单里的磁盘镜像的信息
             SysDiskImageVO sysDiskImageVO = sysDiskImageMapper.getById(cloudHostVO.getSysImageId());
@@ -1274,7 +1281,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
                                                             cloudHostVO.getPoolId(), 
                                                             cloudHostVO.getCpuCore(), 
                                                             cloudHostVO.getMemory(), 
-                                                            new Integer[]{1, 1, 0},     // options
+                                                            options,     // options
                                                             sysDiskImageVO.getRealImageId(), 
                                                             new BigInteger[]{ cloudHostVO.getSysDisk(), cloudHostVO.getDataDisk() }, 
                                                             new Integer[]{}, 
@@ -1595,6 +1602,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             String sysDisk = "10GB";
             Integer isUseDataDisk = 1;
             Integer isAutoStart = 1;
+            Integer supportH264 = 0;
             if(chcm != null){
                 server.setDataDisk(chcm.getDataDisk());
                 server.setCpuCore(chcm.getCpuCore());
@@ -1610,7 +1618,11 @@ public class CloudHostServiceImpl implements ICloudHostService {
             if(server.getIsAutoStartup()!=1){
                 isAutoStart = 0;
             } 
-            options = new Integer[] { 0, isUseDataDisk, isAutoStart,0,1,1 }; 
+
+            if(server.getSupportH264()!=0){
+            	supportH264 = 1;
+            } 
+            options = new Integer[] { 0, isUseDataDisk, isAutoStart,0,1,supportH264 }; 
             SysDiskImageVO sysDiskImageVO = sysDiskImageMapper.getById(server.getSysImageId());
             if(sysDiskImageVO != null){
                 realDiskImageId = sysDiskImageVO.getRealImageId();
@@ -1736,6 +1748,23 @@ public class CloudHostServiceImpl implements ICloudHostService {
     public CloudHostVO getById(String id) {
         CloudHostMapper chMapper = this.sqlSession.getMapper(CloudHostMapper.class);
         CloudHostVO cloudHost = chMapper.getById(id);
+        HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
+        try {
+        	JSONObject result = channel.hostQueryInfo(cloudHost.getRealHostId());
+			JSONObject hostInfo = (JSONObject)result.get("host");
+			if(hostInfo!=null){
+				Integer[] option = JSONLibUtil.getIntegerArray(hostInfo, "option");
+				if(option.length==5){
+					cloudHost.setSupportH264(option[4]);
+				}
+			}else{
+				cloudHost.setSupportH264(0);
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         return cloudHost;
     }
 
@@ -1762,7 +1791,33 @@ public class CloudHostServiceImpl implements ICloudHostService {
             CloudHostMapper chMapper = this.sqlSession.getMapper(CloudHostMapper.class);
             CloudHostVO cloud = chMapper.getById(server.getId());
             HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-            JSONObject hostModifyResult = channel.hostModify(cloud.getRealHostId(), "", server.getCpuCore(), CapacityUtil.fromCapacityLabel(server.getMemory()+"GB"), new Integer[] {}, new Integer[0], "", "", "", new BigInteger("0"), new BigInteger("0"));
+            JSONObject result = channel.hostQueryInfo(cloud.getRealHostId());
+            //获取主机信息
+			JSONObject hostInfo = (JSONObject)result.get("host");
+			Integer[] options = new Integer[4];
+			int index = 0;
+			if(hostInfo!=null && server.getSupportH264()!=null){
+				//获取option
+				Integer[] option = JSONLibUtil.getIntegerArray(hostInfo, "option");
+				if(option.length==5){
+					//判断当前操作是否有修改，如果没有则传入空数组，表示不做修改
+					if(option[4]==server.getSupportH264()){
+						options = new Integer[]{};
+					}else{
+						for(int i=0;i<option.length;i++){
+							//移除数组的第二个值，因为查询接口返回的option数组中的第二个值与修改接口相比是多余的。
+							if(i == 1){
+								continue;
+							}else{
+								options[index++] = option[i];
+							}
+						}
+					}
+				}
+			}else{
+				options = new Integer[]{};
+			}
+            JSONObject hostModifyResult = channel.hostModify(cloud.getRealHostId(), "", server.getCpuCore(), CapacityUtil.fromCapacityLabel(server.getMemory()+"GB"), options, new Integer[0], "", "", "", new BigInteger("0"), new BigInteger("0"));
             if (HttpGatewayResponseHelper.isSuccess(hostModifyResult) == false) {
                 operLogService.addLog("云主机", "修改主机配置"+server.getDisplayName()+"失败", "1", "2", request);
                 return new MethodResult(MethodResult.FAIL, "配置修改失败");
