@@ -273,6 +273,9 @@ public class CloudHostVO implements JSONBean
 	
 	public Integer getIsAutoStartup()
 	{
+	    if(isAutoStartup == null){
+	        return 0;
+	    }
 		return isAutoStartup;
 	}
 
