@@ -1739,7 +1739,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
     @Transactional(readOnly=false)
     public MethodResult modifyAllocation(CloudHostVO server) {
         HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-
+        CloudHostVO cloud = null;
         try {
             // 参数处理
             String bandwidth = "3";
@@ -1756,28 +1756,32 @@ public class CloudHostServiceImpl implements ICloudHostService {
                 return new MethodResult(MethodResult.FAIL, "请选择带宽大小");
             }
             CloudHostMapper chMapper = this.sqlSession.getMapper(CloudHostMapper.class);
-            CloudHostVO cloud = chMapper.getById(server.getId());
+            cloud = chMapper.getById(server.getId());
             HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
             JSONObject hostModifyResult = channel.hostModify(cloud.getRealHostId(), "", server.getCpuCore(), CapacityUtil.fromCapacityLabel(server.getMemory()+"GB"), new Integer[] {}, new Integer[0], "", "", "", new BigInteger("0"), new BigInteger("0"));
             if (HttpGatewayResponseHelper.isSuccess(hostModifyResult) == false) {
-                operLogService.addLog("云主机", "修改主机配置"+server.getDisplayName()+"失败", "1", "2", request);
+                operLogService.addLog("云主机", "修改主机配置"+cloud.getDisplayName()+"失败", "1", "2", request);
                 return new MethodResult(MethodResult.FAIL, "配置修改失败");
+            }
+            Integer realCpu = server.getCpuCore();
+            if(realCpu==null || realCpu==0){
+            	realCpu = cloud.getCpuCore();
             }
             Map<String,Object> condition = new LinkedHashMap<String, Object>();
             condition.put("id",server.getId());
-            condition.put("cpuCore", server.getCpuCore());
-            condition.put("memory", CapacityUtil.fromCapacityLabel(server.getMemory()+"GB"));
+            condition.put("cpuCore", realCpu);
+            condition.put("memory", CapacityUtil.fromCapacityLabel(cloud.getMemory()+"GB"));
 //          condition.put("bandwidth", FlowUtil.fromFlowLabel(bandwidth+"Mbps"));
             int n = chMapper.updateById(condition);
             if(n > 0){
-                operLogService.addLog("云主机", "修改主机配置"+server.getDisplayName()+"成功", "1", "1", request);
+                operLogService.addLog("云主机", "修改主机配置"+cloud.getDisplayName()+"成功", "1", "1", request);
                 return new MethodResult(MethodResult.SUCCESS, "配置修改成功");
             }else{
-                operLogService.addLog("云主机", "修改主机配置"+server.getDisplayName()+"失败", "1", "2", request);
+                operLogService.addLog("云主机", "修改主机配置"+cloud.getDisplayName()+"失败", "1", "2", request);
                 return new MethodResult(MethodResult.FAIL, "数据库修改失败");
             }
         } catch(Exception e) {
-            operLogService.addLog("云主机", "修改主机配置"+server.getDisplayName()+"失败", "1", "2", request);
+            operLogService.addLog("云主机", "修改主机配置"+cloud.getDisplayName()+"失败", "1", "2", request);
             return new MethodResult(MethodResult.FAIL, "配置修改失败");
         }
     }
