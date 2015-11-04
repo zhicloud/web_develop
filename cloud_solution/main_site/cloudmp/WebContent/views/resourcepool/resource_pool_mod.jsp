@@ -170,7 +170,7 @@
                                                 <input type="radio" name="diskType" id="optionsRadios10" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');" checked>
                                                 <label for="optionsRadios10">本地</label>
                                             </div>
-                                            <div class="radio radio-transparent col-md-2">
+                                            <div class="radio radio-transparent col-md-3">
                                                 <input type="radio" name="diskType" id="optionsRadios11" value="1" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');">
                                                 <label for="optionsRadios11">云存储</label>
                                             </div>

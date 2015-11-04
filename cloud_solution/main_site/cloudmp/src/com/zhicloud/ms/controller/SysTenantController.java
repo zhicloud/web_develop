@@ -1,17 +1,7 @@
 package com.zhicloud.ms.controller;
 
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.zhicloud.ms.app.pool.computePool.ComputeInfo;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressData;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPool;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPoolManager;
@@ -24,12 +14,7 @@ import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
 import com.zhicloud.ms.httpGateway.HttpGatewayResponseHelper;
 import com.zhicloud.ms.remote.MethodResult;
-import com.zhicloud.ms.service.CloudHostConfigModelService;
-import com.zhicloud.ms.service.IBackUpDetailService;
-import com.zhicloud.ms.service.ICloudDiskService;
-import com.zhicloud.ms.service.ICloudHostService;
-import com.zhicloud.ms.service.IOperLogService;
-import com.zhicloud.ms.service.ItenantService;
+import com.zhicloud.ms.service.*;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.service.ManSysUserService;
 import com.zhicloud.ms.transform.util.TransFormLoginHelper;
@@ -40,14 +25,9 @@ import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.BackUpDetailVO;
 import com.zhicloud.ms.vo.CloudHostConfigModel;
 import com.zhicloud.ms.vo.CloudHostVO;
-import com.zhicloud.ms.vo.ComputerPoolVO;
-import com.zhicloud.ms.vo.SysGroupVO;
 import com.zhicloud.ms.vo.SysTenant;
-import com.zhicloud.ms.vo.TerminalUserVO;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,6 +35,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.util.*;
 
 
 @Controller
@@ -387,7 +372,7 @@ public class SysTenantController {
          try {
             List<CloudHostConfigModel> type = cloudHostConfigModelService.getAllServer();
             model.addAttribute("optionType",type);
-            List<ComputerPoolVO> cList = new ArrayList<>();
+            List<ComputeInfo> cList = new ArrayList<>();
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){
                     JSONObject result = channel.computePoolQuery();
@@ -401,8 +386,8 @@ public class SysTenantController {
                             }
                             String uuid = computerObject.getString("uuid");
                             int status = computerObject.getInt("status");
-                            
-                            ComputerPoolVO computer = new ComputerPoolVO(); 
+
+                            ComputeInfo computer = new ComputeInfo();
                             computer.setName(name);
                             computer.setStatus(status);
                             computer.setUuid(uuid);

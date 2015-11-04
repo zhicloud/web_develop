@@ -1,16 +1,13 @@
 package com.zhicloud.ms.app.pool.computePool;
 
-import com.zhicloud.ms.common.util.json.JSONBean;
+import com.zhicloud.ms.util.json.JSONBean;
 
 import java.util.Date;
 
-/**
- * @description 计算资源池详细信息
- * @author 张翔
- */
-public class ComputeInfoExt extends ComputeInfo implements JSONBean {
+public class ComputeInfoExt extends ComputeInfo implements JSONBean{
 
-
+	  private String ip;
+	  private String[] hostIps;
     private Integer networkType;    // 计算资源网络类型，0=私有云，1=独享公网地址（ip），2=共享公网地址（端口）, 3 = 直连
     private String network;         // networkType=1、2时不为空，地址资源池uuid或端口池uuid
     private Integer diskType;       // 挂载类型：0=本地磁盘，1=云存储，2=nas磁盘，3=ip san
@@ -22,6 +19,30 @@ public class ComputeInfoExt extends ComputeInfo implements JSONBean {
     private String message;         // 返回消息
     private int asyncStatus = -1;   // 异步通讯状态，-1：正在等待回调，0：操作失败，1：操作成功
 
+
+	  public String getIp() {
+		return ip;
+	}
+
+	   public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	   public String[] getHostIps() {
+		return hostIps;
+	}
+
+    public String getOuterIp(){
+		return this.hostIps[1];
+	}
+
+    public String getInnerIp(){
+		return this.hostIps[0];
+	}
+
+    public void setHostIps(String[] hostIps) {
+		this.hostIps = hostIps;
+	}
 
     public Integer getNetworkType() {
         return networkType;
@@ -124,6 +145,8 @@ public class ComputeInfoExt extends ComputeInfo implements JSONBean {
         ComputeInfoExt duplication = new ComputeInfoExt();
         duplication.setUuid(this.getUuid());
         duplication.setName(this.getName());
+        duplication.setIp(this.ip);
+        duplication.setHostIps(this.hostIps);
         duplication.setNetworkType(this.getNetworkType());
         duplication.setNetwork(this.getNetwork());
         duplication.setDiskType(this.getDiskType());
@@ -134,4 +157,5 @@ public class ComputeInfoExt extends ComputeInfo implements JSONBean {
 
         return duplication;
     }
+	
 }
