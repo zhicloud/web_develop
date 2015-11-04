@@ -1,6 +1,7 @@
 package com.zhicloud.ms.controller;
 
 
+import com.zhicloud.ms.app.pool.computePool.ComputeInfo;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoExt;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoPool;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoPoolManager;
@@ -61,7 +62,7 @@ public class PlatformResourceController {
 		}
 		try {
 			List<StoragePoolVO> sList = new ArrayList<>();
-			List<ComputerPoolVO> cList = new ArrayList<>();
+			List<ComputeInfo> cList = new ArrayList<>();
 			HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 			if(channel!=null){
 				JSONObject result = channel.storagePoolQuery();
@@ -155,7 +156,7 @@ public class PlatformResourceController {
 						for(int j=0;j<hList.size();j++){
 							hcount[j] = hList.getInt(j);
 						}
-						ComputerPoolVO computer = new ComputerPoolVO();
+              ComputeInfo computer = new ComputeInfo();
 						computer.setCpuCount(cpuCount);
 						computer.setCpuUsage(cpuUsage);
 						computer.setDiskUsage(diskUsage);
@@ -229,7 +230,7 @@ public class PlatformResourceController {
 			BigDecimal tDiskUsage = new BigDecimal(0);
 			Integer totalTop = 0;
 			if(cList.size()>0){
-				for(ComputerPoolVO c : cList){
+				for(ComputeInfo c : cList){
 					if(c.getName().contains("desktop_pool")){
 						tCpuCount = tCpuCount.add(new BigDecimal(c.getCpuCount()));
 						tCpuUsage = tCpuUsage.add(new BigDecimal(c.getCpuCount()).multiply(c.getCpuUsage()));
@@ -292,7 +293,7 @@ public class PlatformResourceController {
 	public ComputeResourceViewVO getComputeResource(){
 		ComputeResourceViewVO cVO = new ComputeResourceViewVO();
 		try {
-			List<ComputerPoolVO> cList = new ArrayList<>();
+			List<ComputeInfo> cList = new ArrayList<>();
 			HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 			if(channel!=null) {
           JSONObject result = channel.computePoolQuery();
@@ -331,7 +332,7 @@ public class PlatformResourceController {
                   for (int j = 0; j < hList.size(); j++) {
                       hcount[j] = hList.getInt(j);
                   }
-                  ComputerPoolVO computer = new ComputerPoolVO();
+                  ComputeInfo computer = new ComputeInfo();
                   computer.setCpuCount(cpuCount);
                   computer.setCpuUsage(cpuUsage);
                   computer.setDiskUsage(diskUsage);
@@ -352,7 +353,7 @@ public class PlatformResourceController {
           BigDecimal memoryCount = new BigDecimal(0);
           BigDecimal memoryUsage = new BigDecimal(0);
           if (cList.size() > 0) {
-              for (ComputerPoolVO c : cList) {
+              for (ComputeInfo c : cList) {
                   cpuCount = cpuCount.add(new BigDecimal(c.getCpuCount()));
                   cpuUsage = cpuUsage.add(new BigDecimal(c.getCpuCount()).multiply(c.getCpuUsage()));
                   memoryCount = memoryCount.add(new BigDecimal(c.getMemory()[1]));

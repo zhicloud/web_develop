@@ -2,7 +2,7 @@
 版本号：版本号：【云桌面web】verion(2.0)(build 20151104-1)
 修改时间：2015/11/04
 修改人：张翔
-修改文件：
+修改文件： 
 ResourcePoolController.java
 CloudHostVO.java
 app-properties.xml
@@ -23,7 +23,7 @@ app-properties.xml
 版本号：版本号：【云桌面web】verion(2.0)(build 20151104-1)
 修改时间：2015/11/04
 修改人：张翔
-修改文件：
+修改文件： 
 cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/app/pool/computePool/ComputeInfoExt.java
 cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/ResourcePoolController.java
 cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/ServerResourcePoolController.java
