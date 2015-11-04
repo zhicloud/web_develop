@@ -639,10 +639,6 @@ public class ResourcePoolController {
             String diskSource = computeInfoExt.getDiskSource();
             int mode0 = computeInfoExt.getMode0();
             int mode1 = computeInfoExt.getMode1();
-            int mode2 = computeInfoExt.getMode2();
-            int mode3 = computeInfoExt.getMode3();
-            String path = computeInfoExt.getPath();
-            String crypt = computeInfoExt.getCrypt();            
             if(StringUtil.isBlank(uuid)){
                 return new MethodResult(MethodResult.FAIL,"资源池uuid不能为空");
             }
@@ -677,10 +673,6 @@ public class ResourcePoolController {
             data.put("disk_source", diskSource);
             data.put("mode0", mode0);
             data.put("mode1", mode1);
-            data.put("mode2", mode2);
-            data.put("mode3", mode3);            
-            data.put("path", path);
-            data.put("crypt", crypt);
             MethodResult result = computePoolService.modifyComputePoolSync(data);
             if("success".equals(result.status)){
                 operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "1", request);
