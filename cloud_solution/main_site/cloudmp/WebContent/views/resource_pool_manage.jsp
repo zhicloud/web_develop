@@ -373,7 +373,7 @@
 	    jQuery(".delete_resource_pool").click(function(){
 	    	var uuid = jQuery(this).attr("cur_id");
 	    	cur_id = uuid;
-	    	$("#confirmcontent").html("确定要删除该资源池吗？<br>(删除资源池会删除资源池下所有节点及主机)");
+	    	$("#confirmcontent").html("确定要删除该资源池吗？");
 	    	$("#confirm_btn").attr("onclick","deleteResourcePool();");
 	    	$("#con").click();
 	    });
