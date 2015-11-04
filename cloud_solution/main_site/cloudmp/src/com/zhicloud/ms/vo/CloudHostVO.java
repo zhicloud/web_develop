@@ -343,7 +343,7 @@ public class CloudHostVO implements JSONBean
 	}
 
 	public String getOuterIp()
-	{
+	{ 
 		return outerIp;
 	}
 	
@@ -777,6 +777,13 @@ public class CloudHostVO implements JSONBean
     public String getDiskusage() {
         return getUsageFormat(3);
     }
+     
+    public String getOuterIpAndPort(){
+        if(StringUtil.isBlank(outerIp)){
+            return "无";
+        }
+        return outerIp+":"+"outerPort";
+    } 
 
 	public Integer getSupportH264() {
 		return supportH264;

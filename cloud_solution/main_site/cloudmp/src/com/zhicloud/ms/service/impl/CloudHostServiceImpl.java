@@ -1034,7 +1034,6 @@ public class CloudHostServiceImpl implements ICloudHostService {
                         }
                         
                         // 更新缓冲池的数据
-                        CloudHostPoolManager.getSingleton().updateRealCloudHost(regionData.getId(), host,poolId);
                         hostList.add(uuid);
                         
                         if (originalHostList != null && originalHostList.contains(uuid)) {
@@ -1050,6 +1049,8 @@ public class CloudHostServiceImpl implements ICloudHostService {
                             total++;
                             allHostNames.add(name);
                             _handleOrdinaryHostName(regionData.getId(), host);
+                        }else{
+                            CloudHostPoolManager.getSingleton().updateRealCloudHost(regionData.getId(), host,poolId);
                         }
                     }
                     logger.info(String.format("found new host. total[%s]: %s, region:[%s:%s]", total, allHostNames, regionData.getId(), regionData.getName()));
@@ -1181,6 +1182,9 @@ public class CloudHostServiceImpl implements ICloudHostService {
                 cloudHostMapper.updateRunningStatusByRealHostId(data);
                 CloudHostData myCloudHostData = CloudHostPoolManager.getCloudHostPool().getByRealHostId(cloudHost.getRealHostId());
 
+                if(myCloudHostData == null){
+                    myCloudHostData = new CloudHostData();
+                }
               //更新缓存主机状态
                 CloudHostData newCloudHostData = myCloudHostData.clone();
                 newCloudHostData.setRunningStatus(AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING);
