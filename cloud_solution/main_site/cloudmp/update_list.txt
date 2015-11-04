@@ -1,4 +1,28 @@
 ****************************************************** 
+版本号：版本号：【云平台web】verion(2.0)(build 20151104-2)
+修改时间：2015/11/04
+修改人：周亚锋
+修改文件：
+/cloudmp/src/com/zhicloud/ms/controller/ResourcePoolController.java
+/cloudmp/src/com/zhicloud/ms/controller/ServerResourcePoolController.java
+/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostServiceImpl.java
+/cloudmp/src/com/zhicloud/ms/service/impl/ComputePoolServiceImpl.java
+/cloudmp/WebContent/views/resource_pool_manage.jsp
+/cloudmp/WebContent/views/server_resource_pool_manage.jsp
+/cloudmp/WebContent/views/resourcepool/resource_pool_add.jsp
+/cloudmp/WebContent/views/resourcepool/server_resource_pool_add.jsp
+/cloudmp/WebContent/views/resourcepool/resource_pool_manage_detail.jsp
+/cloudmp/WebContent/views/resourcepool/server_resource_pool_manage_detail.jsp
+
+新增文件：
+无
+
+主要变更：
+1.修改部分bug
+
+兼容性说明：
+无
+****************************************************** 
 版本号：版本号：【云平台web】verion(2.0)(build 20151103-2)
 修改时间：2015/11/03
 修改人：梁绍辉
