@@ -174,31 +174,31 @@
 					       		<input type="radio" name="diskType" id="optionsRadios11" value="1" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');">
 					       		<label for="optionsRadios11">云存储</label>
 					     	</div>                          
-					     	<div class="radio radio-transparent col-md-2">
-					       		<input type="radio" name="diskType" id="optionsRadios12" value="2" onclick="$('#divNas').removeAttr('hidden');$('#divNas').attr('class','show');">
-					       		<label for="optionsRadios12">nas磁盘</label>
-					     	</div>                          
-					     	<div class="radio radio-transparent col-md-2">
-					       		<input type="radio" name="diskType" id="optionsRadios13" value="3" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');">
-					       		<label for="optionsRadios13">ip san</label>
-					     	</div>                          
+<!-- 					     	<div class="radio radio-transparent col-md-2"> -->
+<!-- 					       		<input type="radio" name="diskType" id="optionsRadios12" value="2" onclick="$('#divNas').removeAttr('hidden');$('#divNas').attr('class','show');"> -->
+<!-- 					       		<label for="optionsRadios12">nas磁盘</label> -->
+<!-- 					     	</div>                           -->
+<!-- 					     	<div class="radio radio-transparent col-md-2"> -->
+<!-- 					       		<input type="radio" name="diskType" id="optionsRadios13" value="3" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');"> -->
+<!-- 					       		<label for="optionsRadios13">ip san</label> -->
+<!-- 					     	</div>                           -->
 					   	</div>
 					</div>
                       
-					<div id="divNas" class="hidden">
-						<div class="form-group">
-						<label for="input01" class="col-sm-2 control-label">存储路径</label>
-							<div class="col-sm-4">
-							     <input type="text" class="form-control" id="path" name="path" value="${computeInfoExt.path}" parsley-trigger="change" parsley-type="nochinese" parsley-maxlength="50" />
-							</div>
-						</div>                      
-						<div class="form-group">
-							<label for="input01" class="col-sm-2 control-label">连接信息</label>
-							<div class="col-sm-4">
-							     <input type="text" class="form-control" id="crypt" name="crypt" value="${computeInfoExt.crypt}" parsley-trigger="change" parsley-type="nochinese" parsley-maxlength="50" />
-							</div>
-						</div>   
-					</div>
+<!-- 					<div id="divNas" class="hidden"> -->
+<!-- 						<div class="form-group"> -->
+<!-- 						<label for="input01" class="col-sm-2 control-label">存储路径</label> -->
+<!-- 							<div class="col-sm-4"> -->
+<%-- 							     <input type="text" class="form-control" id="path" name="path" value="${computeInfoExt.path}" parsley-trigger="change" parsley-type="nochinese" parsley-maxlength="50" /> --%>
+<!-- 							</div> -->
+<!-- 						</div>                       -->
+<!-- 						<div class="form-group"> -->
+<!-- 							<label for="input01" class="col-sm-2 control-label">连接信息</label> -->
+<!-- 							<div class="col-sm-4"> -->
+<%-- 							     <input type="text" class="form-control" id="crypt" name="crypt" value="${computeInfoExt.crypt}" parsley-trigger="change" parsley-type="nochinese" parsley-maxlength="50" /> --%>
+<!-- 							</div> -->
+<!-- 						</div>    -->
+<!-- 					</div> -->
 					
                     <input id="no_disk" type="hidden" name="diskId" value="">
                         <%--<div class="form-group" id="disk_pool">--%>
@@ -246,33 +246,33 @@
                             </div>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="optionsRadios10" class="col-sm-2 control-label">开启thin provioning</label>
-                            <div class="col-sm-16">
-                                <div class="radio radio-transparent col-md-2">
-                                    <input type="radio" name="mode2" id="mode20" value="0" >
-                                    <label for="mode20">否</label>
-                                </div>
-                                <div class="radio radio-transparent col-md-2">
-                                    <input type="radio" name="mode2" id="mode21" value="1" >
-                                    <label for="mode21">是</label>
-                                </div>
-                            </div>
-						</div>
+<!--                         <div class="form-group"> -->
+<!--                             <label for="optionsRadios10" class="col-sm-2 control-label">开启thin provioning</label> -->
+<!--                             <div class="col-sm-16"> -->
+<!--                                 <div class="radio radio-transparent col-md-2"> -->
+<!--                                     <input type="radio" name="mode2" id="mode20" value="0" > -->
+<!--                                     <label for="mode20">否</label> -->
+<!--                                 </div> -->
+<!--                                 <div class="radio radio-transparent col-md-2"> -->
+<!--                                     <input type="radio" name="mode2" id="mode21" value="1" > -->
+<!--                                     <label for="mode21">是</label> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+<!-- 						</div> -->
 
-                        <div class="form-group">
-                            <label for="optionsRadios10" class="col-sm-2 control-label">开启backing image</label>
-                            <div class="col-sm-16">
-                                <div class="radio radio-transparent col-md-2">
-                                    <input type="radio" name="mode3" id="mode30" value="0" >
-                                    <label for="mode30">否</label>
-                                </div>
-                                <div class="radio radio-transparent col-md-2">
-                                    <input type="radio" name="mode3" id="mode31" value="1" >
-                                    <label for="mode31">是</label>
-                                </div>
-                            </div>
-						</div>
+<!--                         <div class="form-group"> -->
+<!--                             <label for="optionsRadios10" class="col-sm-2 control-label">开启backing image</label> -->
+<!--                             <div class="col-sm-16"> -->
+<!--                                 <div class="radio radio-transparent col-md-2"> -->
+<!--                                     <input type="radio" name="mode3" id="mode30" value="0" > -->
+<!--                                     <label for="mode30">否</label> -->
+<!--                                 </div> -->
+<!--                                 <div class="radio radio-transparent col-md-2"> -->
+<!--                                     <input type="radio" name="mode3" id="mode31" value="1" > -->
+<!--                                     <label for="mode31">是</label> -->
+<!--                                 </div> -->
+<!--                             </div> -->
+<!-- 						</div> -->
 
                      <div class="form-group form-footer footer-white">
                         <div class="col-sm-offset-4 col-sm-8">

@@ -1,5 +1,6 @@
 package com.zhicloud.ms.controller;
 
+ 
 import com.zhicloud.ms.app.helper.DefaultTreeNode;
 import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
@@ -14,8 +15,11 @@ import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.CloudHostConfigModel;
 import com.zhicloud.ms.vo.CloudHostWarehouse;
 import com.zhicloud.ms.vo.ComputerPoolVO;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +29,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.*;
@@ -32,6 +37,9 @@ import java.util.*;
 @Controller
 @RequestMapping("/warehouse")
 public class CloudHostWarehouseController {
+    
+    
+    public static final Logger logger = Logger.getLogger(CloudServerController.class);
 	
 	@Resource
 	ICloudHostWarehouseService cloudHostWarehouseService;
@@ -53,32 +61,32 @@ public class CloudHostWarehouseController {
 		model.addAttribute("cloudHostConfigModeList",chcmList);
 		try {
 
-			List<ComputerPoolVO> cList = new ArrayList<ComputerPoolVO>();
+			List<ComputerPoolVO> cList = new ArrayList<ComputerPoolVO>(); 
+			logger.info("begin to get compute pool ");
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				if(channel!=null){
 					JSONObject result = channel.computePoolQuery();
-          if ("fail".equals(result.getString("status"))){
-                return "not_responsed";
-          }
-					JSONArray computerList = result.getJSONArray("compute_pools");
-
-					for (int i = 0; i < computerList.size(); i ++) {
-						JSONObject computerObject = computerList.getJSONObject(i);
-						String name = computerObject.getString("name");
-						if(!name.contains("desktop_pool")){
-							continue;
-						}
-						String uuid = computerObject.getString("uuid");
-						int status = computerObject.getInt("status");
-						 
-						ComputerPoolVO computer = new ComputerPoolVO(); 
-						computer.setName(name);
- 						computer.setStatus(status);
-						computer.setUuid(uuid);
-						computer.setRegion(1);
-						cList.add(computer);
-					}
-				}
+			           logger.info("end to get compute pool ");
+          if (!("fail".equals(result.getString("status")))){ 
+    			JSONArray computerList = result.getJSONArray("compute_pools");    
+    			for (int i = 0; i < computerList.size(); i ++) {
+    				JSONObject computerObject = computerList.getJSONObject(i);
+    				String name = computerObject.getString("name");
+    				if(!name.contains("desktop_pool")){
+    					continue;
+    				}
+    				String uuid = computerObject.getString("uuid");
+    				int status = computerObject.getInt("status");
+    				 
+    				ComputerPoolVO computer = new ComputerPoolVO(); 
+    				computer.setName(name);
+    				computer.setStatus(status);
+    				computer.setUuid(uuid);
+    				computer.setRegion(1);
+    				cList.add(computer);
+    			}
+    		}
+		}
 			
 			model.addAttribute("computerPool", cList);
 		} catch (MalformedURLException e) {

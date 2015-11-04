@@ -490,7 +490,7 @@
 		where ch.user_id is not null and ch.type = 1 
 	</select>
 	
-	<select id="getDesktopCloudHostInTimerBackUpStart" resultMap="CloudHostVO">
+	<select id="getCloudHostInTimerBackUpStart" resultMap="CloudHostVO">
 		select 
 			ch.id id,
 			ch.real_host_id,
@@ -517,14 +517,11 @@
 			m.name modelName,
 			ch.assign_time
 		from cloud_host ch 
-		left join sys_user u on ch.user_id = u.id
-		left join cloud_host_warehouse chw on ch.warehouse_id = chw.id
-		left join cloud_host_config_model m on chw.cloud_host_config_model_id = m.id
-		join host_timer_relationship ship on ch.id = ship.host_id
-		where ch.user_id is not null and running_status = 2 and ship.timer_key = #{timerKey} 
+   		join host_timer_relationship ship on ch.id = ship.host_id
+		where  ch.running_status = 2 and ship.timer_key = #{timerKey} 
 	</select>
 	
-	<select id="getDesktopCloudHostInTimerBackUpStop" resultMap="CloudHostVO">
+	<select id="getCloudHostInTimerBackUpStop" resultMap="CloudHostVO">
 		select 
 			ch.id id,
 			ch.real_host_id,
@@ -551,11 +548,8 @@
 			m.name modelName,
 			ch.assign_time
 		from cloud_host ch 
-		left join sys_user u on ch.user_id = u.id
-		left join cloud_host_warehouse chw on ch.warehouse_id = chw.id
-		left join cloud_host_config_model m on chw.cloud_host_config_model_id = m.id
-		join host_timer_relationship ship on ch.id = ship.host_id
-		where ch.user_id is not null and running_status = 1 and ship.timer_key = #{timerKey} 
+   		join host_timer_relationship ship on ch.id = ship.host_id
+		where ch.running_status = 1 and ship.timer_key = #{timerKey} 
 		<![CDATA[
 		and (ship.last_back_up_time is null or ship.last_back_up_time < #{now})
 		]]>

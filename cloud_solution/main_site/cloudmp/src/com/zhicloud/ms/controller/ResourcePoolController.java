@@ -548,8 +548,8 @@ public class ResourcePoolController {
 //
                 computeInfoExt.setMode0(computeInfoExt.getMode()[0]);
                 computeInfoExt.setMode1(computeInfoExt.getMode()[1]);
-                computeInfoExt.setMode2(computeInfoExt.getMode()[2]);
-                computeInfoExt.setMode3(computeInfoExt.getMode()[3]);
+//                computeInfoExt.setMode2(computeInfoExt.getMode()[2]);
+//                computeInfoExt.setMode3(computeInfoExt.getMode()[3]);
                 
                 List<IpPoolVO> ipList = new ArrayList<>();
                 List<PortPoolVO> portList = new ArrayList<>();
@@ -801,41 +801,37 @@ public class ResourcePoolController {
     public MethodResult deleteNode(@RequestParam("name") String name,
             @RequestParam("ip") String ip,
             @RequestParam("poolId") String poolId){
-        boolean flag = true;
-        try {
-                HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-                if(channel!=null){
-                    JSONObject result = channel.hostQuery(poolId);
-                    if("success".equals(result.get("status"))){
-                        
-                        JSONArray computerList = result.getJSONArray("hosts");
-                        for (int i = 0; i < computerList.size(); i ++) {
-                            JSONObject computerObject = computerList.getJSONObject(i);
-                            String uid = computerObject.getString("uuid");
-                            JSONArray ips = computerObject.getJSONArray("ip");
-                            if(ip.equals(ips.getString(0))){
-                                JSONObject dhr = channel.hostDelete(uid);
-                                if("fail".equals(dhr.getString("status"))){
-                                    flag = false;
-                                }else{
-                                	cloudHostService.deleteByRealId(uid);
-                                }
-                            }
+    	try {
+            HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
+            if(channel!=null){
+                JSONObject result = channel.hostQuery(poolId);
+                if("success".equals(result.get("status"))){
+                    //查询资源池中的所以主机
+                    JSONArray computerList = result.getJSONArray("hosts");
+                    for (int i = 0; i < computerList.size(); i ++) {
+                        JSONObject computerObject = computerList.getJSONObject(i);
+                        JSONArray ips = computerObject.getJSONArray("ip");
+                        //判断是否为该NC的主机
+                        if(ip.equals(ips.getString(0))){
+                            //如果是，提示删除失败，请先删除NC中的云主机
+                        	return new MethodResult(MethodResult.FAIL,"资源移除失败，请删除资源中的云主机");
                         }
                     }
-                }
-                if(flag){
+                    //nc中没有云主机则删除nc
                     JSONObject dnr = channel.computePoolRemoveResource(poolId, name);
                     if("success".equals(dnr.getString("status"))){
                         return new MethodResult(MethodResult.SUCCESS,"资源移除成功");
+                    }else{
+                    	return new MethodResult(MethodResult.FAIL,"资源删除失败");
                     }
                 }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new MethodResult(MethodResult.FAIL,"资源删除失败");
+            }
+	    } catch (MalformedURLException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return new MethodResult(MethodResult.FAIL,"资源删除失败");
     }
      /**
      * 
