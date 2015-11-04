@@ -775,6 +775,13 @@ public class CloudHostVO implements JSONBean
     public String getDiskusage() {
         return getUsageFormat(3);
     }
+    
+    public String getOuterIpAndPort(){
+        if(StringUtil.isBlank(outerIp)){
+            return "无";
+        }
+        return outerIp+":"+"outerPort";
+    }
 }
 
 

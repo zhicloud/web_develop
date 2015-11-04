@@ -387,15 +387,15 @@ public class ServerResourcePoolController {
             operLogService.addLog("计算资源池", "创建计算资源池"+name+"失败", "1", "2", request);
 			return new MethodResult(MethodResult.FAIL,"资源池名不能为空");
 		}
-        Integer[] mode = new Integer[4];
+        Integer[] mode = new Integer[2];
         mode[0] = mode0;
         mode[1] = mode1;
-        mode[2] = mode2;
-        mode[3] = mode3;
+//        mode[2] = mode2;
+//        mode[3] = mode3;
 		try {
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				if(channel!=null){
-					JSONObject result = channel.computePoolCreate(prefixion+name, Integer.parseInt(networkType), networkId, Integer.parseInt(diskType), diskId,mode,path,crypt);
+					JSONObject result = channel.computePoolCreate(prefixion+name, Integer.parseInt(networkType), networkId, Integer.parseInt(diskType), diskId,mode,"","");
 					if("success".equals(result.get("status"))){
 			            operLogService.addLog("计算资源池", "创建计算资源池"+name+"成功", "1", "1", request);
 						return new MethodResult(MethodResult.SUCCESS,"创建成功");

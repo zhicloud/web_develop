@@ -1032,8 +1032,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
                             continue;
                         }
                         
-                        // 更新缓冲池的数据
-                        CloudHostPoolManager.getSingleton().updateRealCloudHost(regionData.getId(), host);
+                        
                         hostList.add(uuid);
                         
                         if (originalHostList != null && originalHostList.contains(uuid)) {
@@ -1049,6 +1048,9 @@ public class CloudHostServiceImpl implements ICloudHostService {
                             total++;
                             allHostNames.add(name);
                             _handleOrdinaryHostName(regionData.getId(), host);
+                        }else{
+                         // 更新缓冲池的数据
+                            CloudHostPoolManager.getSingleton().updateRealCloudHost(regionData.getId(), host);
                         }
                     }
                     logger.info(String.format("found new host. total[%s]: %s, region:[%s:%s]", total, allHostNames, regionData.getId(), regionData.getName()));
@@ -1174,7 +1176,11 @@ public class CloudHostServiceImpl implements ICloudHostService {
                 cloudHostMapper.updateRunningStatusByRealHostId(data);
                 CloudHostData myCloudHostData = CloudHostPoolManager.getCloudHostPool().getByRealHostId(cloudHost.getRealHostId());
 
-              //更新缓存主机状态
+                if(myCloudHostData == null ){
+                    myCloudHostData = new CloudHostData();
+                    myCloudHostData.setRealHostId(realHostId);
+                }
+                //更新缓存主机状态
                 CloudHostData newCloudHostData = myCloudHostData.clone();
                 newCloudHostData.setRunningStatus(AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING);
                 newCloudHostData.setLastStatus(AppConstant.CLOUD_HOST_RUNNING_STATUS_SHUTDOWN);
@@ -1883,7 +1889,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
      */
     public List<CloudHostVO> getCloudHostInTimerBackUpStart(String timerKey) {
         CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
-        return cloudHostMapper.getDesktopCloudHostInTimerBackUpStart(timerKey);
+        return cloudHostMapper.getCloudHostInTimerBackUpStart(timerKey);
     }
     /**
      * 获取规定条数的已关机的云桌面主机,且备份记录中的时间大于当前时间或者为null
@@ -1899,7 +1905,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
         relateData.put("limit", limit);
         relateData.put("now", now);
         relateData.put("timerKey", timerKey);
-        return cloudHostMapper.getDesktopCloudHostInTimerBackUpStop(relateData);
+        return cloudHostMapper.getCloudHostInTimerBackUpStop(relateData);
     }
     /**
      * 更新参与定时任务的桌面云主机

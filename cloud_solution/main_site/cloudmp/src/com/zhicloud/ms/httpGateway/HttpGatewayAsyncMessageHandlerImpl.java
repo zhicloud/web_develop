@@ -1571,8 +1571,8 @@ public class HttpGatewayAsyncMessageHandlerImpl {
             int diskType = messageData.getInt("disk_type");
             String diskSource = messageData.getString("disk_source");
             JSONArray mode = messageData.getJSONArray("mode");
-            String path = messageData.getString("path");
-            String crypt = messageData.getString("crypt");
+//            String path = messageData.getString("path");
+//            String crypt = messageData.getString("crypt");
             
             Integer[] modeArr = new Integer[mode.size()];
             for (int i = 0; i < mode.size(); i++) {
@@ -1587,15 +1587,15 @@ public class HttpGatewayAsyncMessageHandlerImpl {
             computeInfoExt.setMode(modeArr);
             computeInfoExt.setMode0(modeArr[0]);
             computeInfoExt.setMode1(modeArr[1]);
-            computeInfoExt.setMode2(modeArr[2]);
-            computeInfoExt.setMode3(modeArr[3]);
-            computeInfoExt.setPath(path);
-            computeInfoExt.setCrypt(crypt);
+//            computeInfoExt.setMode2(modeArr[2]);
+//            computeInfoExt.setMode3(modeArr[3]);
+//            computeInfoExt.setPath(path);
+//            computeInfoExt.setCrypt(crypt);
             computeInfoExt.success();
 
             System.err.println(String.format(
                 "[%s]query compute pool detail success, uuid '%s', name '%s', network_type '%d', network '%s', disk_type '%d', disk_source '%s', mode '%s', path '%s', crypt '%s'",
-                sessionId, uuid, name, networkType, network, diskType, diskSource, mode, path, crypt));
+                sessionId, uuid, name, networkType, network, diskType, diskSource, mode, "", ""));
         } else {
             String message = messageData.getString("message");
             computeInfoExt.fail();

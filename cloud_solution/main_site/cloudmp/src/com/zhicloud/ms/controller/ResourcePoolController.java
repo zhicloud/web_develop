@@ -548,8 +548,8 @@ public class ResourcePoolController {
 //
                 computeInfoExt.setMode0(computeInfoExt.getMode()[0]);
                 computeInfoExt.setMode1(computeInfoExt.getMode()[1]);
-                computeInfoExt.setMode2(computeInfoExt.getMode()[2]);
-                computeInfoExt.setMode3(computeInfoExt.getMode()[3]);
+//                computeInfoExt.setMode2(computeInfoExt.getMode()[2]);
+//                computeInfoExt.setMode3(computeInfoExt.getMode()[3]);
                 
                 List<IpPoolVO> ipList = new ArrayList<>();
                 List<PortPoolVO> portList = new ArrayList<>();
