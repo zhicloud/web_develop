@@ -203,4 +203,8 @@
 		description="成都主机开通最大端口数">
 		50
 	</property>
+	<property key="web_version" name="web_version" type="String" 
+		description="web_version">
+		【云平台web】verion(2.0)(build 20151104-1)
+	</property>
 </properties>

@@ -667,6 +667,9 @@ public class ResourcePoolController {
             if(StringUtil.isBlank(String.valueOf(mode1))){
                 return new MethodResult(MethodResult.FAIL,"自动Qos选项不能为空");
             }
+            if(name.indexOf("desktop_pool_") == -1){
+                name = "desktop_pool_"+name;
+            }
 
             Map<String, Object> data = new LinkedHashMap<String, Object>();
             data.put("uuid", uuid);
