@@ -15,23 +15,18 @@ public class BalancerConstant {
     public static final String service_restart  = "restart"; // 重启服务
     // 监听端口
     public static final String listen_port_query_all = "query_all"; // 监听端口列表
-    public static final String listen_port_query   = "query";    // 查看监听端口
-    public static final String listen_port_create  = "create";   // 创建监听端口
-    public static final String listen_port_modify  = "modify";   // 修改监听端口    
-    public static final String listen_port_start   = "start";    // 启动监听端口
-    public static final String listen_port_stop    = "stop";     // 停止监听端口
-    public static final String listen_port_remove  = "remove";   // 删除监听端口
-    // 转发端口
-    public static final String forward_port_query_all = "query_all"; // 转发端口列表
-    public static final String forward_port_query_all_id = "query_all"; // 转发端口列表
-    public static final String forward_port_query   = "query";   // 查看转发端口
-    public static final String forward_port_add     = "add";     // 添加转发端口
-    public static final String forward_port_modify  = "modify";  // 修改转发端口    
-    public static final String forward_port_start   = "start";   // 启动转发端口
-    public static final String forward_port_stop    = "stop";    // 停止转发端口
-    public static final String forward_port_remove  = "remove";  // 释放转发端口
+    public static final String listen_port_update_all   = "update_all";    // 更新监听端口配置
     // 证书文件
     public static final String certificte_upload   = "upload";    // 上传证书
     public static final String certificte_query    = "query";     // 证书列表
     public static final String certificte_remove   = "remove";    // 上传证书
+    
+    // 错误信息对应表
+    public static final String err_execute_exception   = "执行异常，具体异常查看log";      // -1
+    public static final String err_request_error       = "未知请求，xml中的ns:XXXXXXXXX请求错误";   // 100
+    public static final String err_json_format_err     = "请求格式无效，json数据格式有错误";          // 200
+    public static final String err_json_lost_element   = "请求json数据中，缺少必要元素";             // 201 
+    public static final String err_json_element_format = "请求json数据中，元素的格式无效";            // 202
+    public static final String err_flush_request_fail  = "刷新请求失败";                      // 300
+    public static final String err_health_check_fail   = "获取转发端口状态（健康检查的结果）失败";     // 301
 }

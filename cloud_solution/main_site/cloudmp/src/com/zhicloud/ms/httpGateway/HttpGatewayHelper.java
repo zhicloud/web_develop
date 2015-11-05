@@ -2031,7 +2031,7 @@ public class HttpGatewayHelper
         Map<String, String> postDataMap = new LinkedHashMap<String, String>();
         postDataMap.put("pool", pool);
         postDataMap.put("ip", ip);
-        postDataMap.put("port", port);
+        postDataMap.put("range", port);
         byte[] encryptParam = encrypt(postDataMap);
         
         // 发送http消息，并取得返回的数据

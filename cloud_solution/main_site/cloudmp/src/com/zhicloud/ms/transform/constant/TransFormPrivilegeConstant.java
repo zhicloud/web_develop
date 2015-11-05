@@ -260,6 +260,14 @@ public class TransFormPrivilegeConstant {
     public static final String ip_resource_pool_detail_add = "ip_resource_pool_detail_add"; //地址资源添加
     public static final String ip_resource_pool_detail_remove = "ip_resource_pool_detail_remove"; //地址资源移除
     public static final String ip_resource_pool_detail_move = "ip_resource_pool_detail_move"; //地址资源迁移
+    //端口资源池管理
+    public static final String port_resource_pool_query         = "port_resource_pool_query";   //端口资源池 _查询
+    //public static final String port_resource_pool_create        = "port_resource_pool_create";  //端口资源池 _创建界面
+    public static final String port_resource_pool_add           = "port_resource_pool_add";  //端口资源池 _创建
+    public static final String port_resource_pool_remove        = "port_resource_pool_remove";    //端口资源池_删除
+    public static final String port_resource_pool_detail_query  = "port_resource_pool_detail_query";  //端口资源查询
+    public static final String port_resource_pool_detail_add    = "port_resource_pool_detail_add";    //端口资源添加
+    public static final String port_resource_pool_detail_remove = "port_resource_pool_detail_remove"; //端口资源移除
 
 
     //云硬盘管理
