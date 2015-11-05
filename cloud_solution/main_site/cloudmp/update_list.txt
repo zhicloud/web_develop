@@ -1,4 +1,19 @@
 ****************************************************** 
+版本号：版本号：【云平台web】verion(2.0)(build 20151104-1)
+修改时间：2015/11/04
+修改人：梁绍辉
+修改文件：
+/cloudmp/src/com/zhicloud/ms/balancer/BalancerConstant.java
+/cloudmp/src/com/zhicloud/ms/balancer/BalancerHelper.java
+
+新增文件：
+
+主要变更：
+1.调整负载均衡接口实现。
+
+兼容性说明：
+无
+****************************************************** 
 版本号：版本号：【云平台web】verion(2.0)(build 20151103-2)
 修改时间：2015/11/03
 修改人：梁绍辉
