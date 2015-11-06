@@ -1,3 +1,21 @@
+****************************************************** 
+版本号：版本号：【云平台web】verion(2.0)(build 20151106-2)
+修改时间：2015/11/06
+修改人：梁绍辉
+修改文件：
+/cloudmp/WebContent/views/resourcepool/all_port_resource_pool_manage.jsp
+/cloudmp/WebContent/views/resourcepool/ip_resource_pool_detail_add.jsp
+/cloudmp/WebContent/views/resourcepool/port_resource_pool_detail_add.jsp
+/cloudmp/WebContent/views/resourcepool/port_resource_pool_detail.jsp
+
+新增文件：
+
+主要变更：
+1.端口管理UI处理：IP地址格式限定，IP->端口
+2.地址管理UI处理：IP地址格式限定
+
+兼容性说明：
+无
 ******************************************************
 版本号：版本号：【云桌面web】verion(2.0)(build 20151104-1)
 修改时间：2015/11/06
