@@ -1,4 +1,31 @@
-****************************************************** 
+****************************************************** 
+版本号：版本号：【云桌面web】verion(2.0)(build 20151104-1)
+ 修改时间：2015/11/06 
+修改人：张翔
+
+ 修改文件：
+ cloud_solution/main_site/cloudmp/WebContent/views/qos/qos_add.jsp
+ cloud_solution/main_site/cloudmp/WebContent/views/qos/qos_manage.jsp
+ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/QosController.java
+ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/QosMapper.java
+ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostServiceImpl.java 
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/QosServiceImpl.java
+ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/QosVO.java 
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/QosMapper.xml  
+
+新增文件： 
+无
+
+  删除文件: 
+无  
+
+主要变更： 
+1. 修复云服务器删除相关QoS规则自动删除问题
+
+  兼容性说明：
+ 无
+
+******************************************************
 版本号：版本号：【云平台web】verion(2.0)(build 20151106-2)
 修改时间：2015/11/06
 修改人：梁绍辉
