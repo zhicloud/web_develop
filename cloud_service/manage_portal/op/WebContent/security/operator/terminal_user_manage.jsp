@@ -70,14 +70,18 @@
 						<th field="name" width="100px">昵称</th>
 						<th field="account" width="100px" sortable=true>邮箱</th>
 						<th field="phone" width="100px">手机</th>
-						<th field="belongingAccount" width="100px" sortable=true>归属</th>
+						<th field="belongingAccount" formatter="belongingFormatter" width="100px" sortable=true>归属</th>
 						<th field="markName"   width="80px" sortable=true>标签</th>
 						<th field="percentOff"   width="80px" sortable=true>折扣率(%)</th>
 						<th field="account_balance"   width="80px" sortable=true>账户余额</th>
 						<th field="recharge"   width="80px" sortable=true>累计充值</th>
 						<th field="consum"   width="80px" sortable=true>累计消费</th>
+						<th field="hostAmount" formatter="hostFormatter"  width="80px" sortable=true>主机数量</th>
+						<th field="vpcAmount" formatter="vpcFormatter" width="80px" sortable=true>VPC数量</th>
+						<th field="diskAmount" formatter="diskFormatter" width="80px" sortable=true>云硬盘数量</th>
 						<th field="status" formatter="formatStatus" width="80px">状态</th>
 						<th field="createTime" formatter="timeFormat" width="100px">创建时间</th>
+						<th field="lastOperTime" formatter="timeFormat" width="100px">最近操作时间</th>
 						<th field="operate" formatter="terminalUserColumnFormatter" width="300px">操作</th>
 					</tr>
 				</thead>
@@ -195,7 +199,11 @@
 	}  
 	function timeFormat(val, row)
 	{
-		return $.formatDateString(val, "yyyyMMddHHmmssSSS", "yyyy-MM-dd HH:mm:ss");
+		if(val!=null && val!=""){
+			return $.formatDateString(val, "yyyyMMddHHmmssSSS", "yyyy-MM-dd HH:mm:ss");
+		}else{
+			return "无";
+		}
 	}
 	function formatBelongingType(val,row){
 		if(val == 1){
@@ -214,6 +222,59 @@
 					<a href='#' class='datagrid_row_linkbutton consume_btn'>消费记录</a>\
 					<a href='#' class='datagrid_row_linkbutton operation_btn'>操作日志</a>\
 				</div>";
+	}
+	function hostFormatter(value, row, index)
+	{
+		var host_amount = $("#terminal_user_datagrid").datagrid("getData").rows[index].hostAmount;
+		if(host_amount>0){
+			return "<div row_index='"+index+"'>\
+						<a href='#' class='datagrid_row_linkbutton detail_host_btn'>"+host_amount+"</a>\
+					</div>";
+		}else{
+			return "0";
+		}
+	}
+	function vpcFormatter(value, row, index)
+	{
+		var vpc_amount = $("#terminal_user_datagrid").datagrid("getData").rows[index].vpcAmount;
+		if(vpc_amount>0){
+			return "<div row_index='"+index+"'>\
+						<a href='#' class='datagrid_row_linkbutton detail_vpc_btn'>"+vpc_amount+"</a>\
+					</div>";
+		}else{
+			return "0";
+		}
+	}
+	function diskFormatter(value, row, index)
+	{
+		var disk_amount = $("#terminal_user_datagrid").datagrid("getData").rows[index].diskAmount;
+		if(disk_amount>0){
+			return "<div row_index='"+index+"'>\
+						<a href='#' class='datagrid_row_linkbutton detail_disk_btn'>"+disk_amount+"</a>\
+					</div>";
+		}else{
+			return "0";
+		}
+	}
+	
+	function belongingFormatter(value, row, index)
+	{
+		var type = $("#terminal_user_datagrid").datagrid("getData").rows[index].belongingType;
+		var account = $("#terminal_user_datagrid").datagrid("getData").rows[index].belongingAccount;
+		if(account==null || account==""){
+			return "";
+		}
+		else if(type==1){
+			return "<div row_index='"+index+"'>\
+					[运]"+account+"\
+				</div>";
+		}else if(type==2){
+			return "<div row_index='"+index+"'>\
+				[代]"+account+"\
+			</div>";
+		}else{
+			return "";
+		}
 	}
 	
 	//查询结果为空
@@ -307,6 +368,30 @@
 					$('#terminal_user_datagrid').datagrid('reload');
 				}
 			});
+		});
+		// 每一行的'主机数量详情'按钮
+		$("a.detail_host_btn").click(function(){
+			$this = $(this);
+			rowIndex = $this.parent().attr("row_index");
+			var data = $("#terminal_user_datagrid").datagrid("getData");
+			var id = data.rows[rowIndex].id;
+			window.location.href = "<%=request.getContextPath()%>/bean/ajax.do?userType=<%=userType%>&bean=cloudHostService&method=managePage&user_id="+id;
+		});
+		// 每一行的'vpc数量详情'按钮
+		$("a.detail_vpc_btn").click(function(){
+			$this = $(this);
+			rowIndex = $this.parent().attr("row_index");
+			var data = $("#terminal_user_datagrid").datagrid("getData");
+			var id = data.rows[rowIndex].id;
+			window.location.href = "<%=request.getContextPath()%>/bean/ajax.do?userType=<%=userType%>&bean=vpcService&method=getAllVpcPage&user_id="+id;
+		});
+		// 每一行的'云硬盘数量详情'按钮
+		$("a.detail_disk_btn").click(function(){
+			$this = $(this);
+			rowIndex = $this.parent().attr("row_index");
+			var data = $("#terminal_user_datagrid").datagrid("getData");
+			var id = data.rows[rowIndex].id;
+			window.location.href = "<%=request.getContextPath()%>/bean/ajax.do?userType=<%=userType%>&bean=cloudDiskService&method=managePage&user_id="+id;
 		});
 	}
 	

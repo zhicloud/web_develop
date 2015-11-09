@@ -366,6 +366,9 @@
 			<if test="username!=null and username!='%%'">
 				and u.name like #{username}
 			</if>
+			<if test="userId!=null and userId!='%%'">
+				and ch.user_id = #{userId}
+			</if>
 			<if test="belongaccount!=null and belongaccount!='%%'">
 				and t.account like #{belongaccount} or u.phone like #{belongaccount}
 			</if>
@@ -548,6 +551,9 @@
 			</if>
 			<if test="username!=null and username!='%%'">
 				and u.name like #{username}
+			</if>
+			<if test="userId!=null and userId!='%%'">
+				and ch.user_id = #{userId}
 			</if>
 			<if test="belongaccount!=null and belongaccount!='%%'">
 				and t.account like #{belongaccount} or u.phone like #{belongaccount}

@@ -8,6 +8,11 @@
 	Integer userType = Integer.valueOf(request.getParameter("userType"));
 	LoginInfo loginInfo = LoginHelper.getLoginInfo(request, userType);
 	List<MarkVO> markList = (List<MarkVO>)request.getAttribute("markList");
+	Object userIdObj = request.getAttribute("userId");
+	String userId = null;
+	if(userIdObj!=null){
+		userId = (String)userIdObj;
+	}
 %>
 <!DOCTYPE html>
 <!-- cloud_host_manage.jsp -->
@@ -54,7 +59,7 @@
 	
 			<table id="cloud_host_datagrid" class="easyui-datagrid" title="用户云服务器管理"
 				data-options="
-					url: '<%=request.getContextPath()%>/bean/ajax.do?userType=<%=userType%>&bean=cloudHostService&method=queryCloudHost',
+					url: '<%=request.getContextPath()%>/bean/ajax.do?userType=<%=userType%>&bean=cloudHostService&method=queryCloudHost&user_id=<%=userId %>',
 					queryParams: {},
 					toolbar: '#toolbar',
 					rownumbers: true,

@@ -117,12 +117,11 @@
 
 															<div class="progress-list">
 																<div class="details">
-																	IP
+																	端口
 																	<small> 共${cp.count[1] }个/可用${cp.count[0] }个</small>
 																</div>
 																<div class="pull-right label label-green margin-top-10">
 																	<span class="animate-number"
-<%-- 																		data-value="使用率${cp.getIpUsageFormat() }" --%>
 																		data-animation-duration="1500">使用率${cp.getPortUsageFormat()
 																		}</span>%
 																</div>

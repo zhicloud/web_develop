@@ -116,6 +116,9 @@
 			<if test="markId!=null and markId!=''">
 				and m.id = #{markId}
 			</if>
+			<if test="userId!=null and userId!=''">
+				and vbi.user_id = #{userId}
+			</if>
 		</where>
 	</select>
 	 <select id="getAllVpc" resultMap="VpcBaseInfoVO">
@@ -156,6 +159,9 @@
 			</if>
 			<if test="markId!=null and markId!=''">
 				and m.id = #{markId}
+			</if>
+			<if test="userId!=null and userId!=''">
+				and vbi.user_id = #{userId}
 			</if>
 		</where>
 		order by vbi.display_name

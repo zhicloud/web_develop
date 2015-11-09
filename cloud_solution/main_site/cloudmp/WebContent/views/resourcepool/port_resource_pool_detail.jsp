@@ -124,7 +124,7 @@
                     
 					<div class="progress-list">
 						<div class="details">
-							IP
+							端口
 							<small> 共${cp.count[1] }个/可用${cp.count[0]}个</small>
 						</div>
 						<div class="pull-right label label-blue margin-top-10">
