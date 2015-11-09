@@ -3,6 +3,23 @@
 修改时间：2015/11/09
 修改人：周亚锋
 修改文件：
+cloud_service/manage_portal/op/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+
+新增文件：
+无
+删除文件：
+无
+
+主要变更：
+1.修改运营商主机列表部分主机状态不正确
+
+兼容性说明：
+无
+******************************************************
+版本号：版本号：【云端在线】verion(3.6)(build 20151109-1) 
+修改时间：2015/11/09
+修改人：周亚锋
+修改文件：
 cloud_service/manage_portal/op/WebContent/public/user/big_login.jsp
 cloud_service/manage_portal/op/WebContent/security/operator/cloud_disk_manage.jsp
 cloud_service/manage_portal/op/WebContent/security/operator/cloud_host_manage.jsp
