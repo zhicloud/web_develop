@@ -2650,9 +2650,11 @@ public class VpcServiceImpl extends BeanDirectCallableDefaultImpl implements Vpc
 		if (loginInfo.getUserType() == AppConstant.SYS_USER_TYPE_AGENT) {
 			return "/security/agent/vpc_manage.jsp";
 		}
+		String userId = request.getParameter("user_id");
 		MarkMapper markMapper = this.sqlSession.getMapper(MarkMapper.class);
 		List<MarkVO> markList = markMapper.getAll();
 		request.setAttribute("markList",markList);
+		request.setAttribute("userId",userId);
 		return "/security/operator/vpc_manage.jsp";
 	}
 	
@@ -2676,6 +2678,7 @@ public class VpcServiceImpl extends BeanDirectCallableDefaultImpl implements Vpc
 			String queryStatus = StringUtil.trim(request.getParameter("query_status"));
 			String vpcName = StringUtil.trim(request.getParameter("vpc_name"));
 			String region = StringUtil.trim(request.getParameter("region"));
+			String userId = StringUtil.trim(request.getParameter("user_id"));
 			Integer page = StringUtil.parseInteger(request.getParameter("page"), 1) - 1; // 前台过来的是从1开始，需要的是从0开始
 			Integer rows = StringUtil.parseInteger(request.getParameter("rows"), 10);
 			if ("0".equals(queryStatus)) {
@@ -2687,6 +2690,9 @@ public class VpcServiceImpl extends BeanDirectCallableDefaultImpl implements Vpc
 			if(StringUtil.isBlank(region)){
 				region = null;
 			}
+			if(userId!=null && "null".equals(userId)){
+            	userId = null;
+            }
 //			Calendar calendar = Calendar.getInstance();
 //			calendar.setTime(new Date());
 //			calendar.add(Calendar.DAY_OF_MONTH, -7);
@@ -2700,6 +2706,7 @@ public class VpcServiceImpl extends BeanDirectCallableDefaultImpl implements Vpc
 			condition.put("queryStatus", queryStatus);
 			condition.put("region", region);
 			condition.put("markId", queryMark);
+			condition.put("userId", userId);
 			int total = 0;
 			List<VpcBaseInfoVO> vpcList = null;
 			if (loginInfo.getUserType() == AppConstant.SYS_USER_TYPE_AGENT) {

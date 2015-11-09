@@ -75,6 +75,9 @@ left join terminal_user d on a.id = d.id) x) u
 			<if test="belongaccount!=null and belongaccount!='%%'">
 				and t.account like #{belongaccount}
 			</if>			
+			<if test="userId!=null and userId!='%%'">
+				and cd.user_id = #{userId}
+			</if>			
 		</where> 
 	</select>
 
@@ -175,6 +178,9 @@ left join terminal_user d on a.id = d.id) x) u
 			</if>
 			<if test="belongaccount!=null and belongaccount!='%%'">
 				and t.account like #{belongaccount}
+			</if>
+			<if test="userId!=null and userId!='%%'">
+				and cd.user_id = #{userId}
 			</if>				
 		</where>
 		order by create_time desc

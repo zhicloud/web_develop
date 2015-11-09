@@ -50,7 +50,7 @@
               
                 <input id="inputemail" autocomplete="off" name="account" type="text" onfocus="inputfocus('email');" onblur="inputblur('email'),checkAccount()" class="itext" style="background:#eef0f1"/>
                 <div class="itip" style="height:20px;">
-                  <label id="emaillabel" for="inputemail" class="ilabel" style="background:#eef0f1">输入邮箱</label>
+                  <label id="emaillabel" for="inputemail" class="ilabel" style="background:#eef0f1">输入邮箱/电话</label>
                   <span class="err" id="tip-account"></span> </div>
                 <input id="inputpassword" autocomplete="off" name="password" type="password" onpaste='return false' onfocus="inputfocus('password');" onblur="inputblur('password');checkPassword();" class="itext" style="background:#eef0f1"/>
                 <div class="itip" style="height:20px;">
@@ -83,12 +83,13 @@ var ajax = new RemoteCallUtil(a+"/bean/call.do?userType=4");
 function checkAccount() {
 	var account = new String($("#inputemail").val()).trim(); 
 	var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+	var preg = /^1[3|4|5|8][0-9]\d{8,8}$/;
 	if(account==null || account==""){
-		$("#tip-account").html("邮箱不能为空");
+		$("#tip-account").html("登录账号不能为空");
 		return false;
 	}
-	if(!myreg.test(account)){
-		$("#tip-account").html("邮箱格式不正确");
+	if((!myreg.test(account)) && (!preg.test(account))){
+		$("#tip-account").html("账号格式不正确");
 		return false;
 	}
 	if(account.length>30){

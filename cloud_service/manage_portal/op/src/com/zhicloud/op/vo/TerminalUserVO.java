@@ -70,7 +70,7 @@ public class TerminalUserVO implements JSONBean {
 	private Integer diskAmount; 
 	private String markName;
 	private String displayStatus;
- 	
+ 	private String lastOperTime;
 	
 	public BigDecimal getPercentOff() 
 	{
@@ -340,6 +340,14 @@ public class TerminalUserVO implements JSONBean {
     public void setDisplayStatus(String displayStatus) {
         this.displayStatus = displayStatus;
     }
+
+	public String getLastOperTime() {
+		return lastOperTime;
+	}
+
+	public void setLastOperTime(String lastOperTime) {
+		this.lastOperTime = lastOperTime;
+	}
 	
 	
 	
