@@ -151,6 +151,7 @@
                             </div>
                           </th>
                               <th class="sortable sort-alpha">名称</th>
+                              <th class="sortable sort-amount">云主名</th>
                               <th class="sortable sort-amount">云主机IP</th>
                               <th class="sortable sort-amount">所属服务器</th>
                               <th class="sortable sort-amount">带宽</th>
@@ -164,11 +165,12 @@
                     		<tr class="gradeX">
                     		<td>
 								<div class="checkbox check-transparent">
-								  <input type="checkbox" value="${qos_vos.id}_${qos_vos.uuid}_${qos_vos.inboundBandwidth}_${qos_vos.outboundBandwidth}" name="checkboxid" id="chck${qos_vos.id}" >
+								  <input type="checkbox" value="${qos_vos.uuid}" name="checkboxid" id="chck${qos_vos.id}" >
 								  <label for="chck${qos_vos.id}"></label>
 								</div>
                                 </td>
                                 <td class="cut">${qos_vos.name}</td>
+                                <td class="cut">${qos_vos.hostName}</td>
                                 <td class="cut">${qos_vos.ip}</td>
                                 <td class="cut">${qos_vos.serverIp}</td>
                                 <td class="cut">
