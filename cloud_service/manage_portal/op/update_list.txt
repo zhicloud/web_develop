@@ -1,4 +1,37 @@
 ******************************************************
+版本号：版本号：【云端在线】verion(3.6)(build 20151109-1) 
+修改时间：2015/11/09
+修改人：周亚锋
+修改文件：
+cloud_service/manage_portal/op/WebContent/public/user/big_login.jsp
+cloud_service/manage_portal/op/WebContent/security/operator/cloud_disk_manage.jsp
+cloud_service/manage_portal/op/WebContent/security/operator/cloud_host_manage.jsp
+cloud_service/manage_portal/op/WebContent/security/operator/terminal_user_manage.jsp
+cloud_service/manage_portal/op/WebContent/security/operator/vpc_manage.jsp
+cloud_service/manage_portal/op/WebContent/src/common/js/check.js
+cloud_service/manage_portal/op/WebContent/src/common/tpl/u_login.jsp
+cloud_service/manage_portal/op/src/com/zhicloud/op/mybatis/mapper/CloudDiskMapper.xml
+cloud_service/manage_portal/op/src/com/zhicloud/op/mybatis/mapper/CloudHostMapper.xml
+cloud_service/manage_portal/op/src/com/zhicloud/op/mybatis/mapper/SysUserMapper.xml
+cloud_service/manage_portal/op/src/com/zhicloud/op/mybatis/mapper/TerminalUserMapper.xml
+cloud_service/manage_portal/op/src/com/zhicloud/op/mybatis/mapper/VpcBaseInfoMapper.xml
+cloud_service/manage_portal/op/src/com/zhicloud/op/service/impl/CloudDiskServiceImpl.java
+cloud_service/manage_portal/op/src/com/zhicloud/op/service/impl/CloudHostServiceImpl.java
+cloud_service/manage_portal/op/src/com/zhicloud/op/service/impl/VpcServiceImpl.java
+cloud_service/manage_portal/op/src/com/zhicloud/op/vo/TerminalUserVO.java
+
+新增文件：
+无
+删除文件：
+无
+
+主要变更：
+1.添加手机号登录功能
+2.修改终端用于管理的部分内容
+
+兼容性说明：
+无
+******************************************************
 版本号：版本号：【云端在线】verion(3.6)(build 20151102-1) 
 修改时间：2015/11/02
 修改人：周亚锋
