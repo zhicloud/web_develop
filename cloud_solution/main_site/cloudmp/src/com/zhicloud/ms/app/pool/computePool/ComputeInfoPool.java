@@ -1,7 +1,10 @@
 package com.zhicloud.ms.app.pool.computePool;
 
 
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,5 +46,14 @@ public class ComputeInfoPool {
         ComputeInfoExt self = this.get(uuid);
 
         return self.clone();
+    }
+    
+    public List<ComputeInfoExt> getAll(){
+    	List<ComputeInfoExt> poolList = new ArrayList<>();
+    	Iterator<ComputeInfoExt> i = pool.values().iterator();
+    	while(i.hasNext()){
+    		poolList.add(i.next());
+    	}
+    	return poolList;
     }
 }
