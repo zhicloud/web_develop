@@ -128,14 +128,14 @@
                       </div>
                          
                       <div class="form-group">
-                        <label for="input01" class="col-sm-2 control-label">目的IP *</label>
+                        <label for="input01" class="col-sm-2 control-label">目的IP </label>
                         <div class="col-sm-4">
                           <input type="text" class="form-control" id="ip1" name="ip1"  parsley-trigger="change"  parsley-ip="true"   parsley-maxlength="50" parsley-validation-minlength="1">
                         </div>
                       </div>
                       
                       <div class="form-group">
-                        <label for="input01" class="col-sm-2 control-label">源IP *</label>
+                        <label for="input01" class="col-sm-2 control-label">源IP </label>
                         <div class="col-sm-4">
                           <input type="text" class="form-control" id="ip2" name="ip2"  parsley-trigger="change"  parsley-ip="true"  parsley-maxlength="50" parsley-validation-minlength="1">
                         </div>

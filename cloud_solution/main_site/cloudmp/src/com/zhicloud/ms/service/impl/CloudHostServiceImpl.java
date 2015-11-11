@@ -34,7 +34,6 @@ import com.zhicloud.ms.mapper.*;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.ICloudHostService;
 import com.zhicloud.ms.service.IOperLogService;
-import com.zhicloud.ms.service.ISysLogService;
 import com.zhicloud.ms.transform.util.TransFormLoginHelper;
 import com.zhicloud.ms.transform.util.TransFormLoginInfo;
 import com.zhicloud.ms.util.CapacityUtil;
@@ -43,17 +42,9 @@ import com.zhicloud.ms.util.RegionHelper;
 import com.zhicloud.ms.util.RegionHelper.RegionData;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.util.json.JSONLibUtil;
-import com.zhicloud.ms.vo.CloudHostConfigModel;
-import com.zhicloud.ms.vo.CloudHostVO;
-import com.zhicloud.ms.vo.OperLogVO;
-import com.zhicloud.ms.vo.SysDiskImageVO;
-import com.zhicloud.ms.vo.SysLogVO;
-import com.zhicloud.ms.vo.SysTenant;
-import com.zhicloud.ms.vo.SysUser;
-
+import com.zhicloud.ms.vo.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,7 +53,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.ConnectException;
@@ -1032,8 +1022,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
                             continue;
                         }
                         
-                        // 更新缓冲池的数据
-                        CloudHostPoolManager.getSingleton().updateRealCloudHost(regionData.getId(), host);
+                        
                         hostList.add(uuid);
                         
                         if (originalHostList != null && originalHostList.contains(uuid)) {
@@ -1049,6 +1038,9 @@ public class CloudHostServiceImpl implements ICloudHostService {
                             total++;
                             allHostNames.add(name);
                             _handleOrdinaryHostName(regionData.getId(), host);
+                        }else{
+                         // 更新缓冲池的数据
+                            CloudHostPoolManager.getSingleton().updateRealCloudHost(regionData.getId(), host);
                         }
                     }
                     logger.info(String.format("found new host. total[%s]: %s, region:[%s:%s]", total, allHostNames, regionData.getId(), regionData.getName()));
@@ -1174,7 +1166,11 @@ public class CloudHostServiceImpl implements ICloudHostService {
                 cloudHostMapper.updateRunningStatusByRealHostId(data);
                 CloudHostData myCloudHostData = CloudHostPoolManager.getCloudHostPool().getByRealHostId(cloudHost.getRealHostId());
 
-              //更新缓存主机状态
+                if(myCloudHostData == null ){
+                    myCloudHostData = new CloudHostData();
+                    myCloudHostData.setRealHostId(realHostId);
+                }
+                //更新缓存主机状态
                 CloudHostData newCloudHostData = myCloudHostData.clone();
                 newCloudHostData.setRunningStatus(AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING);
                 newCloudHostData.setLastStatus(AppConstant.CLOUD_HOST_RUNNING_STATUS_SHUTDOWN);
@@ -1392,7 +1388,13 @@ public class CloudHostServiceImpl implements ICloudHostService {
 			        cloudHostWarehouseMapper.updateWarehouseAmountForDeleteHost(host.getWarehouseId()); 
 			    }
 			}
-			cloudHostMapper.deleteById(id);
+            cloudHostMapper.deleteById(id);
+
+            // 删除关联的QoS规则
+            String[] uuids = new String[1];
+            uuids[0] = host.getRealHostId();
+            this.sqlSession.getMapper(QosMapper.class).deleteQosByHostUuids(uuids);
+
             operLogService.addLog("云主机", "删除云主机"+host.getDisplayName()+"成功", "1", "2", request);
 
 			return new MethodResult(MethodResult.SUCCESS, "删除成功");
@@ -1540,6 +1542,12 @@ public class CloudHostServiceImpl implements ICloudHostService {
                 }
             }
             cloudHostMapper.deleteById(id);
+
+            // 删除关联的QoS规则
+            String[] uuids = new String[1];
+            uuids[0] = host.getRealHostId();
+            this.sqlSession.getMapper(QosMapper.class).deleteQosByHostUuids(uuids);
+
             status = "删除成功";
             
         }
@@ -1879,11 +1887,11 @@ public class CloudHostServiceImpl implements ICloudHostService {
     * <p>Title: getDesktopCloudHostInTimerBackUpStart</p> 
     * <p>Description: </p> 
     * @return 
-    * @see com.zhicloud.ms.service.ICloudHostService#getCloudHostInTimerBackUpStart()
+    * @see com.zhicloud.ms.service.ICloudHostService#getCloudHostInTimerBackUpStart(java.lang.String)
      */
     public List<CloudHostVO> getCloudHostInTimerBackUpStart(String timerKey) {
         CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
-        return cloudHostMapper.getDesktopCloudHostInTimerBackUpStart(timerKey);
+        return cloudHostMapper.getCloudHostInTimerBackUpStart(timerKey);
     }
     /**
      * 获取规定条数的已关机的云桌面主机,且备份记录中的时间大于当前时间或者为null
@@ -1891,7 +1899,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
     * <p>Description: </p> 
     * @param limit
     * @return 
-    * @see com.zhicloud.ms.service.ICloudHostService#getDesktopCloudHostInTimerBackUpStop(java.lang.Integer, java.lang.String)
+    * @see com.zhicloud.ms.service.ICloudHostService#getCloudHostInTimerBackUpStop(java.lang.Integer, java.lang.String, java.lang.String)
      */
     public List<CloudHostVO> getCloudHostInTimerBackUpStop(Integer limit,String now,String timerKey) {
         CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
@@ -1899,7 +1907,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
         relateData.put("limit", limit);
         relateData.put("now", now);
         relateData.put("timerKey", timerKey);
-        return cloudHostMapper.getDesktopCloudHostInTimerBackUpStop(relateData);
+        return cloudHostMapper.getCloudHostInTimerBackUpStop(relateData);
     }
     /**
      * 更新参与定时任务的桌面云主机

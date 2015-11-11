@@ -1,5 +1,6 @@
 package com.zhicloud.ms.controller;
 
+import com.zhicloud.ms.app.pool.computePool.ComputeInfo;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.storage.StorageManager;
 import com.zhicloud.ms.app.pool.storage.StorageResult;
@@ -14,11 +15,12 @@ import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
-import com.zhicloud.ms.vo.*;
-
+import com.zhicloud.ms.vo.CloudHostVO;
+import com.zhicloud.ms.vo.IpPoolVO;
+import com.zhicloud.ms.vo.MountDiskVo;
+import com.zhicloud.ms.vo.PortPoolVO;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -70,7 +71,7 @@ public class ResourcePoolController {
             return "not_have_access";
         }
         try {
-            List<ComputerPoolVO> cList = new ArrayList<>();
+            List<ComputeInfo> cList = new ArrayList<>();
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){
                     JSONObject result = channel.computePoolQuery();
@@ -115,7 +116,7 @@ public class ResourcePoolController {
                         for(int j=0;j<hList.size();j++){
                             hcount[j] = hList.getInt(j);
                         }
-                        ComputerPoolVO computer = new ComputerPoolVO();
+                        ComputeInfoExt computer = computePoolService.getComputePoolDetailSync(uuid);
                         computer.setCpuCount(cpuCount);
                         computer.setCpuUsage(cpuUsage);
                         computer.setDiskUsage(diskUsage);
@@ -155,8 +156,8 @@ public class ResourcePoolController {
         }
         String searchName = request.getParameter("sn");
         try {
-            List<ComputerPoolDetailVO> cList = new ArrayList<>();
-            List<ComputerPoolDetailVO> curList = new ArrayList<>();
+            List<ComputeInfoExt> cList = new ArrayList<>();
+            List<ComputeInfoExt> curList = new ArrayList<>();
             String flag = "no";
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){
@@ -187,8 +188,8 @@ public class ResourcePoolController {
                         for(int j=0;j<diskList.size();j++){
                             dcount[j] = new BigInteger(diskList.getString(j));
                         }
-                        
-                        ComputerPoolDetailVO computer = new ComputerPoolDetailVO();
+
+                        ComputeInfoExt computer = new ComputeInfoExt();
                         computer.setCpuCount(cpuCount);
                         computer.setCpuUsage(cpuUsage);
                         computer.setDiskUsage(diskUsage);
@@ -201,7 +202,7 @@ public class ResourcePoolController {
                         cList.add(computer);
                     }
                     if(searchName!=null && searchName!="" && cList.size()>0){
-                        for(ComputerPoolDetailVO cp : cList){
+                        for(ComputeInfoExt cp : cList){
                             if(cp.getName()!=null && cp.getName().toLowerCase().contains(searchName.toLowerCase())){
                                 curList.add(cp);
                             }
@@ -339,9 +340,9 @@ public class ResourcePoolController {
      */
     @RequestMapping(value="/add",method=RequestMethod.GET)
     public String addResourcePool(Model model,HttpServletRequest request){
-//      if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_pool_add)){
-//          return "not_have_access";
-//      }
+      if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_pool_add)){
+          return "not_have_access";
+      }
         try {
             List<IpPoolVO> ipList = new ArrayList<>();
             List<PortPoolVO> portList = new ArrayList<>();
@@ -536,6 +537,9 @@ public class ResourcePoolController {
     @RequestMapping(value="/{uuid}/mod",method=RequestMethod.GET)
     public String modifyResourcePool(@PathVariable("uuid") String uuid, Model model, HttpServletRequest request)
         throws IOException {
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_pool_mod)){
+            return "not_have_access";
+        }
         try {
             HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
             ComputeInfoExt computeInfoExt = computePoolService.getComputePoolDetailSync(uuid);
@@ -548,8 +552,8 @@ public class ResourcePoolController {
 //
                 computeInfoExt.setMode0(computeInfoExt.getMode()[0]);
                 computeInfoExt.setMode1(computeInfoExt.getMode()[1]);
-                computeInfoExt.setMode2(computeInfoExt.getMode()[2]);
-                computeInfoExt.setMode3(computeInfoExt.getMode()[3]);
+//                computeInfoExt.setMode2(computeInfoExt.getMode()[2]);
+//                computeInfoExt.setMode3(computeInfoExt.getMode()[3]);
                 
                 List<IpPoolVO> ipList = new ArrayList<>();
                 List<PortPoolVO> portList = new ArrayList<>();
@@ -639,10 +643,6 @@ public class ResourcePoolController {
             String diskSource = computeInfoExt.getDiskSource();
             int mode0 = computeInfoExt.getMode0();
             int mode1 = computeInfoExt.getMode1();
-            int mode2 = computeInfoExt.getMode2();
-            int mode3 = computeInfoExt.getMode3();
-            String path = computeInfoExt.getPath();
-            String crypt = computeInfoExt.getCrypt();            
             if(StringUtil.isBlank(uuid)){
                 return new MethodResult(MethodResult.FAIL,"资源池uuid不能为空");
             }
@@ -667,6 +667,9 @@ public class ResourcePoolController {
             if(StringUtil.isBlank(String.valueOf(mode1))){
                 return new MethodResult(MethodResult.FAIL,"自动Qos选项不能为空");
             }
+            if(name.indexOf("desktop_pool_") == -1){
+                name = "desktop_pool_"+name;
+            }
 
             Map<String, Object> data = new LinkedHashMap<String, Object>();
             data.put("uuid", uuid);
@@ -677,10 +680,6 @@ public class ResourcePoolController {
             data.put("disk_source", diskSource);
             data.put("mode0", mode0);
             data.put("mode1", mode1);
-            data.put("mode2", mode2);
-            data.put("mode3", mode3);            
-            data.put("path", path);
-            data.put("crypt", crypt);
             MethodResult result = computePoolService.modifyComputePoolSync(data);
             if("success".equals(result.status)){
                 operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "1", request);
@@ -731,7 +730,7 @@ public class ResourcePoolController {
      */
     @RequestMapping(value="/{uuid}/an",method=RequestMethod.GET)
     public String addNodePage(@PathVariable("uuid") String uuid,Model model){
-        List<ComputerPoolDetailVO> curList = new ArrayList<>();
+        List<ComputeInfoExt> curList = new ArrayList<>();
         HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
         try {
             if(channel!=null){
@@ -744,7 +743,7 @@ public class ResourcePoolController {
                 for (int i = 0; i < computerList.size(); i ++) {
                     JSONObject computerObject = computerList.getJSONObject(i);
                     String name = computerObject.getString("name");
-                    ComputerPoolDetailVO computer = new ComputerPoolDetailVO();
+                    ComputeInfoExt computer = new ComputeInfoExt();
                     computer.setName(name);
                     curList.add(computer);
                 }

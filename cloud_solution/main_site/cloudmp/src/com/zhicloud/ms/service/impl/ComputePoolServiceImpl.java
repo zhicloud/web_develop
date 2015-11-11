@@ -5,12 +5,8 @@ import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
 import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.httpGateway.*;
-import com.zhicloud.ms.mapper.CloudHostMapper;
-import com.zhicloud.ms.mapper.CloudHostWarehouseMapper;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.IComputePoolService;
-import com.zhicloud.ms.vo.CloudHostVO;
-import com.zhicloud.ms.vo.CloudHostWarehouse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.ibatis.session.SqlSession;
@@ -209,15 +205,11 @@ public class ComputePoolServiceImpl implements IComputePoolService {
         String diskSource = StringUtil.trim(parameter.get("disk_source"));
         int mode0 = Integer.valueOf(StringUtil.trim(parameter.get("mode0")));
         int mode1 = Integer.valueOf(StringUtil.trim(parameter.get("mode1")));
-        int mode2 = Integer.valueOf(StringUtil.trim(parameter.get("mode2")));
-        int mode3 = Integer.valueOf(StringUtil.trim(parameter.get("mode3")));        
         String path = StringUtil.trim(parameter.get("path"));
         String crypt = StringUtil.trim(parameter.get("crypt"));
         Integer[] mode = new Integer[4];
         mode[0] = mode0;
         mode[1] = mode1;
-        mode[2] = mode2;
-        mode[3] = mode3;        
         int option = 0;
 
         String sessionId = null;

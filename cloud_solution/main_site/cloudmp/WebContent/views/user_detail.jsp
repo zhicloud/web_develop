@@ -119,6 +119,8 @@
                             <th class="sort-alpha">云主机名称</th>
                             <th class="sort-alpha">类型</th>
                             <th class="sort-amount">配置</th>
+                            <th class="sort-numeric">内网ip</th>
+                            <th class="sort-numeric">外网ip</th>
                             <th class="sort-numeric">分配状态</th>
 							<th class="sort-amount">分配时间</th>
                             <th class="sort-alpha">运行状态</th>  
@@ -137,6 +139,13 @@
                                   	${hostList.sysImageName}
                                   </td>
                                   <td>${hostList.cpuCore}核/${hostList.getMemoryText(0) }/${hostList.getDataDiskText(0) }/${hostList.getBandwidthText(0) }</td>
+                                  <td>${hostList.getInnerIp() }:${hostList.getInnerPort() } 
+                                  
+                                  </td> 
+                                  <td>
+                                          ${hostList.getOuterIpAndPort()}                                     
+                                   
+                                  </td>
                                   <td>
                                   	<c:if test="${hostList.userId!=null }">
                             		已分配
@@ -327,7 +336,7 @@
         "oLanguage": {
           "sSearch": "搜索"
         },
-        "aaSorting": [ [4,'desc']],
+        "aaSorting": [ [6,'desc']],
         "aoColumnDefs": [
                          { 'bSortable': false, 'aTargets': [ "no-sort" ] }
                        ], 

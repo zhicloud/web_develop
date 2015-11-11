@@ -138,13 +138,19 @@ public class InterfaceController {
 	        time = StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS");
 	    }
 		if(StringUtil.isBlank(username)){ 
+	        logger.info("terminal_box"+ip+" user "+username+" login fail ,user_name is required");
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "user_name is required"); 
+			return ;
 		}  
-		if(StringUtil.isBlank(password)){ 
+		if(StringUtil.isBlank(password)){
+	        logger.info("terminal_box"+ip+" user "+username+" login fail ,password is required");
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "password is required"); 
+			return ;
 		}  
-		if(userService.checkAvailable(username) && userService.checkAlias(username)){			
+		if(userService.checkAvailable(username) && userService.checkAlias(username)){
+	        logger.info("terminal_box"+ip+" user "+username+" login fail ,user_name is not exsit");
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "user_name is not exsit"); 
+			return ;
 		}
 		//查询用户信息
 		SysUser user = userService.checkTerminalLogin(request, response);
@@ -152,6 +158,7 @@ public class InterfaceController {
 		if(user != null){
 			TerminalUserVO terminalUser = terminalUserService.queryById(user.getId());
 			if(terminalUser == null){
+		        logger.info("terminal_box"+ip+" user "+username+" login fail ,user_name is not exsit");
 			    ServiceUtil.writeFailMessage(response.getOutputStream(), "user_name is not exsit"); 
 			    return ;
 			}
@@ -197,6 +204,7 @@ public class InterfaceController {
             info.setLastLoginTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
             info.setIp(ip);
             boxRealInfoService.addOrUpdateBoxInfo(info);
+            logger.info("terminal_box"+ip+" user "+username+" login success ,host list:"+hostList);
 			// 写反回流
 			ServiceUtil.writeJsonTo(response.getOutputStream(), result);
 			
@@ -271,24 +279,32 @@ public class InterfaceController {
 		 
 		if(StringUtil.isBlank(userName)){
 			//用户名为空
-			ServiceUtil.writeFailMessage(response.getOutputStream(), "user_name is required"); 
+		    logger.info("terminal_box user "+userName+" change password fail ,user_name is required");
+			ServiceUtil.writeFailMessage(response.getOutputStream(), "user_name is required");
+			return;
 		}
 		if(StringUtil.isBlank(oldPassword)){
 			//旧密码为空
+	          logger.info("terminal_box user "+userName+" change password fail ,password is required");
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "password is required"); 
+			return;
 		}
 		if(StringUtil.isBlank(newPassword)){
 			//新密码为空
+            logger.info("terminal_box user "+userName+" change password fail ,new_password is required");
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "new_password is required"); 
+			return;
 		}
 		//更新密码
 		else{ 
 			MethodResult resultInfo = userService.changePassword(request, response);
 			if(resultInfo != null){
 				if(resultInfo.isSuccess()){
+                    logger.info("terminal_box user "+userName+" change password success ,"+resultInfo.message);
 					ServiceUtil.writeSuccessMessage(response.getOutputStream(), "success");
 				}else{
 					Map<Object, Object> result = ServiceUtil.toFailObject(resultInfo.message);
+		            logger.info("terminal_box user "+userName+" change password fail ,"+resultInfo.message);
 	 				ServiceUtil.writeJsonTo(response.getOutputStream(), result);
 				}
 			}
@@ -319,19 +335,25 @@ public class InterfaceController {
 		String operatorType = StringUtil.trim(request.getParameter("operator_type"));
 		if(StringUtil.isBlank(cloudHostId)){
 			//参数有误
+            logger.info("terminal_box user operator host "+cloudHostId+" fail ,cloud_host_id is required");
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "cloud_host_id is required"); 
+			return ;
 		}
 		if(StringUtil.isBlank(operatorType)){
 			//参数有误
+            logger.info("terminal_box user operator host "+cloudHostId+" fail ,operator_type is required");
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "operator_type is required"); 
+			return ; 
 		}
 		
 		MethodResult resultInfo = cloudHostService.operatorCloudHost(cloudHostId, operatorType);
 		if(resultInfo != null){
 			if(resultInfo.isSuccess()){
+	             logger.info("terminal_box user operator host "+cloudHostId+" success ,"+resultInfo.message);
 				ServiceUtil.writeSuccessMessage(response.getOutputStream(), "success");
 			}else{
 				Map<Object, Object> result = ServiceUtil.toFailObject(resultInfo.message);
+	            logger.info("terminal_box user operator host "+cloudHostId+" fail ,"+resultInfo.message);
  				ServiceUtil.writeJsonTo(response.getOutputStream(), result);
 			}
 		}
@@ -360,21 +382,28 @@ public class InterfaceController {
 		String versionNumber = StringUtil.trim(request.getParameter("version_number"));	
 		if(StringUtil.isBlank(versionNumber)){
 			//参数有误
+            logger.info("terminal_box get version_number fail ,version_number is required");
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "version_number is required"); 
+			return ;
 		}
 		VersionRecordVO version = versionRecordService.getLatestVersion();
 		if(version == null || version.getVersionNumber().equals(versionNumber)){
  			result.put("need_update", false);	
+            logger.info("terminal_box get version_number success ,not need to update");
 			ServiceUtil.writeJsonTo(response.getOutputStream(), result);
+			return ;
 		}else if(version != null && version.getVersionNumber().compareTo(versionNumber)<=0){
 		    result.put("need_update", false); 
+            logger.info("terminal_box get version_number success ,not need to update");
             ServiceUtil.writeJsonTo(response.getOutputStream(), result);
+            return;
 		}
 		else{
 			result.put("need_update", true);	
 			result.put("download_id", version.getId());	
 			result.put("update_info", version.getUpdateInfo());	
 			result.put("latest_version_number", version.getVersionNumber());	
+            logger.info("terminal_box get version_number success , need to update,latest version number is "+version.getVersionNumber());
 			ServiceUtil.writeJsonTo(response.getOutputStream(), result);			
 		} 	 
 	}
@@ -506,6 +535,7 @@ public class InterfaceController {
 
         if(StringUtil.isBlank(hostId)){
             //参数有误
+            
             ServiceUtil.writeFailMessage(response.getOutputStream(), "host_id is required"); 
         }
         if(StringUtil.isBlank(runningStatus)){
@@ -540,12 +570,14 @@ public class InterfaceController {
         SysUser sysUser = userService.getUserInfoByName(username);
 
         if(sysUser == null){
-            ServiceUtil.writeFailMessage(response.getOutputStream(), "success");
+            logger.info("terminal_box user "+username+" keep alive fail, not find user information");
+            ServiceUtil.writeFailMessage(response.getOutputStream(), "fail");
             return;
         } 
         
         BoxRealInfoVO info = boxRealInfoService.getInfoByUserId(sysUser.getId());
         if(info == null){
+            logger.info("terminal_box user "+username+" keep alive fail, not find box real  information");
             ServiceUtil.writeFailMessage(response.getOutputStream(), "fail");
             return;
         } 
@@ -568,7 +600,8 @@ public class InterfaceController {
             infoDatas.add(infoData);
         }
          result.put("messages", infoDatas);
-        
+         
+        logger.info("terminal_box user "+username+" keep alive success, not find box real  information");
         // 写反回流
         ServiceUtil.writeJsonTo(response.getOutputStream(), result);
         
@@ -587,11 +620,13 @@ public class InterfaceController {
         SysUser sysUser = userService.getUserInfoByName(username);
 
         if(sysUser == null){
+            logger.info("terminal_box user "+username+" logout fail , not user information");
             ServiceUtil.writeFailMessage(response.getOutputStream(), "fail");
             return;
         } 
         BoxRealInfoVO info = boxRealInfoService.getInfoByUserId(sysUser.getId());
         if(info == null){
+            logger.info("terminal_box user "+username+" logout fail , not box real information");
             ServiceUtil.writeFailMessage(response.getOutputStream(), "fail");
             return;
         } 
@@ -599,6 +634,7 @@ public class InterfaceController {
         boxRealInfoService.addOrUpdateBoxInfo(info);
         
         // 写反回流
+        logger.info("terminal_box user "+username+" keep alive success, not find box real  information");
         ServiceUtil.writeFailMessage(response.getOutputStream(), "success"); 
         
 
@@ -661,28 +697,38 @@ public class InterfaceController {
 		 
 		if(StringUtil.isBlank(userName)){
 			//用户名为空
+            logger.info("terminal_box user "+userName+" msgfeedback fail, user_name is required");
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "user_name is required"); 
+			return ;
 		}
 		if(StringUtil.isBlank(password)){
 			//旧密码为空
+            logger.info("terminal_box user "+userName+" msgfeedback fail, password is required");
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "password is required"); 
+			return;
 		}
 		if(StringUtil.isBlank(content)){
 			//内容为空
+            logger.info("terminal_box user "+userName+" msgfeedback fail, content is required");
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "content is required"); 
+			return;
 		}
 		if(StringUtil.isBlank(type)){
 			//类型
+            logger.info("terminal_box user "+userName+" msgfeedback fail, type is required");
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "type is required"); 
+			return;
 		}
 		//插入反馈信息
 		else{ 
 			MethodResult resultInfo = clientMessageService.add(request, response);
 			if(resultInfo != null){
 				if(resultInfo.isSuccess()){
+		            logger.info("terminal_box user "+userName+" msgfeedback success");
 					ServiceUtil.writeSuccessMessage(response.getOutputStream(), "success");
 				}else{
 					Map<Object, Object> result = ServiceUtil.toFailObject(resultInfo.message);
+	                logger.info("terminal_box user "+userName+" msgfeedback fail ,"+resultInfo.message);
 	 				ServiceUtil.writeJsonTo(response.getOutputStream(), result);
 				}
 			}
