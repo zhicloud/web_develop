@@ -3,10 +3,10 @@ package com.zhicloud.ms.mapper;
 import java.util.List;
 import java.util.Map;
 
-import com.zhicloud.ms.vo.BalancerConfigVO;
+import com.zhicloud.ms.vo.BalancerForwardVO;
 
 
-public interface BalancerConfigMapper {
+public interface BalancerForwardMapper {
 	
     /**
      * 添加负载均衡器配置
@@ -26,7 +26,7 @@ public interface BalancerConfigMapper {
      * 查询所有负载均衡器配置
      * @return
      */
-    public List<BalancerConfigVO> getAll();
+    public List<BalancerForwardVO> getAll();
     
     
     /**
@@ -34,13 +34,13 @@ public interface BalancerConfigMapper {
      * @param id
      * @return
      */
-    public BalancerConfigVO getById(String id);
+    public BalancerForwardVO getById(String id);
     
     /**
      * 通过主机id查询负载均衡器配置
      * @param hostId
      * @return
      */
-    public BalancerConfigVO getByHostId(String hostId);
+    public BalancerForwardVO getByHostId(String hostId);
 }
 
