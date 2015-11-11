@@ -1,5 +1,127 @@
 ****************************************************** 
-版本号：版本号：【云平台web】verion(2.0)(build 20151104-2)
+版本号：版本号：【云平台web】verion(2.0)(build 20151111-1)
+修改时间：2015/11/11
+修改人：周亚锋
+修改文件：
+/cloudmp/WebContent/views/server/server_manage_diagram.jsp
+
+新增文件：
+
+主要变更：
+1.服务器资源监控的主机信息添加更多内容
+
+兼容性说明：
+无
+****************************************************** 
+版本号：版本号：【云桌面web】verion(2.0)(build 20151104-1)
+ 修改时间：2015/11/06 
+修改人：张翔
+
+ 修改文件：
+ cloud_solution/main_site/cloudmp/WebContent/views/qos/qos_add.jsp
+ cloud_solution/main_site/cloudmp/WebContent/views/qos/qos_manage.jsp
+ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/QosController.java
+ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/QosMapper.java
+ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostServiceImpl.java 
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/QosServiceImpl.java
+ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/QosVO.java 
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/QosMapper.xml  
+
+新增文件： 
+无
+
+  删除文件: 
+无  
+
+主要变更： 
+1. 修复云服务器删除相关QoS规则自动删除问题
+
+  兼容性说明：
+ 无
+
+******************************************************
+版本号：版本号：【云平台web】verion(2.0)(build 20151106-2)
+修改时间：2015/11/06
+修改人：梁绍辉
+修改文件：
+/cloudmp/WebContent/views/resourcepool/all_port_resource_pool_manage.jsp
+/cloudmp/WebContent/views/resourcepool/ip_resource_pool_detail_add.jsp
+/cloudmp/WebContent/views/resourcepool/port_resource_pool_detail_add.jsp
+/cloudmp/WebContent/views/resourcepool/port_resource_pool_detail.jsp
+
+新增文件：
+
+主要变更：
+1.端口管理UI处理：IP地址格式限定，IP->端口
+2.地址管理UI处理：IP地址格式限定
+
+兼容性说明：
+无
+******************************************************
+版本号：版本号：【云桌面web】verion(2.0)(build 20151104-1)
+修改时间：2015/11/06
+修改人：吴莉莎
+修改文件：  
+InterfaceController.java
+新增文件：
+无
+
+删除文件:
+无
+ 
+主要变更：
+1. 终端盒子的api添加日志
+
+兼容性说明：
+无 
+******************************************************
+版本号：版本号：【云桌面web】verion(2.0)(build 20151104-1)
+修改时间：2015/11/04
+修改人：张翔
+修改文件： 
+ResourcePoolController.java
+CloudHostVO.java
+app-properties.xml
+
+新增文件：
+无
+
+删除文件:
+无
+ 
+主要变更：
+1.修复计算资源池修改问题
+2.写版本号进配置文件
+
+兼容性说明：
+无
+******************************************************
+版本号：版本号：【云桌面web】verion(2.0)(build 20151104-1)
+修改时间：2015/11/04
+修改人：张翔
+修改文件： 
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/app/pool/computePool/ComputeInfoExt.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/ResourcePoolController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/ServerResourcePoolController.java
+cloud_solution/main_site/cloudmp/WebContent/views/resource_pool_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/server_resource_pool_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/resourcepool/resource_pool_add.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/resourcepool/resource_pool_mod.jsp
+
+新增文件：
+无
+
+删除文件:
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/ComputerPoolDetailVO.java
+
+主要变更：
+1.修复计算资源池显示问题
+
+兼容性说明：
+无
+
+******************************************************
+版本号：版本号：【云平台web】verion(2.0)(build 20151104-1)
 修改时间：2015/11/04
 修改人：周亚锋
 修改文件：

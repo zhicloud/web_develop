@@ -82,7 +82,7 @@
            	 
             </td>
             <td></td>
-            <td></td>
+            <td>uuid：${realId}</td>
           </tr>
           <tr>
             <td>状态：${server.getSummarizedStatusText() }</td>
@@ -90,10 +90,27 @@
             <td>镜像名：${server.sysImageName }</td>
           </tr>
           <tr>
+            <td>系统用户名：${server.account }</td>
+            <td></td>
+            <td>系统密码：${server.password }</td>
+          </tr>
+          <tr>
             <td>外网IP：${server.outerIp }    
             </td>
             <td></td>
-            <td>创建时间：<fmt:formatDate value="${server.curCreateDate }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+            <td>外网端口：${server.outerPort }</td>
+          </tr>
+          <tr>
+            <td>内网IP：${server.innerIp }    
+            </td>
+            <td></td>
+            <td>内网端口：${server.innerPort }</td>
+          </tr>
+          <tr>
+            <td>创建时间：<fmt:formatDate value="${server.curCreateDate }" pattern="yyyy-MM-dd HH:mm:ss"/>
+            </td>
+            <td></td>
+            <td></td>
           </tr>
         </table>
       </div>
