@@ -494,6 +494,7 @@
 			ch.monthly_price,
 			ch.inactivate_time,
 			ch.sys_image_name,
+			config.process_status,
 			u.name username,
 			m.name markname	,
 			t.account belong_account,
