@@ -121,7 +121,7 @@ public class CloudHostPoolManager {
 	 * @param realCloudHost
 	 * @return
 	 */
-	public boolean updateRealCloudHost(int region, JSONObject realCloudHost) {
+	public boolean updateRealCloudHost(int region, JSONObject realCloudHost,CloudHostVO host) {
 		String uuid = JSONLibUtil.getString(realCloudHost, "uuid");
 		String name = JSONLibUtil.getString(realCloudHost, "name");
 		Integer cpuCount = JSONLibUtil.getInteger(realCloudHost, "cpu_count");
@@ -158,7 +158,7 @@ public class CloudHostPoolManager {
 		newCloudHostData.setLastOperStatus(0);
 		
 		// 如果running_status变了，则更新数据库
-        if (oldCloudHostData == null || (oldCloudHostData != null && NumberUtil.equals(newCloudHostData.getRunningStatus(), oldCloudHostData.getRunningStatus()) == false)) {
+        if (oldCloudHostData == null || (host != null && oldCloudHostData != null && NumberUtil.equals(newCloudHostData.getRunningStatus(), oldCloudHostData.getRunningStatus()) == false)) {
             boolean update_flag = true;
 //            if(oldCloudHostData.getRunningStatus() == AppConstant.CLOUD_HOST_RUNNING_STATUS_SHUTINGDOWM && newCloudHostData.getRunningStatus() == AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING){             
 //                if(oldCloudHostData.getLastOperTime() != null){

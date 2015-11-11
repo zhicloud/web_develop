@@ -996,6 +996,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
                     }
                     
                     JSONArray hosts = (JSONArray) hostQueryResult.get("hosts");
+                    logger.info(hosts);
                     // 连接region成功后，维护该region的云主机资源监控信息
                     HostMonitorInfo hostMonitorInfo = HostMonitorInfoManager.singleton().getHostMonitorInfo(regionData.getId());
                     if (hostMonitorInfo == null) {
@@ -1038,10 +1039,9 @@ public class CloudHostServiceImpl implements ICloudHostService {
                             total++;
                             allHostNames.add(name);
                             _handleOrdinaryHostName(regionData.getId(), host);
-                        }else{
-                         // 更新缓冲池的数据
-                            CloudHostPoolManager.getSingleton().updateRealCloudHost(regionData.getId(), host);
                         }
+                         // 更新缓冲池的数据
+                        CloudHostPoolManager.getSingleton().updateRealCloudHost(regionData.getId(), host,cloudHost); 
                     }
                     logger.info(String.format("found new host. total[%s]: %s, region:[%s:%s]", total, allHostNames, regionData.getId(), regionData.getName()));
                     
