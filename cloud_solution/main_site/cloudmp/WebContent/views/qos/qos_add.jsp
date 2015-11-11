@@ -140,7 +140,7 @@
                                                         <select class="chosen-select chosen-transparent form-control" id = "uuid" name="uuid" parsley-trigger="change" parsley-required="true" parsley-error-container="#select_host">
                                                             <option value="">请选择云主机</option>
                                                             <c:forEach items="${cloud_host_vo_list }" var="cloud_host_vo">
-                                                                <option value="${cloud_host_vo.realHostId}">${cloud_host_vo.displayName}</option>
+                                                                <option value="${cloud_host_vo.realHostId};${cloud_host_vo.displayName}">${cloud_host_vo.displayName}</option>
                                                             </c:forEach>
                                                         </select>
                                                     </div>

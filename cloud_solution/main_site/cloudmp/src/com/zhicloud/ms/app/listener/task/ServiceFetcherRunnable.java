@@ -69,7 +69,7 @@ public class ServiceFetcherRunnable implements Runnable {
 						int port = serv.getInt("port");
 						int status = serv.getInt("status");
 						String version = serv.getString("version");
-            int diskType = serv.getInt("disk_type");
+//            int diskType = serv.getInt("disk_type");
 
 						ServiceInfoExt serviceInfo = pool.get(name);
 						if (serviceInfo == null) {
@@ -84,7 +84,7 @@ public class ServiceFetcherRunnable implements Runnable {
 							serviceInfo.setPort(port);
 							serviceInfo.setStatus(status);
 							serviceInfo.setVersion(version);
-              serviceInfo.setDiskType(diskType);
+//              serviceInfo.setDiskType(diskType);
 							serviceInfo.updateTime();
 							
 						}

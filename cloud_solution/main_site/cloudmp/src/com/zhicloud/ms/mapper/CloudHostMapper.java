@@ -241,17 +241,17 @@ public interface CloudHostMapper {
 	* @return List<CloudHostVO>     
 	* @throws
 	 */
-    public List<CloudHostVO> getDesktopCloudHostInTimerBackUpStart(String timerKey);
+    public List<CloudHostVO> getCloudHostInTimerBackUpStart(String timerKey);
     /**
      * 
-    * @Title: getDesktopCloudHostInTimerBackUpStop 
+    * @Title: getCloudHostInTimerBackUpStop 
     * @Description: 获取规定条数以内的主机
     * @param @param condition
     * @param @return      
     * @return List<CloudHostVO>     
     * @throws
      */
-    public List<CloudHostVO> getDesktopCloudHostInTimerBackUpStop(Map<String,Object> condition);
+    public List<CloudHostVO> getCloudHostInTimerBackUpStop(Map<String,Object> condition);
     
     /**
      * 

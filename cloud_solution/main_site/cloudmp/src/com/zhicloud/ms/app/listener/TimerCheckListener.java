@@ -37,7 +37,7 @@ public class TimerCheckListener implements ServletContextListener{
         // 仓库检查数值正确性的定时器
         logger.debug("CloudHostWarehouseListener.init()");   
         //用于设置新的出发时间
-       String time = "30 34 * * * ?";
+       String time = "30 28 * * * ?";
         try {
            JobDetail jdCheck = QuartzManage.getQuartzManage().getScheduler().getJobDetail(new JobKey(AppConstant.WAREHOUSE_CHECK_COUNT_QUARTZ_ID,"groupJob"));           
                //没有任务则添加任务
