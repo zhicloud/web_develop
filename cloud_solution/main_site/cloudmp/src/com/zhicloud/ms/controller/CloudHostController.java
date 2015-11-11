@@ -27,8 +27,10 @@ import com.zhicloud.ms.vo.BackUpDetailVO;
 import com.zhicloud.ms.vo.CloudHostVO;
 import com.zhicloud.ms.vo.CloudHostWarehouse;
 import com.zhicloud.ms.vo.SysDiskImageVO;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +38,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -1062,4 +1065,22 @@ public class CloudHostController {
             throw new AppException(e);
         }
     }
+    
+    @RequestMapping(value="/{id}/diagram",method=RequestMethod.GET)
+	public String serverDiagramPage(@PathVariable("id") String id,Model model,HttpServletRequest request){
+		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_diagram)){
+			return "not_have_access";
+		}
+		CloudHostVO server = cloudHostService.getByRealHostId(id);
+		model.addAttribute("server", server);
+		model.addAttribute("realId",id);
+		return "host_manage_diagram";
+	}
+    
+    @RequestMapping(value="/refreshData",method=RequestMethod.POST)
+	@ResponseBody
+	public CloudHostData refreshData(@RequestParam("id") String id){
+		CloudHostData cloudHostData = cloudHostService.refreshData(id);
+		return cloudHostData;
+	}
 }

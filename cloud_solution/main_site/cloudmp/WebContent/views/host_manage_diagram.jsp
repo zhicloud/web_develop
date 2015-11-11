@@ -197,7 +197,7 @@
 	self.si = window.setInterval(refreshData,2000);
 	function refreshData(){ 
 		jQuery.ajax({
-	        url: '<%=request.getContextPath()%>/cloudserver/refreshData',
+	        url: '<%=request.getContextPath()%>/warehouse/cloudhost/refreshData',
 	        type: 'post', 
 	        dataType: 'json',
 	        async:false,
