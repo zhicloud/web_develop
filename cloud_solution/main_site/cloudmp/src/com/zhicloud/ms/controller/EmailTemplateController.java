@@ -200,7 +200,7 @@ public class EmailTemplateController {
         ids.add(id);
 
         if(MethodResult.SUCCESS.equals(emailTemplateService.removeTemplateByIds(ids).status)) {
-            operLogService.addLog("邮件模板", "删除邮件模板失败", "1", "1", request);
+            operLogService.addLog("邮件模板", "删除邮件模板成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"删除成功");
         }
         operLogService.addLog("邮件模板", "删除邮件模板失败", "1", "2", request);
