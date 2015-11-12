@@ -3,6 +3,22 @@
 修改时间：2015/11/12
 修改人：张翔
 修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/resource_pool_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/server_resource_pool_manage.jsp
+
+新增文件：
+
+主要变更：
+1.计算资源池显示是否开启高可用和QoS
+
+兼容性说明：
+无
+
+******************************************************
+版本号：版本号：【云桌面web】verion(2.0)(build 20151112-1)
+修改时间：2015/11/12
+修改人：张翔
+修改文件：
 cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/EmailTemplateController.java
 
 新增文件：
