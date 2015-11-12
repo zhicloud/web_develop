@@ -1,4 +1,20 @@
-****************************************************** 
+******************************************************
+版本号：版本号：【云桌面web】verion(2.0)(build 20151111-1)
+修改时间：2015/11/11
+修改人：张翔
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/assets/js/vendor/parsley/parsley.min.js
+cloud_solution/main_site/cloudmp/WebContent/views/transform/admin/system_user_edit.jsp
+
+新增文件：
+
+主要变更：
+1.修复账号中文验证问题
+
+兼容性说明：
+无
+
+****************************************************** 
 版本号：版本号：【云平台web】verion(2.0)(build 20151111-1)
 修改时间：2015/11/11
 修改人：周亚锋
@@ -12,6 +28,7 @@
 
 兼容性说明：
 无
+
 ****************************************************** 
 版本号：版本号：【云桌面web】verion(2.0)(build 20151104-1)
  修改时间：2015/11/06 
@@ -57,6 +74,7 @@ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/QosMapper.xml  
 
 兼容性说明：
 无
+
 ******************************************************
 版本号：版本号：【云桌面web】verion(2.0)(build 20151104-1)
 修改时间：2015/11/06
@@ -73,7 +91,8 @@ InterfaceController.java
 1. 终端盒子的api添加日志
 
 兼容性说明：
-无 
+无
+
 ******************************************************
 版本号：版本号：【云桌面web】verion(2.0)(build 20151104-1)
 修改时间：2015/11/04
@@ -95,6 +114,7 @@ app-properties.xml
 
 兼容性说明：
 无
+
 ******************************************************
 版本号：版本号：【云桌面web】verion(2.0)(build 20151104-1)
 修改时间：2015/11/04
@@ -144,6 +164,7 @@ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/ComputerPoolDetailVO.jav
 
 兼容性说明：
 无
+
 ****************************************************** 
 版本号：版本号：【云平台web】verion(2.0)(build 20151103-2)
 修改时间：2015/11/03
@@ -189,6 +210,7 @@ CloudHostPoolManager.java
 
 兼容性说明：
 无
+
 ******************************************************
  
 版本号：版本号：【云平台web】verion(2.0)(build 20151102-1)
@@ -237,6 +259,7 @@ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/BalancerServiceVO.java
 
 兼容性说明：
 无
+
 ******************************************************
  
 版本号：版本号：【云平台web】verion(2.0)(build 20151102-1)
@@ -285,6 +308,7 @@ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/BalancerServiceVO.java
 
 兼容性说明：
 无
+
 ******************************************************
  
 版本号：版本号：【云平台web】verion(2.0)(build 20151102-1)
@@ -338,6 +362,7 @@ webuploader.css
 
 兼容性说明：
 无
+
 ******************************************************
  
 版本号：版本号：【云平台web】verion(2.0)(build 20151030-1)
