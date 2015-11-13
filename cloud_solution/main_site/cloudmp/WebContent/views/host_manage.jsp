@@ -268,6 +268,9 @@
 			                              <li><a href="javascript:void(0);" onclick="updateHostBtn('${hostList.id }','2');">配置修改</a></li>
 			                              <li><a href="javascript:void(0);" onclick="diskManageBtn('${hostList.id }');">磁盘管理</a></li>
 		                                 </c:if>
+		                                 <c:if test="${hostList.realHostId!=null}">
+		                                 	<li><a href="javascript:void(0);" onclick="hostDiagramBtn('${hostList.realHostId }');">资源监控</a></li>
+		                                 </c:if>
 		                              <li><a href="javascript:void(0);" onclick="deleteHostBtn('${hostList.id }');" >删除</a></li>
 		                             </c:if>  
                                   </ul>
@@ -611,6 +614,10 @@
     	$("#confirmcontent").html("确定要强制重启该主机吗？");
     	$("#confirm_btn").attr("onclick","resetHost();");
     	$("#con").click();
+    }
+  //资源监控
+    function hostDiagramBtn(id){
+    	window.location.href = path+"/warehouse/cloudhost/"+id+"/diagram";
     }
     //备份与恢复
     function backupHostBtn(id){

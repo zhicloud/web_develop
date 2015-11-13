@@ -187,6 +187,9 @@
 			                              <li><a href="javascript:void(0);" cur_id="${hostList.id }" class="shutdown_host_btn" >关机</a></li>
 			                              <li><a href="javascript:void(0);" cur_id="${hostList.id }" class="restart_host_btn" >重启</a></li>
 		                                 </c:if>
+		                                 <c:if test="${hostList.realHostId!=null}">
+		                                 	<li><a href="javascript:void(0);" onclick="hostDiagramBtn('${hostList.realHostId }');">资源监控</a></li>
+		                                 </c:if>
 		                              <li><a href="javascript:void(0);" cur_id="${hostList.id }" class="delete_one_host_btn" >解除绑定</a></li>                          	
 		                             </c:if>  
                                   </ul>
@@ -477,6 +480,10 @@
 	    });
        
     })
+    //资源监控
+    function hostDiagramBtn(id){
+    	window.location.href = path+"/user/"+id+"/diagram";
+    }
       function deleteHost(){
     	jQuery.get(path + "/warehouse/cloudhost/"+currentId+"/disassociation",function(data){
 			if(data.status == "success"){   
