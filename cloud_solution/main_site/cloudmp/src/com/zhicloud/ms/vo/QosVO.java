@@ -16,6 +16,7 @@ public class QosVO {
 
     private String id;                      //ID
     private String uuid;                    //云主机真实ID
+    private String hostName;                //云主机名
     private String name;                    //规则名
     private int type;                    //1：云桌面 2：云服务器 3：专属云
     private String ip;                      //云主机IP
@@ -45,6 +46,14 @@ public class QosVO {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public String getHostName() {
+        return hostName;
+    }
+
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
     }
 
     public String getName() {
@@ -167,5 +176,5 @@ public class QosVO {
         }
         return priority_name;
     }
-    
+
 }

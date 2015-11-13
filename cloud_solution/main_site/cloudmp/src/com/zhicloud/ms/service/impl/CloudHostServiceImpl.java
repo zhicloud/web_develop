@@ -1406,7 +1406,11 @@ public class CloudHostServiceImpl implements ICloudHostService {
 			        cloudHostWarehouseMapper.updateWarehouseAmountForDeleteHost(host.getWarehouseId()); 
 			    }
 			}
-			cloudHostMapper.deleteById(id);
+            cloudHostMapper.deleteById(id);
+            // 删除关联的QoS规则
+            String[] uuids = new String[1];
+            uuids[0] = host.getRealHostId();
+            this.sqlSession.getMapper(QosMapper.class).deleteQosByHostUuids(uuids);
             operLogService.addLog("云主机", "删除云主机"+host.getDisplayName()+"成功", "1", "2", request);
 
 			return new MethodResult(MethodResult.SUCCESS, "删除成功");
@@ -1554,6 +1558,10 @@ public class CloudHostServiceImpl implements ICloudHostService {
                 }
             }
             cloudHostMapper.deleteById(id);
+            // 删除关联的QoS规则
+            String[] uuids = new String[1];
+            uuids[0] = host.getRealHostId();
+            this.sqlSession.getMapper(QosMapper.class).deleteQosByHostUuids(uuids);
             status = "删除成功";
             
         }
