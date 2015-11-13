@@ -1,6 +1,7 @@
 package com.zhicloud.ms.controller;
 
 import com.zhicloud.ms.app.helper.AppHelper;
+import com.zhicloud.ms.app.pool.CloudHostData;
 import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.exception.AppException;
 import com.zhicloud.ms.remote.MethodResult;
@@ -9,6 +10,7 @@ import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.*;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.*;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -587,5 +590,23 @@ public class UserController {
               operLogService.addLog("终端盒子", "回收盒子失败", "1", "2", request);
         }
 		return mr;
+	}
+	
+	@RequestMapping(value="/{id}/diagram",method=RequestMethod.GET)
+	public String serverDiagramPage(@PathVariable("id") String id,Model model,HttpServletRequest request){
+		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_user_host_diagram)){
+			return "not_have_access";
+		}
+		CloudHostVO server = cloudHostService.getByRealHostId(id);
+		model.addAttribute("server", server);
+		model.addAttribute("realId",id);
+		return "user_host_diagram";
+	}
+    
+    @RequestMapping(value="/refreshData",method=RequestMethod.POST)
+	@ResponseBody
+	public CloudHostData refreshData(@RequestParam("id") String id){
+		CloudHostData cloudHostData = cloudHostService.refreshData(id);
+		return cloudHostData;
 	}
 }

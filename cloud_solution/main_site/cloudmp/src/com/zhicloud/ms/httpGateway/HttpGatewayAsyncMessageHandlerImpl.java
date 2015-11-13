@@ -230,6 +230,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 	@HttpGatewayMessageHandler(messageType = "system_monitor_data")
 	public Map<String, String> systemMonitorData(HttpGatewayAsyncChannel channel, JSONObject messageData) {
 		logger.debug("start to process system monitor data.");
+//		logger.info("httpgateway-->systemMonitorData excution");
 		PlatformResourceMonitorVO resource = new PlatformResourceMonitorVO();
 		DecimalFormat    df   = new DecimalFormat("######0.00");   
 		int task = messageData.getInt("task");//监控任务id

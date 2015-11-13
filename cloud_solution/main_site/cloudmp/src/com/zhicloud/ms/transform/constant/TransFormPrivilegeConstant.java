@@ -94,6 +94,7 @@ public class TransFormPrivilegeConstant {
     public static final String desktop_user_modify = "desktop_user_modify";     //修改用户
     public static final String desktop_user_delete = "desktop_user_delete";     //删除用户
     public static final String desktop_user_allocate_host = "desktop_user_allocate_host";     //分配主机
+    public static final String desktop_user_host_diagram = "desktop_user_host_diagram";     //用户主机资源监控
     public static final String desktop_user_reset_password = "desktop_user_reset_password";     //重置密码
     public static final String desktop_user_modify_usb = "desktop_user_modify_usb";     //修改USB权限
     public static final String desktop_user_modify_status = "desktop_user_modify_status";     //修改用户状态
