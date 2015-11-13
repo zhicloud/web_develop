@@ -1263,7 +1263,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
                                                             cloudHostVO.getPoolId(), 
                                                             cloudHostVO.getCpuCore(), 
                                                             cloudHostVO.getMemory(), 
-                                                            new Integer[]{1, 1, 0},     // options
+                                                            new Integer[]{1, 1, 0 ,0,1},     // options
                                                             sysDiskImageVO.getRealImageId(), 
                                                             new BigInteger[]{ cloudHostVO.getSysDisk(), cloudHostVO.getDataDisk() }, 
                                                             new Integer[]{}, 
