@@ -84,13 +84,14 @@ import com.zhicloud.ms.vo.TerminalUserVO;
 			result = chwMapper.addWarehouse(condition);
 			if(result>0){
 				CloudHostConfigModel chcm = chcmMapper.getById(chw.getCloudHostConfigModelId());
+				String random = RandomPassword.getRandomPwd(3).toUpperCase();
 				for(int i=0;i<chw.getTotalAmount();i++){
 					Map<String,Object> cloudHostData = new HashMap<String,Object>();
 					String id = StringUtil.generateUUID();
 					cloudHostData.put("id",id);
 					cloudHostData.put("warehouseId",warehouseId);
 					cloudHostData.put("hostName",id+i);
-					cloudHostData.put("displayName",chw.getName()+i);
+					cloudHostData.put("displayName",chw.getName()+"-"+random+"-"+i);
 					cloudHostData.put("account","warehouse");
 					cloudHostData.put("password",RandomPassword.getRandomPwd(16));
 					cloudHostData.put("cpuCore",chcm.getCpuCore());
@@ -249,6 +250,7 @@ import com.zhicloud.ms.vo.TerminalUserVO;
 		if(n>0){
 			Integer oldTotalAmount = chw.getTotalAmount();
 			CloudHostConfigModel chcm = chcmMapper.getById(chw.getCloudHostConfigModelId());
+			String random = RandomPassword.getRandomPwd(3).toUpperCase();
 			for(int i=0;i<myAddAmount;i++){
 				Integer curIndex = oldTotalAmount+i;
 				Map<String,Object> cloudHostData = new HashMap<String,Object>();
@@ -256,7 +258,7 @@ import com.zhicloud.ms.vo.TerminalUserVO;
 				cloudHostData.put("id",curId);
 				cloudHostData.put("warehouseId",chw.getId());
 				cloudHostData.put("hostName",curId+curIndex);
-				cloudHostData.put("displayName",chw.getName()+curIndex);
+				cloudHostData.put("displayName",chw.getName()+"-"+random+"-"+curIndex);
 				cloudHostData.put("account","warehouse");
 				cloudHostData.put("password",RandomPassword.getRandomPwd(16));
 				cloudHostData.put("cpuCore",chcm.getCpuCore());
