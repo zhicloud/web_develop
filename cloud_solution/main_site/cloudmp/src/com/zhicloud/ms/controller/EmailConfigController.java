@@ -31,8 +31,8 @@ public class EmailConfigController {
 
     @Resource
     private IEmailConfigService emailConfigService;
-    
-    
+
+
     @Resource
     private IOperLogService operLogService;
 
@@ -104,10 +104,10 @@ public class EmailConfigController {
         data.put("sender_address", emailConfigVO.getSenderAddress());
         data.put("password", emailConfigVO.getPassword());
         if(MethodResult.SUCCESS.equals(emailConfigService.addConfig(data).status)) {
-            operLogService.addLog("短信模板", "新增短信模板成功", "1", "1", request);
+            operLogService.addLog("邮件配置", "新增邮件配置成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"创建成功");
         }
-        operLogService.addLog("短信模板", "新增短信模板失败", "1", "2", request);
+        operLogService.addLog("邮件配置", "新增邮件配置失败", "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"创建失败");
 
     }
@@ -155,10 +155,10 @@ public class EmailConfigController {
         data.put("sender_address", emailConfigVO.getSenderAddress());
         data.put("password", emailConfigVO.getPassword());
         if(MethodResult.SUCCESS.equals(emailConfigService.modifyConfigById(data).status)) {
-            operLogService.addLog("短信模板", "修改短信模板成功", "1", "1", request);
+            operLogService.addLog("邮件配置", "修改邮件配置成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"修改成功");
         }
-        operLogService.addLog("短信模板", "修改短信模板成功", "1", "2", request);
+        operLogService.addLog("邮件配置", "修改邮件配置成功", "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"修改失败");
     }
 
@@ -178,10 +178,10 @@ public class EmailConfigController {
         ids.add(id);
 
         if(MethodResult.SUCCESS.equals(emailConfigService.removeConfigByIds(ids).status)) {
-            operLogService.addLog("短信模板", "删除短信模板失败", "1", "1", request);
+            operLogService.addLog("邮件配置", "删除邮件配置失败", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"删除成功");
         }
-        operLogService.addLog("短信模板", "删除短信模板失败", "1", "2", request);
+        operLogService.addLog("邮件配置", "删除邮件配置失败", "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"删除失败");
     }
 
@@ -201,10 +201,10 @@ public class EmailConfigController {
         List<String> idsList = Arrays.asList(ids);
 
         if(MethodResult.SUCCESS.equals(emailConfigService.removeConfigByIds(idsList).status)) {
-            operLogService.addLog("短信模板", "删除短信模板成功", "1", "1", request);
+            operLogService.addLog("邮件配置", "删除邮件配置成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"删除成功");
         }
-        operLogService.addLog("短信模板", "删除短信模板失败", "1", "2", request);
+        operLogService.addLog("邮件配置", "删除邮件配置失败", "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"删除失败");
     }
 

@@ -12,18 +12,12 @@ import com.zhicloud.ms.vo.SmsTemplateVO;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 张翔
@@ -111,7 +105,7 @@ public class SmsTemplateController {
     @ResponseBody
     public MethodResult add(SmsTemplateVO smsTemplateVO, HttpServletRequest request) {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.message_sms_template_add)){
-            return new MethodResult(MethodResult.FAIL,"您没有新增邮件模板的权限，请联系管理员");
+            return new MethodResult(MethodResult.FAIL,"您没有新增短信模板的权限，请联系管理员");
         }
 
         Map<String, Object> data = new LinkedHashMap<String, Object>();
@@ -121,10 +115,10 @@ public class SmsTemplateController {
         data.put("recipient", smsTemplateVO.getRecipient());
         data.put("content", smsTemplateVO.getContent());
         if(MethodResult.SUCCESS.equals(smsTemplateService.addTemplate(data).status)) {
-            operLogService.addLog("邮件模板", "新增邮件模板成功", "1", "1", request);
+            operLogService.addLog("短信模板", "新增短信模板成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"创建成功");
         }
-        operLogService.addLog("邮件模板", "新增邮件模板失败", "1", "2", request);
+        operLogService.addLog("短信模板", "新增短信模板失败", "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"创建失败");
 
     }
@@ -162,7 +156,7 @@ public class SmsTemplateController {
     @ResponseBody
     public MethodResult mod(SmsTemplateVO smsTemplateVO, HttpServletRequest request) {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.message_sms_template_mod)){
-            return new MethodResult(MethodResult.FAIL,"您没有修改邮件模板的权限，请联系管理员");
+            return new MethodResult(MethodResult.FAIL,"您没有修改短信模板的权限，请联系管理员");
         }
         Map<String, Object> data = new LinkedHashMap<String, Object>();
         data.put("id", smsTemplateVO.getId());
@@ -172,15 +166,15 @@ public class SmsTemplateController {
         data.put("recipient", smsTemplateVO.getRecipient());
         data.put("content", smsTemplateVO.getContent());
         if(MethodResult.SUCCESS.equals(smsTemplateService.modifyTemplateById(data).status)) {
-            operLogService.addLog("邮件模板", "修改邮件模板成功", "1", "1", request);
+            operLogService.addLog("短信模板", "修改短信模板成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"修改成功");
         }
-        operLogService.addLog("邮件模板", "修改邮件模板失败", "1", "2", request);
+        operLogService.addLog("短信模板", "修改短信模板失败", "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"修改失败");
     }
 
     /**
-     * @function 删除修改
+     * @function 删除
      * @param id
      * @param request
      * @return
@@ -189,16 +183,38 @@ public class SmsTemplateController {
     @ResponseBody
     public MethodResult remove(@PathVariable("id") String id, HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.message_sms_template_remove)){
-            return new MethodResult(MethodResult.FAIL,"您没有删除邮件模板的权限，请联系管理员");
+            return new MethodResult(MethodResult.FAIL,"您没有删除短信模板的权限，请联系管理员");
         }
         List<String> ids = new ArrayList<String>();
         ids.add(id);
 
         if(MethodResult.SUCCESS.equals(smsTemplateService.removeTemplateByIds(ids).status)) {
-            operLogService.addLog("邮件模板", "删除邮件模板成功", "1", "1", request);
+            operLogService.addLog("短信模板", "删除短信模板成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"删除成功");
         }
-        operLogService.addLog("邮件模板", "删除邮件模板失败", "1", "2", request);
+        operLogService.addLog("短信模板", "删除短信模板失败", "1", "2", request);
+        return new MethodResult(MethodResult.FAIL,"删除失败");
+    }
+
+    /**
+     * @function 批量删除
+     * @param ids
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="/remove",method= RequestMethod.POST)
+    @ResponseBody
+    public MethodResult multiemove(@RequestParam("ids[]") String[] ids, HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.message_sms_template_remove)){
+            return new MethodResult(MethodResult.FAIL,"您没有删除短信模板的权限，请联系管理员");
+        }
+        List<String> idList = Arrays.asList(ids);
+
+        if(MethodResult.SUCCESS.equals(smsTemplateService.removeTemplateByIds(idList).status)) {
+            operLogService.addLog("短信模板", "删除短信模板成功", "1", "1", request);
+            return new MethodResult(MethodResult.SUCCESS,"删除成功");
+        }
+        operLogService.addLog("短信模板", "删除短信模板失败", "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"删除失败");
     }
 
