@@ -65,7 +65,7 @@
                   <!-- tile header -->
                   <div class="tile-header">
                     
-                    <h1><a href="<%=request.getContextPath() %>/cloudserver/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a> 主机信息</h1>
+                    <h1><a href="javascript:history.back();"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a> 主机信息</h1>
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                       <a href="#" class="remove"><i class="fa fa-times"></i></a>
@@ -83,6 +83,15 @@
             </td>
             <td></td>
             <td>uuid：${realId}</td>
+          </tr>
+          <tr>
+            <td>
+      		      真实主机名：${server.hostName }
+            </td>
+            <td></td>
+            <td>创建时间：<fmt:formatDate value="${server.curCreateDate }" pattern="yyyy-MM-dd HH:mm:ss"/>
+            </td>
+            
           </tr>
           <tr>
             <td>状态：${server.getSummarizedStatusText() }</td>
@@ -106,12 +115,7 @@
             <td></td>
             <td>内网端口：${server.innerPort }</td>
           </tr>
-          <tr>
-            <td>创建时间：<fmt:formatDate value="${server.curCreateDate }" pattern="yyyy-MM-dd HH:mm:ss"/>
-            </td>
-            <td></td>
-            <td></td>
-          </tr>
+          
         </table>
       </div>
       </section>
@@ -197,7 +201,7 @@
 	self.si = window.setInterval(refreshData,2000);
 	function refreshData(){ 
 		jQuery.ajax({
-	        url: '<%=request.getContextPath()%>/cloudserver/refreshData',
+	        url: '<%=request.getContextPath()%>/warehouse/cloudhost/refreshData',
 	        type: 'post', 
 	        dataType: 'json',
 	        async:false,

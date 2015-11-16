@@ -74,11 +74,13 @@ public class ResourcePoolController {
             List<ComputeInfo> cList = new ArrayList<>();
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){
+                    logger.info("ResourcePoolController.getAll->begain to query conpute pool info ");
                     JSONObject result = channel.computePoolQuery();
             if ("fail".equals(result.getString("status"))){
                 logger.error("ResourcePoolController.getAll>>>获取资源池失败");
                 return "not_responsed";
             }
+            logger.info("ResourcePoolController.getAll->end to query conpute pool info " + result);
                     JSONArray computerList = result.getJSONArray("compute_pools");
                     for (int i = 0; i < computerList.size(); i ++) {
                         JSONObject computerObject = computerList.getJSONObject(i);
@@ -116,7 +118,12 @@ public class ResourcePoolController {
                         for(int j=0;j<hList.size();j++){
                             hcount[j] = hList.getInt(j);
                         }
+                        logger.info("ResourcePoolController.getAll->begain to query conpute pool detail " + uuid);
                         ComputeInfoExt computer = computePoolService.getComputePoolDetailSync(uuid);
+                        logger.info("ResourcePoolController.getAll->end to query conpute pool detail " + computer);
+                        if(computer == null){
+                            computer = new ComputeInfoExt();
+                        }
                         computer.setCpuCount(cpuCount);
                         computer.setCpuUsage(cpuUsage);
                         computer.setDiskUsage(diskUsage);

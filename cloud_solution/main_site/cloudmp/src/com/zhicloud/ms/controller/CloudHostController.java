@@ -2,6 +2,9 @@ package com.zhicloud.ms.controller;
 
 import com.zhicloud.ms.app.pool.CloudHostData;
 import com.zhicloud.ms.app.pool.CloudHostPoolManager;
+import com.zhicloud.ms.app.pool.IsoImagePool;
+import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
+import com.zhicloud.ms.app.pool.IsoImagePoolManager;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfo;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressData;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPool;
@@ -27,8 +30,10 @@ import com.zhicloud.ms.vo.BackUpDetailVO;
 import com.zhicloud.ms.vo.CloudHostVO;
 import com.zhicloud.ms.vo.CloudHostWarehouse;
 import com.zhicloud.ms.vo.SysDiskImageVO;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +41,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -168,6 +174,10 @@ public class CloudHostController {
                 }
             
             model.addAttribute("computerPool", cList);
+            IsoImagePool isopool = IsoImagePoolManager.getSingleton().getIsoImagePool();
+            List<IsoImageData> isoList = isopool.getAllIsoImageData();
+            
+            model.addAttribute("isoList", isoList);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -1061,5 +1071,44 @@ public class CloudHostController {
         } catch (Exception e) {
             throw new AppException(e);
         }
+    }
+    
+    @RequestMapping(value="/{id}/diagram",method=RequestMethod.GET)
+	public String serverDiagramPage(@PathVariable("id") String id,Model model,HttpServletRequest request){
+		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_diagram)){
+			return "not_have_access";
+		}
+		CloudHostVO server = cloudHostService.getByRealHostId(id);
+		model.addAttribute("server", server);
+		model.addAttribute("realId",id);
+		return "host_manage_diagram";
+	}
+    
+    @RequestMapping(value="/refreshData",method=RequestMethod.POST)
+	@ResponseBody
+	public CloudHostData refreshData(@RequestParam("id") String id){
+		CloudHostData cloudHostData = cloudHostService.refreshData(id);
+		return cloudHostData;
+	}
+    
+    /**
+     * 
+    * @Title: startCloudHost 
+    * @Description: 从镜像启动 
+    * @param @param id
+    * @param @param imageId
+    * @param @param request
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    @RequestMapping(value="/{id}/{imageId}/start",method=RequestMethod.GET)
+    @ResponseBody
+    public MethodResult startCloudHost(@PathVariable("id") String id,@PathVariable("imageId") String imageId,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_start_from_iso)){
+            return new MethodResult(MethodResult.FAIL,"您没有启动主机的权限，请联系管理员");
+        }
+        MethodResult mr = cloudHostService.startCloudHostFromIso(id, imageId);
+        return mr;
     }
 }
