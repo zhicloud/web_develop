@@ -12,18 +12,12 @@ import com.zhicloud.ms.vo.EmailTemplateVO;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 张翔
@@ -41,10 +35,10 @@ public class EmailTemplateController {
 
     @Resource
     private IEmailConfigService emailConfigService;
-    
+
     @Resource
     private IOperLogService operLogService;
-    
+
     /**
      * @function 模板管理页面
      * @param model
@@ -116,17 +110,23 @@ public class EmailTemplateController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.message_email_template_add)){
             return new MethodResult(MethodResult.FAIL,"您没有新增邮件模板的权限，请联系管理员");
         }
+        try{
 
-        Map<String, Object> data = new LinkedHashMap<String, Object>();
-        data.put("config_id", emailTemplateVO.getConfigId());
-        data.put("name", emailTemplateVO.getName());
-        data.put("code", emailTemplateVO.getCode());
-        data.put("recipient", emailTemplateVO.getRecipient());
-        data.put("subject", emailTemplateVO.getSubject());
-        data.put("content", emailTemplateVO.getContent());
-        if(MethodResult.SUCCESS.equals(emailTemplateService.addTemplate(data).status)) {
-            operLogService.addLog("邮件模板", "新增邮件模板成功", "1", "1", request);
-            return new MethodResult(MethodResult.SUCCESS,"创建成功");
+            Map<String, Object> data = new LinkedHashMap<String, Object>();
+            data.put("config_id", emailTemplateVO.getConfigId());
+            data.put("name", emailTemplateVO.getName());
+            data.put("code", emailTemplateVO.getCode());
+            data.put("recipient", emailTemplateVO.getRecipient());
+            data.put("subject", emailTemplateVO.getSubject());
+            data.put("content", emailTemplateVO.getContent());
+            MethodResult result = emailTemplateService.addTemplate(data);
+            if(MethodResult.SUCCESS.equals(result.status)) {
+                operLogService.addLog("邮件模板", "新增邮件模板成功", "1", "1", request);
+                return new MethodResult(MethodResult.SUCCESS,result.message);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         operLogService.addLog("邮件模板", "新增邮件模板失败", "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"创建失败");
@@ -185,7 +185,7 @@ public class EmailTemplateController {
     }
 
     /**
-     * @function 删除修改
+     * @function 删除
      * @param id
      * @param request
      * @return
@@ -200,8 +200,31 @@ public class EmailTemplateController {
         ids.add(id);
 
         if(MethodResult.SUCCESS.equals(emailTemplateService.removeTemplateByIds(ids).status)) {
-            operLogService.addLog("邮件模板", "删除邮件模板失败", "1", "1", request);
+            operLogService.addLog("邮件模板", "删除邮件模板成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"删除成功");
+        }
+        operLogService.addLog("邮件模板", "删除邮件模板失败", "1", "2", request);
+        return new MethodResult(MethodResult.FAIL,"删除失败");
+    }
+
+    /**
+     * @function 批量删除
+     * @param ids
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="/remove",method= RequestMethod.POST)
+    @ResponseBody
+    public MethodResult multiRemove(@RequestParam("ids[]") String[] ids, HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.message_email_template_remove)){
+            return new MethodResult(MethodResult.FAIL,"您没有删除邮件模板的权限，请联系管理员");
+        }
+        List<String> idList = Arrays.asList(ids);
+        MethodResult result = emailTemplateService.removeTemplateByIds(idList);
+
+        if(MethodResult.SUCCESS.equals(result.status)) {
+            operLogService.addLog("邮件模板", "删除邮件模板失败", "1", "1", request);
+            return new MethodResult(MethodResult.SUCCESS, result.message);
         }
         operLogService.addLog("邮件模板", "删除邮件模板失败", "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"删除失败");

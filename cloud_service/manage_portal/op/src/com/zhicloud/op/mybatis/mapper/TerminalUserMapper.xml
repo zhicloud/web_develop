@@ -217,10 +217,15 @@
 			t.account_balance,
 			t.status,
 			t.percent_off,
+			t.belonging_type,
 			bu.account belonging_account,
 			m.name markName,
 			ifnull(y.recharge,0) recharge,
 			ifnull(y.consum,0) consum,
+			ifnull(h.total_host,0) hostAmount,
+			ifnull(vpc.total_vpc,0) vpcAmount,
+			ifnull(disk.total_disk,0) diskAmount,
+			ol.oper_time lastOperTime,
 			t.account_balance
 		from terminal_user t
 		left join sys_user u
@@ -234,9 +239,17 @@
 		left join	
 		(select user_id ,sum(recharge) recharge,sum(consum) consum from (
 		select user_id,
-		sum(case when type = 1 then amount else 0 end) recharge,
+		sum(case when type = 1 and pay_type!=3 and recharge_status = 2 then amount else 0 end) recharge,
 		sum(case when type = 2 then amount else 0 end) consum
-		from account_balance_detail where recharge_status = 2 group by user_id,type  ) x group by user_id) y on y.user_id = t.id			
+		from account_balance_detail group by user_id,type  ) x group by user_id) y on y.user_id = t.id
+		left join
+		(select user_id,max(oper_time) oper_time from oper_log group by user_id) ol on t.id = ol.user_id
+		left join
+		(select user_id,count(*) as total_host from cloud_host where status!=4 and type!=5 and type!=6 group by user_id) h on t.id = h.user_id		
+		left join
+		(select user_id,count(*) as total_vpc from vpc_base_info where status!=3 group by user_id) vpc on t.id =vpc.user_id		
+		left join
+		(select user_id,count(*) as total_disk from cloud_disk where status!=4 group by user_id) disk on t.id = disk.user_id		
 		<where>
 			t.status != 5
 			<if test="belongingId!=null">

@@ -20,13 +20,13 @@ $(function(){
 function checkEmail() {
 	var account = $.trim($('#log_ipteml').val());
 	var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-	
+	var preg = /^1[3|4|5|8][0-9]\d{8,8}$/;
 	if(account==null || account==""){
-		$("#tip_email").html("邮箱不能为空");
+		$("#tip_email").html("登录账户不能为空");
 		return false;
 	}
-	if(!myreg.test(account)){
-		$("#tip_email").html("邮箱格式不正确");
+	if((!myreg.test(account)) && (!preg.test(account))){
+		$("#tip_email").html("登陆账号格式不正确");
 		return false;
 	}
 	if(account.length>30){

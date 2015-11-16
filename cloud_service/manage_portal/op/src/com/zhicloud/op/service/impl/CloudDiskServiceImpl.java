@@ -100,9 +100,11 @@ public class CloudDiskServiceImpl extends BeanDirectCallableDefaultImpl implemen
 		// 权限判断
 		LoginInfo loginInfo = LoginHelper.getLoginInfo(request);
 		if(loginInfo.getUserType()==AppConstant.SYS_USER_TYPE_OPERATOR){
+			String userId = request.getParameter("user_id");
 			MarkMapper markMapper = this.sqlSession.getMapper(MarkMapper.class);
 			List<MarkVO> markList = markMapper.getAll();
 			request.setAttribute("markList",markList);
+			request.setAttribute("userId",userId);
 			return "/security/operator/cloud_disk_manage.jsp";
 		}
 		if( AppConstant.SYS_USER_TYPE_TERMINAL_USER!=loginInfo.getUserType())
@@ -1142,6 +1144,7 @@ public class CloudDiskServiceImpl extends BeanDirectCallableDefaultImpl implemen
 			String diskName = StringUtil.trim(request.getParameter("cloud_disk_name"));
 			String accountname = StringUtil.trim(request.getParameter("accountname"));
 			String belongaccount = StringUtil.trim(request.getParameter("belongaccount"));
+			String userId = StringUtil.trim(request.getParameter("user_id"));
 			Integer page = StringUtil.parseInteger(request.getParameter("page"), 1) - 1; // 前台过来的是从1开始，需要的是从0开始
 			Integer rows = StringUtil.parseInteger(request.getParameter("rows"), 10);
 			
@@ -1151,6 +1154,9 @@ public class CloudDiskServiceImpl extends BeanDirectCallableDefaultImpl implemen
 			if("all".equals(queryMark)){
 				queryMark = null;
 			}
+			if(userId!=null && "null".equals(userId)){
+            	userId = null;
+            }
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new Date());
 			calendar.add(Calendar.DAY_OF_MONTH, -7);
@@ -1165,6 +1171,7 @@ public class CloudDiskServiceImpl extends BeanDirectCallableDefaultImpl implemen
 			condition.put("queryStatus", queryStatus);
 			condition.put("markId", queryMark);
 			condition.put("time", dayTime);
+			condition.put("userId", userId);
             condition.put("accountname", "%" + accountname + "%");
             condition.put("belongaccount", "%" + belongaccount + "%");
 			int total = cloudDiskMapper.queryAllCount(condition); // 总行数

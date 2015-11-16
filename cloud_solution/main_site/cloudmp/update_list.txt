@@ -1,3 +1,57 @@
+******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151112-1)
+修改时间：2015/11/12
+修改人：张翔
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/resource_pool_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/server_resource_pool_manage.jsp
+
+新增文件：
+无
+
+主要变更：
+1.计算资源池显示是否开启QoS和thin provioning
+
+兼容性说明：
+        1、node_client 2.1#20151012-1 及以上
+       	2、data_server 2.0#20151012-1 及以上
+       	3、storage_server 2.1#20151027-1 及以上
+       	4、control_server 2.0#20151029-4 及以上
+       	5、intelligent_router 2.0#20151012-1 及以上
+
+******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151112-1)
+修改时间：2015/11/12
+修改人：张翔
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/assets/js/vendor/parsley/parsley.min.js
+cloud_solution/main_site/cloudmp/WebContent/views/transform/admin/system_user_edit.jsp
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/EmailTemplateController.java
+
+新增文件：
+无
+
+主要变更：
+1 修复用户账号中文验证问题
+2.修复超级管理员删除邮件模板失败，但日志记录操作结果为成功问题
+
+兼容性说明：
+无
+
+******************************************************
+版本号：版本号：【云平台web】verion(2.0)(build 20151110-1)
+修改时间：2015/11/10
+修改人：周亚锋
+修改文件：
+/cloudmp/WebContent/views/server/server_manage_diagram.jsp
+
+新增文件：
+
+主要变更：
+1.服务器资源监控的主机信息添加更多内容
+
+兼容性说明：
+无
 ****************************************************** 
 版本号：版本号：【云平台web】verion(2.0)(build 20151105-1)
 修改时间：2015/11/05

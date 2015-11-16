@@ -72,7 +72,7 @@ public class ComputeInfoPool {
         return self.clone();
     }
     
-    public ComputeInfoExt getDuplicationFromComputePool(String uuid) {
+     public ComputeInfoExt getDuplicationFromComputePool(String uuid) {
         ComputeInfoExt self = this.getFromComputePool(uuid);
         return self.clone();
     }
@@ -85,9 +85,8 @@ public class ComputeInfoPool {
     }
     public void setComputePool(Map<String, ComputeInfoExt> computePool){
         this.computePool = computePool;
-    }
-    
-    public List<ComputeInfoExt> getAll(){
+    } 
+     public List<ComputeInfoExt> getAll(){
     	List<ComputeInfoExt> poolList = new ArrayList<>();
     	Iterator<ComputeInfoExt> i = pool.values().iterator();
     	while(i.hasNext()){
