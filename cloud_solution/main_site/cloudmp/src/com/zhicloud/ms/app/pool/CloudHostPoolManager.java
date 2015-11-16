@@ -342,9 +342,9 @@ public class CloudHostPoolManager {
                 data.put("realHostId", cloudHostData.getRealHostId());
                 cloudHostService.updateRunningStatusByRealHostId(data);
                 
-                cloudHostPool.put(cloudHostData);
             }
         }
+        cloudHostPool.put(cloudHostData);
 	}
 
 	/**
