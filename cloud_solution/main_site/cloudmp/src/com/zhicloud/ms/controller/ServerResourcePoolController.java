@@ -2,26 +2,33 @@ package com.zhicloud.ms.controller;
 
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfo;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
 import com.zhicloud.ms.app.pool.storage.StorageManager;
 import com.zhicloud.ms.app.pool.storage.StorageResult;
 import com.zhicloud.ms.httpGateway.HttpGatewayAsyncChannel;
 import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
+import com.zhicloud.ms.quartz.ComputeInfoCacheJob;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.*;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.*;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
+import org.quartz.JobExecutionContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -64,73 +71,19 @@ public class ServerResourcePoolController {
 			return "not_have_access";
 		}
 		try {
-			List<ComputeInfo> cList = new ArrayList<>();
-				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-				if(channel!=null){
-					JSONObject result = channel.computePoolQuery();
-					if("success".equals(result.getString("status"))){
-						JSONArray computerList = result.getJSONArray("compute_pools");
-						for (int i = 0; i < computerList.size(); i ++) {
-							JSONObject computerObject = computerList.getJSONObject(i);
-							String uuid = computerObject.getString("uuid");
-							String name = computerObject.getString("name");
-							if(!name.contains("server_pool")){
-								continue;
-							}
-							int status = computerObject.getInt("status");
-							Integer cpuCount = computerObject.getInt("cpu_count");
-							BigDecimal cpuUsage = new BigDecimal(computerObject.getString("cpu_usage"));
-							BigDecimal memoryUsage = new BigDecimal(computerObject.getString("memory_usage"));
-							BigDecimal diskUsage = new BigDecimal(computerObject.getString("disk_usage"));
-							
-							JSONArray memoryList = computerObject.getJSONArray("memory");
-							BigInteger[] mcount = new BigInteger[memoryList.size()];
-							for(int j=0;j<memoryList.size();j++){
-								mcount[j] = new BigInteger(memoryList.getString(j));
-							}
-							
-							JSONArray diskList = computerObject.getJSONArray("disk_volume");
-							BigInteger[] dcount = new BigInteger[diskList.size()];
-							for(int j=0;j<diskList.size();j++){
-								dcount[j] = new BigInteger(diskList.getString(j));
-							}
-							
-							JSONArray nList = computerObject.getJSONArray("node");
-							Integer[] ncount = new Integer[nList.size()];
-							for(int j=0;j<nList.size();j++){
-								ncount[j] = nList.getInt(j);
-							}
-							
-							JSONArray hList = computerObject.getJSONArray("host");
-							Integer[] hcount = new Integer[hList.size()];
-							for(int j=0;j<hList.size();j++){
-								hcount[j] = hList.getInt(j);
-							}
-
-              ComputeInfoExt computer = computePoolService.getComputePoolDetailSync(uuid);
-							computer.setCpuCount(cpuCount);
-							computer.setCpuUsage(cpuUsage);
-							computer.setDiskUsage(diskUsage);
-							computer.setDiskVolume(dcount);
-							computer.setHost(hcount);
-							computer.setMemory(mcount);
-							computer.setMemoryUsage(memoryUsage);
-							computer.setName(name);
-							computer.setNode(ncount);
-							computer.setStatus(status);
-							computer.setUuid(uuid);
-							computer.setRegion(1);
-							cList.add(computer);
-						}
-					}
-				}
-			
-			model.addAttribute("computerPool", cList);
-		} catch (MalformedURLException e) {
+		    List<ComputeInfoExt> cList = new ArrayList<ComputeInfoExt>(); 
+            ComputeInfoPool  pool = ComputeInfoPoolManager.singleton().getPool();
+            Map<String, ComputeInfoExt>  poolMap = pool.getAllComputePool();
+            for(Map.Entry<String, ComputeInfoExt> entry:poolMap.entrySet()){ 
+                ComputeInfoExt poolDetail = entry.getValue();
+//                if(poolDetail.getName().indexOf("server_pool") != -1){
+                    cList.add(entry.getValue());    
+//                }
+            }               
+            model.addAttribute("computerPool", cList); 
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		}  
 		return "server_resource_pool_manage";
 	}
 	
@@ -443,6 +396,8 @@ public class ServerResourcePoolController {
             MethodResult result = computePoolService.createComputePoolSync(data);
             if("success".equals(result.status)){
                 operLogService.addLog("桌面云资源池管理", "创建计算资源池", "1", "1", request);
+                ComputeInfoCacheJob job = new ComputeInfoCacheJob();
+                job.execute(null);
                 return new MethodResult(result.status, result.message);
 
             }
@@ -677,6 +632,10 @@ public class ServerResourcePoolController {
 							JSONObject drp = channel.computePoolDelete(uuid);
 							if("success".equals(drp.getString("status"))){
 								operLogService.addLog("计算资源池", "删除计算资源池成功", "1", "1", request);
+					            ComputeInfoPool  pool = ComputeInfoPoolManager.singleton().getPool();
+					            ComputeInfo info = new ComputeInfo();
+					            info.setUuid(uuid);
+					            pool.removeFromComputePool(info);
 								return new MethodResult(MethodResult.SUCCESS,"资源池删除成功");
 							}
 						}	

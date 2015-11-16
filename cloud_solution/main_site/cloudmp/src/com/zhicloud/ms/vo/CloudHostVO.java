@@ -50,7 +50,7 @@ public class CloudHostVO implements JSONBean
 	private BigInteger bandwidth = BigInteger.ZERO; 
 	private Integer diskdiy;
 	private Integer bandwidthdiy;
-	private Integer isAutoStartup; 
+	private Integer isAutoStartup = 0; 
 	private Integer runningStatus;
 	private Integer status = 0; 
 	private String innerIp; 

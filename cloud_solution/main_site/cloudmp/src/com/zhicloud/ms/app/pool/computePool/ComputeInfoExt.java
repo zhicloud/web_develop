@@ -146,6 +146,9 @@ public class ComputeInfoExt extends ComputeInfo implements JSONBean{
     }
 
     public Integer getMode2() {
+        if(mode2 == null && mode!=null && mode.length>=2){
+            mode2 = mode[2];
+        }
         return mode2;
     }
 

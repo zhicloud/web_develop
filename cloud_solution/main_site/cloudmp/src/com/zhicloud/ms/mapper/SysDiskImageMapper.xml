@@ -14,6 +14,7 @@
  		<result column="type"  property="type" />
  		<result column="name"  property="name" />
  		<result column="image_type"  property="imageType" />
+ 		<result column="file_type"  property="fileType" />
 	</resultMap>
 	 
 	
@@ -31,7 +32,8 @@
 			t.description,
   			t.display_name,
  			t.status,
- 			t.create_time
+ 			t.create_time,
+ 			t.file_type
 		from sys_disk_image t
 		order by t.name
 	</select>
@@ -47,7 +49,8 @@
   			t.display_name,
  			t.status,
  			t.create_time,
- 			t.image_type
+ 			t.image_type,
+ 			t.file_type
 		from sys_disk_image t
 		where 1=1 
 		<if test="_parameter==1">
@@ -70,7 +73,8 @@
         t.display_name,
         t.status,
         t.create_time,
-        t.image_type
+        t.image_type,
+        t.file_type
         FROM sys_disk_image t
         <where>
             1=1
@@ -100,7 +104,8 @@
 			t.description,
   			t.display_name,
  			t.status,
- 			t.create_time
+ 			t.create_time,
+ 			t.file_type
 		from sys_disk_image t
 		where t.name = #{name}
 		limit 1
@@ -116,7 +121,8 @@
 			t.description,
   			t.display_name,
  			t.status,
- 			t.create_time
+ 			t.create_time,
+ 			t.file_type
 		from sys_disk_image t
 		where t.id = #{id}
 		limit 1
@@ -131,7 +137,8 @@
 			t.description,
   			t.display_name,
  			t.status,
- 			t.create_time
+ 			t.create_time,
+ 			t.file_type
 		from sys_disk_image t
 		where t.real_image_id = #{id}
 		limit 1
@@ -143,8 +150,8 @@
 
 	<insert id="addSysDiskImage">
 		insert into sys_disk_image
-		      (  id,    real_image_id,  name,    from_host_id,      description,    user_id,      display_name,  type,create_time,image_type)
-		values(#{id}, #{realImageId}, #{name}, #{fromHostId},  #{description},  #{userId},  #{displayName},  #{type},#{createTime},#{imageType})
+		      (  id,    real_image_id,  name,    from_host_id,      description,    user_id,      display_name,  type,create_time,image_type,file_type)
+		values(#{id}, #{realImageId}, #{name}, #{fromHostId},  #{description},  #{userId},  #{displayName},  #{type},#{createTime},#{imageType},#{fileType})
 	</insert>
 	
 	
@@ -168,6 +175,9 @@
 		<set>
 			<if test="realImageId!=null">
 				real_image_id = #{realImageId}
+			</if> 
+			<if test="fileType!=null">
+				,file_type = #{fileType}
 			</if> 
 			 
 		</set>

@@ -25,9 +25,12 @@ import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.BackUpDetailVO;
 import com.zhicloud.ms.vo.CloudHostConfigModel;
 import com.zhicloud.ms.vo.CloudHostVO;
+import com.zhicloud.ms.vo.SysDiskImageVO;
 import com.zhicloud.ms.vo.SysTenant;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +38,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -66,6 +70,9 @@ public class SysTenantController {
     
     @Resource
     CloudHostConfigModelService cloudHostConfigModelService;
+    
+    @Resource
+    ISysDiskImageService sysDiskImageService;
     
     
 	/**
@@ -371,7 +378,11 @@ public class SysTenantController {
         }
          try {
             List<CloudHostConfigModel> type = cloudHostConfigModelService.getAllServer();
+            List<SysDiskImageVO> list = sysDiskImageService.queryAllSysDiskImage();
+
             model.addAttribute("optionType",type);
+            model.addAttribute("imageList",list);
+
             List<ComputeInfoExt> cList = new ArrayList<>();
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){

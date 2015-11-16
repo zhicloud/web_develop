@@ -1049,9 +1049,8 @@ public class CloudHostServiceImpl implements ICloudHostService {
                             total++;
                             allHostNames.add(name);
                             _handleOrdinaryHostName(regionData.getId(), host);
-                        }else{
-                            CloudHostPoolManager.getSingleton().updateRealCloudHost(regionData.getId(), host,poolId);
                         }
+                        CloudHostPoolManager.getSingleton().updateRealCloudHost(regionData.getId(), host,poolId,cloudHost); 
                     }
                     logger.info(String.format("found new host. total[%s]: %s, region:[%s:%s]", total, allHostNames, regionData.getId(), regionData.getName()));
                     
@@ -1623,7 +1622,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             if(server.getDataDisk().compareTo(BigInteger.ZERO)==0){
                 isUseDataDisk = 0;
             }
-            if(server.getIsAutoStartup()!=1){
+            if(server.getIsAutoStartup()==null || server.getIsAutoStartup()!=1){
                 isAutoStart = 0;
             } 
 
@@ -1968,7 +1967,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
         relateData.put("limit", limit);
         relateData.put("now", now);
         relateData.put("timerKey", timerKey);
-        return cloudHostMapper.getDesktopCloudHostInTimerBackUpStop(relateData);
+        return cloudHostMapper.getCloudHostInTimerBackUpStop(relateData);
     }
     /**
      * 更新参与定时任务的桌面云主机

@@ -108,21 +108,10 @@
                       <div class="form-group">
                         <label for="input01" class="col-sm-2 control-label">服务器资源池 *</label>
                         <div class="col-sm-4" id="selectpool">
-							<select class="chosen-select chosen-transparent form-control" name="poolId" id="poolId" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectpool">
+							<select class="chosen-select chosen-transparent form-control" name="poolId" id="poolId" onChange="check();" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectpool">
 	                            <option value="">请选择资源池</option>  
 	                            <c:forEach items="${computerPool }" var="sdi">
  	                                 <option value="${sdi.uuid }">${sdi.name }</option>
- 	                             </c:forEach>  
-	                          </select>                       
-	                     </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="input01" class="col-sm-2 control-label">配置类型 *</label>
-                        <div class="col-sm-4" id="optiontype">
-							<select class="chosen-select chosen-transparent form-control" name="chcmId" id="chcmId" parsley-trigger="change" parsley-required="true" parsley-error-container="#optiontype">
-	                            <option value="">请选择配置类型</option>  
-	                            <c:forEach items="${optionType }" var="ot">
- 	                                 <option value="${ot.id }">${ot.name }</option>
  	                             </c:forEach>  
 	                          </select>                       
 	                     </div>
@@ -133,7 +122,224 @@
                           <input type="text" class="form-control" id="displayName" name="displayName"  parsley-trigger="change" parsley-required="true" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
                         </div>
                       </div>
+                      <div class="form-group" id="allType">
+                        <label for="input01" class="col-sm-2 control-label">配置类型 *</label>
+                        <div class="col-sm-4" id="optiontype">
+							<select class="chosen-select chosen-transparent form-control" style="width:230px;" name="chcmId" id="chcmId1" parsley-trigger="change" parsley-required="true" parsley-error-container="#optiontype">
+	                            <option value="">请选择配置类型</option>  
+	                            <c:forEach items="${optionType }" var="ot">
+ 	                                 <option value="${ot.id }">${ot.name }</option>
+ 	                             </c:forEach>  
+	                          </select>  
+	                          <a href="#" id="create_new_option_type1" flag="1" class="btn btn-greensea"><span>自定义配置</span></a>                     
+	                     </div>
+                      </div>
+                      <div class="form-group" id="qcw2" >
+                        <label for="input01" class="col-sm-2 control-label">配置类型 *</label>
+                        <div class="col-sm-4" id="optiontype2">
+							<select class="chosen-select chosen-transparent form-control" style="width:230px;" name="chcmId" id="chcmId2" parsley-trigger="change" parsley-required="true" parsley-error-container="#optiontype2en">
+	                            <option value="">请选择配置类型</option>  
+	                            <c:forEach items="${optionType }" var="ot">
+	                                 <c:if test="${ot.fileType == 1 }">
+ 	                                 <option value="${ot.id }">${ot.name }</option>
+ 	                                 </c:if>
+ 	                             </c:forEach>  
+	                          </select>  
+	                          <a href="#" id="create_new_option_type2" flag="1" class="btn btn-greensea"><span>自定义配置</span></a>                     
+	                     </div>
+                      </div>
+                      <div id="custom">
+                      	<div class="form-group my_div">
+                        <label for="input01" class="col-sm-2 control-label">CPU核心数 *</label>
+                        <div class="col-sm-8">
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="cpuCore" id="optionsRadios1" value="1" checked>
+                            <label for="optionsRadios1">1核</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="cpuCore" id="optionsRadios2" value="2">
+                            <label for="optionsRadios2">2核</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="cpuCore" id="optionsRadios3" value="4">
+                            <label for="optionsRadios3">4核</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="cpuCore" id="optionsRadios4" value="8">
+                            <label for="optionsRadios4">8核</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="cpuCore" id="optionsRadios5" value="16">
+                            <label for="optionsRadios5">16核</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="cpuCore" id="optionsRadios6" value="32">
+                            <label for="optionsRadios6">32核</label>
+                          </div> 
+                        </div>
+                      </div>
                       
+                      <div class="form-group my_div">
+                        <label for="input01" class="col-sm-2 control-label">内存 *</label>
+                        <div class="col-sm-8"> 
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="memory" id="optionsRadios12" value="1" checked>
+                            <label for="optionsRadios12">1GB</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="memory" id="optionsRadios13" value="2">
+                            <label for="optionsRadios13">2GB</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="memory" id="optionsRadios14" value="4">
+                            <label for="optionsRadios14">4GB</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="memory" id="optionsRadios15" value="8">
+                            <label for="optionsRadios15">8GB</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="memory" id="optionsRadios16" value="16">
+                            <label for="optionsRadios16">16GB</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="memory" id="optionsRadios17" value="32">
+                            <label for="optionsRadios17">32GB</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="memory" id="optionsRadios18" value="64">
+                            <label for="optionsRadios18">64GB</label>
+                          </div>
+
+                           
+                        </div>
+                      </div>
+                      
+                      <div class="form-group my_div">
+                        <label for="input01" class="col-sm-2 control-label">系统磁盘</label>
+                        <div class="col-sm-10">
+                          <div class="radio radio-transparent col-md-8">
+	                            <input type="radio" id="create_from_img" name="sysDiskType" value="from_sys_image" checked onclick="$('#sysImageId').removeAttr('disabled');">
+	                            <label for="create_from_img" style="float:left">从镜像创建</label>
+	                            <div class="col-sm-6" id="selectbox">
+	                            <div id="image_divall">
+	                            
+	                            
+	                            <select class="chosen-select chosen-transparent form-control" name="sysImageId" id="sysImageId1" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
+	                            <option value="">请选择镜像</option> 
+	                            <c:forEach items="${imageList }" var="sdi">
+	                                 	<c:if test="${sdi.realImageId!=null }">
+	                                 		<option value="${sdi.id }">${sdi.displayName }</option>
+	                                 	</c:if>
+	                             </c:forEach>   
+	                           </select>
+	                           </div>
+	                           <div id="image_divthin">
+	                           <select class="chosen-select chosen-transparent form-control" name="sysImageId" id="sysImageId2" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
+	                            <option value="">请选择镜像</option> 
+	                            <c:forEach items="${imageList }" var="sdi">
+	                                 	<c:if test="${sdi.realImageId!=null && sdi.fileType == 1 }">
+	                                 		<option value="${sdi.id }">${sdi.displayName }</option>
+	                                 	</c:if>
+	                             </c:forEach>   
+	                           </select>
+	                           </div>
+                               </div> 
+                          </div> 
+                          
+                        </div>
+                      </div>
+                        
+                      
+                      
+                      
+                      <div class="form-group my_div">
+                        <label for="input01" class="col-sm-2 control-label"> </label>
+                        <div class="col-sm-10">
+                          
+                          <div class="radio radio-transparent col-md-8">
+                            <input type="hidden" name="emptyDisk" id="emptyDisk" value="10"/>
+                            <input type="radio" id="empty_system" name="sysDiskType" value="from_empty" onclick="$('#sysImageId').attr('disabled','disabled');">
+                            <label for="empty_system" style="float:left">空白系统</label>
+                            <div class="col-sm-8" >10GB<div class="noUiSlider"  style="margin-left: 40px;"      id="slider"    ></div></div>500GB
+                            <br><span id="now">10</span>GB
+                          </div>
+                          
+                        </div>
+                      </div>
+                      
+                      <div class="form-group my_div">
+                        <label for="input01" class="col-sm-2 control-label">数据磁盘 *</label>
+                        <div class="col-sm-8"> 
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="dataDisk" id="optionsRadios31" value="10" checked onclick="$('#diskdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <label for="optionsRadios31">10G</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="dataDisk" id="optionsRadios32" value="20" onclick="$('#diskdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <label for="optionsRadios32">20G</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="dataDisk" id="optionsRadios33" value="50" onclick="$('#diskdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <label for="optionsRadios33">50G</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="dataDisk" id="optionsRadios34" value="100" onclick="$('#diskdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <label for="optionsRadios34">100G</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="dataDisk" id="optionsRadios35" value="200" onclick="$('#diskdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <label for="optionsRadios35">200G</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="dataDisk" id="optionsRadios36" value="500" onclick="$('#diskdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <label for="optionsRadios36">500G</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2"  >
+                            <input type="radio" name="dataDisk" id="optionsRadios37" value="" onclick="$('#diskdiy').removeAttr('disabled')">
+                            <label for="optionsRadios37" style="float:left;min-width:64px;">自定义</label>
+                          
+                        
+                          </div>
+                       <div class="col-sm-3">
+                          <input type="text" class="form-control" id="diskdiy" name="diskdiy" disabled="disabled" parsley-trigger="change" parsley-required="true"  parsley-type="integer" parsley-max="1000" parsley-validation-minlength="1">
+                        </div>		                   
+                        </div>
+                      </div>
+                      
+                      <div class="form-group my_div">
+                        <label for="input01" class="col-sm-2 control-label">带宽 *</label>
+                        <div class="col-sm-8"> 
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="bandwidth" id="optionsRadios43" value="1" checked onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <label for="optionsRadios43">1M</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="bandwidth" id="optionsRadios38" value="2" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <label for="optionsRadios38">2M</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="bandwidth" id="optionsRadios39" value="4" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <label for="optionsRadios39">4M</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="bandwidth" id="optionsRadios40" value="6" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <label for="optionsRadios40">6M</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-4">
+                            <input type="radio" name="bandwidth" id="optionsRadios41" value="10" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <label for="optionsRadios41">10M</label>
+                          </div> 
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="bandwidth" id="optionsRadios42" value="" onclick="$('#bandwidthdiy').removeAttr('disabled')">
+                            <label for="optionsRadios42" style="float:left;min-width:64px;">自定义</label>                         
+                          </div>
+                          <div class="col-sm-3">
+                          <input type="text" class="form-control" id="bandwidthdiy" name=bandwidthdiy disabled="disabled" parsley-trigger="change" parsley-required="true"  parsley-type="integer" parsley-max="1000" parsley-validation-minlength="1">
+                        </div>
+                        </div>
+                      </div>
+                      </div>
                       <div class="form-group">
                         <label for="input01" class="col-sm-2 control-label">开放端口</label>
                         <div class="col-sm-10" > 
@@ -160,7 +366,19 @@
 
                         </div>
                       </div>
-                      
+                      <div class="form-group">
+                        <label for="input01" class="col-sm-2 control-label">是否支持H264 *</label>
+                        <div class="col-sm-8"> 
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="supportH264" id="supportH264_1" value="0" checked>
+                            <label for="supportH264_1">否</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="supportH264" id="supportH264_2" value="1">
+                            <label for="supportH264_2">是</label>
+                          </div>
+                        </div>
+                      </div>
                       <div class="form-group">
                         <label class="col-sm-2 control-label">其他</label>
                         <div class="col-sm-8">
@@ -301,11 +519,16 @@
     <script>
     
     var path = '<%=request.getContextPath()%>'; 
+    var diy_id = '';
 
     $(function(){
 
       //chosen select input
-      $(".chosen-select").chosen({disable_search_threshold: 10});
+       $(".chosen-select").chosen({disable_search_threshold: 10});
+      $("#custom").attr("disabled",true);
+      $(".my_div").attr("disabled",true);
+      $("#sysImageId").attr("disabled",true);
+      $("#custom").hide();
       
     //check all checkboxes
       $('table thead input[type="checkbox"]').change(function () {
@@ -329,6 +552,67 @@
     
       $('#slider').Link('lower').to($('#emptyDisk'));
       $('#slider').Link('lower').to($('#now'), 'html');
+      
+      $("#create_new_option_type1").click(function(){
+    	  var flag = $(this).attr("flag");
+    	  if(flag=="1"){
+			$("#chcmId1_chosen").css("display","none");
+			$("#chcmId1").attr("disabled",true);
+			$("#custom").attr("disabled",false);
+			$(".my_div").attr("disabled",false);
+			$("#sysImageId").attr("disabled",false);
+			$("#custom").show();
+			$("#create_new_option_type1").attr("flag","2");
+			$("#create_new_option_type1").html("<span>取消自定义<span>");
+			diy_id = "create_new_option_type1";
+    	  }else{
+    		$("#chcmId1_chosen").attr("style","width:230px;");
+    		$("#chcmId1").attr("disabled",false);
+  			$("#custom").attr("disabled",true);
+  			$(".my_div").attr("disabled",true);
+  			$("#sysImageId").attr("disabled",true);
+  			$("#custom").hide();
+  			$("#create_new_option_type1").attr("flag","1");
+  			$("#create_new_option_type1").html("<span>自定义配置<span>");
+  			diy_id = "";
+    	  }
+//   	  location.href = path+"/cscm/addserverpage";
+    });
+      
+      $("#create_new_option_type2").click(function(){
+    	  var flag = $(this).attr("flag");
+    	  if(flag=="1"){
+			$("#chcmId2_chosen").css("display","none");
+			$("#chcmId2").attr("disabled",true);
+			$("#custom").attr("disabled",false);
+			$(".my_div").attr("disabled",false);
+			$("#sysImageId").attr("disabled",false);
+			$("#custom").show();
+			$("#create_new_option_type2").attr("flag","2");
+			$("#create_new_option_type2").html("<span>取消自定义<span>");
+			diy_id = "create_new_option_type2";
+    	  }else{
+    		$("#chcmId2_chosen").attr("style","width:230px;");
+    		$("#chcmId2").attr("disabled",false);
+  			$("#custom").attr("disabled",true);
+  			$(".my_div").attr("disabled",true);
+  			$("#sysImageId").attr("disabled",true);
+  			$("#custom").hide();
+  			$("#create_new_option_type2").attr("flag","1");
+  			$("#create_new_option_type2").html("<span>自定义配置<span>");
+  			diy_id = "";
+    	  }
+//   	  location.href = path+"/cscm/addserverpage";
+    });
+      
+      $("#allType").find("select").removeAttr("disabled");
+		$("#allType").show();
+		$("#qcw2").find("select").attr("disabled","disabled");
+		$("#qcw2").hide(); 
+		$("#image_divthin").find("select").attr("disabled","disabled");
+		$("#image_divthin").hide();
+		$("#image_divall").find("select").removeAttr("disabled");
+		$("#image_divall").show();
     
       
       
@@ -343,7 +627,7 @@
 	        async: true,
 	        error: function()
 	        {
-	            alert('Error!');
+	        	console.warn("can't get right infomation~try again")
 	        },
 	        success: function(result)
 	        {
@@ -445,6 +729,47 @@
 	  function serverDiagramBtn(id){
 	  	window.location.href = path+"/tenant/"+id+"/diagram";
 	  }
+	
+	  function check(){
+		  	var poolId = $("#poolId").val();
+		  	if(poolId != ""){
+		  		jQuery.ajax({
+		              url: path+'/cloudserver/checkpoolisthin',
+		              type: 'post',
+		              data: 'id=' + poolId,
+		              dataType: 'json', 
+		              async: false,
+		              error: function()
+		              {
+		                  alert('Error!');
+		              },
+		              success: function(result)
+		              {
+		              	if(result.status == "success"){ 
+	              			$("#qcw2").find("select").removeAttr("disabled");
+		              		$("#qcw2").show();
+		              		$("#allType").find("select").attr("disabled","disabled");
+		              		$("#allType").hide();  		              				              		 
+		              		$("#image_divall").find("select").attr("disabled","disabled");
+		              		$("#image_divall").hide();
+		              		$("#image_divthin").find("select").removeAttr("disabled");
+		              		$("#image_divthin").show();
+		              	}else{ 
+		              		$("#allType").find("select").removeAttr("disabled");
+		              		$("#allType").show();
+		              		$("#qcw2").find("select").attr("disabled","disabled");
+		              		$("#qcw2").hide();  		              				              		
+		              		$("#image_divthin").find("select").attr("disabled","disabled");
+		              		$("#image_divthin").hide();
+		              		$("#image_divall").find("select").removeAttr("disabled");
+		              		$("#image_divall").show();
+		              	}
+		              	$("#"+diy_id).click(); 
+		              }
+		           }); 
+		  	}
+		  	
+		  }
       
     </script>
   </body>

@@ -1576,6 +1576,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         } else {
             computeInfoExt.fail();
         }
+        
         channel.release();
 
     }
@@ -1628,6 +1629,10 @@ public class HttpGatewayAsyncMessageHandlerImpl {
             computeInfoExt.fail();
             computeInfoExt.setMessage(message);
 
+        }
+        pool.put(uuid, computeInfoExt);
+        synchronized (computeInfoExt) {
+            computeInfoExt.notifyAll();
         }
     }
 
