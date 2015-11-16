@@ -111,7 +111,9 @@
 	<bean id="monitorService" class="com.zhicloud.ms.service.impl.MonitorServiceImpl">
 	</bean>		
 	<bean id="sysWarnService" class="com.zhicloud.ms.service.impl.SysWarnServiceImpl">
-	</bean>			
+	</bean>		
+	<bean id="computePoolService" class="com.zhicloud.ms.service.impl.ComputePoolServiceImpl">
+ 	</bean>	
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
       <!-- set the max upload size100MB -->  
       <property name="maxUploadSize">  

@@ -727,7 +727,7 @@
 		});
     }
     function updateHost(){
-    	window.location.href = path+"/tenant/"+currentId+"/"+runStatus+"/update";
+    	window.location.href = path+"/tenant/"+currentId+"/"+runStatus+"/${tenant.id}/update";
     }
     function deleteMultHost(){
     	jQuery.ajax({

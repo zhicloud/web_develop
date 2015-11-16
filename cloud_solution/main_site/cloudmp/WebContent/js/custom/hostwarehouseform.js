@@ -387,7 +387,7 @@ function deleteWare(id){
  * 通过仓库id新增仓库库存数
  * @param id
  */
-function addHosts(id,hostType){ 
+function addHosts(id,hostType,fileType){ 
 	if(hostType==null || hostType=="" || hostType==undefined){
 		$("#tipscontent").html('主机类型已失效，无法增加该类型数量');
 		$("#dia").click();
@@ -412,7 +412,11 @@ function addHosts(id,hostType){
 			}else{ 
 				//增加云主机
 				$("#warehouse_id").val(id);
-				$("#mform").click();
+				if(fileType == 1){
+					$("#mform2").click();
+				}else{
+	 				$("#mform").click();
+				}
 				return;
 //				window.location.href = path+"/warehouse/"+id+"/addAmount";
  			} 

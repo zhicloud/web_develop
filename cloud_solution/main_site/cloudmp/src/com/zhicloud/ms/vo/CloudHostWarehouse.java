@@ -25,6 +25,8 @@ public class CloudHostWarehouse {
 	private String checkTime;
 	private Integer minimum;
 	
+	private Integer fileType;
+	
 	public String getId() {
 		return id;
 	}
@@ -133,5 +135,12 @@ public class CloudHostWarehouse {
     public String getInsert_date() {
         return DateUtil.dateToString(curCreateDate, "yyyy-MM-dd HH:mm:ss");
     }
+    public Integer getFileType() {
+        return fileType;
+    }
+    public void setFileType(Integer fileType) {
+        this.fileType = fileType;
+    }
+    
 	
 }
