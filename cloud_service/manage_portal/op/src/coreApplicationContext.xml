@@ -26,24 +26,24 @@
 <!-- 		<property name="password" value="root" /> -->
 <!-- 	</bean> -->
 	
-<!--   	<bean id="dataSource" class="com.zhicloud.op.app.AppDataSource" destroy-method="close"> -->
-<!-- 		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> -->
-<!-- 		<property name="url" value="jdbc:mysql://172.18.10.8:3306/test_op?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;autoReconnectForPools=true" /> -->
-<!--  		<property name="minEvictableIdleTimeMillis" value="3600000" /> -->
-<!-- 		<property name="timeBetweenEvictionRunsMillis" value="60000" /> -->
-<!-- 		<property name="username" value="zcop" /> -->
-<!-- 		<property name="password" value="N8R6D+HwXU15+DwVVAVdVA==" /> -->
-<!-- 	</bean> -->
- 
-
   	<bean id="dataSource" class="com.zhicloud.op.app.AppDataSource" destroy-method="close">
- 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
- 		<property name="url" value="jdbc:mysql://127.0.0.1:3306/zcop?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;autoReconnectForPools=true" />
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://172.18.10.3:6014/zcop?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;autoReconnectForPools=true" />
  		<property name="minEvictableIdleTimeMillis" value="3600000" />
 		<property name="timeBetweenEvictionRunsMillis" value="60000" />
 		<property name="username" value="zcop" />
 		<property name="password" value="N8R6D+HwXU15+DwVVAVdVA==" />
 	</bean>
+ 
+
+<!--   	<bean id="dataSource" class="com.zhicloud.op.app.AppDataSource" destroy-method="close"> -->
+<!--  		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> -->
+<!--  		<property name="url" value="jdbc:mysql://127.0.0.1:3306/zcop?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;autoReconnectForPools=true" /> -->
+<!--  		<property name="minEvictableIdleTimeMillis" value="3600000" /> -->
+<!-- 		<property name="timeBetweenEvictionRunsMillis" value="60000" /> -->
+<!-- 		<property name="username" value="zcop" /> -->
+<!-- 		<property name="password" value="N8R6D+HwXU15+DwVVAVdVA==" /> -->
+<!-- 	</bean> -->
 
 <!--   	<bean id="dataSource" class="com.zhicloud.op.app.AppDataSource" destroy-method="close">
  		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
