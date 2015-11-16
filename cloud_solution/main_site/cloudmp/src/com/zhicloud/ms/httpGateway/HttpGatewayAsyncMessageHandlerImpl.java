@@ -169,7 +169,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		String sessionId = channel.getSessionId();
 		// 获取对象
 		IsoImageProgressPool pool = IsoImageProgressPoolManager.singleton().getPool();
-		IsoImageProgressData isoImage = pool.get(sessionId, name);
+		IsoImageProgressData isoImage = pool.get(sessionId);
 		//对象不存在
 		if (isoImage == null) {
 			isoImage = new IsoImageProgressData();
@@ -195,7 +195,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 
 		// 获取对象
 		IsoImageProgressPool pool = IsoImageProgressPoolManager.singleton().getPool();
-		IsoImageProgressData isoImage = pool.get(sessionId, name);
+		IsoImageProgressData isoImage = pool.get(sessionId);
 		//对象不存在
 		if (isoImage == null) {
 			isoImage = new IsoImageProgressData();

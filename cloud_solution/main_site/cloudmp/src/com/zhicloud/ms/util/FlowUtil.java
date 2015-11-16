@@ -64,19 +64,19 @@ public class FlowUtil
 	
 	public static String toFlowLabel(BigInteger bps, int scale)
 	{
-		if( bps.compareTo(new BigInteger("1024").multiply(new BigInteger("8")))<0 )
+		if( bps.compareTo(new BigInteger("1024"))<0 )
 		{
 			return toBps(bps, scale);
 		}
-		else if( bps.compareTo(new BigInteger("1024").pow(2).multiply(new BigInteger("8")))<0 )
+		else if( bps.compareTo(new BigInteger("1024").pow(2))<0 )
 		{
 			return toKbps(bps, scale);
 		}
-		else if( bps.compareTo(new BigInteger("1024").pow(3).multiply(new BigInteger("8")))<0 )
+		else if( bps.compareTo(new BigInteger("1024").pow(3))<0 )
 		{
 			return toMbps(bps, scale);
 		}
-		else if( bps.compareTo(new BigInteger("1024").pow(4).multiply(new BigInteger("8")))<0 )
+		else if( bps.compareTo(new BigInteger("1024").pow(4))<0 )
 		{
 			return toGbps(bps, scale);
 		}

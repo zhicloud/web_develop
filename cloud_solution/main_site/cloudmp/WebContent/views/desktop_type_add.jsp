@@ -19,6 +19,7 @@
 
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen.min.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen-bootstrap.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/no-ui-slider/css/jquery.nouislider.min.css">
 
     <link href="<%=request.getContextPath()%>/assets/css/zhicloud.css" rel="stylesheet">
 
@@ -253,17 +254,39 @@
                         </div>
                       </div>
                          
-                    <div class="form-group">
-                        <label for="input07" class="col-sm-2 control-label">镜像 *</label>
-                        <div class="col-sm-4" id="selectbox">
-                          <select class="chosen-select chosen-transparent form-control" name="sysImageId"id="input07" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
-                            <option value="">请选择镜像</option> 
-                            <c:forEach items="${imageList }" var="sdi">
-                                 	<c:if test="${sdi.realImageId!=null }">
-                                 		<option value="${sdi.id }">${sdi.displayName }</option>
-                                 	</c:if>
-                             </c:forEach>   
-                          </select>
+                    <div class="form-group my_div">
+                        <label for="input01" class="col-sm-2 control-label">系统磁盘</label>
+                        <div class="col-sm-10">
+                          <div class="radio radio-transparent col-md-8">
+	                            <input type="radio" id="create_from_img" name="sysDiskType" value="from_sys_image" checked onclick="$('#sysImageId').removeAttr('disabled');">
+	                            <label for="create_from_img" style="float:left">从镜像创建</label>
+	                            <div class="col-sm-6" id="selectbox">
+	                            <select class="chosen-select chosen-transparent form-control" name="sysImageId" id="sysImageId" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
+	                            <option value="">请选择镜像</option> 
+	                            <c:forEach items="${imageList }" var="sdi">
+	                                 	<c:if test="${sdi.realImageId!=null }">
+	                                 		<option value="${sdi.id }">${sdi.displayName }</option>
+	                                 	</c:if>
+	                             </c:forEach>   
+	                          </select>
+                          </div>
+                          </div> 
+                          
+                        </div>
+                      </div>
+                      
+                      <div class="form-group my_div">
+                        <label for="input01" class="col-sm-2 control-label"> </label>
+                        <div class="col-sm-10">
+                          
+                          <div class="radio radio-transparent col-md-8">
+                            <input type="hidden" name="emptyDisk" id="emptyDisk" value="10"/>
+                            <input type="radio" id="empty_system" name="sysDiskType" value="from_empty" onclick="$('#sysImageId').attr('disabled','disabled');">
+                            <label for="empty_system" style="float:left">空白系统</label>
+                            <div class="col-sm-8" >10GB<div class="noUiSlider"  style="margin-left: 40px;"      id="slider"    ></div></div>500GB
+                            <br><span id="now">10</span>GB
+                          </div>
+                          
                         </div>
                       </div>
                       
@@ -389,6 +412,7 @@
 
 
       <script type="text/javascript" src="<%=request.getContextPath()%>/js/plugins/jquery.form.js"></script>
+       <script src="<%=request.getContextPath()%>/assets/js/vendor/no-ui-slider/jquery.nouislider.all.js"></script> 
 
     <script>
     
@@ -398,6 +422,24 @@
 
       //chosen select input
       $(".chosen-select").chosen({disable_search_threshold: 10});
+      
+    //initialize slider
+      $('#slider').noUiSlider({
+    	  range: {
+    		  'min': 10,
+    		  'max': 500
+    		},
+        start: [10],  
+        handles: 1,
+        format: wNumb({
+    		mark: ',',
+    		decimals: 0
+    	}),
+        step:10
+      });
+    
+      $('#slider').Link('lower').to($('#emptyDisk'));
+      $('#slider').Link('lower').to($('#now'), 'html');
       
       
       
