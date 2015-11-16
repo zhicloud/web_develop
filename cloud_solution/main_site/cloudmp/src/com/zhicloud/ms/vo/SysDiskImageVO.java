@@ -33,6 +33,8 @@ public class SysDiskImageVO implements JSONBean
 	private String imageTypeName;
     /* 状态翻译 */
     private String status_name;
+    
+    private Integer fileType;
 	
 	public String getId()
 	{
@@ -216,4 +218,11 @@ public class SysDiskImageVO implements JSONBean
         }
         return status_name;
     }
+    public Integer getFileType() {
+        return fileType;
+    }
+    public void setFileType(Integer fileType) {
+        this.fileType = fileType;
+    }
+    
 }

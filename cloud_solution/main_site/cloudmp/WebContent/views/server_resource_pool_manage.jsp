@@ -158,6 +158,46 @@
                                    </c:otherwise>
                                </c:choose>
                            </p>
+                              <%--<p><strong>高可用：</strong>--%>
+                                  <%--<c:choose>--%>
+                                      <%--<c:when test="${cp.mode0 == 0 }">--%>
+                                          <%--未开启--%>
+                                      <%--</c:when>--%>
+                                      <%--<c:otherwise>--%>
+                                          <%--开启--%>
+                                      <%--</c:otherwise>--%>
+                                  <%--</c:choose>--%>
+                              <%--</p>--%>
+                              <p><strong>自动QoS调整：</strong>
+                                  <c:choose>
+                                      <c:when test="${cp.mode1 == 0 }">
+                                          未开启
+                                      </c:when>
+                                      <c:otherwise>
+                                          开启
+                                      </c:otherwise>
+                                  </c:choose>
+                              </p>
+                              <p><strong>thin provioning：</strong>
+                                  <c:choose>
+                                      <c:when test="${cp.mode2 == 0 }">
+                                          未开启
+                                      </c:when>
+                                      <c:otherwise>
+                                          开启
+                                      </c:otherwise>
+                                  </c:choose>
+                              </p>
+                              <%--<p><strong>backing image：</strong>--%>
+                                  <%--<c:choose>--%>
+                                      <%--<c:when test="${cp.mode3 == 0 }">--%>
+                                          <%--未开启--%>
+                                      <%--</c:when>--%>
+                                      <%--<c:otherwise>--%>
+                                          <%--开启--%>
+                                      <%--</c:otherwise>--%>
+                                  <%--</c:choose>--%>
+                              <%--</p>--%>
                            <p><strong>运行状态：${cp.getStatusText() }</strong></p>
                            <p><strong>云主机数量：</strong><a href="javascript:void(0);" cur_id="${cp.uuid }" cur_name="${cp.name }"   class="query_host_detail"><span class="badge badge-greensea">${cp.getAllHost()}</span></a>台</p>
                            

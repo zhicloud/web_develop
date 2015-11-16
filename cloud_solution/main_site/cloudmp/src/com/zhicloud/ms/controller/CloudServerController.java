@@ -6,6 +6,9 @@ import com.zhicloud.ms.app.pool.IsoImagePool;
 import com.zhicloud.ms.app.pool.IsoImagePoolManager;
 import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfo; 
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressData;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPool;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPoolManager;
@@ -27,8 +30,10 @@ import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.CapacityUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.*;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,6 +41,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -119,37 +125,19 @@ public class CloudServerController {
 		model.addAttribute("optionType",type);
  		try {
 
-			List<ComputeInfo> cList = new ArrayList<>();
-				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-				if(channel!=null){
-					JSONObject result = channel.computePoolQuery();
-					if("success".equals(result.getString("status"))){
-						JSONArray computerList = result.getJSONArray("compute_pools");
-						for (int i = 0; i < computerList.size(); i ++) {
-							JSONObject computerObject = computerList.getJSONObject(i);
-							String name = computerObject.getString("name");
-							if(!name.contains("server_pool") ){
-								continue;
-							}
-							String uuid = computerObject.getString("uuid");
-							int status = computerObject.getInt("status");
-							
-							ComputeInfo computer = new ComputeInfo();
-							computer.setName(name);
-							computer.setStatus(status);
-							computer.setUuid(uuid);
-							computer.setRegion(1);
-							cList.add(computer);
-						}
-					}
-				}
-			
-			model.addAttribute("computerPool", cList);
-		} catch (MalformedURLException e) {
+ 		   List<ComputeInfoExt> cList = new ArrayList<ComputeInfoExt>(); 
+           ComputeInfoPool  pool = ComputeInfoPoolManager.singleton().getPool();
+           Map<String, ComputeInfoExt>  poolMap = pool.getAllComputePool();
+           for(Map.Entry<String, ComputeInfoExt> entry:poolMap.entrySet()){ 
+               ComputeInfoExt poolDetail = entry.getValue();
+               if(poolDetail.getName().indexOf("server_pool") != -1){
+                   cList.add(entry.getValue());    
+               }
+           }   
+           model.addAttribute("computerPool", cList); 
+		} catch (Exception e) {
  			e.printStackTrace();
-		} catch (IOException e) {
- 			e.printStackTrace();
-		}
+		}  
 		return "server/server_manage_add";
 	}
 	
@@ -1150,5 +1138,22 @@ public class CloudServerController {
         MethodResult mr = cloudHostService.startCloudHostFromIso(id, imageId);
         return mr;
     }
+    
+    /**
+     * 通过poolId查询是否是thin模式的资源池
+     * @param name
+     * @return
+     */
+    @RequestMapping(value="/checkpoolisthin",method=RequestMethod.POST)
+    @ResponseBody
+    public MethodResult checkPoolIsThin(@RequestParam("id") String id,HttpServletRequest request){
+         ComputeInfoPool  pool = ComputeInfoPoolManager.singleton().getPool();
+        ComputeInfoExt poolDetail = pool.getDuplicationFromComputePool(id);  
+        if(poolDetail!=null && poolDetail.getMode2() == 1){
+            return new MethodResult(MethodResult.SUCCESS,"是thin");
+        }else{
+            return new MethodResult(MethodResult.FAIL,"不是thin");
+        }
+     }
 
 }

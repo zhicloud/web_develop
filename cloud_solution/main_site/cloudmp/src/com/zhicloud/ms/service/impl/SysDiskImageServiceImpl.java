@@ -357,6 +357,7 @@ public class SysDiskImageServiceImpl implements ISysDiskImageService {
 					String name        = JSONLibUtil.getString(diskImage, "name");
 					String description = JSONLibUtil.getString(diskImage, "description"); 
 					String[] identity  = JSONLibUtil.getStringArray(diskImage, "identity");
+					Integer fileType  = JSONLibUtil.getInteger(diskImage, "file_type");
 					
 					// 
 					SysDiskImageVO diskImageVO = sysDiskImageMapper.getByRealImageId(uuid);
@@ -390,6 +391,7 @@ public class SysDiskImageServiceImpl implements ISysDiskImageService {
  							sysDiskImageData.put("userId",        "");
  							// 默认为通用镜像
 							sysDiskImageData.put("type",        0);
+							sysDiskImageData.put("fileType",        fileType);
 							sysDiskImageData.put("imageType",        AppConstant.DISK_IMAGE_TYPE_COMMON);
 							sysDiskImageData.put("createTime", DateUtil.dateToString(new Date(),"yyyyMMddHHmmssSSS"));
 							
@@ -418,6 +420,7 @@ public class SysDiskImageServiceImpl implements ISysDiskImageService {
 		String name        = JSONLibUtil.getString(diskImage,      "name");
 		String description = JSONLibUtil.getString(diskImage,      "description"); 
 		String[] identity  = JSONLibUtil.getStringArray(diskImage, "identity");
+		Integer fileType  = JSONLibUtil.getInteger(diskImage, "file_type");
 		
 		//更新系统镜像表
 		Map<String, Object> sysDiskImageData = new LinkedHashMap<String, Object>();
@@ -426,6 +429,7 @@ public class SysDiskImageServiceImpl implements ISysDiskImageService {
 		sysDiskImageData.put("description", description);
 		sysDiskImageData.put("region",      region);
 		sysDiskImageData.put("name",        name);
+		sysDiskImageData.put("fileType",        fileType);
 
 		SysDiskImageMapper sysDiskImageMapper = this.sqlSession.getMapper(SysDiskImageMapper.class);
 		sysDiskImageMapper.updateUnrelatedSysDiskImageByName(sysDiskImageData);

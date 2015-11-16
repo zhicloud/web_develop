@@ -147,7 +147,9 @@ public class SharedMemoryServiceImpl implements SharedMemoryService {
 	private int executeShellOfMount(String url) throws IOException { 
         Map<String,String> temp = new HashMap<String,String>();
         try {
-            Process pro = Runtime.getRuntime().exec("mount -t nfs "+url+" /image");
+            Process pro = Runtime.getRuntime().exec("mkdir  /image");
+            logger.info("create /image fiel");
+            pro = Runtime.getRuntime().exec("mount -t nfs "+url+" /image");
             BufferedReader br = new BufferedReader(new InputStreamReader(pro.getInputStream()));
              int i = 0;
             String str = br.readLine();

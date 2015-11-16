@@ -169,10 +169,15 @@ public class QosController {
             }
         }
 
+        String str = qosVO.getUuid();
+        String[] strArr = str.split(";");
 
+        String uuid = strArr[0];
+        String hostName = strArr[1];
 
         Map<String, Object> data = new LinkedHashMap<String, Object>();
-        data.put("uuid", qosVO.getUuid());
+        data.put("uuid", uuid);
+        data.put("host_name", hostName);
         data.put("name", qosVO.getName());
         data.put("type", qosVO.getType());
         data.put("inbound_bandwidth", qosVO.getInboundBandwidth());
@@ -185,7 +190,7 @@ public class QosController {
         if(MethodResult.SUCCESS.equals(result.status)) {
             operLogService.addLog("Qos规则管理", "新增Qos规则"+qosVO.getName()+"成功", "1", "1", request);
             return new MethodResult(result.status,result.message);
-        } 
+        }
         operLogService.addLog("Qos规则管理", "新增Qos规则" + qosVO.getName() + "失败", "1", "2", request);
         return new MethodResult(result.status,result.message);
     }

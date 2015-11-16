@@ -172,7 +172,7 @@
 			                        <li><a href="javascript:void(0);" onclick="deleteWare('${chw.id }');">删除</a></li> 
                                     <li class="divider"></li>
                                     <li><a href="javascript:void(0);" onclick="checkManageBtn('${chw.id }');">最小库存管理</a></li> 
-                                    <li><a href="javascript:void(0);" onclick="addHosts('${chw.id }','${chw.hostTypeName}');">增加主机数</a></li> 
+                                    <li><a href="javascript:void(0);" onclick="addHosts('${chw.id }','${chw.hostTypeName}','${chw.fileType} }');">增加主机数</a></li> 
                                   </ul>
                               </div>
                             </td>
@@ -203,6 +203,7 @@
                     <a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>
                     <a href="#modalConfirm" id="con" role="button"   data-toggle="modal"> </a>
                     <a href="#modalForm" id="mform" role="button"   data-toggle="modal"> </a>
+                    <a href="#modalForm2" id="mform2" role="button"   data-toggle="modal"> </a>
 
                     
                     <div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">
@@ -261,6 +262,46 @@
 			                            <option value="">请选择资源池</option>  
 			                            <c:forEach items="${computerPool }" var="sdi">
 		 	                                 <option value="${sdi.uuid }">${sdi.name }</option>
+		 	                             </c:forEach>  
+			                          </select>                       
+			                     </div>
+		                      </div>
+		                      <div class="form-group">
+		                        <label for="input01" class="col-sm-2 control-label" style="width:150px;">增加库存数量</label>
+		                        <div class="col-sm-4" style="width:160px;">
+		                          <input id="cmount_input" type="text" class="form-control" name="addAmount" maxlength="4" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"  parsley-required="true" parsley-max="100" parsley-min="1">
+		                        </div>
+		                      </div>
+                    </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button class="btn btn-green"  id="form_btn" onclick="saveAddAmount();">确定</button>
+                            <button onclick="setNullBtn();" class="btn btn-red" data-dismiss="modal" aria-hidden="true">取消</button>
+                            
+                          </div>
+                        </div><!-- /.modal-content -->
+                      </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->   
+                    
+                    <div class="modal fade" id="modalForm2" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
+                      <div class="modal-dialog">
+                        <div class="modal-content" style="width:60%;margin-left:20%;">
+                          <div class="modal-header">
+                            <button onclick="setNullBtn();" type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <h3 class="modal-title" id="modalConfirmLabel"><strong>库存信息</strong> </h3>
+                          </div>
+                          <div class="modal-body">
+                            <form class="form-horizontal" id="addAmountForm" role="form" action="<%=request.getContextPath() %>/warehouse/addAmount" method="post">
+		                      <input type="hidden" id="warehouse_id" name="id" value="">
+		                      <div class="form-group">
+		                        <label for="input01" class="col-sm-2 control-label" style="width:150px;">服务器资源池 </label>
+		                        <div class="col-sm-4" id="selectpool" style="width:160px;">
+									<select class="form-control" name="poolId" id="poolId" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectpool">
+			                            <option value="">请选择资源池</option>  
+			                            <c:forEach items="${computerPool }" var="sdi">
+			                                 <c:if test="${sdi.getMode2() == 1}">
+			                                    <option value="${sdi.uuid }">${sdi.name }</option>			                                 
+			                                 </c:if>
 		 	                             </c:forEach>  
 			                          </select>                       
 			                     </div>

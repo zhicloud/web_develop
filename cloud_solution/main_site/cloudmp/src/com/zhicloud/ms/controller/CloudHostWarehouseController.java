@@ -14,8 +14,13 @@ import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.CloudHostConfigModel;
 import com.zhicloud.ms.vo.CloudHostWarehouse;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfo;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.quartz.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +30,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.*;
@@ -53,39 +59,19 @@ public class CloudHostWarehouseController {
 		model.addAttribute("cloudHostConfigModeList",chcmList);
 		try {
 
-			List<ComputeInfo> cList = new ArrayList<ComputeInfo>();
-				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-				if(channel!=null){
-					JSONObject result = channel.computePoolQuery();
-          if ("fail".equals(result.getString("status"))){
-                return "not_responsed";
-          }
-					JSONArray computerList = result.getJSONArray("compute_pools");
-
-					for (int i = 0; i < computerList.size(); i ++) {
-						JSONObject computerObject = computerList.getJSONObject(i);
-						String name = computerObject.getString("name");
-						if(!name.contains("desktop_pool")){
-							continue;
-						}
-						String uuid = computerObject.getString("uuid");
-						int status = computerObject.getInt("status");
-						 
-						ComputeInfo computer = new ComputeInfo(); 
-						computer.setName(name);
- 						computer.setStatus(status);
-						computer.setUuid(uuid);
-						computer.setRegion(1);
-						cList.add(computer);
-					}
-				}
-			
-			model.addAttribute("computerPool", cList);
-		} catch (MalformedURLException e) {
+		    List<ComputeInfoExt> cList = new ArrayList<ComputeInfoExt>(); 
+            ComputeInfoPool  pool = ComputeInfoPoolManager.singleton().getPool();
+            Map<String, ComputeInfoExt>  poolMap = pool.getAllComputePool();
+            for(Map.Entry<String, ComputeInfoExt> entry:poolMap.entrySet()){ 
+                ComputeInfoExt poolDetail = entry.getValue();
+                if(poolDetail.getName().indexOf("desktop_pool") != -1){
+                    cList.add(entry.getValue());    
+                }
+            }   
+            model.addAttribute("computerPool", cList); 
+		} catch (Exception e) {
  			e.printStackTrace();
-		} catch (IOException e) {
- 			e.printStackTrace();
-		}
+		}  
 		return "warehouse_manage";
 	}
 	
@@ -98,37 +84,17 @@ public class CloudHostWarehouseController {
 		model.addAttribute("cloudHostConfigModeList",chcmList);
 		try {
 
-			List<ComputeInfo> cList = new ArrayList<ComputeInfo>();
-				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-				if(channel!=null){
-					JSONObject result = channel.computePoolQuery();
-          if ("fail".equals(result.getString("status"))) {
-              return "not_responsed";
-
-          }
-					JSONArray computerList = result.getJSONArray("compute_pools");
-					for (int i = 0; i < computerList.size(); i ++) {
-						JSONObject computerObject = computerList.getJSONObject(i);
-						String name = computerObject.getString("name");
-						if(!name.contains("desktop_pool")){
-							continue;
-						}
-						String uuid = computerObject.getString("uuid");
-						int status = computerObject.getInt("status");
-						 
-						ComputeInfo computer = new ComputeInfo(); 
-						computer.setName(name);
- 						computer.setStatus(status);
-						computer.setUuid(uuid);
-						computer.setRegion(1);
-						cList.add(computer);
-					}
-				}
-			
-			model.addAttribute("computerPool", cList);
-		} catch (MalformedURLException e) {
- 			e.printStackTrace();
-		} catch (IOException e) {
+			List<ComputeInfoExt> cList = new ArrayList<ComputeInfoExt>(); 
+            ComputeInfoPool  pool = ComputeInfoPoolManager.singleton().getPool();
+            Map<String, ComputeInfoExt>  poolMap = pool.getAllComputePool();
+            for(Map.Entry<String, ComputeInfoExt> entry:poolMap.entrySet()){ 
+                ComputeInfoExt poolDetail = entry.getValue();
+                if(poolDetail.getName().indexOf("desktop_pool") != -1){
+                    cList.add(entry.getValue());    
+                }
+            }   			
+			model.addAttribute("computerPool", cList); 
+		} catch (Exception e) {
  			e.printStackTrace();
 		}
 		return "warehouse_manage_add";
@@ -546,5 +512,22 @@ public class CloudHostWarehouseController {
 		}
     	return new MethodResult(MethodResult.FAIL, "更新失败");
     }
+    
+    /**
+     * 通过poolId查询是否是thin模式的资源池
+     * @param name
+     * @return
+     */
+    @RequestMapping(value="/checkpoolisthin",method=RequestMethod.POST)
+    @ResponseBody
+    public MethodResult checkPoolIsThin(@RequestParam("id") String id,HttpServletRequest request){
+         ComputeInfoPool  pool = ComputeInfoPoolManager.singleton().getPool();
+        ComputeInfoExt poolDetail = pool.getDuplicationFromComputePool(id);  
+        if(poolDetail!=null && poolDetail.getMode2() == 1){
+            return new MethodResult(MethodResult.SUCCESS,"是thin");
+        }else{
+            return new MethodResult(MethodResult.FAIL,"不是thin");
+        }
+     }
 }
 
