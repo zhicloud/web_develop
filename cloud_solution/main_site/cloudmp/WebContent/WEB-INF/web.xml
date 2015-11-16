@@ -69,7 +69,7 @@
 		<init-param>
 			<description>两次同步动作的间隔时长，单位秒</description>
 			<param-name>interval_time</param-name>
-			<param-value>600</param-value>
+			<param-value>120</param-value>
 		</init-param>
 		<load-on-startup>2</load-on-startup>
 	</servlet>

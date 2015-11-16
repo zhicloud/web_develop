@@ -158,6 +158,46 @@
                                       </c:otherwise>
                                   </c:choose>
                               </p>
+                              <%--<p><strong>高可用：</strong>--%>
+                                  <%--<c:choose>--%>
+                                      <%--<c:when test="${cp.mode0 == 0 }">--%>
+                                          <%--未开启--%>
+                                      <%--</c:when>--%>
+                                      <%--<c:otherwise>--%>
+                                          <%--开启--%>
+                                      <%--</c:otherwise>--%>
+                                  <%--</c:choose>--%>
+                              <%--</p>--%>
+                              <p><strong>自动QoS调整：</strong>
+                                  <c:choose>
+                                      <c:when test="${cp.mode1 == 0 }">
+                                          未开启
+                                      </c:when>
+                                      <c:otherwise>
+                                          开启
+                                      </c:otherwise>
+                                  </c:choose>
+                              </p>
+                              <p><strong>thin provioning：</strong>
+                                  <c:choose>
+                                      <c:when test="${cp.mode2 == 0 }">
+                                          未开启
+                                      </c:when>
+                                      <c:otherwise>
+                                          开启
+                                      </c:otherwise>
+                                  </c:choose>
+                              </p>
+                              <%--<p><strong>backing image：</strong>--%>
+                                  <%--<c:choose>--%>
+                                      <%--<c:when test="${cp.mode3 == 0 }">--%>
+                                          <%--未开启--%>
+                                      <%--</c:when>--%>
+                                      <%--<c:otherwise>--%>
+                                          <%--开启--%>
+                                      <%--</c:otherwise>--%>
+                                  <%--</c:choose>--%>
+                              <%--</p>--%>
                            <p><strong>运行状态：${cp.getStatusText() }</strong></p>
                            <p><strong>云主机数量：</strong><a href="javascript:void(0);" cur_id="${cp.uuid }" cur_name="${cp.name }"  class="query_host_detail"><span class="badge badge-greensea">${cp.getAllHost()}</span></a>台</p>
                            
@@ -403,7 +443,7 @@
 	    jQuery(".delete_resource_pool").click(function(){
 	    	var uuid = jQuery(this).attr("cur_id");
 	    	cur_id = uuid;
-	    	$("#confirmcontent").html("确定要删除该资源池吗？<br>(删除资源池会删除资源池下所有节点及主机)");
+	    	$("#confirmcontent").html("确定要删除该资源池吗？");
 	    	$("#confirm_btn").attr("onclick","deleteResourcePool();");
 	    	$("#con").click();
 	    });

@@ -483,9 +483,11 @@ public class CloudHostServiceImpl extends BeanDirectCallableDefaultImpl implemen
         if (loginInfo.getUserType() == AppConstant.SYS_USER_TYPE_AGENT) {
             return "/security/agent/cloud_host_manage.jsp";
         }
+        String userId = request.getParameter("user_id");
         MarkMapper markMapper = this.sqlSession.getMapper(MarkMapper.class);
         List<MarkVO> markList = markMapper.getAll();
         request.setAttribute("markList", markList);
+        request.setAttribute("userId", userId);
         return "/security/operator/cloud_host_manage.jsp";
     }
 
@@ -746,6 +748,7 @@ public class CloudHostServiceImpl extends BeanDirectCallableDefaultImpl implemen
             String username = StringUtil.trim(request.getParameter("username"));
             String belongaccount = StringUtil.trim(request.getParameter("belongaccount"));
             String outerIp = StringUtil.trim(request.getParameter("outerIp"));
+            String userId = StringUtil.trim(request.getParameter("user_id"));
             Integer page =
                 StringUtil.parseInteger(request.getParameter("page"), 1) - 1; // 前台过来的是从1开始，需要的是从0开始
             Integer rows = StringUtil.parseInteger(request.getParameter("rows"), 10);
@@ -757,6 +760,9 @@ public class CloudHostServiceImpl extends BeanDirectCallableDefaultImpl implemen
             }
             if (StringUtil.isBlank(region)) {
                 region = null;
+            }
+            if(userId!=null && "null".equals(userId)){
+            	userId = null;
             }
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
@@ -779,6 +785,7 @@ public class CloudHostServiceImpl extends BeanDirectCallableDefaultImpl implemen
                 condition.put("queryStatus", queryStatus);
                 condition.put("region", region);
                 condition.put("time", dayTime);
+                condition.put("userId", userId);
                 condition.put("username", "%" + username + "%");
                 condition.put("belongaccount", "%" + belongaccount + "%");
                 condition.put("outerIp", "%" + outerIp + "%");

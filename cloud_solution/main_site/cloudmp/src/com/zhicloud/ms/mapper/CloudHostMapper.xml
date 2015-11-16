@@ -313,8 +313,13 @@
 			ch.password,
 			ch.type,
 			ch.account,
-			ch.pool_id
+			ch.pool_id,
+			chcm.support_h264 supportH264
 		from cloud_host ch
+		left join cloud_host_warehouse chw
+			on ch.warehouse_id = chw.id
+		left join cloud_host_config_model chcm
+			on chw.cloud_host_config_model_id = chcm.id
 		where ch.status = 0 
 		and real_host_id is null
 		limit 1

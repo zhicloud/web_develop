@@ -25,10 +25,14 @@ public class IsoImagePool
 		}
 		if( StringUtil.isBlank(isoImageData.getName())==false )
 		{
-			String key = isoImageData.getRegion()+"|"+isoImageData.getName();
+			String key = isoImageData.getRealImageId();
 			nameMap.put(key, isoImageData);
 		}
 	}
+	public synchronized void remove(String realImageId)
+    { 
+	    realImageIdMap.remove(realImageId);
+    }
 	
 	public synchronized IsoImageData getByRealImageId(String realImageId)
 	{
@@ -80,6 +84,23 @@ public class IsoImagePool
 		return result;
 	}
 	
+	public synchronized List<IsoImageData> getAllIsoImageData()
+    {
+        List<IsoImageData> result = new ArrayList<IsoImageData>();
+        Iterator<IsoImageData> iter = realImageIdMap.values().iterator();
+        while( iter.hasNext() )
+        {
+            IsoImageData isoImageData = iter.next(); 
+            result.add(isoImageData); 
+        }
+        return result;
+    }
+	
+	public synchronized void clearAll()
+    {
+	    realImageIdMap.clear();
+    }
+	
 	//------------
 	
 	/**
@@ -91,7 +112,7 @@ public class IsoImagePool
 		private String name;
 		private String description;
 		private BigInteger size;
-		private Integer status;
+		private Integer status; 
 		private Integer region;
 		
 		public String getRealImageId()

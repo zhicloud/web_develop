@@ -61,6 +61,7 @@ public class BalancerHelper {
      * 负载均衡器 - 查询概要
      */
     public static JSONObject queryBalancerSummary(JSONObject param) throws MalformedURLException, IOException{
+        logger.info("BalancerHelper --> queryBalancerSummary");
         String url = "http://";
         if(param.containsKey("ip") && param.containsKey("port") && param.containsKey("session_id")){
             url += param.getString("ip");
@@ -72,6 +73,10 @@ public class BalancerHelper {
             String xml = request_base.replace("{%node}", "queryBalancerSummary");
             xml = xml.replace("{%json}", json.toString());
 
+            JSONObject result = HttpPost(url, xml);
+            if(result.containsKey("message")){
+                result.put("message", "value");
+            }
             return HttpPost(url, xml);
         }
         throw new AppException("request param error.");
@@ -80,7 +85,8 @@ public class BalancerHelper {
     /*
      * 负载均衡器 - 启动服务
      */
-    public static JSONObject startBalacerService(JSONObject param) throws MalformedURLException, IOException{
+    public static JSONObject startBalancerService(JSONObject param) throws MalformedURLException, IOException{
+        logger.info("BalancerHelper --> startBalacerService");
         String url = "http://";
         if(param.containsKey("ip") && param.containsKey("port") && param.containsKey("session_id")){
             url += param.getString("ip");
@@ -89,7 +95,7 @@ public class BalancerHelper {
             JSONObject json = new JSONObject();
             json.put("command", BalancerConstant.service_start);
             json.put("session_id", param.getString("session_id"));    
-            String xml = request_base.replace("{%node}", "startBalacerService");
+            String xml = request_base.replace("{%node}", "startBalancerService");
             xml = xml.replace("{%json}", json.toString());
 
             return HttpPost(url, xml);
@@ -100,7 +106,8 @@ public class BalancerHelper {
     /*
      * 负载均衡器 - 重启服务
      */
-    public static JSONObject restartBalacerService(JSONObject param) throws MalformedURLException, IOException{
+    public static JSONObject restartBalancerService(JSONObject param) throws MalformedURLException, IOException{
+        logger.info("BalancerHelper --> restartBalacerService");
         String url = "http://";
         if(param.containsKey("ip") && param.containsKey("port") && param.containsKey("session_id")){
             url += param.getString("ip");
@@ -109,7 +116,7 @@ public class BalancerHelper {
             JSONObject json = new JSONObject();
             json.put("command", BalancerConstant.service_restart);
             json.put("session_id", param.getString("session_id"));    
-            String xml = request_base.replace("{%node}", "restartBalacerService");
+            String xml = request_base.replace("{%node}", "restartBalancerService");
             xml = xml.replace("{%json}", json.toString());
 
             return HttpPost(url, xml);
@@ -119,7 +126,8 @@ public class BalancerHelper {
     /*
      * 负载均衡器 - 停止服务
      */
-    public static JSONObject stopBalacerService(JSONObject param) throws MalformedURLException, IOException{
+    public static JSONObject stopBalancerService(JSONObject param) throws MalformedURLException, IOException{
+        logger.info("BalancerHelper --> stopBalacerService");
         String url = "http://";
         if(param.containsKey("ip") && param.containsKey("port") && param.containsKey("session_id")){
             url += param.getString("ip");
@@ -128,26 +136,28 @@ public class BalancerHelper {
             JSONObject json = new JSONObject();
             json.put("command", BalancerConstant.service_stop);
             json.put("session_id", param.getString("session_id"));    
-            String xml = request_base.replace("{%node}", "stopBalacerService");
+            String xml = request_base.replace("{%node}", "stopBalancerService");
             xml = xml.replace("{%json}", json.toString());
 
             return HttpPost(url, xml);
         }
         throw new AppException("request param error.");
     }
+    
     /*
-     * 监听端口 - 监听端口列表
+     * 监听端口 - 查看监听端口状态
      */
-    public static JSONObject queryAllListenPort(JSONObject param) throws MalformedURLException, IOException{
+    public static JSONObject queryForwardPortStatus(JSONObject param) throws MalformedURLException, IOException{
+        logger.info("BalancerHelper --> queryForwardPortStatus");
         String url = "http://";
-        if(param.containsKey("ip") && param.containsKey("port") && param.containsKey("session_id")){
+        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id")){
             url += param.getString("ip");
             url += ":" + param.get("port").toString();
             
             JSONObject json = new JSONObject();
             json.put("command", BalancerConstant.listen_port_query_all);
-            json.put("session_id", param.getString("session_id"));    
-            String xml = request_base.replace("{%node}", "queryAllListenPort");
+            json.put("session_id", param.getString("session_id"));
+            String xml = request_base.replace("{%node}", "queryForwardPortStatus");
             xml = xml.replace("{%json}", json.toString());
 
             return HttpPost(url, xml);
@@ -155,291 +165,25 @@ public class BalancerHelper {
         throw new AppException("request param error.");
     }
     
-    /*
-     * 监听端口 - 查看监听端口
-     */
-    public static JSONObject queryListenPort(JSONObject param) throws MalformedURLException, IOException{
+    public static JSONObject updateBalancerService(JSONObject param) throws MalformedURLException, IOException{
         String url = "http://";
-        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id")&& param.containsKey("id")){
+        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id")&& param.containsKey("listen_port")){
             url += param.getString("ip");
             url += ":" + param.get("port").toString();
             
             JSONObject json = new JSONObject();
-            json.put("command", BalancerConstant.listen_port_query);
+            json.put("command", BalancerConstant.listen_port_update_all);
             json.put("session_id", param.getString("session_id"));
-            json.put("id", param.getString("id"));
-            String xml = request_base.replace("{%node}", "queryListenPort");
+            json.put("listen_port", param.getString("listen_port"));
+            String xml = request_base.replace("{%node}", "updateBalancerService");
             xml = xml.replace("{%json}", json.toString());
 
             return HttpPost(url, xml);
         }
         throw new AppException("request param error.");
     }
-    /*
-     * 监听端口 - 创建监听端口
-     */
-    public static JSONObject createListenPort(JSONObject param) throws MalformedURLException, IOException{
-        String url = "http://";
-        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id")){
-            url += param.getString("ip");
-            url += ":" + param.get("port").toString();
-            
-            JSONObject json = new JSONObject();
-            json.put("command", BalancerConstant.listen_port_create);
-            json.put("session_id", param.getString("session_id"));
-            json.put("listen_port", param.get("listen_port").toString());
-            String xml = request_base.replace("{%node}", "createListenPort");
-            xml = xml.replace("{%json}", json.toString());
-
-            return HttpPost(url, xml);
-        } 
-        throw new AppException("request param error.");
-        
-    }
-    /*
-     * 监听端口 - 修改监听端口
-     */
-    public static JSONObject modifyListenPort(JSONObject param) throws MalformedURLException, IOException{
-        String url = "http://";
-        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id")&& param.containsKey("id")){
-            url += param.getString("ip");
-            url += ":" + param.get("port").toString();
-            
-            JSONObject json = new JSONObject();
-            json.put("command", BalancerConstant.listen_port_modify);
-            json.put("session_id", param.getString("session_id"));
-            json.put("id", param.getString("id"));
-            json.put("listen_port", param.get("listen_port").toString());            
-            String xml = request_base.replace("{%node}", "modifyListenPort");
-            xml = xml.replace("{%json}", json.toString());
-
-            return HttpPost(url, xml);
-        } 
-        throw new AppException("request param error.");
-    }
-    /*
-     * 监听端口 - 启动监听端口
-     */
-    public static JSONObject startListenPort(JSONObject param) throws MalformedURLException, IOException{
-        String url = "http://";
-        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id")&& param.containsKey("id")){
-            url += param.getString("ip");
-            url += ":" + param.get("port").toString();
-            
-            JSONObject json = new JSONObject();
-            json.put("command", BalancerConstant.listen_port_modify);
-            json.put("session_id", param.getString("session_id"));
-            json.put("id", param.getString("id"));
-            String xml = request_base.replace("{%node}", "startListenPort");
-            xml = xml.replace("{%json}", json.toString());
-
-            return HttpPost(url, xml);
-        } 
-        throw new AppException("request param error.");
-    }
-    /*
-     * 监听端口 - 停止监听端口
-     */
-    public static JSONObject stopListenPort(JSONObject param) throws MalformedURLException, IOException{
-        String url = "http://";
-        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id")&& param.containsKey("id")){
-            url += param.getString("ip");
-            url += ":" + param.get("port").toString();
-            
-            JSONObject json = new JSONObject();
-            json.put("command", BalancerConstant.listen_port_stop);
-            json.put("session_id", param.getString("session_id"));
-            json.put("id", param.getString("id"));
-            String xml = request_base.replace("{%node}", "stopListenPort");
-            xml = xml.replace("{%json}", json.toString());
-
-            return HttpPost(url, xml);
-        }         
-        throw new AppException("request param error.");
-    }
     
-    /*
-     * 监听端口 - 删除监听端口
-     */
-    public static JSONObject removeListenPort(JSONObject param) throws MalformedURLException, IOException{
-        String url = "http://";
-        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id")&& param.containsKey("id")){
-            url += param.getString("ip");
-            url += ":" + param.get("port").toString();
-            
-            JSONObject json = new JSONObject();
-            json.put("command", BalancerConstant.listen_port_remove);
-            json.put("session_id", param.getString("session_id"));
-            json.put("id", param.getString("id"));
-            String xml = request_base.replace("{%node}", "removeListenPort");
-            xml = xml.replace("{%json}", json.toString());
 
-            return HttpPost(url, xml);
-        } 
-        throw new AppException("request param error.");
-    }
-    /*
-     * 转发端口 - 转发端口列表
-     */
-    public static JSONObject queryAllForwardPort(JSONObject param) throws MalformedURLException, IOException{
-        String url = "http://";
-        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id")){
-            url += param.getString("ip");
-            url += ":" + param.get("port").toString();
-            
-            JSONObject json = new JSONObject();
-            json.put("command", BalancerConstant.forward_port_query_all);
-            json.put("session_id", param.getString("session_id"));
-            String xml = request_base.replace("{%node}", "queryAllForwardPort");
-            xml = xml.replace("{%json}", json.toString());
-
-            return HttpPost(url, xml);
-        } 
-        
-        throw new AppException("request param error.");
-    }
-    /*
-     * 转发端口 - 转发端口ID列表
-     */
-    public static JSONObject queryAllForwardID(JSONObject param) throws MalformedURLException, IOException{
-        String url = "http://";
-        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id")){
-            url += param.getString("ip");
-            url += ":" + param.get("port").toString();
-            
-            JSONObject json = new JSONObject();
-            json.put("command", BalancerConstant.forward_port_query_all_id);
-            json.put("session_id", param.getString("session_id"));
-            String xml = request_base.replace("{%node}", "queryAllForwardID");
-            xml = xml.replace("{%json}", json.toString());
-
-            return HttpPost(url, xml);
-        } 
-        throw new AppException("request param error.");
-    }
-    /*
-     * 转发端口 - 查看转发端口
-     */
-    public static JSONObject queryForwardPort(JSONObject param) throws MalformedURLException, IOException{
-        String url = "http://";
-        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id")){
-            url += param.getString("ip");
-            url += ":" + param.get("port").toString();
-            
-            JSONObject json = new JSONObject();
-            json.put("command", BalancerConstant.forward_port_query);
-            json.put("session_id", param.getString("session_id"));
-            String xml = request_base.replace("{%node}", "queryForwardPort");
-            xml = xml.replace("{%json}", json.toString());
-
-            return HttpPost(url, xml);
-        } 
-        throw new AppException("request param error.");
-    }
-    
-    /*
-     * 转发端口 - 添加转发端口
-     */
-    public static JSONObject addForwardPort(JSONObject param) throws MalformedURLException, IOException{
-        String url = "http://";
-        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id") && param.containsKey("forward_port")){
-            url += param.getString("ip");
-            url += ":" + param.get("port").toString();
-            
-            JSONObject json = new JSONObject();
-            json.put("command", BalancerConstant.forward_port_add);
-            json.put("session_id", param.getString("session_id"));
-            json.put("forward_port", param.get("forward_port").toString());
-            String xml = request_base.replace("{%node}", "addForwardPort");
-            xml = xml.replace("{%json}", json.toString());
-
-            return HttpPost(url, xml);
-        } 
-        throw new AppException("request param error.");
-    }
-    
-    /*
-     * 转发端口 - 修改转发端口
-     */
-    public static JSONObject modifyForwardPort(JSONObject param) throws MalformedURLException, IOException{
-        String url = "http://";
-        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id") && param.containsKey("id") && param.containsKey("forward_port")){
-            url += param.getString("ip");
-            url += ":" + param.get("port").toString();
-            
-            JSONObject json = new JSONObject();
-            json.put("command", BalancerConstant.forward_port_modify);
-            json.put("session_id", param.getString("session_id"));
-            json.put("id", param.getString("id"));
-            json.put("forward_port", param.get("forward_port").toString());
-            String xml = request_base.replace("{%node}", "modifyForwardPort");
-            xml = xml.replace("{%json}", json.toString());
-
-            return HttpPost(url, xml);
-        } 
-        throw new AppException("request param error.");
-    }
-    
-    /*
-     * 转发端口 - 停止转发端口
-     */
-    public static JSONObject stopForwardPort(JSONObject param) throws MalformedURLException, IOException{
-        String url = "http://";
-        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id") && param.containsKey("id")){
-            url += param.getString("ip");
-            url += ":" + param.get("port").toString();
-            
-            JSONObject json = new JSONObject();
-            json.put("command", BalancerConstant.forward_port_stop);
-            json.put("session_id", param.getString("session_id"));
-            json.put("id", param.getString("id"));
-            String xml = request_base.replace("{%node}", "stopForwardPort");
-            xml = xml.replace("{%json}", json.toString());
-
-            return HttpPost(url, xml);
-        } 
-        throw new AppException("request param error.");
-    }
-    /*
-     * 转发端口 - 启动转发端口
-     */
-    public static JSONObject startForwardPort(JSONObject param) throws MalformedURLException, IOException{
-        String url = "http://";
-        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id") && param.containsKey("id")){
-            url += param.getString("ip");
-            url += ":" + param.get("port").toString();
-            
-            JSONObject json = new JSONObject();
-            json.put("command", BalancerConstant.forward_port_stop);
-            json.put("session_id", param.getString("session_id"));
-            json.put("id", param.getString("id"));
-            String xml = request_base.replace("{%node}", "startForwardPort");
-            xml = xml.replace("{%json}", json.toString());
-
-            return HttpPost(url, xml);
-        } 
-        throw new AppException("request param error.");
-    }
-    /*
-     * 转发端口 - 释放转发端口
-     */
-    public static JSONObject removeForwardPort(JSONObject param) throws MalformedURLException, IOException{
-        String url = "http://";
-        if(param.containsKey("ip") && param.containsKey("port")&& param.containsKey("session_id") && param.containsKey("id")){
-            url += param.getString("ip");
-            url += ":" + param.get("port").toString();
-            
-            JSONObject json = new JSONObject();
-            json.put("command", BalancerConstant.forward_port_remove);
-            json.put("session_id", param.getString("session_id"));
-            json.put("id", param.getString("id"));
-            String xml = request_base.replace("{%node}", "removeForwardPort");
-            xml = xml.replace("{%json}", json.toString());
-
-            return HttpPost(url, xml);
-        } 
-        throw new AppException("request param error.");
-    }
     
     /*
      * 证书文件 - 上传证书
@@ -520,8 +264,43 @@ public class BalancerHelper {
         Map<String, String> requestProperties = new LinkedHashMap<String, String>();
         requestProperties.put("Content-type", "text/xml");
 
-        return  HttpUtil.post(url, encryptParam, requestProperties, new DefaultResponseHanlder());
-    }    
+        JSONObject result =  HttpUtil.post(url, encryptParam, requestProperties, new DefaultResponseHanlder());
+        if(result.containsKey("message")){
+            result.put("message", ParseErrorMessage(result.get("message").toString()));            
+        }
+        return result;        
+    }
+    
+    /*
+     * 错误信息解析
+     */
+    private static String ParseErrorMessage(String str){
+        String msg = "未知错误。";
+        switch(str){
+            case "-1":
+                msg = BalancerConstant.err_execute_exception;
+                break;
+            case "100":
+                msg = BalancerConstant.err_request_error;
+                break;
+            case "200":
+                msg = BalancerConstant.err_json_format_err;
+                break;
+            case "201":
+                msg = BalancerConstant.err_json_lost_element;
+                break;
+            case "202":
+                msg = BalancerConstant.err_json_element_format;
+                break;
+            case "300":
+                msg = BalancerConstant.err_flush_request_fail;
+                break;
+            case "301":
+                msg = BalancerConstant.err_health_check_fail;
+                break;                                
+        }
+        return msg;
+    }
     
     public static class DefaultResponseHanlder implements InputStreamHandler<JSONObject>
     {
@@ -589,12 +368,12 @@ public class BalancerHelper {
     
     public static void main(String [] args) throws MalformedURLException, IOException{
         JSONObject json = new JSONObject();
-        json.put("ip", "172.18.20.195");
+        json.put("ip", "172.18.10.145");
         json.put("port", "50000");
         json.put("session_id", "123");
         logger.info("request json:" + json.toString());
         
-        JSONObject json0 = BalancerHelper.queryBalancerSummary(json);
+        JSONObject json0 = BalancerHelper.restartBalancerService(json);
         logger.info(json0.toString());
     }
 }

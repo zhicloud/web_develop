@@ -51,6 +51,8 @@ public class CloudHostConfigModel {
 	private String type;
 	private String sysDiskType;
 	private String emptyDisk;
+	//是否支持H264
+	private Integer supportH264;
 	
 	public String getId() {
 		return id;
@@ -249,5 +251,13 @@ public class CloudHostConfigModel {
             return curModifiedDate;
         }
     }
+	public Integer getSupportH264() {
+		return supportH264;
+	}
+	public void setSupportH264(Integer supportH264) {
+		this.supportH264 = supportH264;
+	}
+    
+    
 
 }

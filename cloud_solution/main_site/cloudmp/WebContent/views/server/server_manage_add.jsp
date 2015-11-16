@@ -335,7 +335,19 @@
 
                         </div>
                       </div>
-                      
+                      <div class="form-group">
+                        <label for="input01" class="col-sm-2 control-label">是否支持H264 *</label>
+                        <div class="col-sm-8"> 
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="supportH264" id="supportH264_1" value="0" checked>
+                            <label for="supportH264_1">否</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="supportH264" id="supportH264_2" value="1">
+                            <label for="supportH264_2">是</label>
+                          </div>
+                        </div>
+                      </div>
                       <div class="form-group">
                         <label class="col-sm-2 control-label">其他</label>
                         <div class="col-sm-8">

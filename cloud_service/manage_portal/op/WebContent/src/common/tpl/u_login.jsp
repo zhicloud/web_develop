@@ -7,7 +7,7 @@
 			<input type="hidden" id="type" name="type" value="4"/>
 				<ul>
 					<li>
-						<input type="text" name="account" id="log_ipteml" class="ipteml" autocomplete="off" placeholder="请输入邮箱" onblur="checkEmail()"/>
+						<input type="text" name="account" id="log_ipteml" class="ipteml" autocomplete="off" placeholder="请输入邮箱/手机" onblur="checkEmail()"/>
 						<span class="f-db font12 c-f60" id="tip_email"></span> 
 					</li>
 					<li>

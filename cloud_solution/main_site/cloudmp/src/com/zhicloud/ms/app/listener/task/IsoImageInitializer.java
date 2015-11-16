@@ -35,6 +35,7 @@ public class IsoImageInitializer implements Runnable
 				{
 					break;
 				}
+
 				IsoImagePoolManager.getSingleton().refreshIsoImagePool();
 			}
 			finally

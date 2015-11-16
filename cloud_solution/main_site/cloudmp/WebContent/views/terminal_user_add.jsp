@@ -102,12 +102,12 @@
                   <!-- tile body -->
                   <div class="tile-body">
                     
-                    <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/user/add" method="post"   >
+                    <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/user/add" method="post">
                       
                       <div class="form-group">
                         <label for="username" class="col-sm-2 control-label">用户名 *</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="username" name="username"  parsley-trigger="change" parsley-type="nochinese" parsley-required="true" parsley-checkusername="true" parsley-minlength="4" parsley-maxlength="50" parsley-validation-minlength="4">
+                            <input type="text" class="form-control" id="username" name="username" parsley-trigger="change" parsley-type="nochinese" parsley-required="true"  parsley-minlength="4" parsley-maxlength="50" parsley-validation-minlength="4">
                         </div>
                       </div>
                       <%--<div class="form-group">--%>

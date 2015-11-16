@@ -267,61 +267,26 @@ public class ComputePoolServiceImpl implements IComputePoolService {
     public MethodResult removeComputePool(String uuid) {
         try {
             HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-            CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
-            CloudHostWarehouseMapper cloudHostWarehouseMapper = this.sqlSession.getMapper(CloudHostWarehouseMapper.class);
             if(channel!=null){
-                JSONObject result = channel.hostQuery(uuid);
-                if("success".equals(result.get("status"))){
-
-                    //删除资源池中的主机
-                    JSONArray computerList = result.getJSONArray("hosts");
-                    for (int i = 0; i < computerList.size(); i ++) {
-                        JSONObject computerObject = computerList.getJSONObject(i);
-                        String uid = computerObject.getString("uuid");
-                        CloudHostVO cloudHostVO = cloudHostMapper.getByRealHostId(uid);
-                        String warehostId = cloudHostVO.getWarehouseId();
-                        channel.hostDelete(uid);
-                        CloudHostWarehouse cloudHostWarehouse = cloudHostWarehouseMapper.getById(
-                            warehostId);
-                        Integer totalAmount = cloudHostWarehouse.getTotalAmount();
-                        Integer remainAmount = cloudHostWarehouse.getRemainAmount();
-                        Integer assignedAmount = cloudHostWarehouse.getAssignedAmount();
-                        if (totalAmount > 0 && remainAmount > 0 && assignedAmount >0) {
-                            if (totalAmount >= remainAmount && totalAmount >= assignedAmount) {
-                                //删除该主机
-                                cloudHostMapper.deleteById(cloudHostVO.getId());
-                                if (cloudHostVO.getUserId() == null) { // 该主机未分配
-                                    cloudHostWarehouseMapper.updateWarehouseAmountForDeleteHost(warehostId);
-                                }else {                               //  该主机已分配
-                                    cloudHostWarehouseMapper.updateWarehouseAmountForDeleteDispatchedHost(warehostId);
-
-                                }
-
-                            } else {
-                                return new MethodResult(MethodResult.FAIL,"仓库数据异常");
-                            }
-                        } else {
-                            return new MethodResult(MethodResult.FAIL,"仓库数据异常");
-                        }
-
-                    }
-                }
-                //删除NC
+                //检测是否有NC，有则提示不能删除
                 JSONObject nodeResult = channel.computePoolQueryResource(uuid);
-                if("success".equals(result.get("status"))){
+                if("success".equals(nodeResult.get("status"))){
                     JSONArray nodeList = nodeResult.getJSONArray("compute_resources");
-                    for (int i = 0; i < nodeList.size(); i ++) {
-                        JSONObject nodeObject = nodeList.getJSONObject(i);
-                        String name = nodeObject.getString("name");
-                        channel.computePoolRemoveResource(uuid, name);
+                    //存在NC
+                    if(nodeList!=null && nodeList.size()>0){
+                    	return new MethodResult(MethodResult.FAIL,"资源池删除失败，请先删除资源池中的资源");
+                    }else{
+                    	//没有NC，删除资源池
+                        JSONObject drp = channel.computePoolDelete(uuid);
+                        if("success".equals(drp.getString("status"))){
+                            return new MethodResult(MethodResult.SUCCESS,"资源池删除成功");
+                        }else{
+                        	return new MethodResult(MethodResult.FAIL,"资源池删除失败");
+                        }
                     }
                 }
             }
-            //删除资源池
-            JSONObject drp = channel.computePoolDelete(uuid);
-            if("success".equals(drp.getString("status"))){
-                return new MethodResult(MethodResult.SUCCESS,"资源池删除成功");
-            }
+            
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

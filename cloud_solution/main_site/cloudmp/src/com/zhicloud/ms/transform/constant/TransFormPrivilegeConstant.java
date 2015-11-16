@@ -69,6 +69,7 @@ public class TransFormPrivilegeConstant {
     public static final String desktop_warehouse_allocate = "desktop_warehouse_allocate";     //仓库分配
     public static final String desktop_warehouse_host_allocate = "desktop_warehouse_host_allocate";     //主机分配
     public static final String desktop_warehouse_host_start = "desktop_warehouse_host_start";     //主机开机
+    public static final String desktop_host_start_from_iso = "desktop_host_start_from_iso";     //云服务器从光盘启动
     public static final String desktop_warehouse_host_stop = "desktop_warehouse_host_stop";     //主机关机
     public static final String desktop_warehouse_host_shut_down = "desktop_warehouse_host_shut_down";     //主机强制关机
     public static final String desktop_warehouse_host_restart = "desktop_warehouse_host_restart";     //主机重启
@@ -171,6 +172,7 @@ public class TransFormPrivilegeConstant {
     public static final String server_manage_detail = "server_manage_detail";     //云服务器详情
     public static final String server_host_reset = "server_host_reset";     //云服务器强制重启
     public static final String server_host_start = "server_host_start";     //云服务器启动
+    public static final String server_host_start_from_iso = "server_host_start_from_iso";     //云服务器从光盘启动
     public static final String server_host_shutdown = "server_host_shutdown";     //云服务器关机
     public static final String server_host_restart = "server_host_restart";     //云服务器重启
     public static final String server_host_halt = "server_host_halt";     //云服务器强制关机
@@ -258,6 +260,14 @@ public class TransFormPrivilegeConstant {
     public static final String ip_resource_pool_detail_add = "ip_resource_pool_detail_add"; //地址资源添加
     public static final String ip_resource_pool_detail_remove = "ip_resource_pool_detail_remove"; //地址资源移除
     public static final String ip_resource_pool_detail_move = "ip_resource_pool_detail_move"; //地址资源迁移
+    //端口资源池管理
+    public static final String port_resource_pool_query         = "port_resource_pool_query";   //端口资源池 _查询
+    //public static final String port_resource_pool_create        = "port_resource_pool_create";  //端口资源池 _创建界面
+    public static final String port_resource_pool_add           = "port_resource_pool_add";  //端口资源池 _创建
+    public static final String port_resource_pool_remove        = "port_resource_pool_remove";    //端口资源池_删除
+    public static final String port_resource_pool_detail_query  = "port_resource_pool_detail_query";  //端口资源查询
+    public static final String port_resource_pool_detail_add    = "port_resource_pool_detail_add";    //端口资源添加
+    public static final String port_resource_pool_detail_remove = "port_resource_pool_detail_remove"; //端口资源移除
 
 
     //云硬盘管理
@@ -389,6 +399,10 @@ public class TransFormPrivilegeConstant {
     public static final String desktop_resource_node_mount = "desktop_resource_node_mount";// 磁盘挂载
     public static final String desktop_resource_node_enabledisk = "desktop_resource_node_enabledisk";// 本地磁盘启用
     public static final String desktop_resource_node_disabledisk = "desktop_resource_node_disabledisk";// 本地磁盘禁用
+    
+    public static final String iso_image_add = "iso_image_add";// 镜像新增
+    public static final String iso_image_query = "iso_image_query";// 镜像查询
+    public static final String iso_image_delete = "iso_image_delete";// 镜像删除
 
 }
  
