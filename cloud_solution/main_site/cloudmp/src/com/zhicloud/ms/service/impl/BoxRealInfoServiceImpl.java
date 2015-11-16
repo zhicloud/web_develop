@@ -1,21 +1,19 @@
 package com.zhicloud.ms.service.impl;
 
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.zhicloud.ms.mapper.BoxRealInfoMapper;
+import com.zhicloud.ms.service.IBoxRealInfoService;
+import com.zhicloud.ms.util.StringUtil;
+import com.zhicloud.ms.vo.BoxRealInfoVO;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zhicloud.ms.mapper.BoxRealInfoMapper;
-import com.zhicloud.ms.service.IBoxRealInfoService;
-import com.zhicloud.ms.util.StringUtil;
-import com.zhicloud.ms.vo.BoxRealInfoVO;
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 /**
  * 
 * @ClassName: BoxRealInfoServiceImpl 
@@ -36,7 +34,7 @@ public class BoxRealInfoServiceImpl implements IBoxRealInfoService {
     * <p>Description: </p> 
     * @param info
     * @return 
-    * @see com.zhicloud.ms.service.IBoxRealInfoService#addOrUpdateBoxInfo(com.zhicloud.ms.transform.vo.BoxRealInfoVO)
+    * @see com.zhicloud.ms.service.IBoxRealInfoService#addOrUpdateBoxInfo(com.zhicloud.ms.vo.BoxRealInfoVO)
      */
     @Override
     public int addOrUpdateBoxInfo(BoxRealInfoVO info) {
@@ -78,7 +76,7 @@ public class BoxRealInfoServiceImpl implements IBoxRealInfoService {
      * 根据mac地址查询信息 
     * <p>Title: getInfoByMac</p> 
     * <p>Description: </p> 
-    * @param mac
+    * @param userId
     * @return 
     * @see com.zhicloud.ms.service.IBoxRealInfoService#getInfoByUserId(java.lang.String)
      */
@@ -92,9 +90,8 @@ public class BoxRealInfoServiceImpl implements IBoxRealInfoService {
     * 计算每个盒子的在线时间。 
     * <p>Title: getInfoByMac</p> 
     * <p>Description: </p> 
-    * @param mac
-    * @return 
-    * @see com.zhicloud.ms.service.IBoxRealInfoService#getInfoByUserId(java.lang.String)
+    * @return
+    * @see com.zhicloud.ms.service.IBoxRealInfoService#CumulativeOnLineTime()
      */   
 	@Override
 	public void CumulativeOnLineTime() {
