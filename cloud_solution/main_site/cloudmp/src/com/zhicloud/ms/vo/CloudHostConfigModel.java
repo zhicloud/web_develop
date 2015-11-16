@@ -53,6 +53,8 @@ public class CloudHostConfigModel {
 	private String emptyDisk;
 	//是否支持H264
 	private Integer supportH264;
+	//镜像类型
+	private Integer fileType;
 	
 	public String getId() {
 		return id;
@@ -257,6 +259,13 @@ public class CloudHostConfigModel {
 	public void setSupportH264(Integer supportH264) {
 		this.supportH264 = supportH264;
 	}
+    public Integer getFileType() {
+        return fileType;
+    }
+    public void setFileType(Integer fileType) {
+        this.fileType = fileType;
+    }
+	
     
     
 

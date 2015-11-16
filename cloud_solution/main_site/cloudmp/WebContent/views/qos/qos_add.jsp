@@ -140,7 +140,7 @@
                                                         <select class="chosen-select chosen-transparent form-control" id = "uuid" name="uuid" parsley-trigger="change" parsley-required="true" parsley-error-container="#select_host">
                                                             <option value="">请选择云主机</option>
                                                             <c:forEach items="${cloud_host_vo_list }" var="cloud_host_vo">
-                                                                <option value="${cloud_host_vo.realHostId}">${cloud_host_vo.displayName}</option>
+                                                                <option value="${cloud_host_vo.realHostId};${cloud_host_vo.displayName}">${cloud_host_vo.displayName}</option>
                                                             </c:forEach>
                                                         </select>
                                                     </div>
@@ -243,48 +243,48 @@
                         <!-- /tile -->
                         <%--<div class="tile-body">--%>
 
-                            <%--<a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>--%>
-                            <%--<a href="#modalConfirm" id="con" role="button"   data-toggle="modal"> </a>--%>
+                        <%--<a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>--%>
+                        <%--<a href="#modalConfirm" id="con" role="button"   data-toggle="modal"> </a>--%>
 
 
-                            <%--<div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">--%>
-                                <%--<div class="modal-dialog">--%>
-                                    <%--<div class="modal-content" style="width:60%;margin-left:20%;">--%>
-                                        <%--<div class="modal-header">--%>
-                                            <%--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>--%>
-                                            <%--<h3 class="modal-title" id="modalDialogLabel"><strong>提示</strong></h3>--%>
-                                        <%--</div>--%>
-                                        <%--<div class="modal-body">--%>
-                                            <%--<p id="tipscontent"></p>--%>
-                                        <%--</div>--%>
-                                    <%--</div><!-- /.modal-content -->--%>
-                                <%--</div><!-- /.modal-dialog -->--%>
-                            <%--</div><!-- /.modal -->--%>
+                        <%--<div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">--%>
+                        <%--<div class="modal-dialog">--%>
+                        <%--<div class="modal-content" style="width:60%;margin-left:20%;">--%>
+                        <%--<div class="modal-header">--%>
+                        <%--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>--%>
+                        <%--<h3 class="modal-title" id="modalDialogLabel"><strong>提示</strong></h3>--%>
+                        <%--</div>--%>
+                        <%--<div class="modal-body">--%>
+                        <%--<p id="tipscontent"></p>--%>
+                        <%--</div>--%>
+                        <%--</div><!-- /.modal-content -->--%>
+                        <%--</div><!-- /.modal-dialog -->--%>
+                        <%--</div><!-- /.modal -->--%>
 
-                            <%--<div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >--%>
-                                <%--<div class="modal-dialog">--%>
-                                    <%--<div class="modal-content" style="width:60%;margin-left:20%;">--%>
-                                        <%--<div class="modal-header">--%>
-                                            <%--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>--%>
-                                            <%--<h3 class="modal-title" id="modalConfirmLabel"><strong>确认</strong> </h3>--%>
-                                        <%--</div>--%>
-                                        <%--<div class="modal-body">--%>
-                                            <%--<form role="form">--%>
+                        <%--<div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >--%>
+                        <%--<div class="modal-dialog">--%>
+                        <%--<div class="modal-content" style="width:60%;margin-left:20%;">--%>
+                        <%--<div class="modal-header">--%>
+                        <%--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>--%>
+                        <%--<h3 class="modal-title" id="modalConfirmLabel"><strong>确认</strong> </h3>--%>
+                        <%--</div>--%>
+                        <%--<div class="modal-body">--%>
+                        <%--<form role="form">--%>
 
-                                                <%--<div class="form-group">--%>
-                                                    <%--<label style="align:center;" id="confirmcontent">确定要删除该主机配置吗？</label>--%>
-                                                <%--</div>--%>
+                        <%--<div class="form-group">--%>
+                        <%--<label style="align:center;" id="confirmcontent">确定要删除该主机配置吗？</label>--%>
+                        <%--</div>--%>
 
-                                            <%--</form>--%>
-                                        <%--</div>--%>
-                                        <%--<div class="modal-footer">--%>
-                                            <%--<button class="btn btn-green"   onclick="toDelete();" data-dismiss="modal" aria-hidden="true">确定</button>--%>
-                                            <%--<button class="btn btn-red" data-dismiss="modal" aria-hidden="true">取消</button>--%>
+                        <%--</form>--%>
+                        <%--</div>--%>
+                        <%--<div class="modal-footer">--%>
+                        <%--<button class="btn btn-green"   onclick="toDelete();" data-dismiss="modal" aria-hidden="true">确定</button>--%>
+                        <%--<button class="btn btn-red" data-dismiss="modal" aria-hidden="true">取消</button>--%>
 
-                                        <%--</div>--%>
-                                    <%--</div><!-- /.modal-content -->--%>
-                                <%--</div><!-- /.modal-dialog -->--%>
-                            <%--</div><!-- /.modal -->--%>
+                        <%--</div>--%>
+                        <%--</div><!-- /.modal-content -->--%>
+                        <%--</div><!-- /.modal-dialog -->--%>
+                        <%--</div><!-- /.modal -->--%>
 
                         <%--</div>--%>
                     </div>
@@ -444,5 +444,3 @@
 
 </body>
 </html>
-      
-
