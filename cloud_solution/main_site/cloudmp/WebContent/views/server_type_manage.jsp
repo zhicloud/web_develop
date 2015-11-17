@@ -67,7 +67,7 @@
           <div class="pageheader">
             
 
-            <h2><i class="fa fa-cogs"></i> 云桌面主机配置管理</h2>
+            <h2><i class="fa fa-cogs"></i> 主机配置管理</h2>
             
 
           </div>
@@ -146,7 +146,7 @@
                             &nbsp;                                                                        
                             </c:if>
                             <a hrep="javascript:void(0);" onclick="updateType('${chcm.id }');" style="color:#FAFAFA;cursor:pointer">${chcm.name}</a></td>
-                            <td>${chcm.cpuCore}核/${chcm.memoryText }G/${chcm.dataDiskText }G/${chcm.bandwidthText }M</td>
+                            <td>${chcm.cpuCore}核/${chcm.memoryText }G/${chcm.dataDiskText }G/${chcm.bandwidthText }Mb</td>
                             <td>${chcm.getSysImageNameFormat() }</td>
                             <td class="center">
                             <c:if test="${chcm.curCreateDate == null}">

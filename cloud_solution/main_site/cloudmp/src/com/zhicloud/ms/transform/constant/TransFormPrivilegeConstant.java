@@ -396,6 +396,9 @@ public class TransFormPrivilegeConstant {
     public static final String desktop_resource_node_mount = "desktop_resource_node_mount";// 磁盘挂载
     public static final String desktop_resource_node_enabledisk = "desktop_resource_node_enabledisk";// 本地磁盘启用
     public static final String desktop_resource_node_disabledisk = "desktop_resource_node_disabledisk";// 本地磁盘禁用
+    
+    public static final String iso_image_query = "iso_image_query"; // 镜像查询
+    public static final String iso_image_delete = "iso_image_delete"; // 镜像删除
 
 }
  

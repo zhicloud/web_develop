@@ -241,6 +241,7 @@ public class TransFormAdminController extends TransFormBaseAction{
                     String registerUrl = sysAddress + "hgMessage/receive.do";
                     HttpGatewayReceiveChannel receiveChannel = new HttpGatewayReceiveChannel(regionData.getId()); 
                     receiveChannel.messagePushRegisterThreadly(registerUrl); 
+                    logger.info("registe http-gateway " + registerUrl);
                 }
             }
     	}catch(Exception e){

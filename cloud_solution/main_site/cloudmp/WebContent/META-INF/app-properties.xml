@@ -205,6 +205,6 @@
 	</property>
 	<property key="web_version" name="web_version" type="String" 
 		description="web_version">
-		¡¾ÔÆÆ½Ì¨web¡¿verion(2.0)(build 20151104-1)
+		¡¾ÔÆ×ÀÃæweb¡¿verion(1.0)(build 20151113-1)
 	</property>
 </properties>
