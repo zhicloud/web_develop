@@ -440,5 +440,14 @@ public interface ICloudHostService {
     * @throws
      */
     public MethodResult startCloudHostFromIso(String cloudHostId,String imageId);
+    /**
+     * 
+    * @Title: updateCloudHostRunningStatus 
+    * @Description: 更新主机的runningstatus 
+    * @param       
+    * @return void     
+    * @throws
+     */
+    public void updateCloudHostRunningStatus();
 }
 
