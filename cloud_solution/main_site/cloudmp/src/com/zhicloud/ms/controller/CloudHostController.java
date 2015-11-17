@@ -339,7 +339,7 @@ public class CloudHostController {
      */
     @RequestMapping(value="/{id}/{warehouseId}/{status}/update",method=RequestMethod.GET) 
     public String updataServerPage(@PathVariable("id") String id,@PathVariable("warehouseId") String warehouseId,@PathVariable("status") String status ,Model model,HttpServletRequest request){
-        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_manage_modify)){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_modify)){
             return "not_have_access";
         }
         CloudHostVO cloudServer = cloudHostService.getById(id);
