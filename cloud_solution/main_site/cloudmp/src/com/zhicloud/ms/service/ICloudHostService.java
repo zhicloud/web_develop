@@ -449,5 +449,7 @@ public interface ICloudHostService {
     * @throws
      */
     public MethodResult startCloudHostFromIso(String cloudHostId,String imageId);
+    
+    public void updateCloudHostRunningStatus();
 }
 

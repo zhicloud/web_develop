@@ -15,6 +15,7 @@
 		<result column="modified_time"  property="modifiedTime"/>
 		<result column="type"           property="type"/>
 		<result column="support_h264"   property="supportH264"/>
+		<result column="file_type"      property="fileType"/>
 	</resultMap>
 	<select id="getAll" resultMap="CloudHostConfigModel">
 		select  chcm.id,
@@ -28,8 +29,11 @@
 				chcm.sys_image_name,
 				chcm.create_time,
 				chcm.modified_time,
-				chcm.support_h264
+				chcm.support_h264,
+				sdi.file_type
 		from cloud_host_config_model chcm
+		left join sys_disk_image sdi
+		on chcm.sys_image_id = sdi.id
 		where chcm.type = 1
 	</select>
 	
@@ -45,8 +49,11 @@
 				chcm.sys_image_name,
 				chcm.create_time,
 				chcm.modified_time,
-				chcm.support_h264
+				chcm.support_h264,
+				sdi.file_type
 		from cloud_host_config_model chcm
+		left join sys_disk_image sdi
+		on chcm.sys_image_id = sdi.id
 		where chcm.type = 2
 	</select>
 	
