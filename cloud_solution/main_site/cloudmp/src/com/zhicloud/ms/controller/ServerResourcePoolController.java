@@ -71,16 +71,68 @@ public class ServerResourcePoolController {
 			return "not_have_access";
 		}
 		try {
-		    List<ComputeInfoExt> cList = new ArrayList<ComputeInfoExt>(); 
-            ComputeInfoPool  pool = ComputeInfoPoolManager.singleton().getPool();
-            Map<String, ComputeInfoExt>  poolMap = pool.getAllComputePool();
-            for(Map.Entry<String, ComputeInfoExt> entry:poolMap.entrySet()){ 
-                ComputeInfoExt poolDetail = entry.getValue();
-//                if(poolDetail.getName().indexOf("server_pool") != -1){
-                    cList.add(entry.getValue());    
-//                }
-            }               
-            model.addAttribute("computerPool", cList); 
+		    List<ComputeInfo> cList = new ArrayList<>();
+            HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
+            if(channel!=null){
+                JSONObject result = channel.computePoolQuery();
+                if("success".equals(result.getString("status"))){
+                    JSONArray computerList = result.getJSONArray("compute_pools");
+                    for (int i = 0; i < computerList.size(); i ++) {
+                        JSONObject computerObject = computerList.getJSONObject(i);
+                        String uuid = computerObject.getString("uuid");
+                        String name = computerObject.getString("name");
+                        if(!name.contains("server_pool")){
+                            continue;
+                        }
+                        int status = computerObject.getInt("status");
+                        Integer cpuCount = computerObject.getInt("cpu_count");
+                        BigDecimal cpuUsage = new BigDecimal(computerObject.getString("cpu_usage"));
+                        BigDecimal memoryUsage = new BigDecimal(computerObject.getString("memory_usage"));
+                        BigDecimal diskUsage = new BigDecimal(computerObject.getString("disk_usage"));
+                        
+                        JSONArray memoryList = computerObject.getJSONArray("memory");
+                        BigInteger[] mcount = new BigInteger[memoryList.size()];
+                        for(int j=0;j<memoryList.size();j++){
+                            mcount[j] = new BigInteger(memoryList.getString(j));
+                        }
+                        
+                        JSONArray diskList = computerObject.getJSONArray("disk_volume");
+                        BigInteger[] dcount = new BigInteger[diskList.size()];
+                        for(int j=0;j<diskList.size();j++){
+                            dcount[j] = new BigInteger(diskList.getString(j));
+                        }
+                        
+                        JSONArray nList = computerObject.getJSONArray("node");
+                        Integer[] ncount = new Integer[nList.size()];
+                        for(int j=0;j<nList.size();j++){
+                            ncount[j] = nList.getInt(j);
+                        }
+                        
+                        JSONArray hList = computerObject.getJSONArray("host");
+                        Integer[] hcount = new Integer[hList.size()];
+                        for(int j=0;j<hList.size();j++){
+                            hcount[j] = hList.getInt(j);
+                        }
+
+          ComputeInfoExt computer = computePoolService.getComputePoolDetailSync(uuid);
+                        computer.setCpuCount(cpuCount);
+                        computer.setCpuUsage(cpuUsage);
+                        computer.setDiskUsage(diskUsage);
+                        computer.setDiskVolume(dcount);
+                        computer.setHost(hcount);
+                        computer.setMemory(mcount);
+                        computer.setMemoryUsage(memoryUsage);
+                        computer.setName(name);
+                        computer.setNode(ncount);
+                        computer.setStatus(status);
+                        computer.setUuid(uuid);
+                        computer.setRegion(1);
+                        cList.add(computer);
+                    }
+                }
+            }
+        
+        model.addAttribute("computerPool", cList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}  
@@ -395,7 +447,7 @@ public class ServerResourcePoolController {
 
             MethodResult result = computePoolService.createComputePoolSync(data);
             if("success".equals(result.status)){
-                operLogService.addLog("桌面云资源池管理", "创建计算资源池", "1", "1", request);
+                operLogService.addLog("桌面云资源池管理", "创建计算资源池"+name, "1", "1", request);
                 ComputeInfoCacheJob job = new ComputeInfoCacheJob();
                 job.execute(null);
                 return new MethodResult(result.status, result.message);
@@ -405,11 +457,11 @@ public class ServerResourcePoolController {
 
         }  catch (Exception e) {
             e.printStackTrace();
-            operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "2", request);
+            operLogService.addLog("桌面云资源池管理", "创建计算资源池"+name, "1", "2", request);
             return new MethodResult(MethodResult.FAIL,"资源池创建失败");
         }
 
-        operLogService.addLog("桌面云资源池管理", "修改计算资源池", "1", "2", request);
+        operLogService.addLog("桌面云资源池管理", "创建计算资源池"+name, "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"资源池创建失败");
     }
 

@@ -77,8 +77,7 @@ public class IsoImageController {
 //        IsoImageProgressPool pool = IsoImageProgressPoolManager.singleton().getPool();
         IsoImagePool pool = IsoImagePoolManager.getSingleton().getIsoImagePool();
         List<IsoImageData> isoArray = pool.getAllIsoImageData();
-        model.addAttribute("isoArray", isoArray);
-        this.executeShellOfQueryNas("172.18.10.52");
+        model.addAttribute("isoArray", isoArray); 
         return "isoimage/iso_image_manage";
     }
     
