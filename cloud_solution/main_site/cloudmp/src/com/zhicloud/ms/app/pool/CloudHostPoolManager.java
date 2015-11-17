@@ -158,7 +158,7 @@ public class CloudHostPoolManager {
 		newCloudHostData.setLastOperStatus(0);
 		
 		// 如果running_status变了，则更新数据库
-        if (oldCloudHostData == null || (host != null && oldCloudHostData != null && NumberUtil.equals(newCloudHostData.getRunningStatus(), oldCloudHostData.getRunningStatus()) == false)) {
+        if (host != null && (oldCloudHostData == null || (oldCloudHostData != null && NumberUtil.equals(newCloudHostData.getRunningStatus(), oldCloudHostData.getRunningStatus()) == false))) {
             boolean update_flag = true;
 //            if(oldCloudHostData.getRunningStatus() == AppConstant.CLOUD_HOST_RUNNING_STATUS_SHUTINGDOWM && newCloudHostData.getRunningStatus() == AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING){             
 //                if(oldCloudHostData.getLastOperTime() != null){
@@ -367,9 +367,9 @@ public class CloudHostPoolManager {
                 data.put("realHostId", cloudHostData.getRealHostId());
                 cloudHostService.updateRunningStatusByRealHostId(data);
                 
-                cloudHostPool.put(cloudHostData);
             }
         }
+        cloudHostPool.put(cloudHostData);
 	}
 
 	/**
