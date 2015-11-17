@@ -366,7 +366,7 @@ public class InterfaceController {
 		if(version == null || version.getVersionNumber().equals(versionNumber)){
  			result.put("need_update", false);	
 			ServiceUtil.writeJsonTo(response.getOutputStream(), result);
-		}else if(version != null && version.getVersionNumber().compareTo(versionNumber)<=0){
+		}else if(version != null && this.digitFromString(version.getVersionNumber()).compareTo(this.digitFromString(versionNumber))<=0){
 		    result.put("need_update", false); 
             ServiceUtil.writeJsonTo(response.getOutputStream(), result);
 		}
@@ -691,5 +691,18 @@ public class InterfaceController {
 		
 
 	} 
+	
+	public static String digitFromString(String str) {
+ 	    str=str.trim();
+	    String str2="";
+	    if(str != null && !"".equals(str)){
+    	    for(int i=0;i<str.length();i++){
+    	    if(str.charAt(i)>=48 && str.charAt(i)<=57){
+    	    str2+=str.charAt(i);
+    	    }
+    	  }
+	   }
+	    return str2;
+	}
 }
 

@@ -20,6 +20,7 @@ package com.zhicloud.ms.service.impl;
 
 import com.zhicloud.ms.app.listener.task.LoadBalanceRunnable;
 import com.zhicloud.ms.app.pool.CloudHostData;
+import com.zhicloud.ms.app.pool.CloudHostPool;
 import com.zhicloud.ms.app.pool.CloudHostPoolManager;
 import com.zhicloud.ms.app.pool.hostMonitorInfoPool.HostMonitorInfo;
 import com.zhicloud.ms.app.pool.hostMonitorInfoPool.HostMonitorInfoManager;
@@ -40,6 +41,7 @@ import com.zhicloud.ms.transform.util.TransFormLoginHelper;
 import com.zhicloud.ms.transform.util.TransFormLoginInfo;
 import com.zhicloud.ms.util.CapacityUtil;
 import com.zhicloud.ms.util.DateUtil;
+import com.zhicloud.ms.util.NumberUtil;
 import com.zhicloud.ms.util.RegionHelper;
 import com.zhicloud.ms.util.RegionHelper.RegionData;
 import com.zhicloud.ms.util.StringUtil;
@@ -1049,9 +1051,8 @@ public class CloudHostServiceImpl implements ICloudHostService {
                             total++;
                             allHostNames.add(name);
                             _handleOrdinaryHostName(regionData.getId(), host);
-                        }else{
-                            CloudHostPoolManager.getSingleton().updateRealCloudHost(regionData.getId(), host,poolId);
                         }
+//                        CloudHostPoolManager.getSingleton().updateRealCloudHost(regionData.getId(), host,poolId,cloudHost); 
                     }
                     logger.info(String.format("found new host. total[%s]: %s, region:[%s:%s]", total, allHostNames, regionData.getId(), regionData.getName()));
                     
@@ -1241,26 +1242,34 @@ public class CloudHostServiceImpl implements ICloudHostService {
                 logger.info("CloudHostServiceImpl.createOneCloudHost():   no_more_uncreated_host_exsit");
                 return new MethodResult(MethodResult.SUCCESS, "no_more_uncreated_host_exsit");
             }  
-            Integer isUseDataDisk = 1;
+            Integer isUseDataDisk  = 1;
             if(cloudHostVO.getDataDisk().compareTo(BigInteger.ZERO)==0){
             	isUseDataDisk = 0;
             }
+            String imageId= "";
+            Integer [] options = new Integer[]{1, 1, 0 ,0,1,cloudHostVO.getSupportH264()};
+            if(cloudHostVO.getSysImageId() == null){
+                options =  new Integer[]{0, 1, 0 ,0,1,cloudHostVO.getSupportH264()};
+            }else{
+             // 获取订单里的磁盘镜像的信息
+                SysDiskImageVO sysDiskImageVO = sysDiskImageMapper.getById(cloudHostVO.getSysImageId());
+                if( sysDiskImageVO==null ||  StringUtil.isBlank(sysDiskImageVO.getRealImageId()) )
+                {
+                    logger.info("OrderInfoServiceImpl.createOneUserOrderedCloudHost():  sys_disk_image_not_found");
+                    // 磁盘镜像处理失败
+                    Map<String, Object> data = new LinkedHashMap<String, Object>();
+                    data.put("id",             cloudHostVO.getId());
+                    data.put("status", 3);//创建失败
+                    data.put("createTime", StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+                    cloudHostMapper.updateStautsById(data);
+                    return new MethodResult(MethodResult.FAIL, "sys_disk_image_not_found");
+                } else{
+                    imageId = sysDiskImageVO.getRealImageId();
+                }
+                
+            }
             
-            Integer[] options = new Integer[] { 1, isUseDataDisk, 0,0,1,cloudHostVO.getSupportH264() };
-            
-            // 获取订单里的磁盘镜像的信息
-            SysDiskImageVO sysDiskImageVO = sysDiskImageMapper.getById(cloudHostVO.getSysImageId());
-            if( sysDiskImageVO==null ||  StringUtil.isBlank(sysDiskImageVO.getRealImageId()) )
-            {
-                logger.info("OrderInfoServiceImpl.createOneUserOrderedCloudHost():  sys_disk_image_not_found");
-                // 磁盘镜像处理失败
-                Map<String, Object> data = new LinkedHashMap<String, Object>();
-                data.put("id",             cloudHostVO.getId());
-                data.put("status", 3);//创建失败
-                data.put("createTime", StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
-                cloudHostMapper.updateStautsById(data);
-                return new MethodResult(MethodResult.FAIL, "sys_disk_image_not_found");
-            } 
+             
             
             // 从云主机仓库获取云主机失败，那么直接创建云主机
             HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(cloudHostVO.getRegion());
@@ -1282,7 +1291,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
                                                             cloudHostVO.getCpuCore(), 
                                                             cloudHostVO.getMemory(), 
                                                             options,     // options
-                                                            sysDiskImageVO.getRealImageId(), 
+                                                            imageId, 
                                                             new BigInteger[]{ cloudHostVO.getSysDisk(), cloudHostVO.getDataDisk() }, 
                                                             new Integer[]{}, 
                                                             cloudHostVO.getUserId(), 
@@ -1623,7 +1632,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             if(server.getDataDisk().compareTo(BigInteger.ZERO)==0){
                 isUseDataDisk = 0;
             }
-            if(server.getIsAutoStartup()!=1){
+            if(server.getIsAutoStartup()==null || server.getIsAutoStartup()!=1){
                 isAutoStart = 0;
             } 
 
@@ -1780,7 +1789,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
     @Transactional(readOnly=false)
     public MethodResult modifyAllocation(CloudHostVO server) {
         HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-
+        CloudHostVO cloud = null;
         try {
             // 参数处理
             String bandwidth = "3";
@@ -1797,7 +1806,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
                 return new MethodResult(MethodResult.FAIL, "请选择带宽大小");
             }
             CloudHostMapper chMapper = this.sqlSession.getMapper(CloudHostMapper.class);
-            CloudHostVO cloud = chMapper.getById(server.getId());
+            cloud = chMapper.getById(server.getId());
             HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
             JSONObject result = channel.hostQueryInfo(cloud.getRealHostId());
             //获取主机信息
@@ -1827,24 +1836,28 @@ public class CloudHostServiceImpl implements ICloudHostService {
 			}
             JSONObject hostModifyResult = channel.hostModify(cloud.getRealHostId(), "", server.getCpuCore(), CapacityUtil.fromCapacityLabel(server.getMemory()+"GB"), options, new Integer[0], "", "", "", new BigInteger("0"), new BigInteger("0"));
             if (HttpGatewayResponseHelper.isSuccess(hostModifyResult) == false) {
-                operLogService.addLog("云主机", "修改主机配置"+server.getDisplayName()+"失败", "1", "2", request);
+                operLogService.addLog("云主机", "修改主机配置"+cloud.getDisplayName()+"失败", "1", "2", request);
                 return new MethodResult(MethodResult.FAIL, "配置修改失败");
+            }
+            Integer realCpu = server.getCpuCore();
+            if(realCpu==null || realCpu==0){
+            	realCpu = cloud.getCpuCore();
             }
             Map<String,Object> condition = new LinkedHashMap<String, Object>();
             condition.put("id",server.getId());
-            condition.put("cpuCore", server.getCpuCore());
+            condition.put("cpuCore", realCpu);
             condition.put("memory", CapacityUtil.fromCapacityLabel(server.getMemory()+"GB"));
 //          condition.put("bandwidth", FlowUtil.fromFlowLabel(bandwidth+"Mbps"));
             int n = chMapper.updateById(condition);
             if(n > 0){
-                operLogService.addLog("云主机", "修改主机配置"+server.getDisplayName()+"成功", "1", "1", request);
+                operLogService.addLog("云主机", "修改主机配置"+cloud.getDisplayName()+"成功", "1", "1", request);
                 return new MethodResult(MethodResult.SUCCESS, "配置修改成功");
             }else{
-                operLogService.addLog("云主机", "修改主机配置"+server.getDisplayName()+"失败", "1", "2", request);
+                operLogService.addLog("云主机", "修改主机配置"+cloud.getDisplayName()+"失败", "1", "2", request);
                 return new MethodResult(MethodResult.FAIL, "数据库修改失败");
             }
         } catch(Exception e) {
-            operLogService.addLog("云主机", "修改主机配置"+server.getDisplayName()+"失败", "1", "2", request);
+            operLogService.addLog("云主机", "修改主机配置"+cloud.getDisplayName()+"失败", "1", "2", request);
             return new MethodResult(MethodResult.FAIL, "配置修改失败");
         }
     }
@@ -1968,7 +1981,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
         relateData.put("limit", limit);
         relateData.put("now", now);
         relateData.put("timerKey", timerKey);
-        return cloudHostMapper.getDesktopCloudHostInTimerBackUpStop(relateData);
+        return cloudHostMapper.getCloudHostInTimerBackUpStop(relateData);
     }
     /**
      * 更新参与定时任务的桌面云主机
@@ -2514,6 +2527,138 @@ public class CloudHostServiceImpl implements ICloudHostService {
             throw new MyException("启动失败");
         }  
     }
+    
+    @Override
+    public void updateCloudHostRunningStatus() {
+        MethodResult result = new MethodResult(MethodResult.SUCCESS);
+        CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
+        JSONObject hostQueryResult = null;
+        RegionData[] regionDatas = RegionHelper.singleton.getAllResions();
+        CloudHostPool cloudHostPool = CloudHostPoolManager.getCloudHostPool();
+        for (RegionData regionData : regionDatas) {
+            try {
+                HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(regionData.getId());
+                // 获取默认计算资源池
+                JSONObject allPool = channel.computePoolQuery();
+                if("fail".equals(allPool.getString("status"))) {
+                    logger.error("CloudHostServiceImpl.updateCloudHostRunningStatus-> fail to get pool  ");
+                }
+ 
+                JSONArray computerList = allPool.getJSONArray("compute_pools");
+
+                for (int i = 0; i < computerList.size(); i ++) {
+                    JSONObject computerObject = computerList.getJSONObject(i);
+                    if (computerObject == null) {// 不能获取，则跳过该region
+                        logger.error(String.format("fail to get default compute pool. region[%s].", regionData.getId()));
+                        continue;
+                    }
+                    
+                    // 从http gateway获取所有的云主机
+                     hostQueryResult = channel.hostQuery((String) computerObject.get("uuid"));
+                    if (HttpGatewayResponseHelper.isSuccess(hostQueryResult) == false) {// 失败则跳过该region
+                        logger.info(String.format("fail to query host from http gateway. region[%s], message[%s]", regionData.getId(), HttpGatewayResponseHelper.getMessage(hostQueryResult)));
+                        continue;
+                    }
+                    
+                    JSONArray hosts = (JSONArray) hostQueryResult.get("hosts");   
+                    // 循环这些云主机
+                    for (int j = 0; j < hosts.size(); j++) {
+                        JSONObject realCloudHost = (JSONObject) hosts.get(j);
+                        String uuid = JSONLibUtil.getString(realCloudHost, "uuid");
+                        String name = JSONLibUtil.getString(realCloudHost, "name");
+                        
+                        if (uuid == null) {// uuid不可以为空
+                            logger.warn(String.format("found no uuid host when fetch host list from http gateway. Host name[%s], region[%s].", name, regionData.getId()));
+                            continue;
+                        }   
+                        Integer cpuCount = JSONLibUtil.getInteger(realCloudHost, "cpu_count");
+                        Double cpuUsage = JSONLibUtil.getDouble(realCloudHost, "cpu_usage");
+                        BigInteger[] memory = JSONLibUtil.getBigIntegerArray(realCloudHost, "memory"); // [可用,总量]
+                        Double memoryUsage = JSONLibUtil.getDouble(realCloudHost, "memory_usage");
+                        BigInteger[] diskVolume = JSONLibUtil.getBigIntegerArray(realCloudHost, "disk_volume"); // [可用,总量]
+                        Double diskUsage = JSONLibUtil.getDouble(realCloudHost, "disk_usage");
+                        String[] ip = JSONLibUtil.getStringArray(realCloudHost, "ip"); // [宿主机ip,公网ip]，不分配则为""
+                        Integer runningStatus = JSONLibUtil.getInteger(realCloudHost, "status"); // 0=正常,1=告警,2=故障,3=停止
+
+                        // 获取池里面已有的数据
+                        CloudHostData oldCloudHostData = cloudHostPool.getByRealHostId(uuid);
+
+//                        CloudHostData oldCloudHostData =  new CloudHostPool().getByRealHostId(uuid);
+
+                        CloudHostData newCloudHostData = null;
+                        if (oldCloudHostData == null) {
+                            newCloudHostData = new CloudHostData();
+                            newCloudHostData.setRegion(1);
+                            newCloudHostData.setRealHostId(uuid);
+                        } else {
+                            newCloudHostData = oldCloudHostData.clone();
+                        }
+
+                        newCloudHostData.setHostName(name);
+                        newCloudHostData.setCpuCore(cpuCount);
+                        newCloudHostData.setCpuUsage(cpuUsage);
+                        newCloudHostData.setMemory(memory[1]);
+                        newCloudHostData.setMemoryUsage(memoryUsage);
+                        newCloudHostData.setDataDisk(diskVolume[1]);
+                        newCloudHostData.setDataDiskUsage(diskUsage);
+                        newCloudHostData.setInnerIp(ip[0]);
+                        newCloudHostData.setOuterIp(ip[1]);
+                        newCloudHostData.setRunningStatus(transforRunningStatus(runningStatus));
+                        newCloudHostData.setLastOperStatus(0);
+                        CloudHostPoolManager.getCloudHostPool().put(newCloudHostData); 
+                        // 如果running_status变了，则更新数据库
+                        if (oldCloudHostData == null || (oldCloudHostData != null && NumberUtil.equals(newCloudHostData.getRunningStatus(), oldCloudHostData.getRunningStatus()) == false)) {
+                            boolean update_flag = true;
+                 
+                            if(update_flag){ 
+                                if(oldCloudHostData == null){
+                                    oldCloudHostData = new CloudHostData();
+                                    oldCloudHostData.setRunningStatus(null);
+                                }
+                                logger.info("CloudHostServiceImpl.updateCloudHostRunningStatus > [" + Thread.currentThread().getId() + "] 云主机状态发生变化, realHostId:[" + newCloudHostData.getRealHostId() + "], hostName:[" + newCloudHostData.getHostName() + "], oldRunningStatus:[" + oldCloudHostData.getRunningStatus()
+                                        + "], newRunningStatus:[" + newCloudHostData.getRunningStatus() + "]");
+                                Map<String, Object> data = new LinkedHashMap<String, Object>();
+                                data.put("runningStatus", newCloudHostData.getRunningStatus());
+                                data.put("realHostId", newCloudHostData.getRealHostId());
+                                cloudHostMapper.updateRunningStatusByRealHostId(data);
+                                logger.info("CloudHostServiceImpl.updateCloudHostRunningStatus-> update end");
+                                
+                            }
+                        } 
+                        cloudHostPool.put(newCloudHostData); 
+                    }
+                       
+                }   
+            } catch (SocketException e) { 
+                logger.error("connect to http gateway failed, exception:[" + e.getMessage() + "], region:[" + String.format("%s:%s", regionData.getId(), regionData.getName()) + "]");
+            } catch (Exception e) {
+                logger.error(e);
+                e.printStackTrace();
+                System.out.println(hostQueryResult);
+                throw new MyException(e);
+            }
+        }
+ 
+        
+    }
+    
+    private Integer transforRunningStatus(Integer runningStatus) {
+        if (runningStatus == null) {
+            return null;
+        }
+        if (runningStatus == 0) {
+            return AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING;
+        } else if (runningStatus == 1) {
+            return AppConstant.CLOUD_HOST_RUNNING_STATUS_ALARM;
+        } else if (runningStatus == 2) {
+            return AppConstant.CLOUD_HOST_RUNNING_STATUS_FAULT;
+        } else if (runningStatus == 3) {
+            return AppConstant.CLOUD_HOST_RUNNING_STATUS_SHUTDOWN;
+        } else {
+            throw new AppException("wrong value of runningStatus[" + runningStatus + "]");
+        }
+    }
+
       
 }
 

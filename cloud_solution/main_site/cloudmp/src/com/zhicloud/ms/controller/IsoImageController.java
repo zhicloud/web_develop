@@ -77,8 +77,7 @@ public class IsoImageController {
 //        IsoImageProgressPool pool = IsoImageProgressPoolManager.singleton().getPool();
         IsoImagePool pool = IsoImagePoolManager.getSingleton().getIsoImagePool();
         List<IsoImageData> isoArray = pool.getAllIsoImageData();
-        model.addAttribute("isoArray", isoArray);
-        this.executeShellOfQueryNas("172.18.10.52");
+        model.addAttribute("isoArray", isoArray); 
         return "isoimage/iso_image_manage";
     }
     
@@ -124,7 +123,7 @@ public class IsoImageController {
         
         // 上传文件
         FileUtils.copyInputStreamToFile(attach.getInputStream(), file);
-        MethodResult result = isoImageService.upload(imagename, uuid, "/iso_image/system/"+uuid+".iso", type, description);
+        MethodResult result = isoImageService.upload(imagename, uuid, "iso_image/system/"+uuid+".iso", type, description);
         if(result.isSuccess()){
             operLogService.addLog("iso镜像", "上传镜像"+imagename, "1", "1", multipartRequest);
         }else{

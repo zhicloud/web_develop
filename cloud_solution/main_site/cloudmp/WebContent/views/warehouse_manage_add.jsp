@@ -117,16 +117,16 @@
                       <div class="form-group">
                         <label for="input01" class="col-sm-2 control-label">服务器资源池 *</label>
                         <div class="col-sm-4" id="selectpool">
-							<select class="chosen-select chosen-transparent form-control" name="poolId" id="poolId" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectpool">
+							<select class="chosen-select chosen-transparent form-control" name="poolId" id="poolId" onChange="check();" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectpool">
 	                            <option value="">请选择资源池</option>  
 	                            <c:forEach items="${computerPool }" var="sdi">
- 	                                 <option value="${sdi.uuid }">${sdi.name }</option>
+ 	                                 <option value="${sdi.uuid }" imagemode="${sdi.mode2 }">${sdi.name }</option>
  	                             </c:forEach>  
 	                          </select>                       
 	                     </div>
                       </div>
                         
-                      <div class="form-group">
+                      <div class="form-group" id="allType">
                         <label for="input01" class="col-sm-2 control-label">主机类型选择*</label>
                         <div class="col-sm-4" id="selectbox"> 
                             <div class="col-sm-16" >
@@ -134,6 +134,24 @@
                                 <option value="" selected="selected">请选择</option>
                                 <c:forEach items="${cloudHostConfigModeList }" var="chcm">
                                 	<option value="${chcm.id }">${chcm.name }</option>
+                                </c:forEach>
+                                </select> 
+                                <a href="#" id="create_new_host_type" class="btn btn-greensea"><span>新增主机类型</span></a>
+                            </div> 
+                          
+                        </div>
+                      </div>
+                      
+                      <div class="form-group" id="qcw2" >
+                        <label for="input01" class="col-sm-2 control-label">主机类型选择*</label>
+                        <div class="col-sm-4" id="selectbox"> 
+                            <div class="col-sm-16" >
+                            	<select name="cloudHostConfigModelId" class="chosen-select chosen-transparent form-control" id="cloudHostConfigModelId" style="width:216px;" parsley-required="true" parsley-error-container="#selectbox">
+                                <option value="" selected="selected">请选择</option>
+                                <c:forEach items="${cloudHostConfigModeList }" var="chcm">
+                                   <c:if test="${chcm.fileType == 1}">
+                                      	<option value="${chcm.id }">${chcm.name }</option>                                  
+                                   </c:if>
                                 </c:forEach>
                                 </select> 
                                 <a href="#" id="create_new_host_type" class="btn btn-greensea"><span>新增主机类型</span></a>
@@ -246,7 +264,43 @@
       $("#create_new_host_type").click(function(){
     	  location.href = path+"/chcm/addpage";
       });
+      
+      $("#allType").find("select").removeAttr("disabled");
+		$("#allType").show();
+		$("#qcw2").find("select").attr("disabled","disabled");
+		$("#qcw2").hide();  
     })
+    function check(){
+    	var poolId = $("#poolId").val();
+    	if(poolId != ""){
+    		jQuery.ajax({
+                url: path+'/warehouse/checkpoolisthin',
+                type: 'post',
+                data: 'id=' + poolId,
+                dataType: 'json', 
+                async: false,
+                error: function()
+                {
+                    alert('Error!');
+                },
+                success: function(result)
+                {
+                	if(result.status == "success"){
+                		$("#qcw2").find("select").removeAttr("disabled");
+                		$("#qcw2").show();
+                		$("#allType").find("select").attr("disabled","disabled");
+                		$("#allType").hide();                 		
+                	}else{
+                		$("#allType").find("select").removeAttr("disabled");
+                		$("#allType").show();
+                		$("#qcw2").find("select").attr("disabled","disabled");
+                		$("#qcw2").hide();                		    		
+                	}
+                }
+             }); 
+    	}
+    	
+    }
       
     </script>
     

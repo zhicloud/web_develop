@@ -175,7 +175,7 @@ function backhome(){
                       <div class="form-group">
                         <label for="usercount" class="col-sm-2 control-label">用户账号*</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" id="usercount" parsley-trigger="change" parsley-type="nochinese" parsley-required="true"  parsley-minlength="4" parsley-maxlength="50" parsley-validation-minlength="4">
+                            <input value="${systemUser.usercount }" type="text" class="form-control" id="usercount" parsley-trigger="change" parsley-type="nochinese" parsley-required="true"  parsley-minlength="4" parsley-maxlength="50" parsley-validation-minlength="4">
                         </div>
                       </div>
                       <div class="form-group">

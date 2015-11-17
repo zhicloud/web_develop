@@ -76,7 +76,7 @@ public class ComputePoolServiceImpl implements IComputePoolService {
 
             try {
                 synchronized (computeInfoExt) {//wait for 5 second or notify by response message.
-                 computeInfoExt.wait(5 * 1000);
+                 computeInfoExt.wait(10 * 1000);
                 }
             } catch (InterruptedException e) {
                 logger.error("error occur when query compute pool detail response call back.", e);

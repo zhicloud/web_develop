@@ -208,6 +208,7 @@
                             <th class="sortable sort-alpha">镜像名称</th>
                             <th class="sortable sort-alpha">显示名称</th>
                             <th class="sortable sort-alpha">类型</th>
+                            <th class="sortable sort-alpha">格式</th>
                             <th class="sortable sort-alpha">镜像用途</th> 
                             <th class="sortable sort-alpha">创建时间</th>  
                             <th class="sortable sort-alpha">状态</th>  
@@ -231,6 +232,14 @@
                             </c:if>
                             ${image.typeName}</td> 
                             <td  class="cut">${image.imageTypeName}</td>
+                            <td  class="cut">
+                            <c:if test="${image.fileType == 0}">
+                             raw                                                                   
+                            </c:if>
+                            <c:if test="${image.fileType == 1}">
+                             qcw2                                                                   
+                            </c:if>
+                            </td> 
                             <td class="center">
                             <c:if test="${image.createTimeDate == null}">
                             &nbsp;                                                                        

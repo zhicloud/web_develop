@@ -33,6 +33,9 @@ import com.zhicloud.ms.vo.BackUpDetailVO;
 import com.zhicloud.ms.vo.CloudHostVO;
 import com.zhicloud.ms.vo.CloudHostWarehouse;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfo;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
 import com.zhicloud.ms.vo.SysDiskImageVO;
 
 import net.sf.json.JSONArray;
@@ -149,45 +152,24 @@ public class CloudHostController {
  		model.addAttribute("cloudHostList", newCloudServerList);
 		model.addAttribute("warehouseId", id);
 		try {
-            List<ComputeInfo> cList = new ArrayList<>();
-                HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-                if(channel!=null){
-                    JSONObject result = channel.computePoolQuery();
-            if ("fail".equals(result.getString("status"))) {
-                logger.error("CloudHostController.getAll()>>获取计算资源池失败");
-                model.addAttribute("computerPool", cList);
-                return "not_responsed";
-            }
-                    JSONArray computerList = result.getJSONArray("compute_pools");
-                    for (int i = 0; i < computerList.size(); i ++) {
-                        JSONObject computerObject = computerList.getJSONObject(i);
-                        String name = computerObject.getString("name");
-                        if(!name.contains("desktop_pool") ){
-                            continue;
-                        }
-                        String uuid = computerObject.getString("uuid");
-                        int status = computerObject.getInt("status");
-                         
-                        ComputeInfo computer = new ComputeInfo(); 
-                        computer.setName(name);
-                        computer.setStatus(status);
-                        computer.setUuid(uuid);
-                        computer.setRegion(1);
-                        cList.add(computer);
-                    }
+		    List<ComputeInfoExt> cList = new ArrayList<ComputeInfoExt>(); 
+            ComputeInfoPool  pool = ComputeInfoPoolManager.singleton().getPool();
+            Map<String, ComputeInfoExt>  poolMap = pool.getAllComputePool();
+            for(Map.Entry<String, ComputeInfoExt> entry:poolMap.entrySet()){ 
+                ComputeInfoExt poolDetail = entry.getValue();
+                if(poolDetail.getName().indexOf("desktop_pool") != -1){
+                    cList.add(entry.getValue());    
                 }
-            
+            }   
             model.addAttribute("computerPool", cList);
             
             IsoImagePool isopool = IsoImagePoolManager.getSingleton().getIsoImagePool();
             List<IsoImageData> isoList = isopool.getAllIsoImageData();
             
             model.addAttribute("isoList", isoList);
-        } catch (MalformedURLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }  
         return "host_manage";
     }
     /**
@@ -357,7 +339,7 @@ public class CloudHostController {
      */
     @RequestMapping(value="/{id}/{warehouseId}/{status}/update",method=RequestMethod.GET) 
     public String updataServerPage(@PathVariable("id") String id,@PathVariable("warehouseId") String warehouseId,@PathVariable("status") String status ,Model model,HttpServletRequest request){
-        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_manage_modify)){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_modify)){
             return "not_have_access";
         }
         CloudHostVO cloudServer = cloudHostService.getById(id);
@@ -910,9 +892,20 @@ public class CloudHostController {
         if (resetdata != null && resetdata.getResetStatus() == 1) {
             resetFlag = 1;
         }
-
+        CloudHostData myCloudHostData = CloudHostPoolManager.getCloudHostPool().getByRealHostId(uuid);
+        ComputeInfoPool  computePool = ComputeInfoPoolManager.singleton().getPool();
+        ComputeInfoExt cPool = computePool.getFromComputePool(myCloudHostData.getPoolId());
+        
         List<SysDiskImageVO> sysDiskImageList = sysDiskImageService.querySysDiskImageByImageType(AppConstant.DISK_IMAGE_TYPE_SERVER);
- 
+        if(cPool.getMode2() == 1){
+            int i = 0;
+            for(SysDiskImageVO image : sysDiskImageList){
+                if(image.getFileType() != 1){
+                    sysDiskImageList.remove(i);                    
+                }
+                i++;
+            }
+        }
 
         System.err.println(sysDiskImageList.size());
 
@@ -1101,4 +1094,22 @@ public class CloudHostController {
         MethodResult mr = cloudHostService.startCloudHostFromIso(id, imageId);
         return mr;
     }
+    
+    @RequestMapping(value="/{id}/diagram",method=RequestMethod.GET)
+	public String serverDiagramPage(@PathVariable("id") String id,Model model,HttpServletRequest request){
+		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_diagram)){
+			return "not_have_access";
+		}
+		CloudHostVO server = cloudHostService.getByRealHostId(id);
+		model.addAttribute("server", server);
+		model.addAttribute("realId",id);
+		return "host_manage_diagram";
+	}
+    
+    @RequestMapping(value="/refreshData",method=RequestMethod.POST)
+	@ResponseBody
+	public CloudHostData refreshData(@RequestParam("id") String id){
+		CloudHostData cloudHostData = cloudHostService.refreshData(id);
+		return cloudHostData;
+	}
 }
