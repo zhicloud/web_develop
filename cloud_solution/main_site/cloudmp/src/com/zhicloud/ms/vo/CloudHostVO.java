@@ -263,8 +263,8 @@ public class CloudHostVO implements JSONBean
 	}
 	
 	public String getBandwidthText(int scale)
-	{
-		return FlowUtil.toFlowLabel(this.bandwidth, scale);
+	{ 
+		return  FlowUtil.toMbpsValue(bandwidth, 0).toString();
 	}
 	public String getBandwidthValue()
 	{

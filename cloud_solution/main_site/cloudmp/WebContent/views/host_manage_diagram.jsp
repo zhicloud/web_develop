@@ -85,6 +85,15 @@
             <td>uuid：${realId}</td>
           </tr>
           <tr>
+            <td>
+      		      真实主机名：${server.hostName }
+            </td>
+            <td></td>
+            <td>创建时间：<fmt:formatDate value="${server.curCreateDate }" pattern="yyyy-MM-dd HH:mm:ss"/>
+            </td>
+            
+          </tr>
+          <tr>
             <td>状态：${server.getSummarizedStatusText() }</td>
             <td></td>
             <td>镜像名：${server.sysImageName }</td>
@@ -106,12 +115,7 @@
             <td></td>
             <td>内网端口：${server.innerPort }</td>
           </tr>
-          <tr>
-            <td>创建时间：<fmt:formatDate value="${server.curCreateDate }" pattern="yyyy-MM-dd HH:mm:ss"/>
-            </td>
-            <td></td>
-            <td></td>
-          </tr>
+          
         </table>
       </div>
       </section>

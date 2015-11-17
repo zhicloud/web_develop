@@ -77,6 +77,7 @@ public class TransFormPrivilegeConstant {
     public static final String desktop_warehouse_host_detail = "desktop_warehouse_host_detail";     //主机详情  
     public static final String desktop_warehouse_host_diagram = "desktop_warehouse_host_diagram";     //资源监控
     public static final String desktop_warehouse_check_time = "desktop_warehouse_check_time";     //设置仓库最小库存检查时间 
+    public static final String desktop_host_start_from_iso = "desktop_host_start_from_iso";     //桌面云主机从光盘启动
     public static final String desktop_back_up_manage_query = "desktop_back_up_manage_query";   //备份与恢复页面
     public static final String desktop_back_up_manage_add = "desktop_back_up_manage_add";   //新增备份
     public static final String desktop_back_up_manage_resume = "desktop_back_up_manage_resume";   //恢复
@@ -394,6 +395,9 @@ public class TransFormPrivilegeConstant {
     public static final String desktop_resource_node_mount = "desktop_resource_node_mount";// 磁盘挂载
     public static final String desktop_resource_node_enabledisk = "desktop_resource_node_enabledisk";// 本地磁盘启用
     public static final String desktop_resource_node_disabledisk = "desktop_resource_node_disabledisk";// 本地磁盘禁用
+    
+    public static final String iso_image_query = "iso_image_query"; // 镜像查询
+    public static final String iso_image_delete = "iso_image_delete"; // 镜像删除
 
 }
  

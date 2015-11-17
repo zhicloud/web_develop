@@ -1,5 +1,6 @@
 package com.zhicloud.ms.service.impl;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +50,7 @@ public class CloudHostConfigModelServiceImpl implements CloudHostConfigModelServ
 		CloudHostConfigModelMapper chcmMapper = this.sqlSession.getMapper(CloudHostConfigModelMapper.class);
 		SysDiskImageMapper sdiMapper = this.sqlSession.getMapper(SysDiskImageMapper.class);
 		SysDiskImageVO sysDiskImage = sdiMapper.getById(chcm.getSysImageId());
+		
 		String allocation = null;
 		String cpuCore = null;
 		String memory = null;
@@ -72,11 +74,20 @@ public class CloudHostConfigModelServiceImpl implements CloudHostConfigModelServ
 		condition.put("name", chcm.getName());
 		condition.put("cpuCore", new Integer(cpuCore));
 		condition.put("memory", CapacityUtil.fromCapacityLabel(memory+"GB"));
-		condition.put("sysDisk", CapacityUtil.fromCapacityLabel("10GB"));
+		if(chcm.getSysDiskType().equals("from_empty")){
+		    condition.put("sysDisk", CapacityUtil.fromCapacityLabel(chcm.getEmptyDisk()+"GB"));
+        }else{
+            condition.put("sysDisk", CapacityUtil.fromCapacityLabel("10GB"));
+        }
 		condition.put("dataDisk", CapacityUtil.fromCapacityLabel(dataDisk+"GB"));
 		condition.put("bandwidth", FlowUtil.fromFlowLabel(bandwidth+"Mbps"));
-		condition.put("sysImageId", chcm.getSysImageId());
-		condition.put("sysImageName", sysDiskImage.getName());
+		if(chcm.getSysDiskType().equals("from_empty")){
+	      condition.put("sysImageName", "空白镜像");              
+		}else{
+	      condition.put("sysImageId", chcm.getSysImageId());
+	      condition.put("sysImageName", sysDiskImage.getName());		    
+		}
+
 		condition.put("createTime", DateUtil.dateToString(new Date(),"yyyyMMddHHmmssSSS"));
 		condition.put("type", 1);
 		
@@ -134,8 +145,19 @@ public class CloudHostConfigModelServiceImpl implements CloudHostConfigModelServ
 		condition.put("memory", CapacityUtil.fromCapacityLabel(memory+"GB"));
 		condition.put("dataDisk", CapacityUtil.fromCapacityLabel(dataDisk+"GB"));
 		condition.put("bandwidth", FlowUtil.fromFlowLabel(bandwidth+"Mbps"));
-		condition.put("sysImageId", chcm.getSysImageId());
-		condition.put("sysImageName", sysDiskImage.getName());
+		if(chcm.getSysDiskType().equals("from_empty")){
+            condition.put("sysDisk", CapacityUtil.fromCapacityLabel(chcm.getEmptyDisk()+"GB"));
+       }else{
+           condition.put("sysDisk", CapacityUtil.fromCapacityLabel("10GB"));
+       }
+       condition.put("dataDisk", CapacityUtil.fromCapacityLabel(dataDisk+"GB"));
+       condition.put("bandwidth", FlowUtil.fromFlowLabel(bandwidth+"Mbps"));
+       if(chcm.getSysDiskType().equals("from_empty")){
+         condition.put("sysImageName", "空白镜像");              
+       }else{
+         condition.put("sysImageId", chcm.getSysImageId());
+         condition.put("sysImageName", sysDiskImage.getName());            
+       }
 		condition.put("modifiedTime", DateUtil.dateToString(new Date(),"yyyyMMddHHmmssSSS"));
 		int n = chcmMapper.updateById(condition);
 		return n;

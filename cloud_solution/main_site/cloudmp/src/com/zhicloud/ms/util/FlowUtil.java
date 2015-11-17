@@ -23,7 +23,7 @@ public class FlowUtil
 	public static String toKbps(BigInteger bpsData, int scale)
 	{
 		BigDecimal data = new BigDecimal(bpsData);
-		data = data.divide(new BigDecimal("1000"));
+		data = data.divide(new BigDecimal("1024")).multiply(new BigDecimal("8"));
 		data = data.setScale(scale, BigDecimal.ROUND_HALF_UP);
 		return data + "Kbps";
 	}
@@ -31,7 +31,7 @@ public class FlowUtil
 	public static BigDecimal toMbpsValue(BigInteger bpsData, int scale, int roundingMode)
 	{
 		BigDecimal data = new BigDecimal(bpsData);
-		data = data.divide(new BigDecimal("1000").pow(2));
+		data = data.divide(new BigDecimal("1024").pow(2)).multiply(new BigDecimal("8"));
 		data = data.setScale(scale, roundingMode);
 		return data;
 	}
@@ -43,13 +43,13 @@ public class FlowUtil
 	
 	public static String toMbps(BigInteger bpsData, int scale)
 	{
-		return toMbpsValue(bpsData, scale) + "MB";
+		return toMbpsValue(bpsData, scale) + "Mb";
 	}
 	
 	public static String toGbps(BigInteger bpsData, int scale)
 	{
 		BigDecimal data = new BigDecimal(bpsData);
-		data = data.divide(new BigDecimal("1000").pow(3));
+		data = data.divide(new BigDecimal("1024").pow(3)).multiply(new BigDecimal("8"));
 		data = data.setScale(scale, BigDecimal.ROUND_HALF_UP);
 		return data + "Gbps";
 	}
@@ -57,26 +57,26 @@ public class FlowUtil
 	public static String toTbps(BigInteger bpsData, int scale)
 	{
 		BigDecimal data = new BigDecimal(bpsData);
-		data = data.divide(new BigDecimal("1000").pow(4));
+		data = data.divide(new BigDecimal("1000").pow(4)).multiply(new BigDecimal("8"));
 		data = data.setScale(scale, BigDecimal.ROUND_HALF_UP);
 		return data + "Tbps";
 	}
 	
 	public static String toFlowLabel(BigInteger bps, int scale)
 	{
-		if( bps.compareTo(new BigInteger("1000"))<0 )
+		if( bps.compareTo(new BigInteger("1024"))<0 )
 		{
 			return toBps(bps, scale);
 		}
-		else if( bps.compareTo(new BigInteger("1000").pow(2))<0 )
+		else if( bps.compareTo(new BigInteger("1024").pow(2))<0 )
 		{
 			return toKbps(bps, scale);
 		}
-		else if( bps.compareTo(new BigInteger("1000").pow(3))<0 )
+		else if( bps.compareTo(new BigInteger("1024").pow(3))<0 )
 		{
 			return toMbps(bps, scale);
 		}
-		else if( bps.compareTo(new BigInteger("1000").pow(4))<0 )
+		else if( bps.compareTo(new BigInteger("1024").pow(4))<0 )
 		{
 			return toGbps(bps, scale);
 		}
@@ -105,19 +105,19 @@ public class FlowUtil
 		}
 		else if( "Kbps".equals(unit) )
 		{
-			data = data.multiply(new BigDecimal("1000"));
+			data = data.multiply(new BigDecimal("1024")).divide(new BigDecimal("8"));
 		}
 		else if( "Mbps".equals(unit) )
 		{
-			data = data.multiply(new BigDecimal("1000").pow(2));
+			data = data.multiply(new BigDecimal("1024").pow(2)).divide(new BigDecimal("8"));
 		}
 		else if( "Gbps".equals(unit) )
 		{
-			data = data.multiply(new BigDecimal("1000").pow(3));
+			data = data.multiply(new BigDecimal("1024").pow(3)).divide(new BigDecimal("8"));
 		}
 		else if( "Tbps".equals(unit) )
 		{
-			data = data.multiply(new BigDecimal("1000").pow(4));
+			data = data.multiply(new BigDecimal("1024").pow(4)).divide(new BigDecimal("8"));
 		}
 		else
 		{
@@ -128,6 +128,6 @@ public class FlowUtil
 	
 	public static void main(String[] args)
 	{
-		System.out.println(fromFlowLabel("1334Kbps"));
+		System.out.println(fromFlowLabel("1Mbps"));
 	}
 }
