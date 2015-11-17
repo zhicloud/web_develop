@@ -107,7 +107,7 @@
                       <div class="form-group">
                         <label for="username" class="col-sm-2 control-label">用户名 *</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="username" name="username" oldname="${user.username}" value="${user.username}" parsley-type="nochinese"  parsley-trigger="change" parsley-required="true" parsley-checkusername="true" parsley-minlength="4" parsley-maxlength="50" parsley-validation-minlength="4">
+                          <input type="text" class="form-control" id="username" name="username" value="${user.username}" readonly="readonly">
                         </div>
                       </div>
                       <%--<div class="form-group">--%>
