@@ -160,60 +160,7 @@ public class CloudHostPoolManager {
 		// 如果running_status变了，则更新数据库
         if (host != null && (oldCloudHostData == null || (oldCloudHostData != null && NumberUtil.equals(newCloudHostData.getRunningStatus(), oldCloudHostData.getRunningStatus()) == false))) {
             boolean update_flag = true;
-//            if(oldCloudHostData.getRunningStatus() == AppConstant.CLOUD_HOST_RUNNING_STATUS_SHUTINGDOWM && newCloudHostData.getRunningStatus() == AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING){             
-//                if(oldCloudHostData.getLastOperTime() != null){
-//                    
-//                    Date d1 = new Date();
-//                    Date d2;
-//                    try {
-//                        d2 = StringUtil.stringToDate(oldCloudHostData.getLastOperTime(), "yyyyMMddHHmmssSSS");
-//                        long diff = d1.getTime() - d2.getTime();
-//                        long seconds = diff / (1000 * 60);
-//                        if(seconds<5){ 
-//                            update_flag = false;
-//                        }
-//                    } catch (ParseException e) { 
-//                        e.printStackTrace();
-//                        
-//                    }           
-//                }
-//            }else   if(oldCloudHostData.getRunningStatus() == AppConstant.CLOUD_HOST_RUNNING_STATUS_STARTING && newCloudHostData.getRunningStatus() == AppConstant.CLOUD_HOST_RUNNING_STATUS_SHUTDOWN){             
-//                if(oldCloudHostData.getLastOperTime() != null){
-//                    
-//                    Date d1 = new Date();
-//                    Date d2;
-//                    try {
-//                        d2 = StringUtil.stringToDate(oldCloudHostData.getLastOperTime(), "yyyyMMddHHmmssSSS");
-//                        long diff = d1.getTime() - d2.getTime();
-//                        long seconds = diff / (1000 * 60);
-//                        if(seconds<5){ 
-//                            update_flag = false;
-//                        }
-//                    } catch (ParseException e) { 
-//                        e.printStackTrace();
-//                        
-//                    }           
-//                }
-//            } else   if(oldCloudHostData.getRunningStatus() == AppConstant.CLOUD_HOST_RUNNING_STATUS_RESTARTING){             
-//                if(oldCloudHostData.getLastOperStatus() != null && oldCloudHostData.getLastOperStatus() >= 1){
-//                    update_flag = true;
-//                }else if(oldCloudHostData.getLastOperTime() != null){
-//                    
-//                    Date d1 = new Date();
-//                    Date d2;
-//                    try {
-//                        d2 = StringUtil.stringToDate(oldCloudHostData.getLastOperTime(), "yyyyMMddHHmmssSSS");
-//                        long diff = d1.getTime() - d2.getTime();
-//                        long seconds = diff / (1000 * 60);
-//                        if(seconds<5){ 
-//                            update_flag = false;
-//                        }
-//                    } catch (ParseException e) { 
-//                        e.printStackTrace();
-//                        
-//                    }           
-//                }
-//            } 
+ 
             if(update_flag){ 
                 if(oldCloudHostData == null){
                     oldCloudHostData = new CloudHostData();
@@ -228,6 +175,7 @@ public class CloudHostPoolManager {
                 cloudHostPool.put(newCloudHostData); 
             }
         } 
+        cloudHostPool.put(newCloudHostData); 
 
 		return true;
 	}
@@ -367,9 +315,9 @@ public class CloudHostPoolManager {
                 data.put("realHostId", cloudHostData.getRealHostId());
                 cloudHostService.updateRunningStatusByRealHostId(data);
                 
-                cloudHostPool.put(cloudHostData);
             }
         }
+        cloudHostPool.put(cloudHostData);
 	}
 
 	/**
