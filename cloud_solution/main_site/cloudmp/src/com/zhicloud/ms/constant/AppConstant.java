@@ -290,6 +290,8 @@ public class AppConstant
     
     public static final String  UPDATE_COMPUTE_POOL_CACHE_QUARTZ_ID="update_compute_pool_cache";
     
+    public static final String  CLOUD_HOST_RUNNING_STATUS_CHECK="cloud_host_running_status_check";
+    
     //消息配置参数
     public static final Integer TENANT_STATUS_ENABLE  = 0;   //正常
     public static final Integer TENANT_STATUS_DELETE  = 9;   //删除

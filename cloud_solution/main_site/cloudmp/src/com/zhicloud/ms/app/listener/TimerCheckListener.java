@@ -3,6 +3,7 @@ package com.zhicloud.ms.app.listener;
 import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.quartz.BackUpJob;
+import com.zhicloud.ms.quartz.CloudHostRunningStatusJob;
 import com.zhicloud.ms.quartz.ComputeInfoCacheJob;
 import com.zhicloud.ms.quartz.OperationJob;
 import com.zhicloud.ms.quartz.QuartzManage;
@@ -275,6 +276,31 @@ public class TimerCheckListener implements ServletContextListener{
          } catch (SchedulerException e) {
             e.printStackTrace();
          }
+        
+
+
+        time = "0/30 * * * * ?";
+        try {
+           JobDetail jdCheck = QuartzManage.getQuartzManage().getScheduler().getJobDetail(new JobKey(AppConstant.CLOUD_HOST_RUNNING_STATUS_CHECK,"groupJob"));           
+               //没有任务则添加任务
+               if(jdCheck==null){
+                   //定义任务
+                   JobDetail jd = JobBuilder.newJob(CloudHostRunningStatusJob.class)
+                           .withIdentity(new JobKey(AppConstant.CLOUD_HOST_RUNNING_STATUS_CHECK,"groupJob"))   
+                           .requestRecovery(true)
+                           .build();
+                   //定义触发器
+                   CronTrigger ct = (CronTrigger)TriggerBuilder.newTrigger()
+                           .withIdentity(new TriggerKey(AppConstant.CLOUD_HOST_RUNNING_STATUS_CHECK,"groupTrigger"))
+                           .withSchedule(CronScheduleBuilder.cronSchedule(time).withMisfireHandlingInstructionDoNothing())
+                           .startNow()
+                           .build();
+                   //添加任务
+                   QuartzManage.getQuartzManage().addTrigger(jd, ct);
+               }   
+        } catch (SchedulerException e) {
+           e.printStackTrace();
+        }
 
     }
 

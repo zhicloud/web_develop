@@ -339,7 +339,7 @@ public class CloudHostController {
      */
     @RequestMapping(value="/{id}/{warehouseId}/{status}/update",method=RequestMethod.GET) 
     public String updataServerPage(@PathVariable("id") String id,@PathVariable("warehouseId") String warehouseId,@PathVariable("status") String status ,Model model,HttpServletRequest request){
-        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_manage_modify)){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_modify)){
             return "not_have_access";
         }
         CloudHostVO cloudServer = cloudHostService.getById(id);
@@ -1094,4 +1094,22 @@ public class CloudHostController {
         MethodResult mr = cloudHostService.startCloudHostFromIso(id, imageId);
         return mr;
     }
+    
+    @RequestMapping(value="/{id}/diagram",method=RequestMethod.GET)
+	public String serverDiagramPage(@PathVariable("id") String id,Model model,HttpServletRequest request){
+		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_diagram)){
+			return "not_have_access";
+		}
+		CloudHostVO server = cloudHostService.getByRealHostId(id);
+		model.addAttribute("server", server);
+		model.addAttribute("realId",id);
+		return "host_manage_diagram";
+	}
+    
+    @RequestMapping(value="/refreshData",method=RequestMethod.POST)
+	@ResponseBody
+	public CloudHostData refreshData(@RequestParam("id") String id){
+		CloudHostData cloudHostData = cloudHostService.refreshData(id);
+		return cloudHostData;
+	}
 }

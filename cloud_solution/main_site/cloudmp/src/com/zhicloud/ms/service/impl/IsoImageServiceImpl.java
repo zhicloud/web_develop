@@ -46,7 +46,8 @@ public class IsoImageServiceImpl implements IsoImageService {
 				isoImage.setStatus(2);
 				IsoImageProgressPool pool = IsoImageProgressPoolManager.singleton().getPool();
 				pool.put(isoImage);
-				
+				IsoImagePoolManager.getSingleton().refreshIsoImagePool();
+				logger.info("refresh iso image pool info");
 				return new MethodResult(MethodResult.SUCCESS,"上传成功");
 			} else {
 	             channel.release();
