@@ -1,6 +1,7 @@
 <%@ page pageEncoding="utf-8"%>
   <head>
     <title>共享存储信息编辑 </title>
+    <link rel="icon" type="image/ico" href="<%=request.getContextPath()%>/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
