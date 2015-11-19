@@ -45,6 +45,7 @@ import com.zhicloud.ms.transform.util.TransFormLoginHelper;
 import com.zhicloud.ms.transform.util.TransFormLoginInfo;
 import com.zhicloud.ms.util.CapacityUtil;
 import com.zhicloud.ms.util.DateUtil;
+import com.zhicloud.ms.util.FlowUtil;
 import com.zhicloud.ms.util.NumberUtil;
 import com.zhicloud.ms.util.RegionHelper;
 import com.zhicloud.ms.util.RegionHelper.RegionData;
@@ -1643,18 +1644,35 @@ public class CloudHostServiceImpl implements ICloudHostService {
             Integer[] options = null;
             String realDiskImageId = null;
             String sysDiskImageName = null;
-            String sysDisk = "10GB";
+            BigInteger sysDisk = new BigInteger("10737418240");
             Integer isUseDataDisk = 1;
             Integer isAutoStart = 1;
             Integer supportH264 = 0;
+            Integer isUseImage = 1;
             if(chcm != null){
                 server.setDataDisk(chcm.getDataDisk());
                 server.setCpuCore(chcm.getCpuCore());
                 server.setSysImageId(chcm.getSysImageId());
                 server.setMemory(chcm.getMemory());
+                if(StringUtil.isBlank(server.getSysImageId())){
+                    isUseImage = 0;
+                }
+                server.setSysDisk(chcm.getSysDisk());
             }else{
             	server.setDataDisk(CapacityUtil.fromCapacityLabel((server.getDataDisk()==null?server.getDiskdiy():server.getDataDisk())+"GB"));
             	server.setMemory(CapacityUtil.fromCapacityLabel(server.getMemory()+"GB"));
+            	if(server.getSysDiskType().equals("from_empty")){
+            	    server.setSysDisk(CapacityUtil.fromCapacityLabel(server.getEmptyDisk()+"GB")); 
+            	    isUseImage = 0;
+                }else{
+                    SysDiskImageVO sysDiskImageVO = sysDiskImageMapper.getById(server.getSysImageId());
+                    if(sysDiskImageVO != null){
+                       realDiskImageId = sysDiskImageVO.getRealImageId();
+                       sysDiskImageName = sysDiskImageVO.getDisplayName(); 
+                    } 
+                    server.setSysDisk(sysDiskImageVO.getSize());
+                    isUseImage = 1;
+                  }
             }
             if(server.getDataDisk().compareTo(BigInteger.ZERO)==0){
                 isUseDataDisk = 0;
@@ -1666,12 +1684,8 @@ public class CloudHostServiceImpl implements ICloudHostService {
             if(server.getSupportH264()!=0){
             	supportH264 = 1;
             } 
-            options = new Integer[] { 0, isUseDataDisk, isAutoStart,0,1,supportH264 }; 
-            SysDiskImageVO sysDiskImageVO = sysDiskImageMapper.getById(server.getSysImageId());
-            if(sysDiskImageVO != null){
-                realDiskImageId = sysDiskImageVO.getRealImageId();
-                sysDiskImageName = sysDiskImageVO.getDisplayName(); 
-            }
+            options = new Integer[] { isUseImage, isUseDataDisk, isAutoStart,0,1,supportH264 }; 
+            
             
 
             // 添加云主机进数据库
@@ -1691,9 +1705,9 @@ public class CloudHostServiceImpl implements ICloudHostService {
             cloudHostData.put("memory", server.getMemory());
             cloudHostData.put("sysImageId", server.getSysImageId());
             cloudHostData.put("sysImageName", sysDiskImageName);
-            cloudHostData.put("sysDisk", CapacityUtil.fromCapacityLabel(sysDisk));
+            cloudHostData.put("sysDisk", server.getSysDisk());
             cloudHostData.put("dataDisk", server.getDataDisk());
-            cloudHostData.put("bandwidth", new BigInteger("9999999999"));
+            cloudHostData.put("bandwidth", FlowUtil.fromFlowLabel(server.getBandwidth()+"Mbps"));
             cloudHostData.put("isAutoStartup", server.getIsAutoStartup()==1 ? AppConstant.CLOUD_HOST_IS_AUTO_STARTUP_YES : AppConstant.CLOUD_HOST_IS_AUTO_STARTUP_NO);
             cloudHostData.put("runningStatus", AppConstant.CLOUD_HOST_RUNNING_STATUS_SHUTDOWN);
             cloudHostData.put("status", AppConstant.CLOUD_HOST_STATUS_1_NORNAL);
@@ -1744,13 +1758,13 @@ public class CloudHostServiceImpl implements ICloudHostService {
 
                 BigInteger [] disk_array = null ;
                 if(server.getDataDisk() == BigInteger.ZERO){
-                    disk_array = new BigInteger[] { CapacityUtil.fromCapacityLabel(sysDisk) };
+                    disk_array = new BigInteger[] { sysDisk };
                 }else{
-                    disk_array = new BigInteger[] { CapacityUtil.fromCapacityLabel(sysDisk),server.getDataDisk()};
+                    disk_array = new BigInteger[] { sysDisk,server.getDataDisk()};
                 }
 
                 JSONObject createHostResult = channel.hostCreate(cloudHostData.get("hostName").toString(), (String) server.getPoolId(), Integer.valueOf(server.getCpuCore()),server.getMemory(), options, realDiskImageId, disk_array,
-                        _formatToHttpGatewayFormatPorts(portList), loginInfo.getUsercount(), "T2", loginInfo.getUsercount(), loginInfo.getUsercount(), "", new BigInteger("9999999999"), new BigInteger("9999999999"));
+                        _formatToHttpGatewayFormatPorts(portList), loginInfo.getUsercount(), "T2", loginInfo.getUsercount(), loginInfo.getUsercount(), "", FlowUtil.fromFlowLabel(server.getBandwidth()+"Mbps"), FlowUtil.fromFlowLabel(server.getBandwidth()+"Mbps"));
 
                 if (HttpGatewayResponseHelper.isSuccess(createHostResult) == false) {
                     logger.warn("CloudHostServiceImpl.addCloudHost() > [" + Thread.currentThread().getId() + "] create host '" + server.getDisplayName() + "' failed, message:[" + HttpGatewayResponseHelper.getMessage(createHostResult) + "]");

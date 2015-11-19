@@ -153,7 +153,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 			long size = messageData.getLong("size");
 
 			diskImage.setRealImageId(uuid);
-			diskImage.setSize(size);
+			diskImage.setSize(new BigInteger(size+""));
 		}
 		// 释放资源
 		channel.release();

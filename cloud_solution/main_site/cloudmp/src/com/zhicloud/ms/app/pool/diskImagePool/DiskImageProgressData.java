@@ -10,7 +10,7 @@ public class DiskImageProgressData extends SysDiskImageVO {
 	private boolean finished = false;// 是否已完成
 	private boolean success = false;// 成功与否
 	private String message;// 成功或失败消息
-	private long size = 0;// 磁盘镜像大小
+	private long imageSize = 0;// 磁盘镜像大小
 	private String sessionId;// channel的会话id
 	private long lastUpdateTime = 0;// 最新的更新时间
 
@@ -48,15 +48,8 @@ public class DiskImageProgressData extends SysDiskImageVO {
 
 	public void setMessage(String message) {
 		this.message = message;
-	}
-
-	public long getSize() {
-		return size;
-	}
-
-	public void setSize(long size) {
-		this.size = size;
-	}
+	} 
+ 
 
 	public String getSessionId() {
 		return sessionId;
@@ -73,8 +66,19 @@ public class DiskImageProgressData extends SysDiskImageVO {
 	public void setLastUpdateTime(long lastUpdateTime) {
 		this.lastUpdateTime = lastUpdateTime;
 	}
+	
+	
+ 
 
-	public DiskImageProgressData clone() {
+    public long getImageSize() {
+        return imageSize;
+    }
+
+    public void setImageSize(long imageSize) {
+        this.imageSize = imageSize;
+    }
+
+    public DiskImageProgressData clone() {
 		DiskImageProgressData diskImage = new DiskImageProgressData();
 
 		diskImage.setId(this.getId());

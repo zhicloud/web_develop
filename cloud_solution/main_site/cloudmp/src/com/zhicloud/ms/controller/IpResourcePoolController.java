@@ -141,11 +141,12 @@ public class IpResourcePoolController {
 							return new MethodResult(MethodResult.FAIL,"该名字的地址资源池已经存在");
 						}
 					}
-				} else{
-                    operLogService.addLog("地址资源池", "创建地址资源池失败", "1", "2", request);
-
-					return new MethodResult(MethodResult.FAIL,"校验地址资源池名失败！");
-				}
+				} 
+//				else{
+//                    operLogService.addLog("地址资源池", "创建地址资源池失败", "1", "2", request);
+//
+//					return new MethodResult(MethodResult.FAIL,"校验地址资源池名失败！");
+//				}
 				
 				JSONObject result = channel.addressPoolCreate(name);
 				if("success".equals(result.get("status"))){

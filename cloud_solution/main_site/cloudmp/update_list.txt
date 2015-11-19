@@ -15,7 +15,36 @@ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostServi
 	无
 ******************************************************
 版本号：版本号：【云平台web】verion(2.1)(build 20151119-1)
-修改时间：2015/11/19
+修改时间：2015/11/19 
+修改人：吴莉莎
+修改文件：
+ TimerCheckListener.java
+ DiskImageProgressData.java
+ AppConstant.java
+ IpResourcePoolController.java
+PortResourcePoolController.java
+HttpGatewayHelper.java
+ManSystemUserMapper.xml
+SysDiskImageMapper.xml
+CloudHostConfigModelServiceImpl.java
+CloudHostServiceImpl.java
+SysDiskImageServiceImpl.java
+SysDiskImageVO.java
+app-properties.xml
+intelligent_router_rule_add.jsp
+新增文件：
+CloudHostCreateJob.java
+CloudHostSynchronousJob.java
+
+主要变更：
+1.分离主机状态和同步线程;
+2.添加镜像的size检查;
+
+兼容性说明：
+	无
+******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151119-1)
+修改时间：2015/11/19 
 修改人：张本缘
 修改文件：
 cloud_solution/main_site/cloudmp/WebContent/views/transform/admin/system_role_edit.jsp
