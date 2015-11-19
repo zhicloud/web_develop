@@ -16,6 +16,7 @@ public interface QosMapper {
 
     public Integer addQos(Map<String, Object> data);
 
-    public Integer deleteQosIds(String[] ids);
+    public Integer deleteQosByHostUuids(String[] hostIds);
+
 
 }

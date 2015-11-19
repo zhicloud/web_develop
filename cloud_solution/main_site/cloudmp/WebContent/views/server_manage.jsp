@@ -765,7 +765,7 @@
     }
     function deleteMultHost(){
     	jQuery.ajax({
-	        url: '<%=request.getContextPath()%>/warehouse/cloudhost/deletehosts',
+	        url: '<%=request.getContextPath()%>/cloudserver/deletehosts',
 	        type: 'post', 
 	        dataType: 'json',
 	        data:"ids="+curIds,

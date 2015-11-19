@@ -119,6 +119,8 @@
                             <th class="sort-alpha">云主机名称</th>
                             <th class="sort-alpha">类型</th>
                             <th class="sort-amount">配置</th>
+                            <th class="sort-numeric">内网ip</th>
+                            <th class="sort-numeric">外网ip</th>
                             <th class="sort-numeric">分配状态</th>
 							<th class="sort-amount">分配时间</th>
                             <th class="sort-alpha">运行状态</th>  
@@ -137,6 +139,13 @@
                                   	${hostList.sysImageName}
                                   </td>
                                   <td>${hostList.cpuCore}核/${hostList.getMemoryText(0) }/${hostList.getDataDiskText(0) }/${hostList.getBandwidthText(0) }</td>
+                                  <td>${hostList.getInnerIp() }:${hostList.getInnerPort() } 
+                                  
+                                  </td> 
+                                  <td>
+                                          ${hostList.getOuterIpAndPort()}                                     
+                                   
+                                  </td>
                                   <td>
                                   	<c:if test="${hostList.userId!=null }">
                             		已分配
@@ -177,6 +186,9 @@
 		                                <c:if test="${hostList.runningStatus==2}">
 			                              <li><a href="javascript:void(0);" cur_id="${hostList.id }" class="shutdown_host_btn" >关机</a></li>
 			                              <li><a href="javascript:void(0);" cur_id="${hostList.id }" class="restart_host_btn" >重启</a></li>
+		                                 </c:if>
+		                                 <c:if test="${hostList.realHostId!=null}">
+		                                 	<li><a href="javascript:void(0);" onclick="hostDiagramBtn('${hostList.realHostId }');">资源监控</a></li>
 		                                 </c:if>
 		                              <li><a href="javascript:void(0);" cur_id="${hostList.id }" class="delete_one_host_btn" >解除绑定</a></li>                          	
 		                             </c:if>  
@@ -327,7 +339,7 @@
         "oLanguage": {
           "sSearch": "搜索"
         },
-        "aaSorting": [ [4,'desc']],
+        "aaSorting": [ [6,'desc']],
         "aoColumnDefs": [
                          { 'bSortable': false, 'aTargets': [ "no-sort" ] }
                        ], 
@@ -468,6 +480,10 @@
 	    });
        
     })
+    //资源监控
+    function hostDiagramBtn(id){
+    	window.location.href = path+"/user/"+id+"/diagram";
+    }
       function deleteHost(){
     	jQuery.get(path + "/warehouse/cloudhost/"+currentId+"/disassociation",function(data){
 			if(data.status == "success"){   

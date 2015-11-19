@@ -169,7 +169,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		String sessionId = channel.getSessionId();
 		// 获取对象
 		IsoImageProgressPool pool = IsoImageProgressPoolManager.singleton().getPool();
-		IsoImageProgressData isoImage = pool.get(sessionId, name);
+		IsoImageProgressData isoImage = pool.get(sessionId);
 		//对象不存在
 		if (isoImage == null) {
 			isoImage = new IsoImageProgressData();
@@ -195,7 +195,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 
 		// 获取对象
 		IsoImageProgressPool pool = IsoImageProgressPoolManager.singleton().getPool();
-		IsoImageProgressData isoImage = pool.get(sessionId, name);
+		IsoImageProgressData isoImage = pool.get(sessionId);
 		//对象不存在
 		if (isoImage == null) {
 			isoImage = new IsoImageProgressData();
@@ -230,6 +230,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 	@HttpGatewayMessageHandler(messageType = "system_monitor_data")
 	public Map<String, String> systemMonitorData(HttpGatewayAsyncChannel channel, JSONObject messageData) {
 		logger.debug("start to process system monitor data.");
+//		logger.info("httpgateway-->systemMonitorData excution");
 		PlatformResourceMonitorVO resource = new PlatformResourceMonitorVO();
 		DecimalFormat    df   = new DecimalFormat("######0.00");   
 		int task = messageData.getInt("task");//监控任务id
@@ -692,8 +693,8 @@ public class HttpGatewayAsyncMessageHandlerImpl {
             ruleList.get(0).updateTime();
             ruleList.get(0).setMessage(message);
         }
-        synchronized (ruleList.get(0)) {
-            ruleList.get(0).notifyAll();
+        synchronized (ruleList) {
+            ruleList.notifyAll();
         }
     }
 
@@ -1571,9 +1572,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
             int diskType = messageData.getInt("disk_type");
             String diskSource = messageData.getString("disk_source");
             JSONArray mode = messageData.getJSONArray("mode");
-            String path = messageData.getString("path");
-            String crypt = messageData.getString("crypt");
-            
+
             Integer[] modeArr = new Integer[mode.size()];
             for (int i = 0; i < mode.size(); i++) {
                 modeArr[i] = (Integer) mode.get(i);
@@ -1587,21 +1586,20 @@ public class HttpGatewayAsyncMessageHandlerImpl {
             computeInfoExt.setMode(modeArr);
             computeInfoExt.setMode0(modeArr[0]);
             computeInfoExt.setMode1(modeArr[1]);
-            computeInfoExt.setMode2(modeArr[2]);
-            computeInfoExt.setMode3(modeArr[3]);
-            computeInfoExt.setPath(path);
-            computeInfoExt.setCrypt(crypt);
             computeInfoExt.success();
 
-            System.err.println(String.format(
+            logger.info(String.format(
                 "[%s]query compute pool detail success, uuid '%s', name '%s', network_type '%d', network '%s', disk_type '%d', disk_source '%s', mode '%s', path '%s', crypt '%s'",
-                sessionId, uuid, name, networkType, network, diskType, diskSource, mode, path, crypt));
+                sessionId, uuid, name, networkType, network, diskType, diskSource, mode, "", ""));
         } else {
             String message = messageData.getString("message");
             computeInfoExt.fail();
             computeInfoExt.setMessage(message);
-            System.err.println(String.format("[%s]query compute pool detail fail, uuid '%s', message '%s'", sessionId, uuid, HttpGatewayResponseHelper.getMessage(messageData)));
+            logger.error(String.format("[%s]query compute pool detail fail, uuid '%s', message '%s'", sessionId, uuid, HttpGatewayResponseHelper.getMessage(messageData)));
 
+        }
+        synchronized (computeInfoExt) {
+            computeInfoExt.notifyAll();
         }
     }
 

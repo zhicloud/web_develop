@@ -1,5 +1,7 @@
 package com.zhicloud.ms.controller;
 
+import com.zhicloud.ms.app.pool.computePool.ComputeInfo;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.storage.StorageManager;
 import com.zhicloud.ms.app.pool.storage.StorageResult;
 import com.zhicloud.ms.httpGateway.HttpGatewayAsyncChannel;
@@ -13,25 +15,16 @@ import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.CloudHostVO;
-import com.zhicloud.ms.vo.ComputerPoolDetailVO;
-import com.zhicloud.ms.vo.ComputerPoolVO;
 import com.zhicloud.ms.vo.MountDiskVo;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -75,7 +68,7 @@ public class ComputeResourcePoolController {
 			return "not_have_access";
 		}
 		try {
-			List<ComputerPoolVO> cList = new ArrayList<>();
+			List<ComputeInfo> cList = new ArrayList<>();
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				if(channel!=null){
 					JSONObject result = channel.computePoolQuery();
@@ -118,7 +111,7 @@ public class ComputeResourcePoolController {
 						for(int j=0;j<hList.size();j++){
 							hcount[j] = hList.getInt(j);
 						}
-						ComputerPoolVO computer = new ComputerPoolVO();
+              ComputeInfo computer = new ComputeInfo();
 						computer.setCpuCount(cpuCount);
 						computer.setCpuUsage(cpuUsage);
 						computer.setDiskUsage(diskUsage);
@@ -162,8 +155,8 @@ public class ComputeResourcePoolController {
 		String searchName = request.getParameter("sn");
 		try {
 			String flag = "no";
-			List<ComputerPoolDetailVO> cList = new ArrayList<>();
-			List<ComputerPoolDetailVO> curList = new ArrayList<>();
+			List<ComputeInfoExt> cList = new ArrayList<>();
+			List<ComputeInfoExt> curList = new ArrayList<>();
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				if(channel!=null){
 					JSONObject result = channel.computePoolQueryResource(uuid);
@@ -193,8 +186,8 @@ public class ComputeResourcePoolController {
 						for(int j=0;j<diskList.size();j++){
 							dcount[j] = new BigInteger(diskList.getString(j));
 						}
-						
-						ComputerPoolDetailVO computer = new ComputerPoolDetailVO();
+
+              ComputeInfoExt computer = new ComputeInfoExt();
 						computer.setCpuCount(cpuCount);
 						computer.setCpuUsage(cpuUsage);
 						computer.setDiskUsage(diskUsage);
@@ -207,7 +200,7 @@ public class ComputeResourcePoolController {
 						cList.add(computer);
 					}
 					if(searchName!=null && searchName!="" && cList.size()>0){
-						for(ComputerPoolDetailVO cp : cList){
+						for(ComputeInfoExt cp : cList){
 							if(cp.getName()!=null && cp.getName().toLowerCase().contains(searchName.toLowerCase())){
 								curList.add(cp);
 							}
@@ -240,7 +233,7 @@ public class ComputeResourcePoolController {
 	 */
 	@RequestMapping(value="/{uuid}/an",method=RequestMethod.GET)
 	public String addNodePage(@PathVariable("uuid") String uuid,Model model){
-		List<ComputerPoolDetailVO> curList = new ArrayList<>();
+		List<ComputeInfoExt> curList = new ArrayList<>();
 		HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 		try {
 			if(channel!=null){
@@ -249,7 +242,7 @@ public class ComputeResourcePoolController {
 				for (int i = 0; i < computerList.size(); i ++) {
 					JSONObject computerObject = computerList.getJSONObject(i);
 					String name = computerObject.getString("name");
-					ComputerPoolDetailVO computer = new ComputerPoolDetailVO();
+            ComputeInfoExt computer = new ComputeInfoExt();
 					computer.setName(name);
 					curList.add(computer);
 				}

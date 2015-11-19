@@ -8,6 +8,8 @@ import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
 
+import com.zhicloud.ms.app.helper.RegionHelper;
+import com.zhicloud.ms.app.helper.RegionHelper.RegionData;
 import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
 import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
@@ -46,51 +48,51 @@ public class IsoImagePoolManager
 //		RegionData[] regionDatas = RegionHelper.singleton.getAllResions();
 //		for( RegionData regionData : regionDatas)
 //		{
-//			try
-//			{
-//				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(regionData.getId());
-//				JSONObject isoImageQueryResult = channel.isoImageQuery();
-//				
-//				if( HttpGatewayResponseHelper.isSuccess(isoImageQueryResult)==false )
-//				{
-//					logger.warn("IsoImagePoolManager.refreshIsoImagePool() > ["+Thread.currentThread().getId()+"] query iso images failed, message:["+HttpGatewayResponseHelper.getMessage(isoImageQueryResult)+"], region:["+String.format("%s:%s", regionData.getId(), regionData.getName()) +"]");
-//					return ;
-//				}
-//				
-//				JSONArray isoImages = (JSONArray)isoImageQueryResult.get("iso_images");
-//				for( int i=0; i<isoImages.size(); i++ )
-//				{
-//					JSONObject isoImage = (JSONObject)isoImages.get(i);
-//
-//					String uuid        = JSONLibUtil.getString(isoImage,     "uuid");                           
-//					String name        = JSONLibUtil.getString(isoImage,     "name");                            
-//					String description = JSONLibUtil.getString(isoImage,     "description");
-//					BigInteger size    = JSONLibUtil.getBigInteger(isoImage, "size");
-//					Integer status     = JSONLibUtil.getInteger(isoImage,    "status");
-//					
-//					IsoImageData isoImageData = new IsoImageData();
-//					isoImageData.setRealImageId(uuid);
-//					isoImageData.setName(name);
-//					isoImageData.setDescription(description);
-//					isoImageData.setSize(size);
-//					isoImageData.setStatus(status);
-//					isoImageData.setRegion(regionData.getId());
-//					
-//					isoImagePool.put(isoImageData);
-//				}
-//			}
-//			catch( SocketException e )
-//			{
-//				logger.error("IsoImageInitializer.run() > ["+Thread.currentThread().getId()+"] connect to http gateway failed, exception:["+e.getMessage()+"], region:["+String.format("%s:%s", regionData.getId(), regionData.getName()) +"]");
-//			}
-//			catch (Exception e)
-//			{
-//				logger.error("IsoImageInitializer.run() > ["+Thread.currentThread().getId()+"] get iso images failed, exception:["+e.getMessage()+"], region:["+String.format("%s:%s", regionData.getId(), regionData.getName()) +"]");
-//			}
-//		}
+			try
+			{
+				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
+				JSONObject isoImageQueryResult = channel.isoImageQuery();
+				
+				if( HttpGatewayResponseHelper.isSuccess(isoImageQueryResult)==false )
+				{
+					logger.warn("IsoImagePoolManager.refreshIsoImagePool() > ["+Thread.currentThread().getId()+"] query iso images failed, message:["+HttpGatewayResponseHelper.getMessage(isoImageQueryResult)+"], region:["+String.format("%s:%s", "1", "default") +"]");
+					return ;
+				}
+				
+				JSONArray isoImages = (JSONArray)isoImageQueryResult.get("iso_images"); 
+				for( int i=0; i<isoImages.size(); i++ )
+				{
+					JSONObject isoImage = (JSONObject)isoImages.get(i);
+
+					String uuid        = JSONLibUtil.getString(isoImage,     "uuid");                           
+					String name        = JSONLibUtil.getString(isoImage,     "name");                            
+					String description = JSONLibUtil.getString(isoImage,     "description");
+					BigInteger size    = JSONLibUtil.getBigInteger(isoImage, "size");
+					Integer status     = JSONLibUtil.getInteger(isoImage,    "status");
+					
+					IsoImageData isoImageData = new IsoImageData();
+					isoImageData.setRealImageId(uuid);
+					isoImageData.setName(name);
+					isoImageData.setDescription(description);
+					isoImageData.setSize(size);
+					isoImageData.setStatus(status);
+					isoImageData.setRegion(1);
+					
+					isoImagePool.put(isoImageData);
+				}
+			}
+			catch( SocketException e )
+			{
+				logger.error("IsoImageInitializer.run() > ["+Thread.currentThread().getId()+"] connect to http gateway failed, exception:["+e.getMessage()+"], region:["+String.format("%s:%s", "1", "1") +"]");
+			}
+			catch (Exception e)
+			{
+				logger.error("IsoImageInitializer.run() > ["+Thread.currentThread().getId()+"] get iso images failed, exception:["+e.getMessage()+"], region:["+String.format("%s:%s", "1", "1") +"]");
+			}
+		}
 		
 	}
-}
+//}
 
 
 

@@ -169,10 +169,15 @@ public class QosController {
             }
         }
 
+        String str = qosVO.getUuid();
+        String[] strArr = str.split(";");
 
+        String uuid = strArr[0];
+        String hostName = strArr[1];
 
         Map<String, Object> data = new LinkedHashMap<String, Object>();
-        data.put("uuid", qosVO.getUuid());
+        data.put("uuid", uuid);
+        data.put("host_name", hostName);
         data.put("name", qosVO.getName());
         data.put("type", qosVO.getType());
         data.put("inbound_bandwidth", qosVO.getInboundBandwidth());

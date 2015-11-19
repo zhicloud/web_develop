@@ -223,6 +223,7 @@
     var curWarehouseId = "${warehouse.id}";
     var byIds = "${byIds}";
     var my_ids_size = "${idsSize}";
+    var flag = true;
     $(function(){
       setMenu(1);
       $('table thead input[type="checkbox"]').change(function () {
@@ -294,25 +295,32 @@ function saveMenu(){
 		    $("#dia").click();
 			return;
 		}else{
-			jQuery.ajax({
-				url: path+'/warehouse/assigntousers',
-				type: 'post', 
-				data:{warehouseId:curWarehouseId,allNodes:menuids},
-				dataType: 'json',
-				timeout: 10000,
-				async: false,
-				success:function(data){
-					if(data.status == "success"){
-						$("#tipscontent").html(data.message);
-					    $("#dia").click();
-						location.href=path +"/warehouse/all"; 
-					}else if(data.status == "fail"){
-						$("#tipscontent").html(data.message);
-					    $("#dia").click();
-						return;
+			if(flag){
+				flag = false;
+				jQuery.ajax({
+					url: path+'/warehouse/assigntousers',
+					type: 'post', 
+					data:{warehouseId:curWarehouseId,allNodes:menuids},
+					dataType: 'json',
+					timeout: 10000,
+					async: false,
+					success:function(data){
+						
+						if(data.status == "success"){
+							$("#tipscontent").html(data.message);
+						    $("#dia").click();
+							location.href=path +"/warehouse/all"; 
+						}else if(data.status == "fail"){
+							$("#tipscontent").html(data.message);
+						    $("#dia").click();
+						    flag = true;
+							return;
+						}
+						flag = true;
 					}
-				}
-			});
+				});
+			}
+			
 		}
 	}else if(byIds=="yes"){
 		var checkedNodes = [];
@@ -332,23 +340,30 @@ function saveMenu(){
 		    $("#dia").click();
 			return;
 		}else{
-			jQuery.ajax({
-				url: path+'/warehouse/assigntouserstwo',
-				type: 'post', 
-				data:{warehouseId:curWarehouseId,allNodes:checkedNodes},
-				dataType: 'json',
-				timeout: 10000,
-				async: false,
-				success:function(data){
-					if(data.status == "success"){
-						location.href=path + "/warehouse/cloudhost/"+curWarehouseId+"/all";
-					}else if(data.status == "fail"){
-						$("#tipscontent").html(data.message);
-					    $("#dia").click();
-						return;
+			if(flag){
+				flag = false;
+				jQuery.ajax({
+					url: path+'/warehouse/assigntouserstwo',
+					type: 'post', 
+					data:{warehouseId:curWarehouseId,allNodes:checkedNodes},
+					dataType: 'json',
+					timeout: 10000,
+					async: false,
+					success:function(data){
+						
+						if(data.status == "success"){
+							location.href=path + "/warehouse/cloudhost/"+curWarehouseId+"/all";
+						}else if(data.status == "fail"){
+							$("#tipscontent").html(data.message);
+						    $("#dia").click();
+						    flag = true;
+							return;
+						}
+						flag = true;
 					}
-				}
-			});
+				});
+			}
+			
 		}
 	}
 }

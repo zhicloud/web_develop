@@ -117,7 +117,7 @@ function backhome(){
                       <div class="form-group">
                         <label for="usercount" class="col-sm-2 control-label">用户账号*</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="usercount" parsley-required="true"  parsley-maxlength="50">
+                          <input type="text" class="form-control" id="usercount" parsley-trigger="change" parsley-type="nochinese" parsley-required="true"  parsley-minlength="4" parsley-maxlength="50" parsley-validation-minlength="4">
                         </div>
                       </div>
                       <div class="form-group">
@@ -150,9 +150,9 @@ function backhome(){
                         <div class="col-sm-4"> 
                             <div class="col-sm-16" id="userTypebox">
                             <select class="chosen-select chosen-transparent form-control" id="userType" parsley-required="true" parsley-error-container="#userTypebox">
-                            <option value="">请选择</option>  
+<!--                             <option value="">请选择</option>   -->
                             <option value="0">管理员用户</option>  
-                            <option value="1">租户管理员用户</option> 
+<!--                             <option value="1">租户管理员用户</option>  -->
                           </select></div> 
                         </div>
                       </div>  
@@ -175,7 +175,7 @@ function backhome(){
                       <div class="form-group">
                         <label for="usercount" class="col-sm-2 control-label">用户账号*</label>
                         <div class="col-sm-4">
-                          <input value="${systemUser.usercount }" type="text" class="form-control" id="usercount" parsley-required="true"  parsley-maxlength="100">
+                            <input value="${systemUser.usercount }" type="text" class="form-control" id="usercount" parsley-trigger="change" parsley-type="nochinese" parsley-required="true"  parsley-minlength="4" parsley-maxlength="50" parsley-validation-minlength="4">
                         </div>
                       </div>
                       <div class="form-group">
@@ -204,7 +204,7 @@ function backhome(){
                         <div class="col-sm-4"> 
                             <div class="col-sm-16" id="selectbox">
                             <select class="chosen-select chosen-transparent form-control" id="userType" parsley-required="true" parsley-error-container="#selectbox">
-                            <option value="">请选择</option>  
+<!--                             <option value="">请选择</option>   -->
                             <option value="0" <c:if test="${systemUser.userType==0 }">selected</c:if>>管理员用户</option>  
                             <option value="1" <c:if test="${systemUser.userType==1 }">selected</c:if>>租户管理员用户</option> 
                           </select></div> 

@@ -428,5 +428,26 @@ public interface ICloudHostService {
      * @return
      */
     public MethodResult deleteByRealId(String id);
+    
+    /**
+     * 
+    * @Title: startCloudHostFromIso 
+    * @Description: 从光盘启动云主机 
+    * @param @param cloudHostId
+    * @param @param imageId
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    public MethodResult startCloudHostFromIso(String cloudHostId,String imageId);
+    /**
+     * 
+    * @Title: updateCloudHostRunningStatus 
+    * @Description: 更新主机的runningstatus 
+    * @param       
+    * @return void     
+    * @throws
+     */
+    public void updateCloudHostRunningStatus();
 }
 

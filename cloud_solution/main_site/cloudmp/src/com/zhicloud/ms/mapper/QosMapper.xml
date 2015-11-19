@@ -4,7 +4,8 @@
 	
 	<resultMap id="QosVO" type="com.zhicloud.ms.vo.QosVO">
 		<id     property="id"        column="id" />
-		<result property="serverIp" column="server_ip" />
+        <result property="hostName" column="host_name" />
+        <result property="serverIp" column="server_ip" />
 		<result property="inboundBandwidth" column="inbound_bandwidth" />
 		<result property="outboundBandwidth" column="outbound_bandwidth" />
 		<result property="maxIops" column="max_iops" />
@@ -18,6 +19,7 @@
 		SELECT
 		q.id,
 		q.uuid,
+		q.host_name,
 		q.type,
 		q.name,
 		q.ip,
@@ -38,6 +40,7 @@
         SELECT
         q.id,
         q.uuid,
+        q.host_name,
         q.type,
         q.name,
         q.ip,
@@ -57,21 +60,21 @@
     <!-- ********************* -->
 	
 	<insert id="addQos">
-		INSERT INTO qos_setting (id, uuid, type, name, ip, server_ip, inbound_bandwidth, outbound_bandwidth, max_iops, priority, create_time)
-		VALUES (#{id}, #{uuid}, #{type}, #{name}, #{ip}, #{server_ip}, #{inbound_bandwidth}, #{outbound_bandwidth}, #{max_iops}, #{priority}, #{create_time})
+		INSERT INTO qos_setting (id, uuid, host_name, type, name, ip, server_ip, inbound_bandwidth, outbound_bandwidth, max_iops, priority, create_time)
+		VALUES (#{id}, #{uuid}, #{host_name}, #{type}, #{name}, #{ip}, #{server_ip}, #{inbound_bandwidth}, #{outbound_bandwidth}, #{max_iops}, #{priority}, #{create_time})
 	</insert>
-	
-	<!-- ********************* -->
 
-	
-	<delete id="deleteQosIds">
-		DELETE
-		FROM qos_setting
-		WHERE id IN
-		<foreach collection="array" item="item" open="(" close=")" separator=", ">
-			#{item}
-		</foreach>
-	</delete>
+    <!-- ********************* -->
+
+
+    <delete id="deleteQosByHostUuids">
+        DELETE
+        FROM qos_setting
+        WHERE uuid IN
+        <foreach collection="array" item="item" open="(" close=")" separator=", ">
+            #{item}
+        </foreach>
+    </delete>
 	
 	
 </mapper>

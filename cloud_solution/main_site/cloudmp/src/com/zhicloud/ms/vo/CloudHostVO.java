@@ -263,8 +263,8 @@ public class CloudHostVO implements JSONBean
 	}
 	
 	public String getBandwidthText(int scale)
-	{
-		return FlowUtil.toFlowLabel(this.bandwidth, scale);
+	{ 
+		return  FlowUtil.toMbpsValue(bandwidth, 0).toString();
 	}
 	public String getBandwidthValue()
 	{
@@ -273,6 +273,9 @@ public class CloudHostVO implements JSONBean
 	
 	public Integer getIsAutoStartup()
 	{
+	    if(isAutoStartup == null){
+	        return 0;
+	    }
 		return isAutoStartup;
 	}
 
@@ -774,6 +777,13 @@ public class CloudHostVO implements JSONBean
      */
     public String getDiskusage() {
         return getUsageFormat(3);
+    }
+    
+    public String getOuterIpAndPort(){
+        if(StringUtil.isBlank(outerIp)){
+            return "无";
+        }
+        return outerIp+":"+"outerPort";
     }
 }
 

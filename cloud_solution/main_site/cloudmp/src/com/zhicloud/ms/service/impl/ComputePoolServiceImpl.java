@@ -5,12 +5,8 @@ import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
 import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.httpGateway.*;
-import com.zhicloud.ms.mapper.CloudHostMapper;
-import com.zhicloud.ms.mapper.CloudHostWarehouseMapper;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.IComputePoolService;
-import com.zhicloud.ms.vo.CloudHostVO;
-import com.zhicloud.ms.vo.CloudHostWarehouse;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.ibatis.session.SqlSession;
@@ -209,15 +205,11 @@ public class ComputePoolServiceImpl implements IComputePoolService {
         String diskSource = StringUtil.trim(parameter.get("disk_source"));
         int mode0 = Integer.valueOf(StringUtil.trim(parameter.get("mode0")));
         int mode1 = Integer.valueOf(StringUtil.trim(parameter.get("mode1")));
-        int mode2 = Integer.valueOf(StringUtil.trim(parameter.get("mode2")));
-        int mode3 = Integer.valueOf(StringUtil.trim(parameter.get("mode3")));        
         String path = StringUtil.trim(parameter.get("path"));
         String crypt = StringUtil.trim(parameter.get("crypt"));
         Integer[] mode = new Integer[4];
         mode[0] = mode0;
         mode[1] = mode1;
-        mode[2] = mode2;
-        mode[3] = mode3;        
         int option = 0;
 
         String sessionId = null;
@@ -261,63 +253,28 @@ public class ComputePoolServiceImpl implements IComputePoolService {
     @Override
     @Transactional(readOnly=false)
     public MethodResult removeComputePool(String uuid) {
-        try {
+    	try {
             HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-            CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
-            CloudHostWarehouseMapper cloudHostWarehouseMapper = this.sqlSession.getMapper(CloudHostWarehouseMapper.class);
             if(channel!=null){
-                JSONObject result = channel.hostQuery(uuid);
-                if("success".equals(result.get("status"))){
-
-                    //删除资源池中的主机
-                    JSONArray computerList = result.getJSONArray("hosts");
-                    for (int i = 0; i < computerList.size(); i ++) {
-                        JSONObject computerObject = computerList.getJSONObject(i);
-                        String uid = computerObject.getString("uuid");
-                        CloudHostVO cloudHostVO = cloudHostMapper.getByRealHostId(uid);
-                        String warehostId = cloudHostVO.getWarehouseId();
-                        channel.hostDelete(uid);
-                        CloudHostWarehouse cloudHostWarehouse = cloudHostWarehouseMapper.getById(
-                            warehostId);
-                        Integer totalAmount = cloudHostWarehouse.getTotalAmount();
-                        Integer remainAmount = cloudHostWarehouse.getRemainAmount();
-                        Integer assignedAmount = cloudHostWarehouse.getAssignedAmount();
-                        if (totalAmount > 0 && remainAmount > 0 && assignedAmount >0) {
-                            if (totalAmount >= remainAmount && totalAmount >= assignedAmount) {
-                                //删除该主机
-                                cloudHostMapper.deleteById(cloudHostVO.getId());
-                                if (cloudHostVO.getUserId() == null) { // 该主机未分配
-                                    cloudHostWarehouseMapper.updateWarehouseAmountForDeleteHost(warehostId);
-                                }else {                               //  该主机已分配
-                                    cloudHostWarehouseMapper.updateWarehouseAmountForDeleteDispatchedHost(warehostId);
-
-                                }
-
-                            } else {
-                                return new MethodResult(MethodResult.FAIL,"仓库数据异常");
-                            }
-                        } else {
-                            return new MethodResult(MethodResult.FAIL,"仓库数据异常");
-                        }
-
-                    }
-                }
-                //删除NC
+                //检测是否有NC，有则提示不能删除
                 JSONObject nodeResult = channel.computePoolQueryResource(uuid);
-                if("success".equals(result.get("status"))){
+                if("success".equals(nodeResult.get("status"))){
                     JSONArray nodeList = nodeResult.getJSONArray("compute_resources");
-                    for (int i = 0; i < nodeList.size(); i ++) {
-                        JSONObject nodeObject = nodeList.getJSONObject(i);
-                        String name = nodeObject.getString("name");
-                        channel.computePoolRemoveResource(uuid, name);
+                    //存在NC
+                    if(nodeList!=null && nodeList.size()>0){
+                    	return new MethodResult(MethodResult.FAIL,"资源池删除失败，请先删除资源池中的资源");
+                    }else{
+                    	//没有NC，删除资源池
+                        JSONObject drp = channel.computePoolDelete(uuid);
+                        if("success".equals(drp.getString("status"))){
+                            return new MethodResult(MethodResult.SUCCESS,"资源池删除成功");
+                        }else{
+                        	return new MethodResult(MethodResult.FAIL,"资源池删除失败");
+                        }
                     }
                 }
             }
-            //删除资源池
-            JSONObject drp = channel.computePoolDelete(uuid);
-            if("success".equals(drp.getString("status"))){
-                return new MethodResult(MethodResult.SUCCESS,"资源池删除成功");
-            }
+            
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {

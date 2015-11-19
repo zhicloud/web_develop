@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="gbk"?>
 <properties>
 	
-	<property key="address_of_this_system" name="本系统（运营管理平台）的地址" type="String" 
-		description="本系统（运营管理平台）的地址">
+	<property key="address_of_this_system" name="address_of_this_system" type="String" 
+		description="address_of_this_system">
 		http://182.138.102.39:40803/ms/
 	</property>
 	
@@ -202,5 +202,9 @@
 	<property key="cd_max_ports" name="成都主机开通最大端口数" type="String" 
 		description="成都主机开通最大端口数">
 		50
+	</property>
+	<property key="web_version" name="web_version" type="String" 
+		description="web_version">
+		【云桌面web】verion(1.0)(build 20151113-1)
 	</property>
 </properties>
