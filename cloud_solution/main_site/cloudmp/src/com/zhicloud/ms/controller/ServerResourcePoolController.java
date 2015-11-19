@@ -253,7 +253,9 @@ public class ServerResourcePoolController {
                             computer.setCpuCore(cpuCount);
                             computer.setCpuUsage(cpuUsage.doubleValue());
                             computer.setDiskUsage(diskUsage.doubleValue());
+                            computer.setRemainDisk(dcount[1].subtract(dcount[0]));
                             computer.setSysDisk(dcount[1]);
+                            computer.setRemainMemory(mcount[1].subtract(mcount[0]));
                             computer.setMemory(mcount[1]);
                             computer.setMemoryUsage(memoryUsage.doubleValue());
                             computer.setHostName(hostName);
@@ -311,46 +313,48 @@ public class ServerResourcePoolController {
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				if(channel!=null){
 					JSONObject result = channel.addressPoolQuery();
-					JSONObject resultPort = channel.portPoolQuery();
-					JSONArray IpPoolList = result.getJSONArray("addressPools");
-					JSONArray portPoolList = resultPort.getJSONArray("portPools");
-					for (int i = 0; i < IpPoolList.size(); i ++) {
-						JSONObject ipObject = IpPoolList.getJSONObject(i);
-						String name = ipObject.getString("name");
-						String uid = ipObject.getString("uuid");
-						int status = ipObject.getInt("status");
-						
-						JSONArray countList = ipObject.getJSONArray("count");
-						Integer[] ccount = new Integer[countList.size()];
-						for(int j=0;j<countList.size();j++){
-							ccount[j] = countList.getInt(j);
+					if(result!=null){
+						JSONObject resultPort = channel.portPoolQuery();
+						JSONArray IpPoolList = result.getJSONArray("addressPools");
+						JSONArray portPoolList = resultPort.getJSONArray("portPools");
+						for (int i = 0; i < IpPoolList.size(); i ++) {
+							JSONObject ipObject = IpPoolList.getJSONObject(i);
+							String name = ipObject.getString("name");
+							String uid = ipObject.getString("uuid");
+							int status = ipObject.getInt("status");
+							
+							JSONArray countList = ipObject.getJSONArray("count");
+							Integer[] ccount = new Integer[countList.size()];
+							for(int j=0;j<countList.size();j++){
+								ccount[j] = countList.getInt(j);
+							}
+							
+							IpPoolVO vo = new IpPoolVO();
+							vo.setName(name);
+							vo.setStatus(status);
+							vo.setUuid(uid);
+							vo.setCount(ccount);
+							ipList.add(vo);
 						}
-						
-						IpPoolVO vo = new IpPoolVO();
-						vo.setName(name);
-						vo.setStatus(status);
-						vo.setUuid(uid);
-						vo.setCount(ccount);
-						ipList.add(vo);
-					}
-					for (int i = 0; i < portPoolList.size(); i ++) {
-						JSONObject portObject = portPoolList.getJSONObject(i);
-						String name = portObject.getString("name");
-						String uid = portObject.getString("uuid");
-						int status = portObject.getInt("status");
-						
-						JSONArray countList = portObject.getJSONArray("count");
-						Integer[] pcount = new Integer[countList.size()];
-						for(int j=0;j<countList.size();j++){
-							pcount[j] = countList.getInt(j);
+						for (int i = 0; i < portPoolList.size(); i ++) {
+							JSONObject portObject = portPoolList.getJSONObject(i);
+							String name = portObject.getString("name");
+							String uid = portObject.getString("uuid");
+							int status = portObject.getInt("status");
+							
+							JSONArray countList = portObject.getJSONArray("count");
+							Integer[] pcount = new Integer[countList.size()];
+							for(int j=0;j<countList.size();j++){
+								pcount[j] = countList.getInt(j);
+							}
+							
+							PortPoolVO vo = new PortPoolVO();
+							vo.setName(name);
+							vo.setStatus(status);
+							vo.setUuid(uid);
+							vo.setCount(pcount);
+							portList.add(vo);
 						}
-						
-						PortPoolVO vo = new PortPoolVO();
-						vo.setName(name);
-						vo.setStatus(status);
-						vo.setUuid(uid);
-						vo.setCount(pcount);
-						portList.add(vo);
 					}
 				}
 			model.addAttribute("ipList", ipList);
@@ -378,7 +382,7 @@ public class ServerResourcePoolController {
             operLogService.addLog("计算资源池", "创建计算资源池"+name+"失败", "1", "2", request);
 			return new MethodResult(MethodResult.FAIL,"网络类型不能为空");
 		}
-		if(!"0".equals(networkType) && StringUtil.isBlank(networkId)){
+		if(("1".equals(networkType) || "2".equals(networkType)) && StringUtil.isBlank(networkId)){
             operLogService.addLog("计算资源池", "创建计算资源池"+name+"失败", "1", "2", request);
 			return new MethodResult(MethodResult.FAIL,"IP或端口资源池不能为空");
 		}
