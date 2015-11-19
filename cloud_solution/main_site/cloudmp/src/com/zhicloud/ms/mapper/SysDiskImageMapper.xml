@@ -122,7 +122,8 @@
   			t.display_name,
  			t.status,
  			t.create_time,
- 			t.file_type
+ 			t.file_type,
+ 			t.size
 		from sys_disk_image t
 		where t.id = #{id}
 		limit 1
@@ -138,7 +139,8 @@
   			t.display_name,
  			t.status,
  			t.create_time,
- 			t.file_type
+ 			t.file_type,
+ 			t.size
 		from sys_disk_image t
 		where t.real_image_id = #{id}
 		limit 1
@@ -150,8 +152,8 @@
 
 	<insert id="addSysDiskImage">
 		insert into sys_disk_image
-		      (  id,    real_image_id,  name,    from_host_id,      description,    user_id,      display_name,  type,create_time,image_type,file_type)
-		values(#{id}, #{realImageId}, #{name}, #{fromHostId},  #{description},  #{userId},  #{displayName},  #{type},#{createTime},#{imageType},#{fileType})
+		      (  id,    real_image_id,  name,    from_host_id,      description,    user_id,      display_name,  type,create_time,image_type,file_type,size)
+		values(#{id}, #{realImageId}, #{name}, #{fromHostId},  #{description},  #{userId},  #{displayName},  #{type},#{createTime},#{imageType},#{fileType},#{size})
 	</insert>
 	
 	
@@ -162,6 +164,7 @@
 			name          = #{name},  
   			description   = #{description},
 			display_name  = #{displayName}, 
+			size          = #{size},
 			type          = #{type}
 			<if test="modifiedTime!=null">
 			,modified_time = #{modifiedTime}
@@ -178,6 +181,9 @@
 			</if> 
 			<if test="fileType!=null">
 				,file_type = #{fileType}
+			</if> 
+			<if test="size!=null">
+				,size = #{size}
 			</if> 
 			 
 		</set>

@@ -1,5 +1,6 @@
 package com.zhicloud.ms.service.impl;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -84,7 +85,11 @@ public class CloudHostConfigModelServiceImpl implements CloudHostConfigModelServ
           condition.put("sysImageName", "空白镜像");              
         }else{
           condition.put("sysImageId", chcm.getSysImageId());
-          condition.put("sysImageName", sysDiskImage.getName());            
+          condition.put("sysImageName", sysDiskImage.getName()); 
+          if(sysDiskImage.getSize()!=null && sysDiskImage.getSize().compareTo(BigInteger.ZERO)>0){
+              condition.put("sysDisk", sysDiskImage.getSize());
+
+          }
         }
 		condition.put("createTime", DateUtil.dateToString(new Date(),"yyyyMMddHHmmssSSS"));
 		condition.put("type", 1);
@@ -204,10 +209,11 @@ public class CloudHostConfigModelServiceImpl implements CloudHostConfigModelServ
 			if("from_sys_image".equals(chcm.getSysDiskType())){
 				sysImageId = chcm.getSysImageId();
 				sysDiskImage = sdiMapper.getById(chcm.getSysImageId());
-				sysDisk = null;
+				sysDisk = sysDiskImage.getSize()+"";
 			}else{
 				sysImageId = null;
-				sysDisk = chcm.getEmptyDisk()+"GB";
+//				sysDisk = chcm.getEmptyDisk()+"GB";
+				sysDisk = CapacityUtil.fromCapacityLabel(chcm.getEmptyDisk()+"GB")+"";
 			}
 			String dataDisk = chcm.getDataDisk()==null ? chcm.getDiskdiy().toString() : chcm.getDataDisk().toString();
 			String bandwidth = chcm.getBandwidth()==null ? chcm.getBandwidthdiy().toString() : chcm.getBandwidth().toString();
@@ -217,7 +223,8 @@ public class CloudHostConfigModelServiceImpl implements CloudHostConfigModelServ
 			condition.put("name", chcm.getName());
 			condition.put("cpuCore", new Integer(chcm.getCpuCore()));
 			condition.put("memory", CapacityUtil.fromCapacityLabel(chcm.getMemory()+"GB"));
-			condition.put("sysDisk", sysDisk==null?null:CapacityUtil.fromCapacityLabel(sysDisk));
+//			condition.put("sysDisk", sysDisk==null?null:CapacityUtil.fromCapacityLabel(sysDisk));
+            condition.put("sysDisk", sysDisk);
 			condition.put("dataDisk", CapacityUtil.fromCapacityLabel(dataDisk+"GB"));
 			condition.put("bandwidth", FlowUtil.fromFlowLabel(bandwidth+"Mbps"));
 			condition.put("sysImageId", sysImageId);
@@ -247,13 +254,14 @@ public class CloudHostConfigModelServiceImpl implements CloudHostConfigModelServ
 			String sysDisk = "";
 			String sysImageId = "";
 			if("from_sys_image".equals(chcm.getSysDiskType())){
-				sysImageId = chcm.getSysImageId();
-				sysDiskImage = sdiMapper.getById(chcm.getSysImageId());
-				sysDisk = null;
-			}else{
-				sysImageId = null;
-				sysDisk = chcm.getEmptyDisk()+"GB";
-			}
+                sysImageId = chcm.getSysImageId();
+                sysDiskImage = sdiMapper.getById(chcm.getSysImageId());
+                sysDisk = sysDiskImage.getSize()+"";
+            }else{
+                sysImageId = null;
+//              sysDisk = chcm.getEmptyDisk()+"GB";
+                sysDisk = CapacityUtil.fromCapacityLabel(chcm.getEmptyDisk()+"GB")+"";
+            }
 			String dataDisk = chcm.getDataDisk()==null ? chcm.getDiskdiy().toString() : chcm.getDataDisk().toString();
 			String bandwidth = chcm.getBandwidth()==null ? chcm.getBandwidthdiy().toString() : chcm.getBandwidth().toString();
 			Map<String,Object> condition = new HashMap<String,Object>();
@@ -261,7 +269,7 @@ public class CloudHostConfigModelServiceImpl implements CloudHostConfigModelServ
 			condition.put("name", chcm.getName());
 			condition.put("cpuCore", new Integer(chcm.getCpuCore()));
 			condition.put("memory", CapacityUtil.fromCapacityLabel(chcm.getMemory()+"GB"));
-			condition.put("sysDisk", sysDisk==null?null:CapacityUtil.fromCapacityLabel(sysDisk));
+			condition.put("sysDisk", sysDisk);
 			condition.put("dataDisk", CapacityUtil.fromCapacityLabel(dataDisk+"GB"));
 			condition.put("bandwidth", FlowUtil.fromFlowLabel(bandwidth+"Mbps"));
 			condition.put("sysImageId", sysImageId);

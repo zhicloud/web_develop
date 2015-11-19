@@ -76,7 +76,7 @@
 				a.displayname, 
 				a.user_type
 		from man_system_user a
-		where a.usercount=#{usercount} or a.email=#{email}
+		where (a.usercount=#{usercount} or a.email=#{email})
 		and a.status != 9
 	</select>	
 	

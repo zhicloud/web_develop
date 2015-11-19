@@ -292,6 +292,10 @@ public class AppConstant
     
     public static final String  CLOUD_HOST_RUNNING_STATUS_CHECK="cloud_host_running_status_check";
     
+    public static final String  CLOUD_HOST_CREATE_ID="cloud_host_create";
+    
+    public static final String  CLOUD_HOST_FETCH_ID="cloud_host_fetch";
+    
     //消息配置参数
     public static final Integer TENANT_STATUS_ENABLE  = 0;   //正常
     public static final Integer TENANT_STATUS_DELETE  = 9;   //删除

@@ -348,7 +348,7 @@ public class HttpGatewayHelper
         {
             logger.info("hostCreate() -> url=["+url+"]");
         }
-        port = new Integer[]{1,8080};
+//        port = new Integer[]{1,8080};
         // 参数
         Map<String, String> postDataMap = new LinkedHashMap<String, String>();
         postDataMap.put("name", StringUtil.trim(name));
