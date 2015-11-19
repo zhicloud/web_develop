@@ -1,4 +1,30 @@
 ******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151119-1)
+修改时间：2015/11/19
+修改人：张本缘
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/transform/admin/system_role_edit.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/warehouse_manage.jsp
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/CloudHostWarehouseController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/CloudHostMapper.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/CloudHostWarehouseMapper.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/CloudHostMapper.xml
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/CloudHostWarehouseMapper.xml
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostServiceImpl.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostWarehouseServiceImpl.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/ICloudHostWarehouseService.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/CloudHostWarehouse.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/transform/constant/TransFormPrivilegeConstant.java
+新增文件：
+cloud_solution/main_site/cloudmp/WebContent/views/warehouse_concurrent.jsp
+
+主要变更：
+1.角色管理编辑页面角色编码不能输入中文;
+2.主机仓库页面增加设置资源池最大并发主机创建数功能;
+
+兼容性说明：
+	无
+******************************************************
 版本号：版本号：【云平台web】verion(2.1)(build 20151117-1)
 修改时间：2015/11/17
 修改人：张本缘

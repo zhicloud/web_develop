@@ -909,4 +909,42 @@
 		</set>
 		where id  = #{id}
 	</update>
+	
+	<select id="getOneUncreatedCloudHostWithPoolID" resultMap="CloudHostVO">
+		select 
+			ch.id,
+			ch.real_host_id, 
+			ch.warehouse_id,
+			ch.host_name,
+			ch.user_id,
+ 			ch.display_name,
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_image_id,
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth, 
+			ch.running_status, 
+			ch.status,
+			ch.password,
+			ch.type,
+			ch.account,
+			ch.pool_id,
+			chcm.support_h264 supportH264
+		from cloud_host ch
+		left join cloud_host_warehouse chw
+			on ch.warehouse_id = chw.id
+		left join cloud_host_config_model chcm
+			on chw.cloud_host_config_model_id = chcm.id
+		where ch.status = 0 and ch.pool_id = #{pool_id}
+		and real_host_id is null
+		limit 1
+	</select>
+	
+	<select id="countPoolCreatedHost" resultType="java.lang.Integer">
+		select count(0)
+		from cloud_host ch
+		where ch.status = 1 and ch.pool_id = #{pool_id}
+		and real_host_id is null
+	</select>
 </mapper>
