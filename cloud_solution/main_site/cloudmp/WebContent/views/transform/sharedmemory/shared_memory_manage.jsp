@@ -3,6 +3,7 @@
 <html>
   <head>
     <title>控制台-共享存储管理</title>
+    <link rel="icon" type="image/ico" href="<%=request.getContextPath()%>/assets/images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8" />
   </head>
