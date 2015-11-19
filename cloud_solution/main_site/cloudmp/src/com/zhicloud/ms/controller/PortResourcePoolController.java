@@ -138,11 +138,12 @@ public class PortResourcePoolController {
                             return new MethodResult(MethodResult.FAIL,"该名字的端口资源池已经存在");
                         }
                     }
-                } else{
-                    operLogService.addLog("端口资源池", "创建端口资源池失败", "1", "2", request);
-
-                    return new MethodResult(MethodResult.FAIL,"校验端口资源池名失败！");
-                }
+                } 
+//                else{
+//                    operLogService.addLog("端口资源池", "创建端口资源池失败", "1", "2", request);
+//
+//                    return new MethodResult(MethodResult.FAIL,"校验端口资源池名失败！");
+//                }
                 
                 JSONObject result = channel.portPoolCreate(name);
                 if("success".equals(result.get("status"))){

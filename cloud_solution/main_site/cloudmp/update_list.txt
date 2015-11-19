@@ -1,4 +1,73 @@
 ******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151119-1)
+修改时间：2015/11/19
+修改人：吴莉莎
+修改文件：
+ TimerCheckListener.java
+ DiskImageProgressData.java
+ AppConstant.java
+ IpResourcePoolController.java
+PortResourcePoolController.java
+HttpGatewayHelper.java
+ManSystemUserMapper.xml
+SysDiskImageMapper.xml
+CloudHostConfigModelServiceImpl.java
+CloudHostServiceImpl.java
+SysDiskImageServiceImpl.java
+SysDiskImageVO.java
+app-properties.xml
+intelligent_router_rule_add.jsp
+新增文件：
+CloudHostCreateJob.java
+CloudHostSynchronousJob.java
+
+主要变更：
+1.角色管理编辑页面角色编码不能输入中文;
+2.主机仓库页面增加设置资源池最大并发主机创建数功能;
+
+兼容性说明：
+	无
+******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151119-1)
+修改时间：2015/11/19
+修改人：张本缘
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/transform/admin/system_role_edit.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/warehouse_manage.jsp
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/CloudHostWarehouseController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/CloudHostMapper.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/CloudHostWarehouseMapper.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/CloudHostMapper.xml
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/CloudHostWarehouseMapper.xml
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostServiceImpl.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostWarehouseServiceImpl.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/ICloudHostWarehouseService.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/CloudHostWarehouse.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/transform/constant/TransFormPrivilegeConstant.java
+新增文件：
+cloud_solution/main_site/cloudmp/WebContent/views/warehouse_concurrent.jsp
+
+主要变更：
+1.角色管理编辑页面角色编码不能输入中文;
+2.主机仓库页面增加设置资源池最大并发主机创建数功能;
+
+兼容性说明：
+	无
+******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151117-1)
+修改时间：2015/11/17
+修改人：张本缘
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/transform/sharedmemory/shared_memory_manage.jsp
+新增文件：
+无
+
+主要变更：
+1.共享存储管理--浏览器上面无图标
+
+兼容性说明：
+	无
+******************************************************
 版本号：版本号：【云平台web】verion(2.1)(build 20151116-1)
 修改时间：2015/11/16
 修改人：周亚锋

@@ -86,22 +86,22 @@
 		<load-on-startup>2</load-on-startup>
 	</servlet>
 	
-	<servlet>
-		<description>从http gateway查询出最新的云主机，然后更新至mysql的云主机表,并启动云主机资源监控</description>
-		<servlet-name>RealCloudHostFetcherListener</servlet-name>
-		<servlet-class>com.zhicloud.ms.app.listener.RealCloudHostFetcherListener</servlet-class>
-		<init-param>
-			<description>两次同步云主机动作的间隔时长，单位秒</description>
-			<param-name>fetch_host_interval_time</param-name>
-			<param-value>60</param-value>
-		</init-param>
-		<init-param>
-			<description>两次资源监控信息扫描动作的间隔时长，单位秒</description>
-			<param-name>scan_monitor_info_interval_time</param-name>
-			<param-value>10</param-value>
-		</init-param>
-		<load-on-startup>2</load-on-startup>
-	</servlet>
+<!-- 	<servlet> -->
+<!-- 		<description>从http gateway查询出最新的云主机，然后更新至mysql的云主机表,并启动云主机资源监控</description> -->
+<!-- 		<servlet-name>RealCloudHostFetcherListener</servlet-name> -->
+<!-- 		<servlet-class>com.zhicloud.ms.app.listener.RealCloudHostFetcherListener</servlet-class> -->
+<!-- 		<init-param> -->
+<!-- 			<description>两次同步云主机动作的间隔时长，单位秒</description> -->
+<!-- 			<param-name>fetch_host_interval_time</param-name> -->
+<!-- 			<param-value>60</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<init-param> -->
+<!-- 			<description>两次资源监控信息扫描动作的间隔时长，单位秒</description> -->
+<!-- 			<param-name>scan_monitor_info_interval_time</param-name> -->
+<!-- 			<param-value>10</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<load-on-startup>2</load-on-startup> -->
+<!-- 	</servlet> -->
 	
 	<servlet>
 		<description>fetch physical machine information from http_gateway</description>
@@ -152,44 +152,44 @@
  	</servlet>
 	<!-- **************************************************** -->
 	
-	<servlet>
-		<description>从未处理的用户订单取出一个云主机配置并创建云主机</description>
-		<servlet-name>UserOrderedCloudHostCreationListener</servlet-name>
-		<servlet-class>com.zhicloud.ms.app.listener.UserOrderedCloudHostCreationListener</servlet-class>
-		<init-param>
-			<description>两次创建动作的间隔时长，单位秒</description>
-			<param-name>interval_time</param-name>
-			<param-value>3</param-value>
-		</init-param>
-		<init-param>
-			<description>成功发送一个创建消息之后，等待一段时间再开始一次新的动作，单位秒</description>
-			<param-name>wait_time_after_sending_creation</param-name>
-			<param-value>10</param-value>
-		</init-param>
-		<load-on-startup>2</load-on-startup>
-	</servlet>
+<!-- 	<servlet> -->
+<!-- 		<description>从未处理的用户订单取出一个云主机配置并创建云主机</description> -->
+<!-- 		<servlet-name>UserOrderedCloudHostCreationListener</servlet-name> -->
+<!-- 		<servlet-class>com.zhicloud.ms.app.listener.UserOrderedCloudHostCreationListener</servlet-class> -->
+<!-- 		<init-param> -->
+<!-- 			<description>两次创建动作的间隔时长，单位秒</description> -->
+<!-- 			<param-name>interval_time</param-name> -->
+<!-- 			<param-value>3</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<init-param> -->
+<!-- 			<description>成功发送一个创建消息之后，等待一段时间再开始一次新的动作，单位秒</description> -->
+<!-- 			<param-name>wait_time_after_sending_creation</param-name> -->
+<!-- 			<param-value>10</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<load-on-startup>2</load-on-startup> -->
+<!-- 	</servlet> -->
 	
-	<servlet>
-		<description>读取云主机仓库的配置，然后创建仓库里的云主机</description>
-		<servlet-name>WarehouseCloudHostCreationListener</servlet-name>
-		<servlet-class>com.zhicloud.ms.app.listener.WarehouseCloudHostCreationListener</servlet-class>
-		<init-param>
-			<description>两次创建动作的间隔时长，单位秒</description>
-			<param-name>interval_time</param-name>
-			<param-value>180</param-value>
-		</init-param>
-		<init-param>
-			<description>创建时间段的开始时间，格式为"HH:mm:ss"</description>
-			<param-name>action_start_time</param-name>
-			<param-value>02:00:00</param-value>
-		</init-param>
-		<init-param>
-			<description>创建时间段的结束时间，格式为"HH:mm:ss"</description>
-			<param-name>action_end_time</param-name>
-			<param-value>07:00:00</param-value>
-		</init-param>
-		<load-on-startup>2</load-on-startup>
-	</servlet>
+<!-- 	<servlet> -->
+<!-- 		<description>读取云主机仓库的配置，然后创建仓库里的云主机</description> -->
+<!-- 		<servlet-name>WarehouseCloudHostCreationListener</servlet-name> -->
+<!-- 		<servlet-class>com.zhicloud.ms.app.listener.WarehouseCloudHostCreationListener</servlet-class> -->
+<!-- 		<init-param> -->
+<!-- 			<description>两次创建动作的间隔时长，单位秒</description> -->
+<!-- 			<param-name>interval_time</param-name> -->
+<!-- 			<param-value>180</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<init-param> -->
+<!-- 			<description>创建时间段的开始时间，格式为"HH:mm:ss"</description> -->
+<!-- 			<param-name>action_start_time</param-name> -->
+<!-- 			<param-value>02:00:00</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<init-param> -->
+<!-- 			<description>创建时间段的结束时间，格式为"HH:mm:ss"</description> -->
+<!-- 			<param-name>action_end_time</param-name> -->
+<!-- 			<param-value>07:00:00</param-value> -->
+<!-- 		</init-param> -->
+<!-- 		<load-on-startup>2</load-on-startup> -->
+<!-- 	</servlet> -->
 	<servlet>
 		<description>平台资源监控</description>
 		<servlet-name>AllResourceMonitorListener</servlet-name>
