@@ -34,6 +34,12 @@
       <script src="<%=request.getContextPath()%>/assets/js/respond.min.js"></script>
     <![endif]-->
   </head>
+  <script type="text/javascript">
+  //最大并发创建数设置页面跳转
+  function beforeConcurrent(){
+  	window.location.href = "<%=request.getContextPath()%>/warehouse/beforeconcurrent";
+  }
+  </script>
   <body class="bg-1">
 
  
@@ -101,6 +107,10 @@
                     <button type="button" class="btn btn-green file-excel-o" onclick="exportData('/export/warehousedata')">
                               <i class="fa fa-file-excel-o"></i>
                               <span>导出数据</span>
+                    </button>
+                    <button type="button" class="btn btn-blue add" onclick="beforeConcurrent()">
+                              <i class="fa fa-gear"></i>
+                              <span>设置最大并发创建数</span>
                     </button>
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
