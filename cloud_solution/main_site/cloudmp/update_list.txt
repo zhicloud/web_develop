@@ -1,4 +1,19 @@
 ******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151119-2)
+修改时间：2015/11/19
+修改人：张本缘
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/transform/sharedmemory/shared_memory_edit.jsp
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostServiceImpl.java
+新增文件：
+无
+主要变更：
+1.共享存储编辑页面的密码和秘钥不能输入中文;
+2.资源池设置最大并发主机创建数的表为空时报错;
+
+兼容性说明：
+	无
+******************************************************
 版本号：版本号：【云平台web】verion(2.1)(build 20151119-1)
 修改时间：2015/11/19 
 修改人：吴莉莎
