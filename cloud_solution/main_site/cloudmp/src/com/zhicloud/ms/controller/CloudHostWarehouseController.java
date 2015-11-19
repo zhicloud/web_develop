@@ -21,6 +21,7 @@ import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,8 +39,10 @@ import java.util.*;
 @Controller
 @RequestMapping("/warehouse")
 public class CloudHostWarehouseController {
+    //日志
+    public static final Logger logger = Logger.getLogger(CloudHostWarehouseController.class);
 	
-	@Resource
+    @Resource
 	ICloudHostWarehouseService cloudHostWarehouseService;
 	@Resource
 	CloudHostConfigModelService cloudHostConfigModelService;
@@ -529,5 +532,81 @@ public class CloudHostWarehouseController {
             return new MethodResult(MethodResult.FAIL,"不是thin");
         }
      }
+    
+    /**
+     * 跳转到最大并发创建数设置页面
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/beforeconcurrent", method = RequestMethod.GET)
+    public String beforeConcurrent(HttpServletRequest request) {
+        if (!new TransFormPrivilegeUtil().isHasPrivilege(request,
+                TransFormPrivilegeConstant.desktop_warehouse_set_maxconcurrent)) {
+            return "not_have_access";
+        }
+        try {
+            // 获取数据库保存信息
+            List<CloudHostWarehouse> lists = cloudHostWarehouseService.getAllConcurrent();
+
+            ComputeInfoPool pool = ComputeInfoPoolManager.singleton().getPool();
+            Map<String, ComputeInfoExt> poolMap = pool.getAllComputePool();
+            Set<String> pool_keys = poolMap.keySet();
+            Iterator<String> its = pool_keys.iterator();
+            JSONArray pool_arrays = new JSONArray();
+
+            while (its.hasNext()) {
+                ComputeInfoExt ext = poolMap.get(its.next());
+                JSONObject obj = new JSONObject();
+                obj.put("uuid", ext.getUuid());
+                obj.put("name", ext.getName());
+                // 循环比对
+                for (CloudHostWarehouse cloud : lists) {
+                    if (ext.getUuid().equals(cloud.getPoolId())) {
+                        obj.put("max_creating", cloud.getMax_creating());
+                        break;
+                    } else {
+                        obj.put("max_creating", "");
+                    }
+                }
+                pool_arrays.add(obj);
+            }
+            request.setAttribute("lists", pool_arrays);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "warehouse_concurrent";
+    }
+    
+    /**
+     * @Description:保存资源池最大并发创建数
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping(value = "/savemaxconcurrent", method = RequestMethod.POST)
+    @ResponseBody
+    public MethodResult saveMaxConcurrent(@RequestParam(value = "data", defaultValue = "") String data, HttpServletRequest request) {
+        logger.debug("CloudHostWarehouseController.saveMaxConcurrent()");
+        JSONObject json = JSONObject.fromObject(data);
+        if (json != null && !json.isEmpty()) {
+            try {
+                Map<String, Object> map = new LinkedHashMap<String, Object>();
+                map.put("pool_id", json.getString("pool_id"));
+                map.put("pool_name", json.getString("pool_name"));
+                map.put("max_creating", json.getString("max_creating"));
+                Integer re = cloudHostWarehouseService.saveConcurrent(map);
+                if (re > 0) {
+                    return new MethodResult(MethodResult.SUCCESS, "保存成功");
+                } else {
+                    return new MethodResult(MethodResult.FAIL, "保存失败,请联系管理员");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new MethodResult(MethodResult.FAIL, "保存失败,请联系管理员");
+            }
+        }
+        return new MethodResult(MethodResult.FAIL, "参数不能为空");
+    }
 }
 
