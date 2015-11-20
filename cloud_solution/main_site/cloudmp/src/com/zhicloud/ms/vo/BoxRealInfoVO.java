@@ -1,10 +1,10 @@
 package com.zhicloud.ms.vo;
 
-import java.text.ParseException;
-import java.util.Date;
-
 import com.zhicloud.ms.common.util.DateUtil;
 import com.zhicloud.ms.common.util.StringUtil;
+
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * 
@@ -16,34 +16,34 @@ import com.zhicloud.ms.common.util.StringUtil;
  */
 public class BoxRealInfoVO {
     
-    private  String mac ;
-    private String ip ;
-    private String subnetMask ;
-    private String softwareVersion ;
-    private String hardwareVersion ;
-    private String gateway ;
-    private String userId;
-    private String userName;
-    private Integer status;
-    private String lastLoginTime;
-    private String lastAliveTime;
-    private String lastLogoutTime;
+    private  String mac ;               //mac地址
+    private String ip ;                 //IP地址
+    private String subnetMask ;         //子网掩码
+    private String softwareVersion ;    //软件版本
+    private String hardwareVersion ;    //硬件版本
+    private String gateway ;            //网管
+    private String userId;              //用户ID
+    private String userName;            //用户名
+    private Integer status;             //当前状态
+    private String lastLoginTime;       //上次登录时间
+    private String lastAliveTime;       //上次请求心跳时间
+    private String lastLogoutTime;      //上次注销时间
     private Date lastLoginDate;
     private Date lastAliveDate;
     private Date lastLogoutDate;
-    private String serialNumber;
+    private String serialNumber;        //盒子序列号
     
     private long cumulativeOnlineTime;
 
     public long getCumulativeOnlineTime() {
-		return cumulativeOnlineTime;
-	}
+        return cumulativeOnlineTime;
+    }
 
-	public void setCumulativeOnlineTime(long cumulativeOnlineTime) {
-		this.cumulativeOnlineTime = cumulativeOnlineTime;
-	}
-	
-	public String getCumulativeOnlineTimeText(){
+    public void setCumulativeOnlineTime(long cumulativeOnlineTime) {
+        this.cumulativeOnlineTime = cumulativeOnlineTime;
+    }
+
+    public String getCumulativeOnlineTimeText(){
 		long days = this.cumulativeOnlineTime / (1000 * 60 * 60 * 24);  
 	    long hours = (this.cumulativeOnlineTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);  
 		long minutes = (this.cumulativeOnlineTime % (1000 * 60 * 60)) / (1000 * 60);  

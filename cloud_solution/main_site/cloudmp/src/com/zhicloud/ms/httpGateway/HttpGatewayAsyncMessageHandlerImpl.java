@@ -240,6 +240,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 			isoImage.setIp(ip);
 			isoImage.setPort(port);
 			isoImage.setSize(size);
+			
 //			isoImage.setName(name);
 			
 	        IsoImagePool isopool = IsoImagePoolManager.getSingleton().getIsoImagePool();
@@ -251,6 +252,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
             isoImageData.setSize(size);
             isoImageData.setStatus(0);
             isoImageData.setRegion(1);
+            isoImageData.setDescription(isoImage.getDescription());
             isopool.put(isoImageData);
 		}
 		// 释放资源

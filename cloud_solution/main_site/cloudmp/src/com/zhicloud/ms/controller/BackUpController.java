@@ -166,40 +166,26 @@ public class BackUpController {
         }else{
             return new MethodResult(MethodResult.FAIL,"模式错误");
         }
-        try {
-            JobDetail jdCheck = QuartzManage.getQuartzManage().getScheduler().getJobDetail(new JobKey(timer.getId(),"groupJob"));           
-                //没有任务则添加任务
-                if(jdCheck==null){
-                    //定义任务
-                    JobDetail jd = JobBuilder.newJob(BackUpJob.class)
-                            .withIdentity(new JobKey(timer.getId(),"groupJob"))  
-                            .usingJobData("mode", timer.getMode())
-                            .usingJobData("disk", timer.getDisk())
-                            .usingJobData("timerKey", timer.getKey())
-                            .requestRecovery(true)
-                            .build();
-                    //定义触发器
-                    CronTrigger ct = (CronTrigger)TriggerBuilder.newTrigger()
-                            .withIdentity(new TriggerKey(timer.getId(),"groupTrigger"))
-                            .withSchedule(CronScheduleBuilder.cronSchedule(time).withMisfireHandlingInstructionDoNothing())
-                            .startNow()
-                            .build();
-                    //添加任务
-                    QuartzManage.getQuartzManage().addTrigger(jd, ct);
-                }else{//存在任务则修改任务 
-                        //定义触发器
-                        CronTrigger ct = (CronTrigger)TriggerBuilder.newTrigger()
-                                .withIdentity(new TriggerKey(timer.getId(),"groupTrigger"))
-                                .usingJobData("mode", timer.getMode())
-                                .usingJobData("disk", timer.getDisk())
-                                .usingJobData("timerKey", timer.getKey())
-                                .withSchedule(CronScheduleBuilder.cronSchedule(time).withMisfireHandlingInstructionDoNothing())
-                                .startNow()
-                                .build();
-                        //修改任务出发的时间规则
-                        QuartzManage.getQuartzManage().updateTrigger(new TriggerKey(timer.getId(),"groupTrigger"), ct);
-                    }   
-         } catch (SchedulerException e) {
+        try { 
+            QuartzManage.getQuartzManage().deleteTrigger(new JobKey(timer.getId(),"groupJob"), new TriggerKey(timer.getId(),"groupTrigger"));
+
+            //定义任务
+            JobDetail jd = JobBuilder.newJob(BackUpJob.class)
+                    .withIdentity(new JobKey(timer.getId(),"groupJob"))  
+                    .usingJobData("mode", timer.getMode())
+                    .usingJobData("disk", timer.getDisk())
+                    .usingJobData("timerKey", timer.getKey())
+                    .requestRecovery(true)
+                    .build();
+            //定义触发器
+            CronTrigger ct = (CronTrigger)TriggerBuilder.newTrigger()
+                    .withIdentity(new TriggerKey(timer.getId(),"groupTrigger"))
+                    .withSchedule(CronScheduleBuilder.cronSchedule(time).withMisfireHandlingInstructionDoNothing())
+                    .startNow()
+                    .build();
+            //添加任务
+            QuartzManage.getQuartzManage().addTrigger(jd, ct); 
+         } catch (Exception e) {
             e.printStackTrace();
             operLogService.addLog("桌面云备份和恢复", content, "1", "2", request);
             return new MethodResult(MethodResult.FAIL, "更新失败");
@@ -262,39 +248,26 @@ public class BackUpController {
             return new MethodResult(MethodResult.FAIL,"模式错误");
         }
         try {
-            JobDetail jdCheck = QuartzManage.getQuartzManage().getScheduler().getJobDetail(new JobKey(timer.getId(),"groupJob"));           
-                //没有任务则添加任务
-                if(jdCheck==null){
-                    //定义任务
-                    JobDetail jd = JobBuilder.newJob(BackUpJob.class)
-                            .withIdentity(new JobKey(timer.getId(),"groupJob"))  
-                            .usingJobData("mode", timer.getMode())
-                            .usingJobData("disk", timer.getDisk())
-                            .usingJobData("timerKey", timer.getKey())
-                            .requestRecovery(true)
-                            .build();
-                    //定义触发器
-                    CronTrigger ct = (CronTrigger)TriggerBuilder.newTrigger()
-                            .withIdentity(new TriggerKey(timer.getId(),"groupTrigger"))
-                            .withSchedule(CronScheduleBuilder.cronSchedule(time).withMisfireHandlingInstructionDoNothing())
-                            .startNow()
-                            .build();
-                    //添加任务
-                    QuartzManage.getQuartzManage().addTrigger(jd, ct);
-                }else{//存在任务则修改任务 
-                        //定义触发器
-                        CronTrigger ct = (CronTrigger)TriggerBuilder.newTrigger()
-                                .withIdentity(new TriggerKey(timer.getId(),"groupTrigger"))
-                                .usingJobData("mode", timer.getMode())
-                                .usingJobData("disk", timer.getDisk())
-                                .usingJobData("timerKey", timer.getKey())
-                                .withSchedule(CronScheduleBuilder.cronSchedule(time).withMisfireHandlingInstructionDoNothing())
-                                .startNow()
-                                .build();
-                        //修改任务出发的时间规则
-                        QuartzManage.getQuartzManage().updateTrigger(new TriggerKey(timer.getId(),"groupTrigger"), ct);
-                    }   
-         } catch (SchedulerException e) {
+             QuartzManage.getQuartzManage().deleteTrigger(new JobKey(timer.getId(),"groupJob"), new TriggerKey(timer.getId(),"groupTrigger"));
+
+               
+            JobDetail jd = JobBuilder.newJob(BackUpJob.class)
+                    .withIdentity(new JobKey(timer.getId(),"groupJob"))  
+                    .usingJobData("mode", timer.getMode())
+                    .usingJobData("disk", timer.getDisk())
+                    .usingJobData("timerKey", timer.getKey())
+                    .requestRecovery(true)
+                    .build();
+            //定义触发器
+            CronTrigger ct = (CronTrigger)TriggerBuilder.newTrigger()
+                    .withIdentity(new TriggerKey(timer.getId(),"groupTrigger"))
+                    .withSchedule(CronScheduleBuilder.cronSchedule(time).withMisfireHandlingInstructionDoNothing())
+                    .startNow()
+                    .build();
+            //添加任务
+            QuartzManage.getQuartzManage().addTrigger(jd, ct);
+                  
+         } catch (Exception e) {
             e.printStackTrace();
             operLogService.addLog("主机备份和恢复", content, "1", "2", request);
             return new MethodResult(MethodResult.FAIL, "更新失败");
