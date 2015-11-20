@@ -567,6 +567,68 @@
 		limit #{limit}
 	</select>
 	
+	<select id="getCloudHostInTimerBackUpStart" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port, 
+			ch.type, 
+			ch.assign_time
+		from cloud_host ch 
+   		join host_timer_relationship ship on ch.id = ship.host_id
+		where  ch.running_status = 2 and ship.timer_key = #{timerKey} 
+	</select>
+	
+	<select id="getCloudHostInTimerBackUpStop" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port, 
+			ch.type, 
+			ch.assign_time
+		from cloud_host ch 
+   		join host_timer_relationship ship on ch.id = ship.host_id
+		where ch.running_status = 1 and ship.timer_key = #{timerKey} 
+		<![CDATA[
+		and (ship.last_back_up_time is null or ship.last_back_up_time < #{now})
+		]]>
+		limit #{limit}
+	</select>
+	
 	
 	
 	<update id="updateRunningStatusByRealHostId">

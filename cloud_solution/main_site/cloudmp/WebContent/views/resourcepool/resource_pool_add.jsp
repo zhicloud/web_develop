@@ -110,33 +110,39 @@
                           <input type="text" class="form-control" id="name" name="name" parsley-trigger="change" parsley-type="nochinese" parsley-required="true" parsley-checkdesktoprecomputersourcepoolname="true" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
                         </div>
                       </div>
-                      
-                      <div class="form-group">
-                        <label for="optionsRadios1" class="col-sm-2 control-label">网络类型 *</label>
-                        <div class="col-sm-10">
-                          <div class="radio radio-transparent col-md-2">
-                            <input type="radio" name="networkType" id="optionsRadios1" value="0" checked>
-                            <label for="optionsRadios1">私有云</label>
-                          </div>
-                          <div class="radio radio-transparent col-md-3">
-                            <input type="radio" name="networkType" id="optionsRadios2" value="1">
-                            <label for="optionsRadios2">独享公网地址(IP)</label>
-                          </div>
-                          <div class="radio radio-transparent col-md-3">
-                            <input type="radio" name="networkType" id="optionsRadios3" value="2">
-                            <label for="optionsRadios3">共享公网地址(端口)</label>
-                          </div>
-                          <div class="radio radio-transparent col-md-2">
-                             <input type="radio" name="networkType" id="optionsRadios4" value="3">
-                             <label for="optionsRadios4">直连</label>
-                          </div>
+
+                        <div class="form-group">
+                            <label for="optionsRadios1" class="col-sm-2 control-label">网络类型 *</label>
+                            <div class="col-sm-10">
+                                <div class="radio radio-transparent col-sm-3">
+                                    <input type="radio" name="networkType" id="optionsRadios1" value="0" checked>
+                                    <label for="optionsRadios1">私有云</label>
+                                </div>
+                                <div class="radio radio-transparent col-sm-3">
+                                    <input type="radio" name="networkType" id="optionsRadios2" value="1">
+                                    <label for="optionsRadios2">独享公网地址(IP)</label>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                      <input id="no_pool" type="hidden" name="networkId" value="">
+                        <div class="form-group">
+                            <label for="optionsRadios3" class="col-sm-2 control-label"></label>
+                            <div class="col-sm-10">
+
+                                <div class="radio radio-transparent col-sm-3">
+                                    <input type="radio" name="networkType" id="optionsRadios3" value="2">
+                                    <label for="optionsRadios3">共享公网地址(端口)</label>
+                                </div>
+                                <div class="radio radio-transparent col-sm-3">
+                                    <input type="radio" name="networkType" id="optionsRadios4" value="3">
+                                    <label for="optionsRadios4">直连</label>
+                                </div>
+                            </div>
+                        </div>
+                      <input id="no_pool" type="hidden" name="network" value="">
                       <div class="form-group" id="ip_pool">
                         <label for="input07" class="col-sm-2 control-label">IP资源池*</label>
                         <div class="col-sm-4" id="selectbox_ip">
-                          <select class="chosen-select chosen-transparent form-control" name="networkId" id="input07" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox_ip" >
+                          <select class="chosen-select chosen-transparent form-control" name="network" id="input07" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox_ip" >
                             <option value="">请选择资源池</option> 
                             <c:forEach items="${ipList }" var="ip">
                              		<option value="${ip.uuid }">${ip.name }</option>
@@ -147,7 +153,7 @@
                       <div class="form-group" id="port_pool">
                         <label for="input007" class="col-sm-2 control-label">端口资源池*</label>
                         <div class="col-sm-4" id="selectbox">
-                          <select class="chosen-select chosen-transparent form-control" name="networkId" id="input007" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox" >
+                          <select class="chosen-select chosen-transparent form-control" name="network" id="input007" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox" >
                             <option value="">请选择资源池</option> 
                             <c:forEach items="${portList }" var="port">
                              		<option value="${port.uuid }">${port.name }</option>
@@ -163,7 +169,7 @@
 					        	<input type="radio" name="diskType" id="input01" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');" checked>
 					       		<label for="input01">本地</label>
 					     	</div>
-					     	<div class="radio radio-transparent col-md-2">
+					     	<div class="radio radio-transparent col-md-3">
 					       		<input type="radio" name="diskType" id="optionsRadios11" value="1" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');">
 					       		<label for="optionsRadios11">云存储</label>
 					     	</div>                          

@@ -124,7 +124,7 @@
                                     <div class="form-group">
                                         <label for="code" class="col-sm-2 control-label">代码*</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="code" name="code" value="" parsley-trigger="change" parsley-required="true" parsley-minlength="2" parsley-maxlength="50" parsley-checkemailtemplatecode="true">
+                                            <input type="text" class="form-control" id="code" name="code" value="" parsley-trigger="change" parsley-required="true" parsley-type="nochinese" parsley-minlength="2" parsley-maxlength="50" parsley-checkemailtemplatecode="true">
                                         </div>
                                     </div>
 

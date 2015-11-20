@@ -86,4 +86,12 @@ public interface BoxRealInfoMapper {
     * @throws
      */
     public List<BoxRealInfoVO> queryOnlineInfo();
+
+     /**
+      * @function 批量更新盒子信息
+      * @author 张翔
+      * @param boxRealInfoVOs
+      * @return
+      */
+     public int updateBoxInfoBatch(List<BoxRealInfoVO> boxRealInfoVOs);
 }

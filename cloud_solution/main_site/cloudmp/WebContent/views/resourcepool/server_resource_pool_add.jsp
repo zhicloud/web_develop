@@ -137,11 +137,11 @@
                           </div>
                         </div>
                       </div>
-                      <input id="no_pool" type="hidden" name="networkId" value="">
+                      <input id="no_pool" type="hidden" name="network" value="">
                       <div class="form-group" id="ip_pool">
                         <label for="input07" class="col-sm-2 control-label">IP资源池*</label>
                         <div class="col-sm-4" id="selectbox_ip">
-                          <select class="chosen-select chosen-transparent form-control" name="networkId" id="input07" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox_ip" >
+                          <select class="chosen-select chosen-transparent form-control" name="network" id="input07" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox_ip" >
                             <option value="">请选择资源池</option> 
                             <c:forEach items="${ipList }" var="ip">
                              		<option value="${ip.uuid }">${ip.name }</option>
@@ -152,7 +152,7 @@
                       <div class="form-group" id="port_pool">
                         <label for="input007" class="col-sm-2 control-label">端口资源池*</label>
                         <div class="col-sm-4" id="selectbox">
-                          <select class="chosen-select chosen-transparent form-control" name="networkId" id="input007" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox" >
+                          <select class="chosen-select chosen-transparent form-control" name="network" id="input007" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox" >
                             <option value="">请选择资源池</option> 
                             <c:forEach items="${portList }" var="port">
                              		<option value="${port.uuid }">${port.name }</option>
@@ -168,7 +168,7 @@
                             <input type="radio" name="diskType" id="optionsRadios10" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');" checked>
                             <label for="optionsRadios10">本地</label>
                           </div>
-                          <div class="radio radio-transparent col-md-2">
+                          <div class="radio radio-transparent col-md-3">
                             <input type="radio" name="diskType" id="optionsRadios11" value="1" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');">
                             <label for="optionsRadios11">云存储</label>
                           </div>                          
