@@ -157,12 +157,12 @@
                                   </td>
                                   <td class="cut">${hostList.getUsageFormat(1)}</td>
                                   <td class="cut">
-                                 	 ${hostList.memoryUsage}G/${hostList.getMemoryText(0)}
+                                 	 ${hostList.getRemainMemoryText(1)}/${hostList.getMemoryText(0)}
                                   </td>
 								  <td class="cut">
 								  ${hostList.getUsageFormat(2) }
 								  </td>
-								  <td class="cut">${hostList.diskUsage}G/${hostList.getSysDiskText(0) }</td> 
+								  <td class="cut">${hostList.getRemainDiskText(1)}/${hostList.getSysDiskText(0) }</td> 
 								  <td class="cut">${hostList.getUsageFormat(3) }</td> 
 								  <td class="cut">${hostList.getInnerIp() }/${hostList.getOuterIp() }</td> 
 								  <td class="cut">${hostList.getStatusTextFromComputePool()}</td> 
