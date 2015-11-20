@@ -230,7 +230,7 @@
 			                              <c:if test="${serverList.tenantId == null }">
 			                              <li><a href="javascript:void(0);" onclick="setTenantBtn('${serverList.id }');" >绑定租户</a></li>
 			                              </c:if>
-			                              <li><a href="javascript:void(0);" onclick="tomigrate('${serverList.realHostId }');" title="迁移">迁移</a></li>
+<%-- 			                              <li><a href="javascript:void(0);" onclick="tomigrate('${serverList.realHostId }');" title="迁移">迁移</a></li> --%>
 			                              
 		                                </c:if>
 		                                <c:if test="${serverList.runningStatus==2}">
