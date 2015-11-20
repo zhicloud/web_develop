@@ -137,8 +137,11 @@
                                       <c:when test="${cp.networkType == 2 }">
                                           共享公网地址(端口)
                                       </c:when>
-                                      <c:otherwise>
+                                      <c:when test="${cp.networkType == 3 }">
                                           直连
+                                      </c:when>
+                                      <c:otherwise>
+                                          识别中
                                       </c:otherwise>
                                   </c:choose>
                               </p>
@@ -153,8 +156,11 @@
                                       <c:when test="${cp.diskType == 2 }">
                                           nas磁盘
                                       </c:when>
-                                      <c:otherwise>
+                                      <c:when test="${cp.diskType == 3 }">
                                           ip san
+                                      </c:when>
+                                      <c:otherwise>
+                                          识别中
                                       </c:otherwise>
                                   </c:choose>
                               </p>
@@ -163,8 +169,11 @@
                                       <%--<c:when test="${cp.mode0 == 0 }">--%>
                                           <%--未开启--%>
                                       <%--</c:when>--%>
-                                      <%--<c:otherwise>--%>
+                                      <%--<c:when test="${cp.mode0 == 1 }">--%>
                                           <%--开启--%>
+                                      <%--</c:when>--%>
+                                      <%--<c:otherwise>--%>
+                                          <%--识别中--%>
                                       <%--</c:otherwise>--%>
                                   <%--</c:choose>--%>
                               <%--</p>--%>
@@ -173,8 +182,11 @@
                                       <c:when test="${cp.mode1 == 0 }">
                                           未开启
                                       </c:when>
-                                      <c:otherwise>
+                                      <c:when test="${cp.mode1 == 1 }">
                                           开启
+                                      </c:when>
+                                      <c:otherwise>
+                                          识别中
                                       </c:otherwise>
                                   </c:choose>
                               </p>
@@ -183,8 +195,11 @@
                                       <c:when test="${cp.mode2 == 0 }">
                                           未开启
                                       </c:when>
-                                      <c:otherwise>
+                                      <c:when test="${cp.mode2 == 1 }">
                                           开启
+                                      </c:when>
+                                      <c:otherwise>
+                                          识别中
                                       </c:otherwise>
                                   </c:choose>
                               </p>
@@ -193,8 +208,11 @@
                                       <%--<c:when test="${cp.mode3 == 0 }">--%>
                                           <%--未开启--%>
                                       <%--</c:when>--%>
-                                      <%--<c:otherwise>--%>
+                                      <%--<c:when test="${cp.mode3 == 1 }">--%>
                                           <%--开启--%>
+                                      <%--</c:when>--%>
+                                      <%--<c:otherwise>--%>
+                                          <%--识别中--%>
                                       <%--</c:otherwise>--%>
                                   <%--</c:choose>--%>
                               <%--</p>--%>
