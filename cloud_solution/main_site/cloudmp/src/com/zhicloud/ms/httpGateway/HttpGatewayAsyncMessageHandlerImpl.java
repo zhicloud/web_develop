@@ -1890,6 +1890,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         logger.debug("recieve query_service_detail data.");
         // 处理回调的数据
         StaticReportHandle.updateDetailDataToMemory(messageData, 1);
+        channel.release();
     }
 
     /**
@@ -1902,6 +1903,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         logger.debug("recieve query_service_summary data.");
         // 处理回调的数据
         StaticReportHandle.updateSummaryDataToMemory(messageData, 1);
+        channel.release();
     }
 
     /**
@@ -1914,6 +1916,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         logger.debug("recieve query_operate_detail data.");
         // 处理回调的数据
         StaticReportHandle.updateDetailDataToMemory(messageData, 2);
+        channel.release();
     }
 
     /**
@@ -1926,5 +1929,6 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         logger.debug("recieve query_operate_summary data.");
         // 处理回调的数据
         StaticReportHandle.updateSummaryDataToMemory(messageData, 2);
+        channel.release();
     }
 }
