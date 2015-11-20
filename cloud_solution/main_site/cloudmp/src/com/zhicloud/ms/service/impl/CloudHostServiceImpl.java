@@ -2737,6 +2737,27 @@ public class CloudHostServiceImpl implements ICloudHostService {
         }
         return pool_arrays;
     }
+
+	@Override
+	public MethodResult getHostByDisplayName(String displayName) {
+		CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
+		List<CloudHostVO> hostList = cloudHostMapper.getHostByDisplayName(displayName);
+		if(hostList!=null && hostList.size()>0){
+			return new MethodResult(MethodResult.FAIL,"显示名已存在");
+		}
+		return new MethodResult(MethodResult.SUCCESS,"显示名可用");
+	}
+
+	@Override
+	@Transactional(readOnly=false)
+	public MethodResult updateDisplayNameById(Map<String, Object> condition) {
+		CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
+		int n = cloudHostMapper.updateDisplayNameById(condition);
+		if(n > 0){
+			return new MethodResult(MethodResult.SUCCESS, "显示名修改成功");
+		}
+		return new MethodResult(MethodResult.FAIL, "显示名修改失败");
+	}
 }
 
  

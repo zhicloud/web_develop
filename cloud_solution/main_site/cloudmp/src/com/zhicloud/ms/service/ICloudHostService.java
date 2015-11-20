@@ -451,5 +451,19 @@ public interface ICloudHostService {
     public MethodResult startCloudHostFromIso(String cloudHostId,String imageId);
     
     public void updateCloudHostRunningStatus();
+    
+    /**
+     * 通过显示名查询主机是否存在
+     * @param displayName
+     * @return
+     */
+    public MethodResult getHostByDisplayName(String displayName);
+    
+    /**
+     * 根据ID修改主机显示名
+     * @param condition
+     * @return
+     */
+    public MethodResult updateDisplayNameById(Map<String,Object> condition);
 }
 
