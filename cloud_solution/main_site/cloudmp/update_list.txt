@@ -1,4 +1,25 @@
 ******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151120-2)
+修改时间：2015/11/20
+修改人：周亚锋
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/assets/js/vendor/parsley/parsley.min.js
+cloud_solution/main_site/cloudmp/WebContent/views/host_manage.jsp
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/CloudHostController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/CloudHostMapper.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/CloudHostMapper.xml
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/ICloudHostService.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostServiceImpl.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/transform/constant/TransFormPrivilegeConstant.java
+
+新增文件：
+无
+主要变更：
+1.仓库主机添加修改显示名的功能
+
+兼容性说明：
+	无
+******************************************************
 版本号：版本号：【云平台web】verion(2.1)(build 20151120-1)
 修改时间：2015/11/20
 修改人：张本缘
