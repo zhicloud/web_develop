@@ -110,7 +110,7 @@
             <td>创建时间：<fmt:formatDate value="${server.curCreateDate }" pattern="yyyy-MM-dd HH:mm:ss"/>
             </td>
             <td></td>
-            <td></td>
+            <td>真实主机名：${server.hostName }</td>
           </tr>
         </table>
       </div>

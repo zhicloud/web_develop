@@ -258,7 +258,9 @@ public class ServerResourcePoolController {
                             computer.setCpuCore(cpuCount);
                             computer.setCpuUsage(cpuUsage.doubleValue());
                             computer.setDiskUsage(diskUsage.doubleValue());
+                            computer.setRemainMemory(mcount[1].subtract(mcount[0]));
                             computer.setSysDisk(dcount[1]);
+                            computer.setRemainDisk(dcount[1].subtract(dcount[0]));
                             computer.setMemory(mcount[1]);
                             computer.setMemoryUsage(memoryUsage.doubleValue());
                             computer.setHostName(hostName);

@@ -66,4 +66,31 @@ public interface ICloudHostWarehouseService {
 	* @throws
 	 */
 	public MethodResult updateCount(String warehouseId);
+	
+    /**
+     * @Description:增加资源池最大并发创建数
+     * @param condition 参数
+     * @return int
+     */
+    public int addConcurrent(Map<String, Object> condition);
+
+    /**
+     * @Description:修改资源池最大并发创建数
+     * @param condition 参数
+     * @return int
+     */
+    public int updateConcurrent(Map<String, Object> condition);
+    
+    /**
+     * @Description:取得所有的资源池最大并发创建数集合
+     * @return List<CloudHostWarehouse>
+     */
+    public List<CloudHostWarehouse> getAllConcurrent();
+    
+    /**
+     * @Description:保存资源池最大并发创建数设置
+     * @param condition 参数
+     * @return MethodResult
+     */
+    public int saveConcurrent(Map<String, Object> condition);
 }

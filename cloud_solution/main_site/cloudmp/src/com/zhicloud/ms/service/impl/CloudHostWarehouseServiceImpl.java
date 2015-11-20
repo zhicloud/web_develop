@@ -566,5 +566,74 @@ import com.zhicloud.ms.vo.TerminalUserVO;
         return new MethodResult(MethodResult.SUCCESS,"成功");
 
     }
+    
+    /**
+     * @Description:增加资源池最大并发创建数
+     * @param condition 参数
+     * @return int
+     */
+    public int addConcurrent(Map<String, Object> condition) {
+        CloudHostWarehouseMapper chwMapper = this.sqlSession.getMapper(CloudHostWarehouseMapper.class);
+        return chwMapper.addConcurrent(condition);
+    }
+
+    /**
+     * @Description:修改资源池最大并发创建数
+     * @param condition 参数
+     * @return int
+     */
+    public int updateConcurrent(Map<String, Object> condition) {
+        CloudHostWarehouseMapper chwMapper = this.sqlSession.getMapper(CloudHostWarehouseMapper.class);
+        return chwMapper.updateConcurrent(condition);
+    }
+    
+    /**
+     * @Description:获取资源池最大并发创建数集合
+     * @param condition 参数
+     * @return List<CloudHostWarehouse>
+     */
+    public List<CloudHostWarehouse> getAllConcurrent() {
+        CloudHostWarehouseMapper chwMapper = this.sqlSession.getMapper(CloudHostWarehouseMapper.class);
+        return chwMapper.getAllConcurrent();
+    }
+
+    /**
+     * @Description:保存资源池最大并发创建数设置
+     * @param condition 参数
+     * @return MethodResult
+     */
+    @Transactional(readOnly=false)
+    public int saveConcurrent(Map<String, Object> condition) {
+        CloudHostWarehouseMapper chwMapper = this.sqlSession.getMapper(CloudHostWarehouseMapper.class);
+        // 先查询需要保存的资源池是否已经存在数据库表中
+        CloudHostWarehouse host = chwMapper.getConcurrent(condition.get("pool_id") + "");
+        if (host == null) {
+            synchronized (this) {
+                List<CloudHostWarehouse> lists = CloudHostServiceImpl.maxconcurrent_lists;
+                // 如果保存的时候还没有执行过创建主机,则不更新缓存
+                if (lists != null) {
+                    CloudHostWarehouse newhost = new CloudHostWarehouse();
+                    newhost.setPoolId(condition.get("pool_id") + "");
+                    newhost.setPool_name(condition.get("pool_name") + "");
+                    newhost.setMax_creating(Integer.parseInt(condition.get("max_creating") + ""));
+                    lists.add(newhost);
+                }
+            }
+            return addConcurrent(condition);
+        } else {
+            synchronized (this) {
+                List<CloudHostWarehouse> lists = CloudHostServiceImpl.maxconcurrent_lists;
+                // 如果保存的时候还没有执行过创建主机,则不更新缓存
+                if (lists != null) {
+                    for (CloudHostWarehouse cloud : lists) {
+                        if (cloud.getPoolId().equals(condition.get("pool_id"))) {
+                            cloud.setMax_creating(Integer.parseInt(condition.get("max_creating") + ""));
+                        }
+                    }
+                }
+            }
+            return updateConcurrent(condition);
+        }
+    }
 }
 

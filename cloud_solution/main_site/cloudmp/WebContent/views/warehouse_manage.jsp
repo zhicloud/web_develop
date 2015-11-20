@@ -34,6 +34,12 @@
       <script src="<%=request.getContextPath()%>/assets/js/respond.min.js"></script>
     <![endif]-->
   </head>
+  <script type="text/javascript">
+  //最大并发创建数设置页面跳转
+  function beforeConcurrent(){
+  	window.location.href = "<%=request.getContextPath()%>/warehouse/beforeconcurrent";
+  }
+  </script>
   <body class="bg-1">
 
  
@@ -101,6 +107,10 @@
                     <button type="button" class="btn btn-green file-excel-o" onclick="exportData('/export/warehousedata')">
                               <i class="fa fa-file-excel-o"></i>
                               <span>导出数据</span>
+                    </button>
+                    <button type="button" class="btn btn-blue add" onclick="beforeConcurrent()">
+                              <i class="fa fa-gear"></i>
+                              <span>设置最大并发创建数</span>
                     </button>
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
@@ -253,7 +263,7 @@
                             <h3 class="modal-title" id="modalConfirmLabel"><strong>库存信息</strong> </h3>
                           </div>
                           <div class="modal-body">
-                            <form class="form-horizontal" id="addAmountForm" role="form" action="<%=request.getContextPath() %>/warehouse/addAmount" method="post">
+                            <form class="form-horizontal" id="addAmountForm" role="form" action="<%=request.getContextPath() %>/warehouse/addAmount" method="post" onsubmit="return false">
 		                      <input type="hidden" id="warehouse_id" name="id" value="">
 		                      <div class="form-group">
 		                        <label for="input01" class="col-sm-2 control-label" style="width:150px;">服务器资源池 </label>
