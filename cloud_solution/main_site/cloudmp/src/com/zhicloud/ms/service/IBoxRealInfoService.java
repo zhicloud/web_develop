@@ -54,4 +54,12 @@ public interface IBoxRealInfoService {
      */
     public void CumulativeOnLineTime();
 
+    /**
+     * @author 张翔
+     * @Title: CumulativeOnLineTimeBatch
+     * @Description: 累算在线时长批处理
+     * @throws
+     */
+    public void CumulativeOnLineTimeBatch();
+
 }

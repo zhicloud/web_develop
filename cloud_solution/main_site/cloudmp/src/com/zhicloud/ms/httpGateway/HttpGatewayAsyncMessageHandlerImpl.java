@@ -119,6 +119,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		diskImage.setProgress(progress);
 		diskImage.setFinished(false);
 		diskImage.updateTime();
+		channel.release();
 	}
 
 	@HttpGatewayMessageHandler(messageType = "disk_image_create_result")
@@ -186,6 +187,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		isoImage.setFinished(false);
 		isoImage.updateTime();
 		isoImage.setStatus(2);
+		channel.release();
 	}
 
 	@HttpGatewayMessageHandler(messageType = "iso_image_upload_result")
@@ -317,7 +319,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 //				task, server, host, cpuCount, cpuUsage, memory, memoryUsage, diskVolume, diskUsage, diskIO, networkIO, speed, timestamp));
 		Map<String, String> response = new HashMap<String, String>();
 		response.put("status", "1");
-
+		channel.release();
 		return response;
 	}
 	
@@ -349,7 +351,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         hostReset.setReady(true);
         
         hostReset.updateTime();
-        
+        channel.release();
         
         logger.info(String.format("start to flush disk image. uuid[%s], disk[%d]", uuid, disk));
     }
@@ -384,7 +386,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         hostReset.setProgress(level);
         hostReset.setFinished(false);
         hostReset.updateTime();
-        
+        channel.release();
         logger.error(String.format("flush disk image at progress[%d]. uuid[%s], disk[%d]", level, uuid, disk));
     }
 	
@@ -452,7 +454,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		hostBackup.setSuccess(true);
 		hostBackup.updateTime();
 		hostBackup.setBackupStatus(9);
-		
+		channel.release();
 		
 		System.err.println(String.format("[%s]start to backup host. uuid[%s]", sessionId, uuid));
 	}
@@ -485,7 +487,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		hostBackup.setSuccess(true);
 		hostBackup.updateTime();
 		hostBackup.setBackupStatus(9);
-		
+		channel.release();
 		System.err.println(String.format("[%s]backup host at progress %d%%. uuid[%s]", sessionId, level, uuid));
 	}
 
@@ -562,7 +564,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		hostBackup.setSuccess(true);
 		hostBackup.updateTime();
 		hostBackup.setBackupStatus(10);
-		
+		channel.release();
 		System.err.println(String.format("[%s]start to resume host. uuid[%s]", sessionId, uuid));
 		
 	}
@@ -596,7 +598,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		hostBackup.setSuccess(true);
 		hostBackup.setBackupStatus(10);
 		hostBackup.updateTime();
-		
+		channel.release();
 		System.err.println(String.format("[%s]resume host at progress %d%%. uuid[%s]", sessionId, level, uuid));
 
 		
@@ -731,6 +733,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         synchronized (ruleList.get(0)) {
             ruleList.get(0).notifyAll();
         }
+        channel.release();
     }
 
     @HttpGatewayMessageHandler(messageType = "remove_rule")
@@ -775,6 +778,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         synchronized (ruleList.get(0)) {
             ruleList.get(0).notifyAll();
         }
+        channel.release();
     }
 
     @HttpGatewayMessageHandler(messageType = "query_rule")
@@ -849,6 +853,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         synchronized (ruleList.get(0)) {
             ruleList.get(0).notifyAll();
         }
+        channel.release();
     }
     
  // 创建vpc
@@ -900,6 +905,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
  		synchronized (network) {
  			network.notifyAll();
  		}
+ 		channel.release();
  	}
 
  	// 查询vpc
@@ -936,6 +942,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
  				pool.put(localNetwork);
  			}
  		}
+ 		channel.release();
  	}
 
  	// 修改vpc
@@ -975,6 +982,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
  		synchronized (network) {
  			network.notifyAll();
  		}
+ 		channel.release();
  	}
 
  	// 查询vpc详情
@@ -1031,6 +1039,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
  		synchronized (network) {
  			network.notifyAll();
  		}
+ 		channel.release();
  	}
 
  	// 启动vpc
@@ -1072,6 +1081,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
  		synchronized (network) {
  			network.notifyAll();
  		}
+ 		channel.release();
  	}
 
  	// 停止vpc
@@ -1113,6 +1123,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
  		synchronized (network) {
  			network.notifyAll();
  		}
+ 		channel.release();
  	}
 
  	// 删除vpc
@@ -1154,6 +1165,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
  		synchronized (network) {
  			network.notifyAll();
  		}
+ 		channel.release();
  	}
 
  	// 查询vpc关联云主机
@@ -1213,6 +1225,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
  		synchronized (network) {
  			network.notifyAll();
  		}
+ 		channel.release();
  	}
 
  	// vpc关联云主机
@@ -1257,6 +1270,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
  		synchronized (network) {
  			network.notifyAll();
  		}
+ 		channel.release();
  	}
 
  	// vpc移除云主机
@@ -1300,6 +1314,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
  		synchronized (network) {
  			network.notifyAll();
  		}
+ 		channel.release();
  	}
 
  	// vpc申请公网ip
@@ -1344,6 +1359,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
  		synchronized (network) {
  			network.notifyAll();
  		}
+ 		channel.release();
  	}
 
  	// vpc移除公网ip
@@ -1389,6 +1405,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
  		synchronized (network) {
  			network.notifyAll();
  		}
+ 		channel.release();
  	}
 
  	// vpc绑定端口
@@ -1452,6 +1469,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
  		synchronized (network) {
  			network.notifyAll();
  		}
+ 		channel.release();
  	}
 
  	// vpc解除绑定端口
@@ -1515,6 +1533,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
  		synchronized (network) {
  			network.notifyAll();
  		}
+ 		channel.release();
  	}
  	  
     /**
@@ -1540,6 +1559,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        channel.release();
     }
 
 
@@ -1554,7 +1574,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         } else {
             System.err.println(String.format("[%s]create compute fail, message '%s'", sessionId, messageData));
 
-        }
+        } 
 
     }
 
@@ -1636,6 +1656,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         synchronized (computeInfoExt) {
             computeInfoExt.notifyAll();
         }
+        channel.release();
     }
 
 
@@ -1657,6 +1678,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         CloudHostData newCloudHostData = myCloudHostData.clone();
         newCloudHostData.setLastOperStatus(status);
         CloudHostPoolManager.getCloudHostPool().put(newCloudHostData);
+        channel.release();
     }
     
 	@HttpGatewayMessageHandler(messageType = "query_storage_device")
@@ -1890,6 +1912,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         logger.debug("recieve query_service_detail data.");
         // 处理回调的数据
         StaticReportHandle.updateDetailDataToMemory(messageData, 1);
+        channel.release();
     }
 
     /**
@@ -1902,6 +1925,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         logger.debug("recieve query_service_summary data.");
         // 处理回调的数据
         StaticReportHandle.updateSummaryDataToMemory(messageData, 1);
+        channel.release();
     }
 
     /**
@@ -1914,6 +1938,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         logger.debug("recieve query_operate_detail data.");
         // 处理回调的数据
         StaticReportHandle.updateDetailDataToMemory(messageData, 2);
+        channel.release();
     }
 
     /**
@@ -1926,5 +1951,6 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         logger.debug("recieve query_operate_summary data.");
         // 处理回调的数据
         StaticReportHandle.updateSummaryDataToMemory(messageData, 2);
+        channel.release();
     }
 }

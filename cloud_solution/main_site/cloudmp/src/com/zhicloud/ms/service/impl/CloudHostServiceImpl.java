@@ -1245,24 +1245,28 @@ public class CloudHostServiceImpl implements ICloudHostService {
             if (pools != null && pools.size() > 0) {
                 for (int i = 0; i < pools.size(); i++) {
                     JSONObject obj = pools.getJSONObject(i);
-                    String pool_id = null;
-                    // 设置的最大值
-                    Integer max_creating = obj.getInt("max_creating");
-                    if (max_creating == 0) {
-                        pool_id = obj.getString("pool_id");
-                    } else {
-                        // 正在创建的数量
-                        Integer exists_creating = cloudHostMapper.countPoolCreatedHost(obj.getString("pool_id"));
-                        if (exists_creating < max_creating) {
+                    // 资源池名称必须是以desktop_pool开始的才处理
+                    String pool_name = obj.getString("pool_name");
+                    if (pool_name != null && pool_name.startsWith("desktop_pool")) {
+                        String pool_id = null;
+                        // 设置的最大值
+                        Integer max_creating = obj.getInt("max_creating");
+                        if (max_creating == 0) {
                             pool_id = obj.getString("pool_id");
-                            logger.info("CloudHostServiceImpl.createOneCloudHost():资源池:【" + pool_id
-                                    + "】未达到最大并发创建数,可以创建主机");
+                        } else {
+                            // 正在创建的数量
+                            Integer exists_creating = cloudHostMapper.countPoolCreatedHost(obj.getString("pool_id"));
+                            if (exists_creating < max_creating) {
+                                pool_id = obj.getString("pool_id");
+                                logger.info("CloudHostServiceImpl.createOneCloudHost():资源池:【" + pool_id
+                                        + "】未达到最大并发创建数,可以创建主机");
+                            }
                         }
-                    }
 
-                    // 创建主机
-                    if (pool_id != null) {
-                        createHost(pool_id);
+                        // 创建主机
+                        if (pool_id != null) {
+                            createHost(pool_id);
+                        }
                     }
                 }
             }
