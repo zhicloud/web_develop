@@ -402,6 +402,19 @@ public interface CloudHostMapper {
      * @return int
      */
     public int countPoolCreatedHost(String pool_id);
+    
+    /**
+     * 更具主机名查询是否存在云主机
+     * @return
+     */
+    public List<CloudHostVO> getHostByDisplayName(String displayName);
+    
+    /**
+     * 根据ID修改显示名
+     * @param condition
+     * @return
+     */
+    public int updateDisplayNameById(Map<String,Object> condition);
 }
 
 
