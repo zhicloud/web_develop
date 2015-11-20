@@ -248,6 +248,7 @@
 		                            </c:if>
 		                            <c:if test="${hostList.status==2}">
 		                           		<li><a href="javascript:void(0);" onclick="toDetail('${hostList.id }');" title="详细"></a></li>
+		                           		<li><a href="javascript:void(0);" onclick="updateDisplayName('${hostList.id }','${hostList.displayName }');">修改显示名</a></li>
 		                            	<c:if test="${hostList.userId==null && hostList.realHostId!=null}">
 		                              		<li><a href="javascript:void(0);" onclick="assignOneUserBtn('${hostList.id }');">分配</a></li>
 		                            	</c:if>
@@ -309,6 +310,7 @@
                     <a href="#modalConfirm" id="con" role="button"   data-toggle="modal"> </a>
 					<a href="#modalForm" id="mform" role="button"   data-toggle="modal"> </a>
 					<a href="#modalhostallocate" id="tenant" role="button"   data-toggle="modal"> </a>
+					<a href="#changename" id="changenameBtn" role="button"   data-toggle="modal"> </a>
 					
                     
                     <div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">
@@ -421,6 +423,35 @@
                       </div><!-- /.modal-dialog -->
                     </div><!-- /.modal --> 
                     
+                    
+                    <!-- update displayname form -->
+                    <div class="modal fade" id="changename" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
+                      <div class="modal-dialog">
+                        <div class="modal-content" style="width:60%;margin-left:20%;">
+                          <div class="modal-header">
+                            <button onclick="setNullBtn();" type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <h3 class="modal-title" id="modalConfirmLabel"><strong>修改显示名</strong> </h3>
+                          </div>
+                          <div class="modal-body">
+                            <form class="form-horizontal" id="updateName" role="form" parsley-validate action="<%=request.getContextPath() %>/warehouse/cloudhost/updatename" method="post" onsubmit="return false">
+		                      <input type="hidden" id="host_id" name="id" value="">
+		                      
+		                      <div class="form-group">
+		                        <label for="input01" class="col-sm-2 control-label" style="width:150px;">显示名</label>
+		                        <div class="col-sm-4" style="width:160px;">
+		                          <input id="name_input" type="text" class="form-control" oldName="" value="" name="displayName" parsley-checkhostdisplayname="true" maxlength="40" parsley-required="true">
+		                        </div>
+		                      </div>
+                    </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button class="btn btn-green"  id="form_btn" onclick="saveUpdateName();">确定</button>
+                            <button onclick="setNullBtn();" class="btn btn-red" data-dismiss="modal" aria-hidden="true">取消</button>
+                            
+                          </div>
+                        </div><!-- /.modal-content -->
+                      </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal --> 
                   </div>
  
                 </section>
@@ -694,6 +725,36 @@
     //置空
     function setNullBtn(){
     	 $("#cmount_input").val("");
+    }
+    //修改显示名
+    function updateDisplayName(id,oldName){
+    	$("#host_id").val(id);
+    	$("#name_input").attr("oldName",oldName);
+    	$("#name_input").val(oldName);
+    	$("#changenameBtn").click();
+    	
+    }
+    //修改显示名
+    function saveUpdateName(){
+    	var options = {
+    			success:function result(data){
+    				if(data.status=="success"){
+    					window.location.reload();
+    				}else{
+    					//jQuery("#my_reset").click();
+    					jQuery("#tipscontent").html(data.message);
+    	   		        jQuery("#dia").click();
+    					return;
+    				}
+    			},
+    			dataType:'json',
+    			timeout:10000
+    	};
+    	var form = jQuery("#updateName");
+    	form.parsley('validate');
+    	if(form.parsley('isValid')){  		        				
+    		jQuery("#updateName").ajaxSubmit(options);
+    	}	
     }
     //分配给单个用户
     function assignOneUserBtn(id){
