@@ -30,13 +30,16 @@ import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.util.json.JSONLibUtil;
 import com.zhicloud.ms.vo.CloudHostVO;
 import com.zhicloud.ms.vo.SysDiskImageVO;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.util.*;
@@ -358,6 +361,7 @@ public class SysDiskImageServiceImpl implements ISysDiskImageService {
 					String description = JSONLibUtil.getString(diskImage, "description"); 
 					String[] identity  = JSONLibUtil.getStringArray(diskImage, "identity");
 					Integer fileType  = JSONLibUtil.getInteger(diskImage, "file_type");
+					BigInteger size   =JSONLibUtil.getBigInteger(diskImage, "size");
 					
 					// 
 					SysDiskImageVO diskImageVO = sysDiskImageMapper.getByRealImageId(uuid);
@@ -393,6 +397,7 @@ public class SysDiskImageServiceImpl implements ISysDiskImageService {
 							sysDiskImageData.put("type",        0);
 							sysDiskImageData.put("fileType",        fileType);
 							sysDiskImageData.put("imageType",        AppConstant.DISK_IMAGE_TYPE_COMMON);
+							sysDiskImageData.put("size",        size);
 							sysDiskImageData.put("createTime", DateUtil.dateToString(new Date(),"yyyyMMddHHmmssSSS"));
 							
 							sysDiskImageMapper.addSysDiskImage(sysDiskImageData);
@@ -421,6 +426,7 @@ public class SysDiskImageServiceImpl implements ISysDiskImageService {
 		String description = JSONLibUtil.getString(diskImage,      "description"); 
 		String[] identity  = JSONLibUtil.getStringArray(diskImage, "identity");
 		Integer fileType  = JSONLibUtil.getInteger(diskImage, "file_type");
+		BigInteger size    = JSONLibUtil.getBigInteger(diskImage, "size");
 		
 		//更新系统镜像表
 		Map<String, Object> sysDiskImageData = new LinkedHashMap<String, Object>();
@@ -430,6 +436,7 @@ public class SysDiskImageServiceImpl implements ISysDiskImageService {
 		sysDiskImageData.put("region",      region);
 		sysDiskImageData.put("name",        name);
 		sysDiskImageData.put("fileType",        fileType);
+		sysDiskImageData.put("size",        size);
 
 		SysDiskImageMapper sysDiskImageMapper = this.sqlSession.getMapper(SysDiskImageMapper.class);
 		sysDiskImageMapper.updateUnrelatedSysDiskImageByName(sysDiskImageData);

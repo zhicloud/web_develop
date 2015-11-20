@@ -389,6 +389,19 @@ public interface CloudHostMapper {
     * @throws
      */ 
     public int updateInnerIpByRealHostId(Map<String, Object> condition);
+    
+    /**
+     * @Description:根据资源池ID获取未创建的主机
+     * @return CloudHostVO
+     */
+    public CloudHostVO getOneUncreatedCloudHostWithPoolID(String pool_id);
+
+    /**
+     * @Description:查询该资源池正在创建的主机个数
+     * @param pool_id 资源池ID
+     * @return int
+     */
+    public int countPoolCreatedHost(String pool_id);
 }
 
 

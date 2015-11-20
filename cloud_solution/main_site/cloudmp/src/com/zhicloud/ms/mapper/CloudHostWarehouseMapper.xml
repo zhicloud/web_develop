@@ -14,6 +14,8 @@
 		<result column="minimun"                         property="minimun"/>
 		<result column="pool_id"                         property="poolId"/>
 		<result column="file_type"                       property="fileType"/>
+		<result column="pool_name"                       property="pool_name"/>
+		<result column="max_creating"                    property="max_creating"/>
 	</resultMap>
 	<select id="getAll" resultMap="CloudHostWarehouse">
 		select chw.id,
@@ -184,4 +186,24 @@
 		a.assigned_amount = (select count(*) from cloud_host b where b.warehouse_id= a.id and real_host_id is not null and user_id is not null)
         where a.id = #{id}
 	</update>
+	
+	<insert id="addConcurrent">
+		insert into pool_max_creating (pool_id,pool_name,max_creating) 
+			values (#{pool_id},#{pool_name},#{max_creating})
+	</insert>
+	
+	<update id="updateConcurrent">
+		update pool_max_creating a
+		set a.max_creating = #{max_creating}
+        where a.pool_id = #{pool_id}
+	</update>
+	
+	<select id="getAllConcurrent" resultMap="CloudHostWarehouse">
+		select pool_id,pool_name,max_creating from pool_max_creating 
+	</select>
+	
+	<select id="getConcurrent" resultMap="CloudHostWarehouse">
+		select pool_id,pool_name,max_creating from pool_max_creating 
+		where pool_id = #{pool_id}
+	</select>
 </mapper>

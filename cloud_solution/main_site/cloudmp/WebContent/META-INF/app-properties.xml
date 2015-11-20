@@ -203,4 +203,8 @@
 		description="成都主机开通最大端口数">
 		50
 	</property>
+	<property key="version" name="version" type="String" 
+		description="version">
+		【云桌面】20151116-1
+	</property>
 </properties>

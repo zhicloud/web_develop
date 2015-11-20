@@ -1,5 +1,6 @@
 package com.zhicloud.ms.vo; 
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -35,6 +36,8 @@ public class SysDiskImageVO implements JSONBean
     private String status_name;
     
     private Integer fileType;
+    
+    private BigInteger size;
 	
 	public String getId()
 	{
@@ -224,5 +227,13 @@ public class SysDiskImageVO implements JSONBean
     public void setFileType(Integer fileType) {
         this.fileType = fileType;
     }
+    public BigInteger getSize() {
+        return size;
+    }
+    public void setSize(BigInteger size) {
+        this.size = size;
+    }
+    
+    
     
 }
