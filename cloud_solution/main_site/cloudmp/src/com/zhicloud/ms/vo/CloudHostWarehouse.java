@@ -27,6 +27,9 @@ public class CloudHostWarehouse {
 	
 	private Integer fileType;
 	
+    private String pool_name;// 资源池名称
+    private Integer max_creating;// 最大创建数
+	
 	public String getId() {
 		return id;
 	}
@@ -140,6 +143,18 @@ public class CloudHostWarehouse {
     }
     public void setFileType(Integer fileType) {
         this.fileType = fileType;
+    }
+    public String getPool_name() {
+        return pool_name;
+    }
+    public void setPool_name(String pool_name) {
+        this.pool_name = pool_name;
+    }
+    public Integer getMax_creating() {
+        return max_creating;
+    }
+    public void setMax_creating(Integer max_creating) {
+        this.max_creating = max_creating;
     }
     
 	

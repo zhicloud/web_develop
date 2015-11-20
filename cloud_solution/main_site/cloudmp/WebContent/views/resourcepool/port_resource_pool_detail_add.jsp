@@ -78,7 +78,7 @@
                       <div class="form-group">  
                         <label for="input01" class="col-sm-2 control-label">IP数量*</label>
                          <div class="col-sm-4">
-                             <input type="text" class="form-control" id="range" name="range"  parsley-trigger="change" parsley-required="true" parsley-checkdesktoprecomputersourcepoolname="true" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1"/>
+                             <input type="text" class="form-control" id="range" name="range"  parsley-trigger="change" parsley-required="true" parsley-type="integer" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1"/>
                         </div>
                       </div>
                       
@@ -173,7 +173,11 @@
 	        					dataType:'json',
 	        					timeout:3*60*1000
  		        			};
-			        		jQuery("#basicvalidations").ajaxSubmit(options); 
+ 		        			var form = jQuery("#basicvalidations");
+ 		        			form.parsley('validate');
+ 		        			if(form.parsley('isValid')){  		        				
+			        			jQuery("#basicvalidations").ajaxSubmit(options); 
+ 		        			}
 			        	} 
 		        	}
 		     }); 

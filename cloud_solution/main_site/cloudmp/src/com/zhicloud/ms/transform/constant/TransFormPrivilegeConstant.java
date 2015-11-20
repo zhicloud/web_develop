@@ -407,6 +407,7 @@ public class TransFormPrivilegeConstant {
     public static final String iso_image_query = "iso_image_query";// 镜像查询
     public static final String iso_image_delete = "iso_image_delete";// 镜像删除
 
+    public static final String desktop_warehouse_set_maxconcurrent = "desktop_warehouse_set_maxconcurrent";// 主机仓库设置最大并发数
 }
  
  
