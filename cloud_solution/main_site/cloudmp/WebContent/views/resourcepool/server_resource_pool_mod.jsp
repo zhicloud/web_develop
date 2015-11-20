@@ -107,37 +107,6 @@
                           <input type="text" class="form-control" id="name" name="name" value="${computeInfoExt.name}" oldname="${computeInfoExt.name}"  parsley-trigger="change" parsley-required="true" parsley-checkdesktoprecomputersourcepoolname="true" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
                         </div>
                       </div>
-                      
-                      <%--<div class="form-group">--%>
-                        <%--<label for="optionsRadios1" class="col-sm-2 control-label">网络类型 *</label>--%>
-                        <%--<div class="col-sm-16">--%>
-                          <%--<div class="radio radio-transparent col-md-3">--%>
-                              <%--<input type="radio" name="networkType" id="optionsRadios0" value="0" onclick="networkCheck('optionsRadios0')">--%>
-                            <%--<label for="optionsRadios0">私有云</label>--%>
-                          <%--</div>--%>
-                          <%--<div class="radio radio-transparent col-md-3">--%>
-                              <%--<input type="radio" name="networkType" id="optionsRadios1" value="1" onclick="networkCheck('optionsRadios1')">--%>
-                              <%--<label for="optionsRadios1">独享公网地址(IP)</label>--%>
-                          <%--</div>--%>
-                        <%--</div>--%>
-                      <%--</div>--%>
-
-                        <%--<div class="form-group">--%>
-                            <%--<label for="optionsRadios3" class="col-sm-2 control-label"></label>--%>
-                            <%--<div class="col-sm-10">--%>
-
-                          <%--<div class="radio radio-transparent col-md-3">--%>
-                              <%--<input type="radio" name="networkType" id="optionsRadios2" value="2" onclick="networkCheck('optionsRadios2')">--%>
-                              <%--<label for="optionsRadios2">共享公网地址(端口)</label>--%>
-                          <%--</div>--%>
-                            <%--<div class="radio radio-transparent col-md-3">--%>
-                                <%--<input type="radio" name="networkType" id="optionsRadios3" value="3" onclick="networkCheck('optionsRadios0')">--%>
-                                <%--<label for="optionsRadios3">直连</label>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                      <%--</div>--%>
-
-
                         <div class="form-group">
                             <label for="optionsRadios1" class="col-sm-2 control-label">网络类型 *</label>
                             <div class="col-sm-10">
