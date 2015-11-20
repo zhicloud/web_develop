@@ -252,7 +252,7 @@
                             <h3 class="modal-title" id="modalConfirmLabel"><strong>库存信息</strong> </h3>
                           </div>
                           <div class="modal-body">
-                            <form class="form-horizontal" id="addAmountForm" role="form" action="<%=request.getContextPath() %>/warehouse/addAmount" method="post">
+                            <form class="form-horizontal" id="addAmountForm" role="form" action="<%=request.getContextPath() %>/warehouse/addAmount" method="post" onsubmit="return false">
 		                      <input type="hidden" id="warehouse_id" name="id" value="">
 		                      <div class="form-group">
 		                        <label for="input01" class="col-sm-2 control-label" style="width:150px;">服务器资源池 </label>
@@ -274,7 +274,7 @@
                     </form>
                           </div>
                           <div class="modal-footer">
-                            <button class="btn btn-green"  id="form_btn" onclick="saveAddAmount();">确定</button>
+                            <input type="button" class="btn btn-green"  id="form_btn" onclick="saveAddAmount();" value="确认">
                             <button onclick="setNullBtn();" class="btn btn-red" data-dismiss="modal" aria-hidden="true">取消</button>
                             
                           </div>

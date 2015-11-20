@@ -1784,7 +1784,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             Map<String,Object> condition = new LinkedHashMap<String, Object>();
             condition.put("id",server.getId());
             condition.put("cpuCore", realCpu);
-            condition.put("memory", CapacityUtil.fromCapacityLabel(cloud.getMemory()+"GB"));
+            condition.put("memory", CapacityUtil.fromCapacityLabel(server.getMemory()+"GB"));
 //          condition.put("bandwidth", FlowUtil.fromFlowLabel(bandwidth+"Mbps"));
             int n = chMapper.updateById(condition);
             if(n > 0){
