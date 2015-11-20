@@ -134,13 +134,13 @@ function backhome(){
                       <div class="form-group">
                         <label for="password" class="col-sm-2 control-label">密码*</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="password" parsley-required="true"  parsley-maxlength="50">
+                          <input type="text" class="form-control" id="password" parsley-required="true"  parsley-maxlength="50" parsley-type="nochinese">
                         </div>
                       </div>  
                       <div class="form-group">
                         <label for="secretkey" class="col-sm-2 control-label">秘钥*</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="secretkey" parsley-required="true"  parsley-maxlength="50">
+                          <input type="text" class="form-control" id="secretkey" parsley-required="true"  parsley-maxlength="50" parsley-type="nochinese">
                         </div>
                       </div>                                                                                         
                       </c:if>
@@ -167,13 +167,13 @@ function backhome(){
                       <div class="form-group">
                         <label for="password" class="col-sm-2 control-label">密码*</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="password" parsley-required="true"  parsley-maxlength="50" value="${sharedmeomory.password }">
+                          <input type="text" class="form-control" id="password" parsley-required="true"  parsley-maxlength="50" value="${sharedmeomory.password }" parsley-type="nochinese">
                         </div>
                       </div>  
                       <div class="form-group">
                         <label for="secretkey" class="col-sm-2 control-label">秘钥*</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="secretkey" parsley-required="true"  parsley-maxlength="50" value="${sharedmeomory.secretkey }">
+                          <input type="text" class="form-control" id="secretkey" parsley-required="true"  parsley-maxlength="50" value="${sharedmeomory.secretkey }" parsley-type="nochinese">
                         </div>
                       </div>
                       </c:if>                      
