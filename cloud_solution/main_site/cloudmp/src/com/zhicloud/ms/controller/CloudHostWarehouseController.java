@@ -557,19 +557,22 @@ public class CloudHostWarehouseController {
 
             while (its.hasNext()) {
                 ComputeInfoExt ext = poolMap.get(its.next());
-                JSONObject obj = new JSONObject();
-                obj.put("uuid", ext.getUuid());
-                obj.put("name", ext.getName());
-                // 循环比对
-                for (CloudHostWarehouse cloud : lists) {
-                    if (ext.getUuid().equals(cloud.getPoolId())) {
-                        obj.put("max_creating", cloud.getMax_creating());
-                        break;
-                    } else {
-                        obj.put("max_creating", "");
+                // 只显示以desktop_pool开始的资源池信息
+                if (ext.getName() != null && ext.getName().startsWith("desktop_pool")) {
+                    JSONObject obj = new JSONObject();
+                    obj.put("uuid", ext.getUuid());
+                    obj.put("name", ext.getName());
+                    // 循环比对
+                    for (CloudHostWarehouse cloud : lists) {
+                        if (ext.getUuid().equals(cloud.getPoolId())) {
+                            obj.put("max_creating", cloud.getMax_creating());
+                            break;
+                        } else {
+                            obj.put("max_creating", "");
+                        }
                     }
+                    pool_arrays.add(obj);
                 }
-                pool_arrays.add(obj);
             }
             request.setAttribute("lists", pool_arrays);
         } catch (Exception e) {
