@@ -237,9 +237,10 @@
 	<!-- 计算盒子用户在线时长 -->
 	<listener>
 		<listener-class>com.zhicloud.ms.app.listener.BoxCumulativeOnlineTimeListener</listener-class>
-	</listener>	
-	
-	<servlet>
+	</listener>
+
+
+    <servlet>
 		<description>从数据库读取字典表数据，写入缓存</description>
 		<servlet-name>DictionaryListener</servlet-name>
 		<servlet-class>com.zhicloud.ms.app.listener.DictionaryListener</servlet-class>

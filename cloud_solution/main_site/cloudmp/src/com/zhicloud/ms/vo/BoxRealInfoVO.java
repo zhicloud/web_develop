@@ -36,14 +36,14 @@ public class BoxRealInfoVO {
     private long cumulativeOnlineTime;
 
     public long getCumulativeOnlineTime() {
-		return cumulativeOnlineTime;
-	}
+        return cumulativeOnlineTime;
+    }
 
-	public void setCumulativeOnlineTime(long cumulativeOnlineTime) {
-		this.cumulativeOnlineTime = cumulativeOnlineTime;
-	}
-	
-	public String getCumulativeOnlineTimeText(){
+    public void setCumulativeOnlineTime(long cumulativeOnlineTime) {
+        this.cumulativeOnlineTime = cumulativeOnlineTime;
+    }
+
+    public String getCumulativeOnlineTimeText(){
 		long days = this.cumulativeOnlineTime / (1000 * 60 * 60 * 24);  
 	    long hours = (this.cumulativeOnlineTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60);  
 		long minutes = (this.cumulativeOnlineTime % (1000 * 60 * 60)) / (1000 * 60);  

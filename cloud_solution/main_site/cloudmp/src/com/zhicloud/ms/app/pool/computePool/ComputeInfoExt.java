@@ -89,6 +89,9 @@ public class ComputeInfoExt extends ComputeInfo implements JSONBean{
     }
 
     public Integer getMode0() {
+        if(mode0 == null && mode!=null && mode.length>=1){
+            mode0 = mode[0];
+        }
         return mode0;
     }
 
@@ -97,11 +100,36 @@ public class ComputeInfoExt extends ComputeInfo implements JSONBean{
     }
 
     public Integer getMode1() {
+        if(mode1 == null && mode!=null && mode.length>=2){
+            mode1 = mode[1];
+        }
         return mode1;
     }
 
     public void setMode1(Integer mode1) {
         this.mode1 = mode1;
+    }
+
+    public Integer getMode2() {
+        if(mode2 == null && mode!=null && mode.length>=3){
+            mode2 = mode[2];
+        }
+        return mode2;
+    }
+
+    public void setMode2(Integer mode2) {
+        this.mode2 = mode2;
+    }
+
+    public Integer getMode3() {
+        if(mode3 == null && mode!=null && mode.length>=4){
+            mode3 = mode[3];
+        }
+        return mode3;
+    }
+
+    public void setMode3(Integer mode3) {
+        this.mode3 = mode3;
     }
 
 
@@ -143,25 +171,6 @@ public class ComputeInfoExt extends ComputeInfo implements JSONBean{
         } else {
             return false;
         }
-    }
-
-    public Integer getMode2() {
-        if(mode2 == null && mode!=null && mode.length>=2){
-            mode2 = mode[2];
-        }
-        return mode2;
-    }
-
-    public void setMode2(Integer mode2) {
-        this.mode2 = mode2;
-    }
-
-    public Integer getMode3() {
-        return mode3;
-    }
-
-    public void setMode3(Integer mode3) {
-        this.mode3 = mode3;
     }
 
     public String getPath() {
