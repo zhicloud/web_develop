@@ -48,6 +48,8 @@ public class CloudHostVO implements JSONBean
 	private BigInteger sysDisk = BigInteger.ZERO; 
 	private BigInteger dataDisk = BigInteger.ZERO;
 	private BigInteger bandwidth = BigInteger.ZERO; 
+	private BigInteger remainMemory = BigInteger.ZERO;
+	private BigInteger remainDisk = BigInteger.ZERO;
 	private Integer diskdiy;
 	private Integer bandwidthdiy;
 	private Integer isAutoStartup = 0; 
@@ -793,7 +795,31 @@ public class CloudHostVO implements JSONBean
 		this.supportH264 = supportH264;
 	}
     
-    
+	public BigInteger getRemainMemory() {
+		return remainMemory;
+	}
+
+	public void setRemainMemory(BigInteger remainMemory) {
+		this.remainMemory = remainMemory;
+	}
+
+	public BigInteger getRemainDisk() {
+		return remainDisk;
+	}
+
+	public void setRemainDisk(BigInteger remainDisk) {
+		this.remainDisk = remainDisk;
+	}
+
+	public String getRemainDiskText(int scale)
+	{
+		return CapacityUtil.toCapacityLabel(this.remainDisk, scale);
+	}
+
+	public String getRemainMemoryText(int scale)
+	{
+		return CapacityUtil.toCapacityLabel(this.remainMemory, scale);
+	}
 }
 
 

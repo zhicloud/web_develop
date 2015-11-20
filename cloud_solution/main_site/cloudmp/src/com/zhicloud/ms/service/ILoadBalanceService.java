@@ -1,5 +1,7 @@
 package com.zhicloud.ms.service; 
 
+import com.zhicloud.ms.vo.BalancerForwardVO;
+
 
 /**
  * @author ZYFTMX
@@ -7,6 +9,6 @@ package com.zhicloud.ms.service;
  */
 public interface ILoadBalanceService {
 	
-	
+	public BalancerForwardVO getBalanceForwardByHostId(String hostId);
 }
 
