@@ -9,47 +9,26 @@
 
 package com.zhicloud.ms.controller; 
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.zhicloud.ms.app.cache.box.BoxRealInfoCacheManager;
+import com.zhicloud.ms.app.helper.AppHelper;
+import com.zhicloud.ms.remote.MethodResult;
+import com.zhicloud.ms.service.*;
+import com.zhicloud.ms.util.ServiceUtil;
+import com.zhicloud.ms.util.StringUtil;
+import com.zhicloud.ms.vo.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import sun.net.util.IPAddressUtil;
 
-import com.zhicloud.ms.app.helper.AppHelper;
-import com.zhicloud.ms.remote.MethodResult;
-import com.zhicloud.ms.service.IBoxRealInfoService;
-import com.zhicloud.ms.service.IClientMessageService;
-import com.zhicloud.ms.service.ICloudHostService;
-import com.zhicloud.ms.service.ITerminalInformationPushService;
-import com.zhicloud.ms.service.ITerminalUserService;
-import com.zhicloud.ms.service.IUserService;
-import com.zhicloud.ms.service.IVersionRecordService;
-import com.zhicloud.ms.util.ServiceUtil;
-import com.zhicloud.ms.util.StringUtil;
-import com.zhicloud.ms.vo.BoxRealInfoVO;
-import com.zhicloud.ms.vo.CloudHostVO;
-import com.zhicloud.ms.vo.SysUser;
-import com.zhicloud.ms.vo.TerminalInformationPushVO;
-import com.zhicloud.ms.vo.TerminalUserVO;
-import com.zhicloud.ms.vo.VersionRecordVO;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.*;
 
 /**
  * ClassName: InterfaceController 
@@ -99,7 +78,7 @@ public class InterfaceController {
 	public void connect(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
 		logger.info("InterfaceController.connect() > success ");
-		response.setCharacterEncoding("utf-8");
+      response.setCharacterEncoding("utf-8");
 		response.setContentType("text/json; charset=utf-8");
 		ServiceUtil.writeSuccessMessage(response.getOutputStream(), "success");
 	}
@@ -117,7 +96,7 @@ public class InterfaceController {
 	@RequestMapping(value="/login",method=RequestMethod.GET)
 	public void login(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		response.setCharacterEncoding("utf-8"); 
+      response.setCharacterEncoding("utf-8");
 		response.setContentType("text/json; charset=utf-8"); 
 		logger.info(request.getLocalAddr());
 		logger.info(request.getHeader("X-Forwarded-For"));
@@ -196,8 +175,10 @@ public class InterfaceController {
             info.setLastAliveTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
             info.setLastLoginTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
             info.setIp(ip);
-            boxRealInfoService.addOrUpdateBoxInfo(info);
-			// 写反回流
+//            boxRealInfoService.addOrUpdateBoxInfo(info);
+        BoxRealInfoCacheManager.singleton().getCache().put(info);
+
+        // 写反回流
 			ServiceUtil.writeJsonTo(response.getOutputStream(), result);
 			
 		}else{  
@@ -221,7 +202,7 @@ public class InterfaceController {
 	@RequestMapping(value="/hoststatus",method=RequestMethod.GET)
 	public void hostStatus(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		response.setCharacterEncoding("utf-8");
+      response.setCharacterEncoding("utf-8");
 		response.setContentType("text/json; charset=utf-8"); 		
 		//主机id
 		String cloudHostId = StringUtil.trim(request.getParameter("cloud_host_id"));
@@ -260,7 +241,7 @@ public class InterfaceController {
 	@RequestMapping(value="/changepassword" ,method=RequestMethod.GET)
 	public void changePassword(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		response.setCharacterEncoding("utf-8");
+      response.setCharacterEncoding("utf-8");
 		response.setContentType("text/json; charset=utf-8"); 		
 		//获取用户名
 		String userName = StringUtil.trim(request.getParameter("user_name"));
@@ -311,7 +292,8 @@ public class InterfaceController {
 	@RequestMapping(value="/hostoperator",method=RequestMethod.GET)
 	public void hostOperator(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		response.setCharacterEncoding("utf-8");
+
+      response.setCharacterEncoding("utf-8");
 		response.setContentType("text/json; charset=utf-8"); 		
 		//主机Id
 		String cloudHostId = StringUtil.trim(request.getParameter("cloud_host_id"));
@@ -353,7 +335,8 @@ public class InterfaceController {
 	public void version(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{ 
 		logger.info("InterfaceController.connect() > success ");
-		response.setCharacterEncoding("utf-8");
+
+      response.setCharacterEncoding("utf-8");
 		response.setContentType("text/json; charset=utf-8");
 		Map<Object, Object> result = ServiceUtil.toSuccessObject("");
 		//获取版本号
@@ -392,7 +375,9 @@ public class InterfaceController {
 	public void download(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{ 
 		logger.info("InterfaceController.connect() > success ");
-		response.setCharacterEncoding("utf-8");
+
+
+      response.setCharacterEncoding("utf-8");
 		response.setContentType("text/json; charset=utf-8"); 
 		//获取版本ID
 		String downloadId = StringUtil.trim(request.getParameter("download_id"));	
@@ -497,6 +482,7 @@ public class InterfaceController {
     public void updateHostStatus(HttpServletRequest request, HttpServletResponse response) throws IOException
     { 
         logger.info("InterfaceController.connect() > success ");
+
         response.setCharacterEncoding("utf-8");
         response.setContentType("text/json; charset=utf-8");
          //获取主机Id
@@ -529,7 +515,7 @@ public class InterfaceController {
 	@RequestMapping(value="/keepalive",method=RequestMethod.GET)
     public void keepAlive(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
-        response.setCharacterEncoding("utf-8"); 
+        response.setCharacterEncoding("utf-8");
         response.setContentType("text/json; charset=utf-8"); 
         logger.info(request.getLocalAddr());
         logger.info(request.getHeader("X-Forwarded-For"));
@@ -550,8 +536,9 @@ public class InterfaceController {
             return;
         } 
         info.setLastAliveTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
-        boxRealInfoService.addOrUpdateBoxInfo(info);
-        
+//        boxRealInfoService.addOrUpdateBoxInfo(info);
+        BoxRealInfoCacheManager.singleton().getCache().put(info);
+
         //行业和地区
         String region = StringUtil.trim(request.getParameter("region"));
         String industry = StringUtil.trim(request.getParameter("industry"));
@@ -577,6 +564,7 @@ public class InterfaceController {
 	@RequestMapping(value="/logout",method=RequestMethod.GET)
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+
         response.setCharacterEncoding("utf-8"); 
         response.setContentType("text/json; charset=utf-8"); 
         logger.info(request.getLocalAddr());
@@ -596,8 +584,10 @@ public class InterfaceController {
             return;
         } 
         info.setLastLogoutTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
-        boxRealInfoService.addOrUpdateBoxInfo(info);
-        
+//        boxRealInfoService.addOrUpdateBoxInfo(info);
+        BoxRealInfoCacheManager.singleton().getCache().put(info);
+
+
         // 写反回流
         ServiceUtil.writeFailMessage(response.getOutputStream(), "success"); 
         
@@ -607,7 +597,9 @@ public class InterfaceController {
 	@RequestMapping(value="/modifyalias" ,method=RequestMethod.GET)
 	public void modifyAlias(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		response.setCharacterEncoding("utf-8");
+
+
+      response.setCharacterEncoding("utf-8");
 		response.setContentType("text/json; charset=utf-8"); 		
 		//获取用户名
 		String userName = StringUtil.trim(request.getParameter("user_name"));
@@ -648,7 +640,8 @@ public class InterfaceController {
 	@RequestMapping(value="/msgfeedback" ,method=RequestMethod.GET)
 	public void msgFeedback(HttpServletRequest request, HttpServletResponse response) throws IOException
 	{
-		response.setCharacterEncoding("utf-8");
+
+      response.setCharacterEncoding("utf-8");
 		response.setContentType("text/json; charset=utf-8"); 		
 		//获取用户名
 		String userName = StringUtil.trim(request.getParameter("user_name"));

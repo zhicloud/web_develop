@@ -106,8 +106,8 @@
 	
 	<!-- ********************* -->	
 	<insert id="addOrUpdateInfo">
-		replace into box_real_info (mac, user_id,user_name, ip, hardware_version,software_version,subnet_mask,last_login_time,last_alive_time,gateway,last_logout_time) 
-		values (#{mac}, #{userId},#{userName}, #{ip}, #{hardwareVersion}, #{softwareVersion}, #{subnetMask}, #{lastLoginTime}, #{lastAliveTime},#{gateway},#{lastLogoutTime})
+		replace into box_real_info (mac, user_id,user_name, ip, hardware_version,software_version,subnet_mask,last_login_time,last_alive_time,gateway,last_logout_time, cumulative_online_time)
+		values (#{mac}, #{userId},#{userName}, #{ip}, #{hardwareVersion}, #{softwareVersion}, #{subnetMask}, #{lastLoginTime}, #{lastAliveTime},#{gateway},#{lastLogoutTime}, #{cumulative_online_time})
 	</insert>
 	
     <update id="updateCumulativeOnlineTimeByUserId">
@@ -116,6 +116,16 @@
 	 
     <update id="updateLogoutTimeByUserId">
 		update box_real_info set last_logout_time =#{last_logout_time} where user_id = #{userId}
-	</update> 		
-	
+	</update>
+
+    <!-- 批量更新盒子信息 -->
+    <insert id ="updateBoxInfoBatch" parameterType="java.util.List" >
+        replace into box_real_info
+        (mac, user_id,user_name, ip, hardware_version,software_version,subnet_mask,last_login_time,last_alive_time,gateway,last_logout_time, cumulative_online_time)
+        values
+        <foreach collection ="list" item="boxRealInfo" index= "index" separator =",">
+            (#{boxRealInfo.mac}, #{boxRealInfo.userId}, #{boxRealInfo.userName}, #{boxRealInfo.ip}, #{boxRealInfo.hardwareVersion}, #{boxRealInfo.softwareVersion},#{boxRealInfo.subnetMask}, #{boxRealInfo.lastLoginTime}, #{boxRealInfo.lastAliveTime}, #{boxRealInfo.gateway}, #{boxRealInfo.lastLogoutTime}, #{boxRealInfo.cumulativeOnlineTime})
+        </foreach >
+    </insert>
+
 </mapper>
