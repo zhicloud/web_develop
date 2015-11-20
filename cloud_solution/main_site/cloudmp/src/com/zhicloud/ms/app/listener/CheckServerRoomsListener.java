@@ -359,6 +359,9 @@ public class CheckServerRoomsListener implements ServletContextListener {
             MonitorConstant.roomMap.put(regionDataID + "", rooms);
         }
         rooms = null;
+        if (channel_asy != null) {
+            channel_asy.release();
+        }
     }
 
     /**
@@ -1181,6 +1184,10 @@ public class CheckServerRoomsListener implements ServletContextListener {
             e.printStackTrace();
             logger.error("更新云主机信息到内存出错：" + e.getMessage());
             return;
+        } finally {
+            if (channel_asy != null) {
+                channel_asy.release();
+            }
         }
     }
     
@@ -1190,14 +1197,19 @@ public class CheckServerRoomsListener implements ServletContextListener {
      */
     public void stopAllMonitor() {
         // 区域信息
+        HttpGatewayAsyncChannel channel_asy = null;
         try {
-                HttpGatewayAsyncChannel channel_asy = HttpGatewayManager.getAsyncChannel(regionDataID);
-                Iterator<String> its = MonitorConstant.monitorData.keySet().iterator();
-                while (its.hasNext()) {
-                    channel_asy.stopMonitor(MonitorConstant.monitorData.get(its.next()));
+            channel_asy = HttpGatewayManager.getAsyncChannel(regionDataID);
+            Iterator<String> its = MonitorConstant.monitorData.keySet().iterator();
+            while (its.hasNext()) {
+                channel_asy.stopMonitor(MonitorConstant.monitorData.get(its.next()));
             }
         } catch (Exception e) {
             logger.error("停止监控出错:" + e.getMessage());
+        } finally {
+            if (channel_asy != null) {
+                channel_asy.release();
+            }
         }
     }
     
@@ -1206,13 +1218,18 @@ public class CheckServerRoomsListener implements ServletContextListener {
      * @throws
      */
     public void startServerMonitor() {
+        HttpGatewayAsyncChannel channel_asy = null;
         try {
-                HttpGatewayAsyncChannel channel_asy = HttpGatewayManager.getAsyncChannel(regionDataID);
-                String[] array = MonitorConstant.getServerObjects(regionDataID);
-                channel_asy.startMonitor(MonitorLevel.SERVER, array);
+            channel_asy = HttpGatewayManager.getAsyncChannel(regionDataID);
+            String[] array = MonitorConstant.getServerObjects(regionDataID);
+            channel_asy.startMonitor(MonitorLevel.SERVER, array);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("启动服务器监控出错:" + e.getMessage());
+        } finally {
+            if (channel_asy != null) {
+                channel_asy.release();
+            }
         }
     }
     
@@ -1221,13 +1238,18 @@ public class CheckServerRoomsListener implements ServletContextListener {
      * @throws
      */
     public void startHostsMonitor() {
+        HttpGatewayAsyncChannel channel_asy = null;
         try {
-                HttpGatewayAsyncChannel channel_asy = HttpGatewayManager.getAsyncChannel(regionDataID);
-                String[] array = MonitorConstant.getHostObjects(regionDataID);
-                channel_asy.startMonitor(MonitorLevel.HOST, array);
+            channel_asy = HttpGatewayManager.getAsyncChannel(regionDataID);
+            String[] array = MonitorConstant.getHostObjects(regionDataID);
+            channel_asy.startMonitor(MonitorLevel.HOST, array);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("启动云主机监控出错:" + e.getMessage());
+        } finally {
+            if (channel_asy != null) {
+                channel_asy.release();
+            }
         }
     }
 }
