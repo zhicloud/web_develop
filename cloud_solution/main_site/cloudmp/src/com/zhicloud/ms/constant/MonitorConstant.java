@@ -242,6 +242,11 @@ public class MonitorConstant {
      * @throws
      */
     public static double convertStringToDouble(String value) {
+        // 科学计数法转换
+        if (value.indexOf("E-") > -1) {
+            BigDecimal bg = new BigDecimal(value);
+            value = bg.toPlainString();
+        }
         if (value == null || "".equals(value)) {
             return 0;
         }
