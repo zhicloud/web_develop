@@ -108,27 +108,64 @@
                         </div>
                       </div>
                       
-                      <div class="form-group">
-                        <label for="optionsRadios1" class="col-sm-2 control-label">网络类型 *</label>
-                        <div class="col-sm-16">
-                          <div class="radio radio-transparent col-md-2">
-                              <input type="radio" name="networkType" id="optionsRadios0" value="0" onclick="networkCheck('optionsRadios0')">
-                            <label for="optionsRadios0">私有云</label>
-                          </div>
-                          <div class="radio radio-transparent col-md-2">
-                              <input type="radio" name="networkType" id="optionsRadios1" value="1" onclick="networkCheck('optionsRadios1')">
-                              <label for="optionsRadios1">独享公网地址(IP)</label>
-                          </div>
-                          <div class="radio radio-transparent col-md-3">
-                              <input type="radio" name="networkType" id="optionsRadios2" value="2" onclick="networkCheck('optionsRadios2')">
-                              <label for="optionsRadios2">共享公网地址(端口)</label>
-                          </div>
-                            <div class="radio radio-transparent col-md-2">
-                                <input type="radio" name="networkType" id="optionsRadios3" value="3" onclick="networkCheck('optionsRadios0')">
-                                <label for="optionsRadios3">直连</label>
+                      <%--<div class="form-group">--%>
+                        <%--<label for="optionsRadios1" class="col-sm-2 control-label">网络类型 *</label>--%>
+                        <%--<div class="col-sm-16">--%>
+                          <%--<div class="radio radio-transparent col-md-3">--%>
+                              <%--<input type="radio" name="networkType" id="optionsRadios0" value="0" onclick="networkCheck('optionsRadios0')">--%>
+                            <%--<label for="optionsRadios0">私有云</label>--%>
+                          <%--</div>--%>
+                          <%--<div class="radio radio-transparent col-md-3">--%>
+                              <%--<input type="radio" name="networkType" id="optionsRadios1" value="1" onclick="networkCheck('optionsRadios1')">--%>
+                              <%--<label for="optionsRadios1">独享公网地址(IP)</label>--%>
+                          <%--</div>--%>
+                        <%--</div>--%>
+                      <%--</div>--%>
+
+                        <%--<div class="form-group">--%>
+                            <%--<label for="optionsRadios3" class="col-sm-2 control-label"></label>--%>
+                            <%--<div class="col-sm-10">--%>
+
+                          <%--<div class="radio radio-transparent col-md-3">--%>
+                              <%--<input type="radio" name="networkType" id="optionsRadios2" value="2" onclick="networkCheck('optionsRadios2')">--%>
+                              <%--<label for="optionsRadios2">共享公网地址(端口)</label>--%>
+                          <%--</div>--%>
+                            <%--<div class="radio radio-transparent col-md-3">--%>
+                                <%--<input type="radio" name="networkType" id="optionsRadios3" value="3" onclick="networkCheck('optionsRadios0')">--%>
+                                <%--<label for="optionsRadios3">直连</label>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                      <%--</div>--%>
+
+
+                        <div class="form-group">
+                            <label for="optionsRadios1" class="col-sm-2 control-label">网络类型 *</label>
+                            <div class="col-sm-10">
+                                <div class="radio radio-transparent col-sm-3">
+                                    <input type="radio" name="networkType" id="optionsRadios0" value="0" onclick="networkCheck('optionsRadios0')">
+                                    <label for="optionsRadios0">私有云</label>
+                                </div>
+                                <div class="radio radio-transparent col-sm-3">
+                                    <input type="radio" name="networkType" id="optionsRadios1" value="1" onclick="networkCheck('optionsRadios1')">
+                                    <label for="optionsRadios1">独享公网地址(IP)</label>
+                                </div>
                             </div>
                         </div>
-                      </div>
+                        <div class="form-group">
+                            <label for="optionsRadios3" class="col-sm-2 control-label"></label>
+                            <div class="col-sm-10">
+
+                                <div class="radio radio-transparent col-sm-3">
+                                    <input type="radio" name="networkType" id="optionsRadios2" value="2" onclick="networkCheck('optionsRadios2')">
+                                    <label for="optionsRadios2">共享公网地址(端口)</label>
+                                </div>
+                                <div class="radio radio-transparent col-sm-3">
+                                    <input type="radio" name="networkType" id="optionsRadios3" value="3" onclick="networkCheck('optionsRadios3')">
+                                    <label for="optionsRadios3">直连</label>
+                                </div>
+                            </div>
+                        </div>
+
                       <input id="no_pool" type="hidden" name="networkId" value="">
                       <div class="form-group" id="ip_pool">
                         <label for="network_ip" class="col-sm-2 control-label">IP资源池*</label>
@@ -170,7 +207,7 @@
 					        	<input type="radio" name="diskType" id="optionsRadios10" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');" checked>
 					       		<label for="optionsRadios10">本地</label>
 					     	</div>
-					     	<div class="radio radio-transparent col-md-2">
+					     	<div class="radio radio-transparent col-md-3">
 					       		<input type="radio" name="diskType" id="optionsRadios11" value="1" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');">
 					       		<label for="optionsRadios11">云存储</label>
 					     	</div>                          
