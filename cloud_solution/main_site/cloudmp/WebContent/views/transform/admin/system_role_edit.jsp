@@ -121,7 +121,7 @@ function backhome(){
                       <div class="form-group">
                         <label for="code" class="col-sm-2 control-label">角色编码*</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="code" parsley-required="true"  parsley-maxlength="100">
+                          <input type="text" class="form-control" id="code" parsley-required="true"  parsley-maxlength="100" parsley-type="nochinese">
                         </div>
                       </div>
                       </c:if>
@@ -137,7 +137,7 @@ function backhome(){
                       <div class="form-group">
                         <label for="code" class="col-sm-2 control-label">角色编码*</label>
                         <div class="col-sm-4">
-                          <input value="${systemRole.code }" type="text" class="form-control" id="code" parsley-required="true"  parsley-maxlength="100">
+                          <input value="${systemRole.code }" type="text" class="form-control" id="code" parsley-required="true"  parsley-maxlength="100" parsley-type="nochinese">
                         </div>
                       </div>
                       </c:if>                      
