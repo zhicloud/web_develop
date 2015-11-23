@@ -16,8 +16,8 @@ public class BoxCumulativeOnlineTimeListener implements ServletContextListener{
     //每隔1分钟执行一次：0 */1 * * * ?
     private static final String PERIOD = "0 */1 * * * ?";
 
-    //每隔45分钟执行一次：0 */45 * * * ?
-    private static final String TIMMER = "0 */45 * * * ?";
+    //每隔15分钟执行一次：0 */15 * * * ?
+    private static final String TIMMER = "0 */15 * * * ?";
 
     public static final String  BOX_CUMULATIVE_TIME_QUARTZ_ID= "timer_for_boxUser_cumulative_onlineTime"; //在线用户时长计算
     public static final String  BOX_CUMULATIVE_TIME_BATCH_QUARTZ_ID= "timer_for_boxUser_cumulative_onlineTime_batch"; //在线用户时长计算累计更新
