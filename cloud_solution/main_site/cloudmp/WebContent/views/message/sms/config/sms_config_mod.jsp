@@ -109,21 +109,21 @@
                                     <div class="form-group">
                                         <label for="sms_id" class="col-sm-2 control-label">短信配置ID*</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="sms_id" name="smsId" value="${sms_config_vo.smsId}" parsley-trigger="change" parsley-required="true" parsley-minlength="2" parsley-maxlength="50">
+                                            <input type="text" class="form-control" id="sms_id" name="smsId" value="${sms_config_vo.smsId}" parsley-trigger="change" parsley-required="true" parsley-type="nochinese" parsley-minlength="2" parsley-maxlength="50">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="service_url" class="col-sm-2 control-label">服务端地址*</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="service_url" name="serviceUrl" value="${sms_config_vo.serviceUrl}" parsley-trigger="change" >
+                                            <input type="text" class="form-control" id="service_url" name="serviceUrl" value="${sms_config_vo.serviceUrl}" parsley-trigger="change"  parsley-required="true" parsley-type="nochinese" >
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="name" class="col-sm-2 control-label">发送人账户*</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="name" name="name" value="${sms_config_vo.name}" parsley-trigger="change" >
+                                            <input type="text" class="form-control" id="name" name="name" value="${sms_config_vo.name}" parsley-trigger="change" parsley-required="true" parsley-type="nochinese">
                                         </div>
                                     </div>
 

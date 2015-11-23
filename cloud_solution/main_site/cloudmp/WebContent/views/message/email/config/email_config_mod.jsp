@@ -133,13 +133,13 @@
                                     <div class="form-group">
                                         <label for="host" class="col-sm-2 control-label" >邮件服务器*</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="host" name="host" value="${mail_config_vo.host}" parsley-trigger="change" parsley-required="true" parsley-minlength="5" parsley-maxlength="50">
+                                            <input type="text" class="form-control" id="host" name="host" value="${mail_config_vo.host}" parsley-trigger="change" parsley-required="true" parsley-type="nochinese" parsley-minlength="5" parsley-maxlength="50">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="port" class="col-sm-2 control-label" >服务端口*</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="port" name="port" value="${mail_config_vo.port}" parsley-trigger="change" parsley-required="true" parsley-minlength="1" parsley-maxlength="5">
+                                            <input type="text" class="form-control" id="port" name="port" value="${mail_config_vo.port}" parsley-trigger="change" parsley-required="true" parsley-type="digits" parsley-minlength="1" parsley-maxlength="5">
                                         </div>
                                     </div>
 
@@ -168,7 +168,7 @@
                                     <div class="form-group">
                                         <label for="senderAddress" class="col-sm-2 control-label">发件邮箱*</label>
                                         <div class="col-sm-4">
-                                            <input type="email" class="form-control" id="senderAddress" name="senderAddress" value="${mail_config_vo.senderAddress}" parsley-trigger="change"   parsley-type="email"  >
+                                            <input type="email" class="form-control" id="senderAddress" name="senderAddress" value="${mail_config_vo.senderAddress}" parsley-trigger="change"   parsley-type="email" parsley-required="true" >
                                         </div>
                                     </div>
 

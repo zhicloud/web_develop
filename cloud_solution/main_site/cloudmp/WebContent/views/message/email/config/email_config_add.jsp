@@ -107,7 +107,7 @@
                         <div class="form-group">
                             <label for="protocol" class="col-sm-2 control-label" >协议*</label>
                             <div class="col-sm-4" id="selectprotocol">
-                                <select class="chosen-select chosen-transparent form-control" id = "protocol" name="protocol" arsley-trigger="change" parsley-required="true" parsley-error-container="#selectprotocol">
+                                <select class="chosen-select chosen-transparent form-control" id = "protocol" name="protocol" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectprotocol">
                                     <option value="">请选择邮件服务协议</option>
                                         <option value="smtp">smtp</option>
                                     <option value="pop3">pop3</option>
@@ -118,13 +118,13 @@
                         <div class="form-group">
                             <label for="host" class="col-sm-2 control-label" >邮件服务器*</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="host" name="host" value="" parsley-trigger="change" parsley-required="true" parsley-minlength="5" parsley-maxlength="50">
+                                <input type="text" class="form-control" id="host" name="host" value="" parsley-trigger="change" parsley-required="true" parsley-type="nochinese" parsley-minlength="5" parsley-maxlength="50">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="port" class="col-sm-2 control-label" >服务端口*</label>
                             <div class="col-sm-4">
-                                <input type="text" class="form-control" id="port" name="port" value="" parsley-trigger="change" parsley-required="true"  parsley-max="65535">
+                                <input type="text" class="form-control" id="port" name="port" value="" parsley-trigger="change" parsley-required="true" parsley-type="digits" parsley-max="65535">
                             </div>
                         </div>
 
@@ -152,7 +152,7 @@
                       <div class="form-group">
                           <label for="senderAddress" class="col-sm-2 control-label">发件邮箱*</label>
                           <div class="col-sm-4">
-                              <input type="email" class="form-control" id="senderAddress" name="senderAddress" parsley-trigger="change"   parsley-type="email"  >
+                              <input type="email" class="form-control" id="senderAddress" name="senderAddress" parsley-trigger="change"   parsley-type="email" parsley-required="true" >
                           </div>
                       </div>
 
