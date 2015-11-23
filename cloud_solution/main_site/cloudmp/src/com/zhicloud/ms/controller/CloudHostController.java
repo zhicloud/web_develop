@@ -1112,4 +1112,35 @@ public class CloudHostController {
 		CloudHostData cloudHostData = cloudHostService.refreshData(id);
 		return cloudHostData;
 	}
+    
+    /**
+	 * 通过显示名查询对象，检查名字是否可用(对象存在即不可用，不存在即可用)
+	 * @param name
+	 * @return
+	 */
+	@RequestMapping(value="/checkHostDisplayName",method=RequestMethod.POST)
+	@ResponseBody
+	public MethodResult getByDisplayName(@RequestParam("displayName") String displayName,HttpServletRequest request){
+		MethodResult mr = cloudHostService.getHostByDisplayName(displayName);
+		return mr;
+	}
+	/**
+	 * 通过显示名查询对象，检查名字是否可用(对象存在即不可用，不存在即可用)
+	 * @param name
+	 * @return
+	 */
+	@RequestMapping(value="/updatename",method=RequestMethod.POST)
+	@ResponseBody
+	public MethodResult updateDisplayName(@RequestParam("displayName") String displayName,
+			@RequestParam("id") String id,
+			HttpServletRequest request){
+		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_update_displayname)){
+			return new MethodResult(MethodResult.FAIL, "您没有修改主机显示名的权限，请联系管理员");
+		}
+		Map<String,Object> condition = new HashMap<String, Object>();
+		condition.put("id", id);
+		condition.put("displayName", displayName);
+		MethodResult mr = cloudHostService.updateDisplayNameById(condition);
+		return mr;
+	}
 }

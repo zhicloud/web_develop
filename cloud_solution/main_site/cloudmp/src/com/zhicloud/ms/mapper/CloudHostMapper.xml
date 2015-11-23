@@ -395,6 +395,34 @@
 		where ch.user_id = #{userId}
 	</select>
 	
+	<select id="getHostByDisplayName" resultMap="CloudHostVO">
+		select 
+			ch.id id,
+			ch.real_host_id,
+			ch.warehouse_id,
+			ch.user_id,
+			ch.account,
+			ch.password,
+			ch.display_name,
+			ch.sys_image_name,
+			ch.host_name,  
+			ch.cpu_core,
+			ch.memory, 
+			ch.sys_disk,
+			ch.data_disk, 
+			ch.bandwidth,  
+			ch.running_status, 
+			ch.status, 
+			ch.inner_ip, 
+			ch.inner_port,
+			ch.outer_ip, 
+			ch.outer_port,
+			ch.type,
+ 			ch.assign_time
+		from cloud_host ch  
+		where ch.display_name = #{displayName}
+	</select>
+	
 	<select id="getCloudHostInTenant" resultMap="CloudHostVO">
 		select 
 			ch.id id,
@@ -655,6 +683,13 @@
 			status = #{status}
  		</set>
 		where host_name = #{hostName}
+	</update>
+	<update id="updateDisplayNameById">
+		update cloud_host
+		<set>
+			display_name = #{displayName}
+ 		</set>
+		where id = #{id}
 	</update>
 	<update id="updateCloudHostUserIdById">
 		update cloud_host
