@@ -382,6 +382,7 @@ public class StaticReportController extends TransFormBaseAction {
         JSONObject result = new JSONObject();
         JSONObject data = new JSONObject();
         JSONObject host = MonitorConstant.getObjectByUUID(id, MonitorConstant.hostsMap);
+        // false直接短路是因为目前全是虚拟数据,host查询出来肯定没有值,为了页面调试效果,暂时屏蔽
         if (false && (host == null || host.isEmpty())) {
             result.put("status", "fail");
             result.put("message", "没有查询到主机");
