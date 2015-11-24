@@ -3,16 +3,17 @@
 <mapper namespace="com.zhicloud.ms.mapper.BoxRealInfoMapper">
 	
 	<resultMap id="BoxRealInfoVO" type="com.zhicloud.ms.vo.BoxRealInfoVO">
-		<id     column="mac"            property="mac" />
-		<result column="software_version" property="softwareVersion" />
-		<result column="hardware_version" property="hardwareVersion" />
-		<result column="serial_number"  property="serialNumber" />
-		<result column="user_id"      property="userId" /> 
-		<result column="user_name"  property="userName" />
- 		<result column="subnet_mask"  property="subnetMask" /> 
- 		<result column="last_login_time"  property="lastLoginTime" /> 
- 		<result column="last_alive_time"  property="lastAliveTime" /> 
- 		<result column="last_logout_time"  property="lastLogoutTime" /> 
+		<id     column="user_id"                 property="userId" />
+        <result column="mac"                     property="mac" />
+        <result column="software_version"        property="softwareVersion" />
+		<result column="hardware_version"        property="hardwareVersion" />
+		<result column="serial_number"           property="serialNumber" />
+		<result column="user_id"                 property="userId" />
+		<result column="user_name"               property="userName" />
+ 		<result column="subnet_mask"             property="subnetMask" />
+ 		<result column="last_login_time"         property="lastLoginTime" />
+ 		<result column="last_alive_time"         property="lastAliveTime" />
+ 		<result column="last_logout_time"        property="lastLogoutTime" />
  		<result column="cumulative_online_time"  property="cumulativeOnlineTime" /> 
 	</resultMap>
 	
@@ -119,13 +120,51 @@
 	</update>
 
     <!-- 批量更新盒子信息 -->
-    <insert id ="updateBoxInfoBatch" parameterType="java.util.List" >
-        replace into box_real_info
-        (mac, user_id,user_name, ip, hardware_version,software_version,subnet_mask,last_login_time,last_alive_time,gateway,last_logout_time, cumulative_online_time)
-        values
-        <foreach collection ="list" item="boxRealInfo" index= "index" separator =",">
-            (#{boxRealInfo.mac}, #{boxRealInfo.userId}, #{boxRealInfo.userName}, #{boxRealInfo.ip}, #{boxRealInfo.hardwareVersion}, #{boxRealInfo.softwareVersion},#{boxRealInfo.subnetMask}, #{boxRealInfo.lastLoginTime}, #{boxRealInfo.lastAliveTime}, #{boxRealInfo.gateway}, #{boxRealInfo.lastLogoutTime}, #{boxRealInfo.cumulativeOnlineTime})
-        </foreach >
+    <insert id ="updateBoxInfoBatch" parameterType="list">
+        INSERT INTO box_real_info
+        (
+
+        <if test="list[0].mac != null"> mac,</if>
+        <if test="list[0].userName != null"> user_name,</if>
+        <if test="list[0].ip != null"> ip,</if>
+        <if test="list[0].hardwareVersion != null"> hardware_version,</if>
+        <if test="list[0].softwareVersion != null"> software_version,</if>
+        <if test="list[0].subnetMask != null"> subnet_mask,</if>
+        <if test="list[0].lastLoginTime != null"> last_login_time,</if>
+        <if test="list[0].lastAliveTime != null"> last_alive_time,</if>
+        <if test="list[0].gateway != null"> gateway,</if>
+        <if test="list[0].lastLogoutTime != null"> last_logout_time,</if>
+        <if test="list[0].cumulativeOnlineTime != null"> cumulative_online_time,</if>
+        user_id
+        )
+        VALUES
+        <foreach collection="list"  item="item" open="(" separator=", " close=")">
+            <if test="item.mac != null"> #{item.mac},</if>
+            <if test="item.userName != null">#{item.userName},</if>
+            <if test="item.ip != null">#{item.ip},</if>
+            <if test="item.hardwareVersion != null">#{item.hardwareVersion},</if>
+            <if test="item.softwareVersion != null">#{item.softwareVersion},</if>
+            <if test="item.subnetMask != null">#{item.subnetMask},</if>
+            <if test="item.lastLoginTime != null">#{item.lastLoginTime},</if>
+            <if test="item.lastAliveTime != null">#{item.lastAliveTime},</if>
+            <if test="item.gateway != null">#{item.gateway},</if>
+            <if test="item.lastLogoutTime != null">#{item.lastLogoutTime},</if>
+            <if test="item.cumulativeOnlineTime != null">#{item.cumulativeOnlineTime},</if>
+            #{item.userId}
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        <if test="list[0].mac != null">  mac = VALUES (mac),</if>
+        <if test="list[0].userName != null"> user_name = VALUES (user_name),</if>
+        <if test="list[0].ip != null"> ip = VALUES (ip),</if>
+        <if test="list[0].hardwareVersion != null"> hardware_version = VALUES (hardware_version),</if>
+        <if test="list[0].softwareVersion != null"> software_version = VALUES (software_version),</if>
+        <if test="list[0].lastLoginTime != null"> subnet_mask = VALUES (subnet_mask),</if>
+        <if test="list[0].lastLoginTime != null"> last_login_time = VALUES (last_login_time),</if>
+        <if test="list[0].lastAliveTime != null"> last_alive_time = VALUES (last_alive_time),</if>
+        <if test="list[0].gateway != null"> gateway = VALUES (gateway),</if>
+        <if test="list[0].lastLogoutTime != null"> last_logout_time = VALUES (last_logout_time),</if>
+        <if test="list[0].cumulativeOnlineTime != null"> cumulative_online_time = VALUES(cumulative_online_time),</if>
+        user_id = VALUES(user_id)
     </insert>
 
 </mapper>
