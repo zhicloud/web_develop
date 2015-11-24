@@ -13906,3 +13906,7 @@ body #content.full-page.error .search {
       body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li>a{background:rgba(0,0,0,.3);}
       body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li.active>a{background:rgba(0,0,0,0);color:#fff;}
       
+      /* ==========×Ô¶¨Òåcss========= */
+      .span2btn{
+    	cursor: pointer;
+      }

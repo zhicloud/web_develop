@@ -32,8 +32,8 @@ function checkTable(){
 	var betweenreg = /^([1-9]\d*(\.[0-9]{1,2})?|0\.[0-9]{1,2})-([1-9]\d*(\.[0-9]{1,2})?|0\.[0-9]{1,2})$/;
 	var len = $("#unchoosetable tbody tr").length;
 	for(var i=1;i<=len;i++){
-		var name = $("#name"+i).val();
-		var code = $("#code"+i).val();
+		var name = $("#name"+i).find("option:selected").text();
+		var code = $("#name"+i).val();
 		var value = $("#value"+i).val();
 		var operator = $("#operator"+i).val();
 		var contact = $("#contact"+i).val();
@@ -89,8 +89,8 @@ function saveData(){
 		var len = $("#unchoosetable tbody tr").length;
 		for(var i=1;i<=len;i++){
 			var object = new Object();
-			object["name"] = $("#name"+i).val();
-			object["code"] = $("#code"+i).val();
+			object["name"] = $("#name"+i).find("option:selected").text();
+			object["code"] = $("#name"+i).val();
 			object["operator"] = $("#operator"+i).val();	
 			object["value"] = $("#value"+i).val();
 			object["contact"] = $("#contact"+i).val();
@@ -126,8 +126,15 @@ function saveData(){
 function addRow(){
 	var len = $("#unchoosetable tbody tr").length+1;
 	var operator_special_div = $("#operator_special_div").html();
-	var trhtml = "<tr><td><input type=\"text\"  class=\"form-control\" id=\"name"+len+"\" ><\/td>"+
-	 "<td><input type=\"text\"  class=\"form-control\" id=\"code"+len+"\" ><\/td>"+
+	var trhtml = "<tr><td>"+
+		"<div class=\"checkbox check-transparent\" style=\"margin-top:25px;\">"+
+		"<input type=\"checkbox\"  id=\"check"+len+"\" name=\"checkbox\">"+
+		"<label for=\"check"+len+"\"></label><\/td>"+
+	 	"<td><select class=\"chosen-select chosen-transparent form-control\" name=\"operator\" id=\"name"+len+"\">"+
+        "<option value=\"cpu_usage\">CPU利用率</option>"+  
+        "<option value=\"disk_usage\">磁盘利用率</option>"+
+        "<option value=\"memory_usage\">内存利用率</option>"+
+		"<\/select><\/td>"+
 	 "<td><select class=\"chosen-select chosen-transparent form-control\"  id=\"operator"+len+"\">"+
      "<option value=\"equal\">等于<\/option>"+  
      "<option value=\"high\" >大于<\/option>"+ 
@@ -140,15 +147,22 @@ function addRow(){
      "<option value=\"or\" >或者<\/option><\/select></\td>"+
 	  "<\/tr>";
 $("#unchoosetable tbody").append(trhtml);
+$("#name"+len).chosen({disable_search:true});
 $("#operator"+len).chosen({disable_search:true});
 $("#contact"+len).chosen({disable_search:true});
 }
 //删除表格行
 function deleteRow(){
-	var len = $("#unchoosetable tbody tr").length;
-	if(len>1){
-		$("#unchoosetable tbody").find("tr:last").remove();
+	var len = $('table tbody input[type="checkbox"]:checked').length;
+	if(len==0){
+	    $("#tipscontent").html("请至少选择一条数据");
+	    $("#dia").click();
+	    return;
 	}
+	$('table tbody input[type="checkbox"]:checked').each(function(){
+		$(this).parents("tr").remove();
+	});
+	
 }
 </script>
 <%@include file="/views/common/common_menus.jsp" %>
@@ -203,19 +217,73 @@ function deleteRow(){
 					<table  class="table table-datatable table-custom" id="unchoosetable" style="font-size: 9px;">
                       <thead>
                           <tr>
-						  <th style="width:20%;">名称</th>
-						  <th style="width:20%;">编码</th>
-						  <th style="width:20%;">操作符</th>
-						  <th style="width:20%;">阀值</th>
+						  <th style="width:5%;">
+						    <div class="checkbox check-transparent" style="min-height: 5px;">
+                              <input type="checkbox"  id="allchck" name="allchck">
+                              <label for="allchck"></label>
+                            </div>
+						  </th>
+						  <th style="width:25%;">名称</th>
+						  <th style="width:25%;">操作符</th>
+						  <th style="width:25%;">阀值</th>
 						  <th style="width:20%;">连接符</th>
                           </tr>
                         </thead>
-						<tbody>       
+						<tbody>   
+						<c:if test="${empty valueVOS}">
+	                     		<tr class="odd gradeX">
+	                     		<td>
+	                     			<div class="checkbox check-transparent" style="margin-top:25px;">
+									  <input type="checkbox" value="check1" id="check1" name="checkbox">
+									  <label for="check1"></label>
+									</div>
+	                     		</td>
+	                     		<td>
+	                     		<%-- <input type="text" value="${valuevo.name }" class="form-control" id="name${status.count}" > --%>
+	                     		<select class="chosen-select chosen-transparent form-control" name="name" id="name1">
+			                            <option value="cpu_usage">CPU利用率</option>  
+			                            <option value="disk_usage">磁盘利用率</option> 
+			                            <option value="memory_usage">内存利用率</option> 
+		                        </select>
+	                     		</td>
+								<%-- <td><input type="text" value="${valuevo.code }" class="form-control" id="code${status.count}" ></td> --%>
+								<td>
+								<select class="chosen-select chosen-transparent form-control" name="operator" id="operator1">
+			                            <option value="equal">等于</option>  
+			                            <option value="high">大于</option> 
+			                            <option value="low">小于</option> 
+			                            <option value="between">在...之间</option> 
+		                        </select>
+								</td>
+								<td><input type="text"  class="form-control" id="value1" ></td>
+								<td>
+								<select class="chosen-select chosen-transparent form-control" name="contact" id="contact1">
+		                            <option value="" >空</option>  
+		                            <option value="and" >并且</option> 
+		                            <option value="or" >或者</option> 
+	                            </select>
+								</td>
+								</tr>
+	                     </c:if>   
+	                         
 						<c:if test="${!empty valueVOS}">
 	                     	<c:forEach items="${valueVOS }" var="valuevo" varStatus="status">
-	                     		<tr>
-	                     		<td><input type="text" value="${valuevo.name }" class="form-control" id="name${status.count}" ></td>
-								<td><input type="text" value="${valuevo.code }" class="form-control" id="code${status.count}" ></td>
+	                     		<tr class="odd gradeX">
+	                     		<td>
+	                     			<div class="checkbox check-transparent" style="margin-top:25px;">
+									  <input type="checkbox" value="${valuevo.id }" id="${valuevo.id }" name="checkbox">
+									  <label for="${valuevo.id }"></label>
+									</div>
+	                     		</td>
+	                     		<td>
+	                     		<%-- <input type="text" value="${valuevo.name }" class="form-control" id="name${status.count}" > --%>
+	                     		<select class="chosen-select chosen-transparent form-control" name="name" id="name${status.count}">
+			                            <option value="cpu_usage">CPU利用率</option>  
+			                            <option value="disk_usage">磁盘利用率</option> 
+			                            <option value="memory_usage">内存利用率</option> 
+		                        </select>
+	                     		</td>
+								<%-- <td><input type="text" value="${valuevo.code }" class="form-control" id="code${status.count}" ></td> --%>
 								<td>
 								<select class="chosen-select chosen-transparent form-control" name="operator" id="operator${status.count}">
 			                            <option value="equal" <c:if test="${valuevo.operator=='equal' }">selected</c:if> >等于</option>  
@@ -296,6 +364,10 @@ function deleteRow(){
     
     <script>
     $(function(){
+        //check all checkboxes
+        $('table thead input[type="checkbox"]').change(function () {
+          $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', $(this).prop('checked'));
+        });
       //chosen select input
       $(".chosen-select").chosen({disable_search_threshold: 10});
     })

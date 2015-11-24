@@ -1,4 +1,33 @@
 ******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151124-1)
+修改时间：2015/11/24
+修改人：张本缘
+修改文件：
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/app/listener/CheckServerRoomsListener.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/constant/MonitorConstant.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/MonitorController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/StaticReportController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/MonitorServiceImpl.java
+cloud_solution/main_site/cloudmp/WebContent/views/monitor/monitor_area_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/monitor/monitor_host_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/monitor/monitor_rack_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/monitor/monitor_resource_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/monitor/monitor_resourcetohost.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/monitor/monitor_room_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/monitor/monitor_server_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/monitor/sys_warnrule_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/monitor/sys_warnvalue_edit.jsp
+
+新增文件：
+无
+主要变更：
+1.资源监控各个页面增加根据状态过滤数据功能(总体概况分析除外);
+2.告警规则管理页面优化;
+3.资源池信息监控增加CPU、内存和磁盘实时用量显示;
+
+兼容性说明：
+	无
+******************************************************
 版本号：版本号：【云平台web】verion(2.1)(build 20151120-2)
 修改时间：2015/11/20
 修改人：周亚锋

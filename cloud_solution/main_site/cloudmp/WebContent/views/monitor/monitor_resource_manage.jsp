@@ -93,9 +93,45 @@ function hostquery(id){
                         </tr>
                       </tbody>
                     </table>
-
                     <div class="custom-labels" data-target-flot="#pie-chart02"></div>
-
+						<ul class="progress-list">
+                            <li>
+                              <div class="details">
+                                <div class="title">CPU利用率</div>
+                              </div>
+                              <div class="status pull-right">
+                                <span class="animate-number" data-value="${resource.cpu_usage }" data-animation-duration="1500">0</span>%
+                              </div>
+                              <div class="clearfix"></div>
+                              <div class="progress progress-little">
+                                <div class="progress-bar progress-bar-green animate-progress-bar" data-percentage="${resource.cpu_usage }%" style="width: 0%;"></div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="details">
+                                <div class="title">内存利用率</div>
+                              </div>
+                              <div class="status pull-right">
+                                <span class="animate-number" data-value="${resource.memory_usage }" data-animation-duration="1500">0</span>%
+                              </div>
+                              <div class="clearfix"></div>
+                              <div class="progress progress-little">
+                                <div class="progress-bar progress-bar-cyan animate-progress-bar" data-percentage="${resource.memory_usage }%" style="width: 0%;"></div>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="details">
+                                <div class="title">磁盘利用率</div>
+                              </div>
+                              <div class="status pull-right">
+                                <span class="animate-number" data-value="${resource.disk_usage }" data-animation-duration="1500">0</span>%
+                              </div>
+                              <div class="clearfix"></div>
+                              <div class="progress progress-little">
+                                <div class="progress-bar progress-bar-amethyst animate-progress-bar" data-percentage="${resource.disk_usage }%" style="width: 0%;"></div>
+                              </div>
+                            </li>
+                          </ul>
                   </div>
                   <!-- /tile body -->
                 </section>          
@@ -168,7 +204,6 @@ function hostquery(id){
         var bars = false;
         var lines = true;
         var pie = false;
-
         var initializeFlot = function(){
           
           var el = $('table.flot-chart');
