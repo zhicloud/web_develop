@@ -211,7 +211,7 @@
 	        	for(var i=0;i<6;i++){
 					cpuArray[i] = cpuArray[i+1];
 				}
-				var cpu_usage = result.cpuUsage;
+				var cpu_usage = result.cpuUsage * 100;
 				cpuArray[6] = cpu_usage.toFixed(0);
 				
 				

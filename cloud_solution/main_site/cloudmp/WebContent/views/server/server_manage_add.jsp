@@ -219,13 +219,13 @@
                         <label for="input01" class="col-sm-2 control-label">系统磁盘</label>
                         <div class="col-sm-10">
                           <div class="radio radio-transparent col-md-8">
-	                            <input type="radio" id="create_from_img" name="sysDiskType" value="from_sys_image" checked onclick="$('#sysImageId').removeAttr('disabled');">
+	                            <input type="radio" id="create_from_img" name="sysDiskType" value="from_sys_image" checked onclick="$('#sysImageId1,#sysImageId2').removeAttr('disabled');">
 	                            <label for="create_from_img" style="float:left">从镜像创建</label>
 	                            <div class="col-sm-6" id="selectbox">
 	                            <div id="image_divall">
 	                            
 	                            
-	                            <select class="chosen-select chosen-transparent form-control" name="sysImageId" id="sysImageId1" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
+	                            <select class="chosen-select chosen-transparent form-control" name="sysImageId" id="sysImageId2" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
 	                            <option value="">请选择镜像</option> 
 	                            <c:forEach items="${imageList }" var="sdi">
 	                                 	<c:if test="${sdi.realImageId!=null }">
@@ -259,7 +259,7 @@
                           
                           <div class="radio radio-transparent col-md-8">
                             <input type="hidden" name="emptyDisk" id="emptyDisk" value="10"/>
-                            <input type="radio" id="empty_system" name="sysDiskType" value="from_empty" onclick="$('#sysImageId').attr('disabled','disabled');">
+                            <input type="radio" id="empty_system" name="sysDiskType" value="from_empty" onclick="$('#sysImageId1,#sysImageId2').attr('disabled','disabled');">
                             <label for="empty_system" style="float:left">空白系统</label>
                             <div class="col-sm-8" >10GB<div class="noUiSlider"  style="margin-left: 40px;"      id="slider"    ></div></div>500GB
                             <br><span id="now">10</span>GB
@@ -528,7 +528,9 @@
       $(".chosen-select").chosen({disable_search_threshold: 10});
       $("#custom").attr("disabled",true);
       $(".my_div").attr("disabled",true);
-      $("#sysImageId").attr("disabled",true);
+      
+      
+      
       $("#custom").hide();
     //check all checkboxes
       $('table thead input[type="checkbox"]').change(function () {
@@ -564,6 +566,7 @@
 			$("#custom").show();
 			$("#create_new_option_type1").attr("flag","2");
 			$("#create_new_option_type1").html("<span>取消自定义<span>");
+			$("#image_divall").find("select").removeAttr("disabled");
 			diy_id = "create_new_option_type1";
     	  }else{
     		$("#chcmId1_chosen").attr("style","width:230px;");
@@ -574,6 +577,7 @@
   			$("#custom").hide();
   			$("#create_new_option_type1").attr("flag","1");
   			$("#create_new_option_type1").html("<span>自定义配置<span>");
+  			$("#image_divall").find("select").attr("disabled","disabled");
   			diy_id = "";
     	  }
 //   	  location.href = path+"/cscm/addserverpage";
@@ -590,6 +594,7 @@
 			$("#custom").show();
 			$("#create_new_option_type2").attr("flag","2");
 			$("#create_new_option_type2").html("<span>取消自定义<span>");
+			$("#image_divthin").find("select").removeAttr("disabled");
 			diy_id = "create_new_option_type2";
     	  }else{
     		$("#chcmId2_chosen").attr("style","width:230px;");
@@ -600,6 +605,7 @@
   			$("#custom").hide();
   			$("#create_new_option_type2").attr("flag","1");
   			$("#create_new_option_type2").html("<span>自定义配置<span>");
+      		$("#image_divthin").find("select").attr("disabled","disabled");
   			diy_id = "";
     	  }
 //   	  location.href = path+"/cscm/addserverpage";
@@ -609,10 +615,7 @@
 		$("#allType").show();
 		$("#qcw2").find("select").attr("disabled","disabled");
 		$("#qcw2").hide(); 
-		$("#image_divthin").find("select").attr("disabled","disabled");
-		$("#image_divthin").hide();
-		$("#image_divall").find("select").removeAttr("disabled");
-		$("#image_divall").show();
+		
       
       
       
@@ -746,7 +749,7 @@
               		$("#allType").hide();  
               		$("#image_divall").find("select").attr("disabled","disabled");
               		$("#image_divall").hide();
-              		$("#image_divthin").find("select").removeAttr("disabled");
+              		$("#image_divthin").find("select").attr("disabled","disabled");
               		$("#image_divthin").show();
               	}else{
               		$("#allType").find("select").removeAttr("disabled");
@@ -755,7 +758,7 @@
               		$("#qcw2").hide(); 
               		$("#image_divthin").find("select").attr("disabled","disabled");
               		$("#image_divthin").hide();
-              		$("#image_divall").find("select").removeAttr("disabled");
+              		$("#image_divall").find("select").attr("disabled","disabled");
               		$("#image_divall").show();
               	}
               	$("#"+diy_id).click(); 
