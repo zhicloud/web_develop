@@ -179,11 +179,12 @@ public class SysWarnController extends TransFormBaseAction {
     public MethodResult saveValueInfo(@RequestParam("datas") String datas, @RequestParam("ruleid") String ruleid,
             HttpServletRequest request) {
         JSONArray array = JSONArray.fromObject(datas);
-        int n = sysWarnService.saveValueInfo(array, ruleid);
-        if (n > 0) {
+        try {
+            sysWarnService.saveValueInfo(array, ruleid);
             operLogService.addLog("告警规则", "更新告警规则内容成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS, "保存成功");
-        } else {
+        } catch (Exception e) {
+            e.printStackTrace();
             operLogService.addLog("告警规则", "更新告警规则内容失败", "1", "2", request);
             return new MethodResult(MethodResult.FAIL, "保存失败");
         }

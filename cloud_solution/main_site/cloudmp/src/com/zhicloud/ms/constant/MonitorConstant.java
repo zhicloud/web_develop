@@ -98,6 +98,10 @@ public class MonitorConstant {
     public static Map<String, Integer> monitorData = Collections.synchronizedMap(new LinkedHashMap<String, Integer>());
     // 异步监控数据回调集合
     public static Map<String,JSONObject> receiveData = Collections.synchronizedMap(new LinkedHashMap<String, JSONObject>());
+    //资源池信息存放
+    public static Map<String, JSONObject> resourceData = Collections
+            .synchronizedMap(new LinkedHashMap<String, JSONObject>());
+    
     /**
      * @Description:根据ID查找父级ID
      * @param id
@@ -247,7 +251,7 @@ public class MonitorConstant {
             BigDecimal bg = new BigDecimal(value);
             value = bg.toPlainString();
         }
-        if (value == null || "".equals(value)) {
+        if (value == null || "".equals(value) || "null".equals(value)) {
             return 0;
         }
         double f = Double.parseDouble(value) * 100;
