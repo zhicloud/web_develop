@@ -9,6 +9,7 @@ import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.exception.AppException;
 import com.zhicloud.ms.mapper.SysUserMapper;
 import com.zhicloud.ms.mapper.TerminalUserMapper;
+import com.zhicloud.ms.message.MessageEvent;
 import com.zhicloud.ms.message.MessageServiceManager;
 import com.zhicloud.ms.message.email.EmailSendService;
 import com.zhicloud.ms.message.email.EmailTemplateConstant;
@@ -31,6 +32,8 @@ import com.zhicloud.ms.vo.SysUser;
 import com.zhicloud.ms.vo.TerminalUserVO;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -56,6 +59,9 @@ public class ManSysUserServiceImpl implements ManSysUserService {
     
     @Resource
     private IOperLogService operLogService;
+
+    @Autowired
+    private ApplicationContext applicationContext;
     
     /**
      * @Description:sqlSession注入
@@ -328,12 +334,7 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             operatorData.put("type", TransformConstant.transform_log_user);
 
             int m = this.addSystemLogInfo(operatorData);
-            // 发送邮件
-            /*Map<String, Object> user = new LinkedHashMap<String, Object>();
-            user.put("password", password);
-            user.put("email", email);
-            user.put("usercount", usercount);
-            new SendMail().sendPasswordEmail(user);*/
+
             if (n > 0 && m > 0) {
                 // 发送注册通知邮件
                 try {
@@ -342,8 +343,8 @@ public class ManSysUserServiceImpl implements ManSysUserService {
                         param.put("name", usercount);
                         param.put("password", password);
                         param.put("url", AppProperties.getValue("address_of_this_system", ""));
-                        EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
-                        emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_ADMIN_REGISTER, email, param);
+                        //异步发送邮件
+                        publishMessageEvent(param);
                     }
                 } catch (Exception e) {
                     logger.error(e);
@@ -360,6 +361,15 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             logger.error(e);
             throw new AppException("添加失败");
         }
+    }
+
+    /**
+     * @author 张翔
+     * @function 消息发送事件发布
+     * @param parameter
+     */
+    private void publishMessageEvent(Map<String, Object> parameter) {
+        applicationContext.publishEvent(new MessageEvent(parameter));
     }
 
     /**
