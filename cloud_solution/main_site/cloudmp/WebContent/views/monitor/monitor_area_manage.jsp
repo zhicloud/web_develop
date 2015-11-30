@@ -11,7 +11,7 @@
 function roomquery(id){
 	var obj = new Object();
 	obj["areaid"] = id;
-	obj["menuflag"] = "room";
+	obj["menuflag"] = "area";
 	window.location.href = "<%=request.getContextPath()%>/monitor/roomquery?data="+JSON.stringify(obj);
 }
 </script>

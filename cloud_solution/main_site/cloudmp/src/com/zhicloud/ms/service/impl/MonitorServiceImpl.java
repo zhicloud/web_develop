@@ -314,8 +314,8 @@ public class MonitorServiceImpl implements MonitorService {
         String rackid = "";
         String menuflag = "";
         if (!params.isEmpty()) {
-            rackid = params.getString("rackid");
-            menuflag = params.getString("menuflag");
+            rackid = params.get("rackid") == null ? "" : params.getString("rackid");
+            menuflag = params.get("menuflag") == null ? "" : params.getString("menuflag");
         }
         // 服务器信息
         JSONArray serversArray = new JSONArray();
