@@ -157,7 +157,7 @@ public class CapacityUtil
 	public static void main(String[] args)
 	{
 		System.out.println(fromCapacityLabel("100GB"));
-		System.out.println(toGBValue(new BigDecimal(10908913520L).toBigInteger(), 0));
+		System.out.println(toGBValue(new BigDecimal(107374182400L).toBigInteger(), 0));
 		
 		
 	}
