@@ -148,13 +148,14 @@ public class BoxRealInfoServiceImpl implements IBoxRealInfoService {
 
         List<BoxRealInfoVO> boxRealInfoVOs = Arrays.asList(list);
 
-        //批量更新盒子信息
-        int n = this.sqlSession.getMapper(BoxRealInfoMapper.class).updateBoxInfoBatch(boxRealInfoVOs);
-
-        if (n > 0) {
-            cache.removeAll();
+        if (boxRealInfoVOs.size() > 0) {
+            //批量更新盒子信息
+            int n = this.sqlSession.getMapper(BoxRealInfoMapper.class).updateBoxInfoBatch(boxRealInfoVOs);
+            if (n > 0) {
+                cache.removeAll();
+            }
+            logger.info("Cumulative online time in batch");
         }
-        logger.info("Cumulative online time in batch");
 
     }
 

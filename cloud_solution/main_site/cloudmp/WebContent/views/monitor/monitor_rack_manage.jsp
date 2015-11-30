@@ -7,12 +7,12 @@
   </head>
 <%@include file="/views/common/common_menus.jsp" %>
 <script type="text/javascript">
-//查看机架页面跳转
+//查看服务器页面跳转
 function serverquery(id){
 	var obj = new Object();
 	obj["areaid"] = "${params.areaid}";
 	obj["roomid"] = "${params.roomid}";
-	obj["menuflag"] = "server";
+	obj["menuflag"] = "room";
 	obj["rackid"] = id;
 	window.location.href = "<%=request.getContextPath()%>/monitor/serverquery?data="+JSON.stringify(obj);
 }
@@ -27,6 +27,19 @@ function roomquery(){
 		window.location.href = "<%=request.getContextPath()%>/monitor/roomquery";
 	}
 	
+}
+//根据状态查询数据
+function statusquery(val){
+	var data = new Object();
+	data.status = val;
+	data.areaid = "${params.areaid}";
+	data.roomid = "${params.roomid}";
+	data.rackid = "${params.rackid}";
+	data.serverid = "${params.serverid}";
+	data.type = "${params.type}";
+	data.poolid = "${params.poolid}";
+	data.menuflag = "${params.menuflag}";
+	window.location.href = "<%=request.getContextPath() %>/monitor/rackquery?data="+JSON.stringify(data);
 }
 </script>
     <!-- Make page fluid -->
@@ -54,9 +67,10 @@ function roomquery(){
                               <span> 返回机房</span>
                     </button>
                     </c:if>
-                    <span class="label label-success">正常:${statusdata.normal }</span>
-                    <span class="label label-warning">告警:${statusdata.warning }</span>
-                    <span class="label label-danger">故障:${statusdata.error }</span>
+                    <span class="label label-primary span2btn" onclick="statusquery('')">全部:${totalnum}</span>
+                    <span class="label label-success span2btn" onclick="statusquery('normal')">正常:${statusdata.normal }</span>
+                    <span class="label label-warning span2btn" onclick="statusquery('warning')">告警:${statusdata.warning }</span>
+                    <span class="label label-danger span2btn" onclick="statusquery('error')">故障:${statusdata.error }</span>
 <%--                     <span class="label label-default">屏蔽:${statusdata.stop }</span> --%>
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>

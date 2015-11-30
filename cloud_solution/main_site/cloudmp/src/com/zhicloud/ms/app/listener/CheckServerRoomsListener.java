@@ -1175,6 +1175,9 @@ public class CheckServerRoomsListener implements ServletContextListener {
                         MonitorConstant.hostsMap.put(pool.getString("uuid") + "∮" + pool.getString("name") + "∮"
                                 + regionDataName + "∮" + regionDataID, hosts);
                     }
+                    synchronized (MonitorConstant.resourceData) {
+                        MonitorConstant.resourceData.put(pool.getString("uuid"), pool);
+                    }
                     pool = null;
                     object_host = null;
                     hosts = null;

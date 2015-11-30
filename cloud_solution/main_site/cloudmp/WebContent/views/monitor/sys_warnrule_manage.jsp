@@ -111,8 +111,8 @@ function deleterules(){
                             <th class="no-sort">规则名称</th>
                             <!-- <th class="no-sort">规则标示符</th> -->
                             <th class="no-sort">规则类型</th>
-                            <th class="no-sort">采样频率</th>
-                            <th class="no-sort">采样次数</th>
+                            <th class="no-sort" width="300">规则内容</th>
+                            <!-- <th class="no-sort">采样次数</th> -->
                             <th class="no-sort">是否发送通知</th>
                             <th class="no-sort">通知类型</th>
                             <th class="no-sort">定时发送时间</th>
@@ -136,8 +136,11 @@ function deleterules(){
 	                            <c:if test="${sysWarnRuleVO.ruletype==1}">故障</c:if>
 	                            <c:if test="${sysWarnRuleVO.ruletype==0}">告警</c:if>
                             </td>
-                            <td class="cut">${sysWarnRuleVO.frequency }秒</td>
-                            <td class="cut">${sysWarnRuleVO.sampletime }</td>
+                            <td class="cut" style="word-wrap: break-word;">
+                            <%-- ${sysWarnRuleVO.frequency }秒 --%>
+                            ${sysWarnRuleVO.content }
+                            </td>
+                            <%-- <td class="cut">${sysWarnRuleVO.sampletime }</td> --%>
                             <td class="cut">
 	                            <c:if test="${sysWarnRuleVO.isnotify==1}">是</c:if>
 	                            <c:if test="${sysWarnRuleVO.isnotify==0}">否</c:if>                            

@@ -14,7 +14,7 @@ function hostquery(id){
 	obj["roomid"] = "${params.roomid}";
 	obj["rackid"] = "${params.rackid}";
 	obj["serverid"] = id;
-	obj["menuflag"] = "host";
+	obj["menuflag"] = "server";
 	window.location.href = "<%=request.getContextPath()%>/monitor/hostquery?data="+JSON.stringify(obj);
 }
 //返回机架
@@ -65,6 +65,19 @@ function viewdetail(id){
 	data.serverid = "";
 	window.location.href = "<%=request.getContextPath() %>/monitor/viewdetail?data="+JSON.stringify(data);
 }
+//根据状态查询数据
+function statusquery(val){
+	var data = new Object();
+	data.status = val;
+	data.areaid = "${params.areaid}";
+	data.roomid = "${params.roomid}";
+	data.rackid = "${params.rackid}";
+	data.serverid = "${params.serverid}";
+	data.type = "${params.type}";
+	data.poolid = "${params.poolid}";
+	data.menuflag = "${params.menuflag}";
+	window.location.href = "<%=request.getContextPath() %>/monitor/serverquery?data="+JSON.stringify(data);
+}
 </script>
     <!-- Make page fluid -->
     <div class="row">
@@ -91,10 +104,11 @@ function viewdetail(id){
 	                              <span> 返回机架</span>
 	                    </button>
                     </c:if>
-                    <span class="label label-success">正常:${statusdata.normal }</span>
-                    <span class="label label-warning">告警:${statusdata.warning }</span>
-                    <span class="label label-danger">故障:${statusdata.error }</span>
-                    <span class="label label-default">屏蔽:${statusdata.stop }</span>
+                    <span class="label label-primary span2btn" onclick="statusquery('')">全部:${totalnum}</span>
+                    <span class="label label-success span2btn" onclick="statusquery('normal')">正常:${statusdata.normal }</span>
+                    <span class="label label-warning span2btn" onclick="statusquery('warning')">告警:${statusdata.warning }</span>
+                    <span class="label label-danger span2btn" onclick="statusquery('error')">故障:${statusdata.error }</span>
+                    <span class="label label-default span2btn" onclick="statusquery('stop')">屏蔽:${statusdata.stop }</span>
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                     </div>
