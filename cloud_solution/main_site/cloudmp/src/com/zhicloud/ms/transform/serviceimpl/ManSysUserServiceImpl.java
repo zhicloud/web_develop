@@ -359,16 +359,7 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             logger.error(e);
             throw new AppException("添加失败");
         }
-    }
-
-    /**
-     * @author 张翔
-     * @function 消息发送事件发布
-     * @param parameter
-     */
-    private void publishMessageEvent(Map<String, Object> parameter) {
-        applicationContext.publishEvent(new MessageEvent(parameter));
-    }
+    } 
 
     /**
      * @author 张翔
