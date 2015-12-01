@@ -361,7 +361,7 @@ public class SysDiskImageServiceImpl implements ISysDiskImageService {
 					String description = JSONLibUtil.getString(diskImage, "description"); 
 					String[] identity  = JSONLibUtil.getStringArray(diskImage, "identity");
 					Integer fileType  = JSONLibUtil.getInteger(diskImage, "file_type");
-					BigInteger size   =JSONLibUtil.getBigInteger(diskImage, "size");
+					BigInteger size   = JSONLibUtil.getBigInteger(diskImage, "size");
 					
 					// 
 					SysDiskImageVO diskImageVO = sysDiskImageMapper.getByRealImageId(uuid);

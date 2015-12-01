@@ -1898,6 +1898,9 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         } else {
             serviceInfoExt.fail();
         }
+        synchronized (serviceInfoExt) {
+            serviceInfoExt.notifyAll();
+        }
         channel.release();
         logger.info(String.format("[%s]modify service response, data '%s'", sessionId, messageData));
     }   
