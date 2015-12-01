@@ -1,4 +1,4 @@
-﻿﻿<%@page import="com.zhicloud.op.exception.ErrorCode"%>
+﻿<%@page import="com.zhicloud.op.exception.ErrorCode"%>
 <%@page import="com.zhicloud.op.vo.CloudHostVO"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Map"%>
@@ -953,45 +953,74 @@ $(document).ready(function(){
 	    }); 
 	};
 	
-	// 重启
+	// 重启(先关机再开机)
 	self.restartCloudHost = function()
 	{
 		if( self.cloudHostRestartId=="" )
 		{
 			return;
 		}
-		ajax.remoteCall("bean://cloudHostService:restartCloudHost", 
-				[ self.cloudHostRestartId ],
-				function(reply) {
-					if( reply.status == "exception" )
-					{
+		ajax.remoteCall("bean://cloudHostService:stopCloudHost",
+ 				[ self.cloudHostRestartId ], 
+ 				function(reply) {
+ 					if (reply.status=="exception")
+ 					{
  						if( reply.errorCode=="<%=ErrorCode.ERROR_CODE_FAIL_TO_CALL_BEFORE_LOGIN%>" )
-						{
-							top.$.messager.alert("警告", "会话超时，请重新登录", "warning", function(){
-								window.location.reload();
-							});
-						}
-						else 
-						{
-							top.$.messager.alert("警告", reply.exceptionMessage, "warning",function(){
-								window.location.reload();
-							});
-						}
-					}
-					else if (reply.result.status == "success")
-					{
-						top.$.messager.alert("信息", reply.result.message, "info",function(){
+ 						{
+ 							top.$.messager.alert("警告", "会话超时，请重新登录", "warning", function(){
+ 								window.location.reload();
+ 							});
+ 						}
+ 						else 
+ 						{
+ 							top.$.messager.alert("警告", reply.exceptionMessage, "warning",function(){
+ 								window.location.reload();
+ 							});
+ 						}
+ 					}
+ 					else if(reply.result.status=="success")
+ 					{
+ 						//关机命令发送成功,则循环查询关机结果
+ 						refreshStatusForRestart(self.cloudHostRestartId,0);
+ 						
+ 					}else{
+						top.$.messager.alert("信息", "重启失败", "info",function(){
 							window.location.reload();
-						});
-					}
-					else
-					{
-						top.$.messager.alert('警告', reply.result.message, 'warning',function(){
-							window.location.reload();
-						});
-					}
-				}
-			) ;
+ 						});
+ 					}
+	    });
+// 		ajax.remoteCall("bean://cloudHostService:restartCloudHost", 
+// 				[ self.cloudHostRestartId ],
+// 				function(reply) {
+// 					if( reply.status == "exception" )
+// 					{
+<%--  						if( reply.errorCode=="<%=ErrorCode.ERROR_CODE_FAIL_TO_CALL_BEFORE_LOGIN%>" ) --%>
+// 						{
+// 							top.$.messager.alert("警告", "会话超时，请重新登录", "warning", function(){
+// 								window.location.reload();
+// 							});
+// 						}
+// 						else 
+// 						{
+// 							top.$.messager.alert("警告", reply.exceptionMessage, "warning",function(){
+// 								window.location.reload();
+// 							});
+// 						}
+// 					}
+// 					else if (reply.result.status == "success")
+// 					{
+// 						top.$.messager.alert("信息", reply.result.message, "info",function(){
+// 							window.location.reload();
+// 						});
+// 					}
+// 					else
+// 					{
+// 						top.$.messager.alert('警告', reply.result.message, 'warning',function(){
+// 							window.location.reload();
+// 						});
+// 					}
+// 				}
+// 			) ;
 	};
 	
 	// 强制重启
@@ -1295,6 +1324,117 @@ function refreshStatus(id){
 		 return;
 	}
 }
+
+function refreshStatusForRestart(id,time){ 
+	if(id!=''){
+		ajax.remoteCall("bean://cloudHostService:getCloudHostStatus", 
+			[ id ],
+			function(reply) {
+				if (reply.status == "exception") 
+				{
+// 					top.$.messager.alert('警告', reply.exceptionMessage, 'warning');
+				} 
+				else if (reply.result.status == "success")//关机成功，启动云主机 
+				{
+					ajax.remoteCall("bean://cloudHostService:startCloudHost", 
+							[ id ],
+							function(reply) {
+								if( reply.status == "exception" )
+								{
+			 						if( reply.errorCode=="<%=ErrorCode.ERROR_CODE_FAIL_TO_CALL_BEFORE_LOGIN%>" )
+									{
+										top.$.messager.alert("警告", "会话超时，请重新登录", "warning", function(){
+											window.location.reload();
+										});
+									}
+									else 
+									{
+										top.$.messager.alert("警告", reply.exceptionMessage, "warning");
+									}
+								}
+								else if (reply.result.status == "success")
+								{
+// 									top.$.messager.alert("信息", reply.result.message, "info",function(){
+// 										window.location.reload();
+// 									});
+									refreshStartStatusForRestart(id);
+								}
+								else
+								{
+									top.$.messager.alert('警告', '重启失败', 'warning',function(){
+										window.location.reload();
+									});
+								}
+							}
+						) ;
+				} 
+				else //关机未成功则一直查询关机状态，超过2min则直接强制关机
+				{
+					if(time < 120){
+						window.setTimeout(function(){
+							refreshStatusForRestart(id,time+4);
+						},4000);
+					}else{//此处强制关机
+						ajax.remoteCall("bean://cloudHostService:haltCloudHost",
+			    				[ self.cloudHostHaltId ], 
+			    				function(reply) {
+			    					if (reply.status=="exception")
+			    					{
+			    						if( reply.errorCode=="<%=ErrorCode.ERROR_CODE_FAIL_TO_CALL_BEFORE_LOGIN%>" )
+			    						{
+			    							top.$.messager.alert("警告", "会话超时，请重新登录", "warning", function(){
+			    								window.location.reload();
+			    							});
+			    						}
+			    						else 
+			    						{
+			    							top.$.messager.alert("警告", reply.exceptionMessage, "warning");
+			    						}
+			    					}
+			    					else//关机成功，启动云主机
+			    					{
+			    						ajax.remoteCall("bean://cloudHostService:startCloudHost", 
+			    								[ id ],
+			    								function(reply) {
+			    									if( reply.status == "exception" )
+			    									{
+			    				 						if( reply.errorCode=="<%=ErrorCode.ERROR_CODE_FAIL_TO_CALL_BEFORE_LOGIN%>" )
+			    										{
+			    											top.$.messager.alert("警告", "会话超时，请重新登录", "warning", function(){
+			    												window.location.reload();
+			    											});
+			    										}
+			    										else 
+			    										{
+			    											top.$.messager.alert("警告", reply.exceptionMessage, "warning");
+			    										}
+			    									}
+			    									else if (reply.result.status == "success")
+			    									{
+			    										top.$.messager.alert("信息", reply.result.message, "info",function(){
+			    											window.location.reload();
+			    										});
+			    									}
+			    									else
+			    									{
+			    										top.$.messager.alert('警告', '重启失败', 'warning',function(){
+			    											window.location.reload();
+			    										});
+			    									}
+			    								}
+			    							) ;
+			    					}
+			    				}
+			    			);
+					}
+				}
+			}
+		);
+		
+	}else{
+		 return;
+	}
+}
 function refreshStartStatus(id){ 
 	if(id!=''){
 		ajax.remoteCall("bean://cloudHostService:getCloudHostStartStatus", 
@@ -1341,6 +1481,34 @@ function refreshStartStatus(id){
 // 					}else{
 // 						return;
 // 					}
+				}
+			}
+		);
+		
+	}else{
+		 return;
+	}
+}
+function refreshStartStatusForRestart(id){ 
+	if(id!=''){
+		ajax.remoteCall("bean://cloudHostService:getCloudHostStartStatus", 
+			[ id ],
+			function(reply) {
+				if (reply.status == "exception") 
+				{
+// 					top.$.messager.alert('警告', reply.exceptionMessage, 'warning');
+				} 
+				else if (reply.result.status == "success") 
+				{
+					top.$.messager.alert('提示', '重启成功', 'info',function(){
+						window.location.reload();
+					});
+				} 
+				else 
+				{
+					window.setTimeout(function(){
+						refreshStartStatusForRestart(id);
+					},4000);
 				}
 			}
 		);
