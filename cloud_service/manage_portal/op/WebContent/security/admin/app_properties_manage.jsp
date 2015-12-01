@@ -441,6 +441,29 @@
 						</td>
 					</tr>
 				</table>
+				<table style="width:100%; margin:0 auto 0 auto;">
+					<tr>
+						<td width="140px" style="font-weight:bolder;">
+						是否打印调试日志：
+						</td>
+						<td >
+							<input id="log-on" type="radio" name="log_on_off"  value="yes" checked="checked">是&nbsp;&nbsp;&nbsp;&nbsp;
+							<input id="log-off" type="radio" name="log_on_off"  value="no">否
+						</td>
+					</tr>
+					<tr>
+						<td width="140px">
+						</td>
+						<td style="color:blue;">
+							（此属性控制是否打印调试日志）
+						</td>
+					</tr>
+					<tr>
+						<td colspan="95" style="padding: 10px 0 10px 0;">
+							<hr />
+						</td>
+					</tr>
+				</table>
 				
 				<table style="width:100%; margin:0 auto 0 auto;">
 					<tr>
@@ -570,6 +593,16 @@
 // 				$("#notification-off").removeAttr("checked");
 // 				$("#notification-on").attr("checked","checked");
 				document.getElementById("notification-on").checked = true;
+			}
+			var log_on_off = "<%=AppProperties.getValue("log_on_off", "yes")%>";
+			if(log_on_off == "no"){
+// 				$("#notification-on").removeAttr("checked");
+// 				$("#notification-off").attr("checked","checked");
+				document.getElementById("log-off").checked = true;
+			}else{
+// 				$("#notification-off").removeAttr("checked");
+// 				$("#notification-on").attr("checked","checked");
+				document.getElementById("log-on").checked = true;
 			}
 		});
 		$("#address_of_this_system").val("<%=AppProperties.getValue("address_of_this_system", "")%>");
