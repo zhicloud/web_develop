@@ -11,11 +11,8 @@ package com.zhicloud.ms.controller;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.ArrayList; 
+import java.util.List; 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,8 +34,7 @@ import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.CloudHostConfigModel;
-import com.zhicloud.ms.vo.CloudHostVO;
-import com.zhicloud.ms.vo.CloudHostWarehouse;
+import com.zhicloud.ms.vo.CloudHostVO; 
 import com.zhicloud.ms.vo.SysDiskImageVO;
 
 /**

@@ -1,13 +1,13 @@
 package com.zhicloud.ms.app.listener.task;
 
-import org.apache.log4j.Logger;
+import org.apache.log4j.Logger; 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.zhicloud.ms.common.util.ThreadUtil;
+import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.exception.AppException;
-import com.zhicloud.ms.service.IDictionaryService;
-import com.zhicloud.ms.service.ISysDiskImageService;
+import com.zhicloud.ms.service.IDictionaryService; 
 
 public class DictionaryInitializer implements Runnable{
 

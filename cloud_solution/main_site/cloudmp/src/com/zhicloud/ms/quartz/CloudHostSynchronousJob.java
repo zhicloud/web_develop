@@ -8,6 +8,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.zhicloud.ms.app.pool.CloudHostPoolManager;
+import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.ICloudHostService;
 

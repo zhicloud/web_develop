@@ -4,14 +4,12 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
+  
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.zhicloud.ms.balancer.BalancerHelper;
-import com.zhicloud.ms.httpGateway.HttpGatewayAsyncChannel;
-import com.zhicloud.ms.httpGateway.HttpGatewayManager;
-import com.zhicloud.ms.httpGateway.HttpGatewayResponseHelper;
-import com.zhicloud.ms.service.ICloudHostService;
+import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.service.ILoadBalanceService;
 import com.zhicloud.ms.vo.BalancerForwardVO;
 

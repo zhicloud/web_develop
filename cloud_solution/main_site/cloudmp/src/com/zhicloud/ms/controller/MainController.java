@@ -9,8 +9,7 @@
 
 package com.zhicloud.ms.controller; 
 
-
-import java.util.List;
+ 
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,8 +23,7 @@ import com.zhicloud.ms.app.helper.LoginHelper;
 import com.zhicloud.ms.login.LoginInfo; 
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.transform.util.TransFormLoginHelper;
-import com.zhicloud.ms.transform.util.TransFormLoginInfo;
-import com.zhicloud.ms.vo.CloudHostVO;
+import com.zhicloud.ms.transform.util.TransFormLoginInfo; 
 
 /**
  * ClassName: MainController 

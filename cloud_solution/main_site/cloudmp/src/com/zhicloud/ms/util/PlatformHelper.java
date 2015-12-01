@@ -38,9 +38,7 @@ public class PlatformHelper {
                 HttpGatewayChannel channel = HttpGatewayManager.getChannel(regionData.getId());
                 // 获取默认计算资源池
                 JSONObject defaultComputePool = channel.computePoolQuery();
-                if (defaultComputePool == null) {
-                    continue;
-                }
+                 
 
                 if (defaultComputePool == null) {
                     logger.error("PlatformHelper.reflashCache>>>获取资源池失败");

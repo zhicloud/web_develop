@@ -1,6 +1,5 @@
 package com.zhicloud.ms.vo;
-
-import java.math.BigDecimal;
+ 
 import java.math.BigInteger;
 
 import com.zhicloud.ms.util.CapacityUtil;

@@ -18,6 +18,7 @@ public class  LogFileManager implements Runnable {
      * 构造函数。初始化参数
      * @param path
      */
+    @SuppressWarnings("static-access")
     public LogFileManager(String path) {
         this.path = path; 
     }

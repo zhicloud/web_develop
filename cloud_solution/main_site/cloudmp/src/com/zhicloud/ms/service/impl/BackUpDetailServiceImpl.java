@@ -8,13 +8,11 @@ import java.util.Map;
 import com.zhicloud.ms.constant.AppConstant;
 
 import org.apache.ibatis.session.SqlSession;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Service;
+import org.apache.log4j.Logger; 
 import org.springframework.transaction.annotation.Transactional;
 
 import com.zhicloud.ms.mapper.CloudHostMapper;
-import com.zhicloud.ms.mapper.BackUpDetailMapper;
-import com.zhicloud.ms.mapper.SysDiskImageMapper;
+import com.zhicloud.ms.mapper.BackUpDetailMapper; 
 import com.zhicloud.ms.service.IBackUpDetailService;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.CloudHostVO;

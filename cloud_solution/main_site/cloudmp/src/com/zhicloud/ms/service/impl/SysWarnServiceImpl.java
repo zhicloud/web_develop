@@ -12,8 +12,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.ibatis.session.SqlSession;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Service;
+import org.apache.log4j.Logger; 
 import org.springframework.transaction.annotation.Transactional;
 
 import com.zhicloud.ms.common.util.StringUtil;
@@ -29,7 +28,7 @@ import com.zhicloud.ms.vo.SysWarnValueVO;
  * @Description: 预警规则接口实现
  * @author 张本缘 于 2015年7月14日 上午9:31:34
  */
-@Service("sysWarnService")
+//@Service("sysWarnService")
 @Transactional(readOnly=true)
 public class SysWarnServiceImpl implements SysWarnService {
 

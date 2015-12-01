@@ -4,9 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.zhicloud.ms.remote.MethodResult;
-import com.zhicloud.ms.vo.CloudDisk;
-import com.zhicloud.ms.vo.CloudHostVO;
+import com.zhicloud.ms.remote.MethodResult; 
 import com.zhicloud.ms.vo.SysTenant;
 
 

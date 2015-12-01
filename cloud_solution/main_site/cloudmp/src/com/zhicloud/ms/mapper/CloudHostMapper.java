@@ -19,8 +19,7 @@ package com.zhicloud.ms.mapper;
 
 import java.util.List;
 import java.util.Map;
-
-import com.zhicloud.ms.remote.MethodResult;
+ 
 import com.zhicloud.ms.vo.CloudHostVO;
 
 /**
