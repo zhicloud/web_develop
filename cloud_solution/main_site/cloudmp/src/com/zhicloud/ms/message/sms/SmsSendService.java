@@ -8,13 +8,14 @@ import com.zhicloud.ms.service.ISmsTemplateService;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.SmsConfigVO;
 import com.zhicloud.ms.vo.SmsTemplateVO;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
+import org.dom4j.Element; 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +31,7 @@ import java.util.Map;
 @Transactional(readOnly = false)
 public class SmsSendService {
 
-    private static final Logger logger = Logger.getLogger(SmsSendService.class);
-
+ 
     private SmsContentGenerator smsContentGenerator;
 
     private ISmsConfigService smsConfigService;

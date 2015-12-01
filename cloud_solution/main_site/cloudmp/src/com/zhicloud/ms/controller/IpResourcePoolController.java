@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.bind.annotation.ResponseBody; 
 
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
 import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;

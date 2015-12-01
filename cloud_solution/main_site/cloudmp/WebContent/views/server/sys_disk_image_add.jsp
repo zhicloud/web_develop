@@ -306,7 +306,11 @@
    		        					success:function result(data){
    		        						if(data.status == "fail"){
    		        							isCommited = false;
-   		        							  $("#tipscontent").html("创建失败");
+   		        							  if(data.message != ''){
+   	   		        							  $("#tipscontent").html(data.message);
+   		        							  }else{
+   	   		        							  $("#tipscontent").html("创建失败");  
+   		        							  }
 							     		      $("#dia").click();  
 
    		        						}else{  		        							

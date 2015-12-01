@@ -1,16 +1,9 @@
 package com.zhicloud.ms.controller;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.File; 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,19 +21,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.bind.annotation.ResponseBody; 
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.zhicloud.ms.app.helper.AppHelper;
+ 
 import com.zhicloud.ms.app.pool.IsoImagePool;
 import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
-import com.zhicloud.ms.app.pool.IsoImagePoolManager;
-import com.zhicloud.ms.app.pool.isoImagePool.IsoImageProgressData;
-import com.zhicloud.ms.app.pool.isoImagePool.IsoImageProgressPool;
-import com.zhicloud.ms.app.pool.isoImagePool.IsoImageProgressPoolManager;
+import com.zhicloud.ms.app.pool.IsoImagePoolManager; 
 import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.IOperLogService;
@@ -49,7 +37,6 @@ import com.zhicloud.ms.service.SharedMemoryService;
 import com.zhicloud.ms.service.impl.EmailTemplateServiceImpl;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
-import com.zhicloud.ms.util.ServiceUtil;
 import com.zhicloud.ms.vo.SharedMemoryVO;
 @Controller
 public class IsoImageController {
@@ -94,6 +81,8 @@ public class IsoImageController {
     @ResponseBody
     public MethodResult add(@RequestParam("file")MultipartFile attach,String imagename,String type,String description,HttpServletRequest request, HttpServletResponse response) throws IOException
     { 
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "get, post");
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.iso_image_add)){
             return new MethodResult(MethodResult.FAIL,"您没有上传镜像的权限，请联系管理员");
         }
@@ -136,9 +125,7 @@ public class IsoImageController {
     @ResponseBody
     public MethodResult checknas(String url) throws IOException
     { 
-        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-        MultipartHttpServletRequest  multipartRequest = (MultipartHttpServletRequest) request;
-        String[] ip = StringUtil.getIpFromUrl(url);
+          String[] ip = StringUtil.getIpFromUrl(url);
         if(ip == null || ip.length <= 0){
             return new MethodResult(MethodResult.FAIL,"未挂载");
         }

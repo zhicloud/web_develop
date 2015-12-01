@@ -1,8 +1,7 @@
 package com.zhicloud.ms.app.pool.serviceInfoPool;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.List; 
 
 import org.apache.log4j.Logger;
 
@@ -11,8 +10,7 @@ import com.zhicloud.ms.constant.MonitorConstant;
 
 public class ServiceInfoPoolManager {
 
-	private final static Logger logger = Logger.getLogger(ServiceInfoPoolManager.class);
-	private static ServiceInfoPoolManager instance = null;
+ 	private static ServiceInfoPoolManager instance = null;
 	private final ServiceInfoPool serviceInfoPool;
 
 	public synchronized static ServiceInfoPoolManager singleton() {

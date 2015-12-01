@@ -564,6 +564,7 @@
 			$("#custom").show();
 			$("#create_new_option_type1").attr("flag","2");
 			$("#create_new_option_type1").html("<span>取消自定义<span>");
+			$("#image_divall").find("select").removeAttr("disabled");
 			diy_id = "create_new_option_type1";
     	  }else{
     		$("#chcmId1_chosen").attr("style","width:230px;");
@@ -574,6 +575,7 @@
   			$("#custom").hide();
   			$("#create_new_option_type1").attr("flag","1");
   			$("#create_new_option_type1").html("<span>自定义配置<span>");
+  			$("#image_divall").find("select").attr("disabled","disabled");
   			diy_id = "";
     	  }
 //   	  location.href = path+"/cscm/addserverpage";
@@ -590,6 +592,7 @@
 			$("#custom").show();
 			$("#create_new_option_type2").attr("flag","2");
 			$("#create_new_option_type2").html("<span>取消自定义<span>");
+			$("#image_divthin").find("select").removeAttr("disabled");
 			diy_id = "create_new_option_type2";
     	  }else{
     		$("#chcmId2_chosen").attr("style","width:230px;");
@@ -600,6 +603,7 @@
   			$("#custom").hide();
   			$("#create_new_option_type2").attr("flag","1");
   			$("#create_new_option_type2").html("<span>自定义配置<span>");
+      		$("#image_divthin").find("select").attr("disabled","disabled");
   			diy_id = "";
     	  }
 //   	  location.href = path+"/cscm/addserverpage";
@@ -745,25 +749,25 @@
 		              },
 		              success: function(result)
 		              {
-		              	if(result.status == "success"){ 
-	              			$("#qcw2").find("select").removeAttr("disabled");
-		              		$("#qcw2").show();
-		              		$("#allType").find("select").attr("disabled","disabled");
-		              		$("#allType").hide();  		              				              		 
-		              		$("#image_divall").find("select").attr("disabled","disabled");
-		              		$("#image_divall").hide();
-		              		$("#image_divthin").find("select").removeAttr("disabled");
-		              		$("#image_divthin").show();
-		              	}else{ 
-		              		$("#allType").find("select").removeAttr("disabled");
-		              		$("#allType").show();
-		              		$("#qcw2").find("select").attr("disabled","disabled");
-		              		$("#qcw2").hide();  		              				              		
-		              		$("#image_divthin").find("select").attr("disabled","disabled");
-		              		$("#image_divthin").hide();
-		              		$("#image_divall").find("select").removeAttr("disabled");
-		              		$("#image_divall").show();
-		              	}
+		            	  if(result.status == "success"){
+		                		$("#qcw2").find("select").removeAttr("disabled");
+		                		$("#qcw2").show();
+		                		$("#allType").find("select").attr("disabled","disabled");
+		                		$("#allType").hide();  
+		                		$("#image_divall").find("select").attr("disabled","disabled");
+		                		$("#image_divall").hide();
+		                		$("#image_divthin").find("select").attr("disabled","disabled");
+		                		$("#image_divthin").show();
+		                	}else{
+		                		$("#allType").find("select").removeAttr("disabled");
+		                		$("#allType").show();
+		                		$("#qcw2").find("select").attr("disabled","disabled");
+		                		$("#qcw2").hide(); 
+		                		$("#image_divthin").find("select").attr("disabled","disabled");
+		                		$("#image_divthin").hide();
+		                		$("#image_divall").find("select").attr("disabled","disabled");
+		                		$("#image_divall").show();
+		                	}
 		              	$("#"+diy_id).click(); 
 		              }
 		           }); 

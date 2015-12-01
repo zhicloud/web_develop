@@ -106,7 +106,8 @@ public class HttpGatewayReceiveChannel extends HttpGatewayChannelExt
 						{
 							// 一般情况下keepConnection会保持10秒的连接，如果中途断开的话一般是因为http gateway出现了什么情况，代码转到catch代码块
 							// 这种情况下需要重新刷新httpGatewayChannel里面的连接
-							result = getHelper().keepConnectionAlive(10.0);
+							result = getHelper().keepConnectionAlive(0);
+							Thread.sleep(10000);
 							if( HttpGatewayResponseHelper.isSuccess(result)==false )
 							{
 								// result为false的时候，为http gateway主动通知客户端需要重连

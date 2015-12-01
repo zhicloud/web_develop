@@ -4,8 +4,7 @@ import com.zhicloud.ms.app.pool.CloudHostData;
 import com.zhicloud.ms.app.pool.CloudHostPoolManager; 
 import com.zhicloud.ms.app.pool.IsoImagePool;
 import com.zhicloud.ms.app.pool.IsoImagePoolManager;
-import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
-import com.zhicloud.ms.app.pool.computePool.ComputeInfo; 
+import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData; 
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
@@ -868,6 +867,7 @@ public class CloudServerController {
     * @return void     
     * @throws
      */
+    @SuppressWarnings("unused")
     private void operatorHostBeforeBackup(String realHostId,Integer region){
         // 从http gateway获取云主机的详细信息
         HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(region);

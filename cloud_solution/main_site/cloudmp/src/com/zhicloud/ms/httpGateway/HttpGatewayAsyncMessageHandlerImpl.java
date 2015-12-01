@@ -41,9 +41,11 @@ import com.zhicloud.ms.constant.StaticReportHandle;
 import com.zhicloud.ms.service.IBackUpDetailService;
 import com.zhicloud.ms.util.CapacityUtil;
 import com.zhicloud.ms.vo.PlatformResourceMonitorVO;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.log4j.Logger;
+
+import org.apache.log4j.Logger; 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -65,6 +67,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
     
 	@HttpGatewayMessageHandler(messageType = "host_monitor_data")
 	public Map<String, String> hostMonitorData(HttpGatewayAsyncChannel channel, JSONObject messageData) {
+	    AppConstant.factory.getBean("backUpDetailService");
 		logger.debug("start to process host monitor data.");
 		// 新起线程处理数据
 		JSONArray hostList = messageData.getJSONArray("host_list");

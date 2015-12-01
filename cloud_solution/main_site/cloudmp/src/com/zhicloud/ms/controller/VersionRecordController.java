@@ -9,9 +9,7 @@
 
 package com.zhicloud.ms.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.File; 
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -31,15 +29,10 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.zhicloud.ms.app.helper.AppHelper;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.IOperLogService;
-import com.zhicloud.ms.service.IUserService;
-import com.zhicloud.ms.service.IVersionRecordService;
+ import com.zhicloud.ms.service.IVersionRecordService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
-import com.zhicloud.ms.util.StringUtil;
-import com.zhicloud.ms.vo.CloudHostConfigModel;
-import com.zhicloud.ms.vo.SysDiskImageVO;
-import com.zhicloud.ms.vo.SysGroupVO;
-import com.zhicloud.ms.vo.TerminalUserVO;
+import com.zhicloud.ms.util.StringUtil; 
 import com.zhicloud.ms.vo.VersionRecordVO;
 /**
  * ClassName: VersionRecordController 
