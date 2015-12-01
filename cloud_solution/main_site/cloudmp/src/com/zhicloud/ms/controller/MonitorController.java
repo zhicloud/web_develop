@@ -93,6 +93,19 @@ public class MonitorController extends TransFormBaseAction {
         }
         List<JSONObject> list = monitorService.roomQuery(params);
         JSONObject json = MonitorConstant.getStatusNum(list);
+        request.setAttribute("totalnum", list.size());
+        // 页面点击警告或故障按钮过滤数据
+        if (!params.isEmpty() && list.size() > 0) {
+            String status = params.get("status") == null ? null : params.getString("status");
+            if (status != null && !status.isEmpty()) {
+                Iterator<JSONObject> its = list.iterator();
+                while (its.hasNext()) {
+                    if (!status.equals(its.next().getString("status"))) {
+                        its.remove();
+                    }
+                }
+            }
+        }
         request.setAttribute("roomList", list);
         request.setAttribute("params", params);
         request.setAttribute("statusdata", json);
@@ -122,6 +135,19 @@ public class MonitorController extends TransFormBaseAction {
         }
         List<JSONObject> list = monitorService.rackQuery(params);
         JSONObject json = MonitorConstant.getStatusNum(list);
+        request.setAttribute("totalnum", list.size());
+        // 页面点击警告或故障按钮过滤数据
+        if (!params.isEmpty() && list.size() > 0) {
+            String status = params.get("status") == null ? null : params.getString("status");
+            if (status != null && !status.isEmpty()) {
+                Iterator<JSONObject> its = list.iterator();
+                while (its.hasNext()) {
+                    if (!status.equals(its.next().getString("status"))) {
+                        its.remove();
+                    }
+                }
+            }
+        }
         request.setAttribute("rackList", list);
         request.setAttribute("params", params);
         request.setAttribute("statusdata", json);
@@ -146,12 +172,28 @@ public class MonitorController extends TransFormBaseAction {
             params = new JSONObject();
         } else {
             params = JSONObject.fromObject(data);
-            params.put("areaname", MonitorConstant.nameMap.get(params.getString("areaid")));
-            params.put("roomname", MonitorConstant.nameMap.get(params.getString("roomid")));
-            params.put("rackname", MonitorConstant.nameMap.get(params.getString("rackid")));
+            params.put("areaname",
+                    MonitorConstant.nameMap.get(params.get("areaid") == null ? "" : params.getString("areaid")));
+            params.put("roomname",
+                    MonitorConstant.nameMap.get(params.get("roomid") == null ? "" : params.getString("roomid")));
+            params.put("rackname",
+                    MonitorConstant.nameMap.get(params.get("rackid") == null ? "" : params.getString("rackid")));
         }
         List<JSONObject> list = monitorService.serverQuery(params);
         JSONObject json = MonitorConstant.getStatusNum(list);
+        request.setAttribute("totalnum", list.size());
+        // 页面点击警告或故障按钮过滤数据
+        if (!params.isEmpty() && list.size() > 0) {
+            String status = params.get("status") == null ? null : params.getString("status");
+            if (status != null && !status.isEmpty()) {
+                Iterator<JSONObject> its = list.iterator();
+                while (its.hasNext()) {
+                    if (!status.equals(its.next().getString("status"))) {
+                        its.remove();
+                    }
+                }
+            }
+        }
         request.setAttribute("serverList", list);
         request.setAttribute("params", params);
         request.setAttribute("statusdata", json);
@@ -183,6 +225,19 @@ public class MonitorController extends TransFormBaseAction {
         }
         List<JSONObject> list = monitorService.hostQuery(params);
         JSONObject json = MonitorConstant.getStatusNum(list);
+        request.setAttribute("totalnum", list.size());
+        // 页面点击警告或故障按钮过滤数据
+        if (!params.isEmpty() && list.size() > 0) {
+            String status = params.get("status") == null ? null : params.getString("status");
+            if (status != null && !status.isEmpty()) {
+                Iterator<JSONObject> its = list.iterator();
+                while (its.hasNext()) {
+                    if (!status.equals(its.next().getString("status"))) {
+                        its.remove();
+                    }
+                }
+            }
+        }
         request.setAttribute("hostList", list);
         request.setAttribute("params", params);
         request.setAttribute("statusdata", json);
@@ -210,6 +265,10 @@ public class MonitorController extends TransFormBaseAction {
             json.put("resourceid", key.split("∮")[0]);
             json.put("resourcename", key.split("∮")[1]);
             json.put("areaname", key.split("∮")[2]);
+            JSONObject pool = MonitorConstant.resourceData.get(key.split("∮")[0]);
+            json.put("cpu_usage", MonitorConstant.convertStringToDouble(pool.get("cpu_usage") + ""));
+            json.put("memory_usage", MonitorConstant.convertStringToDouble(pool.get("memory_usage") + ""));
+            json.put("disk_usage", MonitorConstant.convertStringToDouble(pool.get("disk_usage") + ""));
             array.add(json);
         }
         request.setAttribute("resourcedata", array);
@@ -468,6 +527,19 @@ public class MonitorController extends TransFormBaseAction {
         }
         List<JSONObject> list = monitorService.hostQuery(params);
         JSONObject json = MonitorConstant.getStatusNum(list);
+        request.setAttribute("totalnum", list.size());
+        // 页面点击警告或故障按钮过滤数据
+        if (!params.isEmpty() && list.size() > 0) {
+            String status = params.get("status") == null ? null : params.getString("status");
+            if (status != null && !status.isEmpty()) {
+                Iterator<JSONObject> its = list.iterator();
+                while (its.hasNext()) {
+                    if (!status.equals(its.next().getString("status"))) {
+                        its.remove();
+                    }
+                }
+            }
+        }
         request.setAttribute("hostList", list);
         request.setAttribute("params", params);
         request.setAttribute("statusdata", json);

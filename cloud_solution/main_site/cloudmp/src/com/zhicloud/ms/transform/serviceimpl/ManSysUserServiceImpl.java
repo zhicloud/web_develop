@@ -371,6 +371,15 @@ public class ManSysUserServiceImpl implements ManSysUserService {
     }
 
     /**
+     * @author 张翔
+     * @function 消息发送事件发布
+     * @param parameter
+     */
+    private void publishMessageEvent(Map<String, Object> parameter) {
+        applicationContext.publishEvent(new MessageEvent(parameter));
+    }
+
+    /**
      * @Description:添加日志信息
      * @param condition
      */
