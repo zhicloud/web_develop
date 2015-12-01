@@ -132,7 +132,7 @@ public class HttpGatewayAsyncMessageController extends MultiActionController {
 				asyncMessageVOueue.put(asyncMessageVO);
 				// 进行处理
 				logger.debug("[" + Thread.currentThread().getId() + "] received async message, url=[" + request.getRequestURI() + "], message type [" + messageType + "]");
-				logger.debug(messageType+"处理共花费时间："+(System.currentTimeMillis()-start));  
+				logger.info(messageType+"处理共花费时间："+(System.currentTimeMillis()-start));  
 				return;
 			}
 			

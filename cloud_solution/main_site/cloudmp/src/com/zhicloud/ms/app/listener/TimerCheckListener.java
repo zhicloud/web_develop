@@ -256,7 +256,7 @@ public class TimerCheckListener implements ServletContextListener{
         }
         
          
-        time = "*/20 * * * * ?";
+        time = "*/50 * * * * ?";
         try {
             JobDetail jdCheck = QuartzManage.getQuartzManage().getScheduler().getJobDetail(new JobKey(AppConstant.UPDATE_COMPUTE_POOL_CACHE_QUARTZ_ID,"groupJob"));           
                 //没有任务则添加任务
@@ -279,51 +279,51 @@ public class TimerCheckListener implements ServletContextListener{
             e.printStackTrace();
          }
         
-        time = "*/3 * * * * ?";
-        try {
-            JobDetail jdCheck = QuartzManage.getQuartzManage().getScheduler().getJobDetail(new JobKey(AppConstant.CLOUD_HOST_CREATE_ID,"groupJob"));           
-                //没有任务则添加任务
-                if(jdCheck==null){
-                    //定义任务
-                    JobDetail jd = JobBuilder.newJob(CloudHostCreateJob.class)
-                            .withIdentity(new JobKey(AppConstant.CLOUD_HOST_CREATE_ID,"groupJob"))   
-                            .requestRecovery(true)
-                            .build();
-                    //定义触发器
-                    CronTrigger ct = (CronTrigger)TriggerBuilder.newTrigger()
-                            .withIdentity(new TriggerKey(AppConstant.CLOUD_HOST_CREATE_ID,"groupTrigger"))
-                            .withSchedule(CronScheduleBuilder.cronSchedule(time).withMisfireHandlingInstructionDoNothing())
-                            .startNow()
-                            .build();
-                    //添加任务
-                    QuartzManage.getQuartzManage().addTrigger(jd, ct);
-                }   
-         } catch (SchedulerException e) {
-            e.printStackTrace();
-         }
-        
-        time = "*/50 * * * * ?";
-        try {
-            JobDetail jdCheck = QuartzManage.getQuartzManage().getScheduler().getJobDetail(new JobKey(AppConstant.CLOUD_HOST_FETCH_ID,"groupJob"));           
-                //没有任务则添加任务
-                if(jdCheck==null){
-                    //定义任务
-                    JobDetail jd = JobBuilder.newJob(CloudHostSynchronousJob.class)
-                            .withIdentity(new JobKey(AppConstant.CLOUD_HOST_FETCH_ID,"groupJob"))   
-                            .requestRecovery(true)
-                            .build();
-                    //定义触发器
-                    CronTrigger ct = (CronTrigger)TriggerBuilder.newTrigger()
-                            .withIdentity(new TriggerKey(AppConstant.CLOUD_HOST_FETCH_ID,"groupTrigger"))
-                            .withSchedule(CronScheduleBuilder.cronSchedule(time).withMisfireHandlingInstructionDoNothing())
-                            .startNow()
-                            .build();
-                    //添加任务
-                    QuartzManage.getQuartzManage().addTrigger(jd, ct);
-                }   
-         } catch (SchedulerException e) {
-            e.printStackTrace();
-         }
+//        time = "*/3 * * * * ?";
+//        try {
+//            JobDetail jdCheck = QuartzManage.getQuartzManage().getScheduler().getJobDetail(new JobKey(AppConstant.CLOUD_HOST_CREATE_ID,"groupJob"));           
+//                //没有任务则添加任务
+//                if(jdCheck==null){
+//                    //定义任务
+//                    JobDetail jd = JobBuilder.newJob(CloudHostCreateJob.class)
+//                            .withIdentity(new JobKey(AppConstant.CLOUD_HOST_CREATE_ID,"groupJob"))   
+//                            .requestRecovery(true)
+//                            .build();
+//                    //定义触发器
+//                    CronTrigger ct = (CronTrigger)TriggerBuilder.newTrigger()
+//                            .withIdentity(new TriggerKey(AppConstant.CLOUD_HOST_CREATE_ID,"groupTrigger"))
+//                            .withSchedule(CronScheduleBuilder.cronSchedule(time).withMisfireHandlingInstructionDoNothing())
+//                            .startNow()
+//                            .build();
+//                    //添加任务
+//                    QuartzManage.getQuartzManage().addTrigger(jd, ct);
+//                }   
+//         } catch (SchedulerException e) {
+//            e.printStackTrace();
+//         }
+//        
+//        time = "*/50 * * * * ?";
+//        try {
+//            JobDetail jdCheck = QuartzManage.getQuartzManage().getScheduler().getJobDetail(new JobKey(AppConstant.CLOUD_HOST_FETCH_ID,"groupJob"));           
+//                //没有任务则添加任务
+//                if(jdCheck==null){
+//                    //定义任务
+//                    JobDetail jd = JobBuilder.newJob(CloudHostSynchronousJob.class)
+//                            .withIdentity(new JobKey(AppConstant.CLOUD_HOST_FETCH_ID,"groupJob"))   
+//                            .requestRecovery(true)
+//                            .build();
+//                    //定义触发器
+//                    CronTrigger ct = (CronTrigger)TriggerBuilder.newTrigger()
+//                            .withIdentity(new TriggerKey(AppConstant.CLOUD_HOST_FETCH_ID,"groupTrigger"))
+//                            .withSchedule(CronScheduleBuilder.cronSchedule(time).withMisfireHandlingInstructionDoNothing())
+//                            .startNow()
+//                            .build();
+//                    //添加任务
+//                    QuartzManage.getQuartzManage().addTrigger(jd, ct);
+//                }   
+//         } catch (SchedulerException e) {
+//            e.printStackTrace();
+//         }
         
 
 

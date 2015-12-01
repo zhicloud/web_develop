@@ -152,22 +152,22 @@
  	</servlet>
 	<!-- **************************************************** -->
 	
-<!-- 	<servlet> -->
-<!-- 		<description>从未处理的用户订单取出一个云主机配置并创建云主机</description> -->
-<!-- 		<servlet-name>UserOrderedCloudHostCreationListener</servlet-name> -->
-<!-- 		<servlet-class>com.zhicloud.ms.app.listener.UserOrderedCloudHostCreationListener</servlet-class> -->
-<!-- 		<init-param> -->
-<!-- 			<description>两次创建动作的间隔时长，单位秒</description> -->
-<!-- 			<param-name>interval_time</param-name> -->
-<!-- 			<param-value>3</param-value> -->
-<!-- 		</init-param> -->
-<!-- 		<init-param> -->
-<!-- 			<description>成功发送一个创建消息之后，等待一段时间再开始一次新的动作，单位秒</description> -->
-<!-- 			<param-name>wait_time_after_sending_creation</param-name> -->
-<!-- 			<param-value>10</param-value> -->
-<!-- 		</init-param> -->
-<!-- 		<load-on-startup>2</load-on-startup> -->
-<!-- 	</servlet> -->
+	<servlet>
+		<description>从未处理的用户订单取出一个云主机配置并创建云主机</description>
+		<servlet-name>UserOrderedCloudHostCreationListener</servlet-name>
+		<servlet-class>com.zhicloud.ms.app.listener.UserOrderedCloudHostCreationListener</servlet-class>
+		<init-param>
+			<description>两次创建动作的间隔时长，单位秒</description>
+			<param-name>interval_time</param-name>
+			<param-value>3</param-value>
+		</init-param>
+		<init-param>
+			<description>成功发送一个创建消息之后，等待一段时间再开始一次新的动作，单位秒</description>
+			<param-name>wait_time_after_sending_creation</param-name>
+			<param-value>10</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
 	
 <!-- 	<servlet> -->
 <!-- 		<description>读取云主机仓库的配置，然后创建仓库里的云主机</description> -->
