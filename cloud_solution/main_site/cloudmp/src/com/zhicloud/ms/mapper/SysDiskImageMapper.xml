@@ -164,7 +164,7 @@
 			name          = #{name},  
   			description   = #{description},
 			display_name  = #{displayName}, 
-			size          = #{size},
+			size          = #{size, javaType=BigInteger},
 			type          = #{type}
 			<if test="modifiedTime!=null">
 			,modified_time = #{modifiedTime}
@@ -183,7 +183,7 @@
 				,file_type = #{fileType}
 			</if> 
 			<if test="size!=null">
-				,size = #{size}
+				,size = #{size, javaType=BigInteger}
 			</if> 
 			 
 		</set>
