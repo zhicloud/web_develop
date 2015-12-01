@@ -2,10 +2,8 @@ package com.zhicloud.ms.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Arrays; 
+import java.util.List; 
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +22,7 @@ import com.zhicloud.ms.service.ITerminalInformationPushService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
-import com.zhicloud.ms.vo.SysGroupVO;
-import com.zhicloud.ms.vo.TerminalBoxVO;
+import com.zhicloud.ms.vo.SysGroupVO; 
 import com.zhicloud.ms.vo.TerminalInformationPushVO;
 
 /**

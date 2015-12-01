@@ -293,7 +293,11 @@
     </property>
     <property key="notification_on_off" name="是否开启故障监控信息通知" type="String" 
         description="是否开启故障监控信息通知">
-        yes
+        no
+    </property>
+    <property key="log_on_off" name="是否开启故障监控信息通知" type="String" 
+        description="是否开启故障监控信息通知">
+        no
     </property>
     <property key="cd_max_ports" name="成都主机开通最大端口数" type="String" 
         description="成都主机开通最大端口数">

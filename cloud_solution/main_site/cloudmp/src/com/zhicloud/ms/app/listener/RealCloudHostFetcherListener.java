@@ -2,7 +2,7 @@ package com.zhicloud.ms.app.listener;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
+ 
 import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -14,8 +14,7 @@ import org.apache.log4j.Logger;
 import com.zhicloud.ms.app.listener.task.RealCloudHostFetcherRunnable;
 import com.zhicloud.ms.app.listener.task.ScanHostMonitorRunnable;
 import com.zhicloud.ms.app.pool.hostMonitorInfoPool.HostMonitorInfoManager;
-import com.zhicloud.ms.exception.AppException;
-import com.zhicloud.ms.service.ICloudHostService;
+import com.zhicloud.ms.exception.AppException; 
 
 public class RealCloudHostFetcherListener implements Servlet {
 

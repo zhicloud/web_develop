@@ -48,8 +48,7 @@ import java.util.Map;
 @Transactional(readOnly=true)
 public class TerminalUserServiceImpl implements ITerminalUserService {
 
-	private static final Logger logger = Logger.getLogger(TerminalUserServiceImpl.class);
-
+ 
     @Resource
     private SqlSession sqlSession;
 

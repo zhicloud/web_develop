@@ -7,7 +7,8 @@ import com.zhicloud.ms.service.IMessageRecordService;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.EmailConfigVO;
 import com.zhicloud.ms.vo.EmailTemplateVO;
-import org.apache.log4j.Logger;
+
+import org.apache.log4j.Logger; 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +24,7 @@ import java.util.Map;
 @Transactional(readOnly = false)
 public class EmailSendService {
 
-    private static final Logger logger = Logger.getLogger(EmailSendService.class);
-
+ 
     private EmailHtmlContentGenerator emailHtmlContentGenerator;
 
     private IEmailConfigService emailConfigService;
@@ -37,9 +37,9 @@ public class EmailSendService {
     BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml");
 
     {
-        emailConfigService = (IEmailConfigService) factory.getBean("emailConfigService");
+        emailConfigService = (IEmailConfigService)factory.getBean("emailConfigService");
         emailTemplateService = (IEmailTemplateService) factory.getBean("emailTemplateService");
-        messageRecordService = (IMessageRecordService) factory.getBean("messageRecordService");
+        messageRecordService = (IMessageRecordService)factory.getBean("messageRecordService");
 
     }
 

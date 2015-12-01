@@ -14,23 +14,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.annotation.Resource; 
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zhicloud.ms.common.util.StringUtil;
-import com.zhicloud.ms.constant.AppConstant;
-import com.zhicloud.ms.mapper.SysUserMapper;
-import com.zhicloud.ms.mapper.TerminalUserMapper;
+import com.zhicloud.ms.common.util.StringUtil; 
 import com.zhicloud.ms.mapper.VersionRecordMapper;
 import com.zhicloud.ms.remote.MethodResult;
-import com.zhicloud.ms.service.IVersionRecordService;
-import com.zhicloud.ms.util.MD5;
+import com.zhicloud.ms.service.IVersionRecordService; 
 import com.zhicloud.ms.vo.VersionRecordVO;
  
 /**
@@ -46,8 +40,7 @@ import com.zhicloud.ms.vo.VersionRecordVO;
 @Service("versionRecordService")
 public class VersionRecordServiceImpl implements IVersionRecordService {
 	
-	private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
-	@Resource
+ 	@Resource
 	private SqlSession sqlSession;
 
 	/**

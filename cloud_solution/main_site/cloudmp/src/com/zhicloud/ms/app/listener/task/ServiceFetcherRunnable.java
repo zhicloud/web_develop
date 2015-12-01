@@ -1,5 +1,7 @@
 package com.zhicloud.ms.app.listener.task;
 
+import com.zhicloud.ms.app.helper.RegionHelper;
+import com.zhicloud.ms.app.helper.RegionHelper.RegionData;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoExt;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoPool;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoPoolManager;
@@ -7,7 +9,9 @@ import com.zhicloud.ms.common.util.constant.NodeTypeDefine;
 import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
 import com.zhicloud.ms.httpGateway.HttpGatewayResponseHelper;
+
 import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -48,9 +52,9 @@ public class ServiceFetcherRunnable implements Runnable {
 		logger.info(String.format("start to fetch service information. node_type[%s], group[%s], interval_time[%s]", this.node, this.group, this.intervalTime));
 
 		while (this.isRunning()) {
-//			RegionData[] regions = RegionHelper.singleton.getAllResions();
+			RegionData[] regions = RegionHelper.singleton.getAllResions();
 
-//			for (RegionData region : regions) {// 遍历所有区域的http_gateway
+			for (RegionData region : regions) {// 遍历所有区域的http_gateway
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				try {
 					JSONObject result = channel.serviceQuery(node, group);
@@ -84,7 +88,7 @@ public class ServiceFetcherRunnable implements Runnable {
 							serviceInfo.setPort(port);
 							serviceInfo.setStatus(status);
 							serviceInfo.setVersion(version);
-              serviceInfo.setDiskType(diskType);
+                            serviceInfo.setDiskType(diskType);
 							serviceInfo.updateTime();
 							
 						}
@@ -94,7 +98,7 @@ public class ServiceFetcherRunnable implements Runnable {
 				} catch (Exception e) {
 					logger.error(String.format("error occur when fetching service from region[%s]. node_type[%s], group[%s], exception[%s]", 1, this.node, this.group, e.getMessage()));
 				}
-//			}
+			}
 
 			this.waitSelf();
 		}

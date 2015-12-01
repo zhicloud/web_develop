@@ -9,8 +9,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.zhicloud.ms.common.util.DateUtil;
-import com.zhicloud.ms.common.util.ThreadUtil;
-
+ 
 
 public class WarehouseCloudHostCreationRunnable implements Runnable
 {
@@ -21,7 +20,6 @@ public class WarehouseCloudHostCreationRunnable implements Runnable
 	
 	private boolean bStop = false;
 	
-	private int intervalTime       = 60;			// 单位秒
 	private String actionStartTime = "02:00:00";	// 单位秒
 	private String actionEndTime   = "07:00:00";	// 单位秒
 	
@@ -30,7 +28,6 @@ public class WarehouseCloudHostCreationRunnable implements Runnable
 	
 	public WarehouseCloudHostCreationRunnable(int intervalTime, String actionStartTime, String actionEndTime)
 	{
-		this.intervalTime    = intervalTime;
 		this.actionStartTime = actionStartTime;
 		this.actionEndTime   = actionEndTime;
 	}
@@ -72,7 +69,8 @@ public class WarehouseCloudHostCreationRunnable implements Runnable
 		}
 	}
 	
-	private String getFirstWarehouseIdNeedToBeImmediatelyCreated()
+	@SuppressWarnings("unused")
+    private String getFirstWarehouseIdNeedToBeImmediatelyCreated()
 	{
 		synchronized (warehouseIdsNeedToBeImmediatelyCreated)
 		{

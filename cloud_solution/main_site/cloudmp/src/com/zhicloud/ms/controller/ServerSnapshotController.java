@@ -9,8 +9,7 @@
 
 package com.zhicloud.ms.controller; 
 
-import java.io.IOException;
-import java.math.BigDecimal;
+import java.io.IOException; 
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.util.LinkedList;
@@ -39,9 +38,7 @@ import com.zhicloud.ms.httpGateway.HttpGatewayManager;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
-import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
-import com.zhicloud.ms.util.CapacityUtil;
-import com.zhicloud.ms.vo.CloudHostVO;
+import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil; 
 import com.zhicloud.ms.vo.Snapshot;
 
 /**

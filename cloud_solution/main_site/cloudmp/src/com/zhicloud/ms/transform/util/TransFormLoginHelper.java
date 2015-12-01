@@ -4,11 +4,11 @@ package com.zhicloud.ms.transform.util;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set; 
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,9 +28,9 @@ import com.zhicloud.ms.transform.vo.ManSystemMenuVO;
 public class TransFormLoginHelper {
 
     // 存放标示ID和用户对象信息
-    public static Map<String, TransFormLoginInfo> sessionMap = new ConcurrentHashMap<String, TransFormLoginInfo>();
+    public static Map<String, TransFormLoginInfo> sessionMap = new HashMap<String, TransFormLoginInfo>();
     // 存放标示ID和session信息
-    public static Map<String, String> session = new ConcurrentHashMap<String, String>();
+    public static Map<String, String> session = new HashMap<String, String>();
 
     /**
      * @Description:参数加密

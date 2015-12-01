@@ -85,6 +85,7 @@ public class BackUpController {
         if(timer == null){
             timer = new TimerInfoVO();
             timer.setId(StringUtil.generateUUID());
+            timer.setStatus(2);
         }
         request.setAttribute("timer", timer);
         return "/desktop/set_time_back_up_manage";
@@ -108,6 +109,7 @@ public class BackUpController {
         if(timer == null){
             timer = new TimerInfoVO();
             timer.setId(StringUtil.generateUUID());
+            timer.setStatus(2);
         }
         request.setAttribute("timer", timer);
         return "/server/set_time_back_up_manage";

@@ -8,8 +8,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
 
-import com.zhicloud.ms.app.helper.RegionHelper;
-import com.zhicloud.ms.app.helper.RegionHelper.RegionData;
+
 import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
 import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;

@@ -95,6 +95,9 @@ public class SysDiskImageServiceImpl implements ISysDiskImageService {
 		hostdata.put("id", image.getFromHostId());
 		
 		CloudHostVO cloudHostVO = cloudHostMapper.getCloudHostById(hostdata);
+		if(cloudHostVO.getRunningStatus().equals(AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING)){
+		    return new MethodResult(MethodResult.FAIL, "主机未关机，请先关闭主机");
+		}
 		//异步回调-创建磁盘镜像
 		String sessionId = null;
 		try {

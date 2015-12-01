@@ -57,4 +57,13 @@
 		<p class="font12">© 2014 致云科技有限公司, All rights reserved.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ISP证 B2-20150457&nbsp;&nbsp;川公网安备 510115990197&nbsp;&nbsp;蜀ICP备 14004217号-1</p>
  	</div>
 </div>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?2eb38f683120203e6f767a68115c9cc1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 
