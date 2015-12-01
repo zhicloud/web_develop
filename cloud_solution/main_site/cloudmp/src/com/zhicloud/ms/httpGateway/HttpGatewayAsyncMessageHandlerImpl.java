@@ -457,7 +457,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		hostBackup.setSuccess(true);
 		hostBackup.updateTime();
 		hostBackup.setBackupStatus(9);
-		channel.release();
+//		channel.release();
 		
 		System.err.println(String.format("[%s]start to backup host. uuid[%s]", sessionId, uuid));
 	}
@@ -490,7 +490,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		hostBackup.setSuccess(true);
 		hostBackup.updateTime();
 		hostBackup.setBackupStatus(9);
-		channel.release();
+//		channel.release();
 		System.err.println(String.format("[%s]backup host at progress %d%%. uuid[%s]", sessionId, level, uuid));
 	}
 
@@ -537,6 +537,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 
             System.err.println(String.format("[%s]backup host fail. uuid[%s]", sessionId, uuid));			
 		}
+		pool.put(hostBackup);
 		channel.release();
 	}
 
