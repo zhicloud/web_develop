@@ -13,7 +13,7 @@
 		select  id,
 				userid,
 				actiondesc,
-				date_format(operatetime,'%Y-%m-%d %H:%I:%S') operatetime,
+				date_format(operatetime,'%Y-%m-%d %H:%i:%s') operatetime,
 				(select username from server_user u where u.id = a.userid) username
 		from server_log a
 		<where>
