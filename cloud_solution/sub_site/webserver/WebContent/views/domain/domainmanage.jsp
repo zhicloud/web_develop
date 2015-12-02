@@ -42,60 +42,76 @@
 //保存组播地址
 function saveGroupIP(){
 	var broadcast = $("#mult_address").val();
-	var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+	//var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+	var reg = /^(2[2-3][4-9])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
 	if(!reg.test(broadcast)){
-		alert("请输入正确的组播地址格式");
+		jQuery.messager.alert('提示:','请输入正确的组播地址格式(D类IP地址)','error'); 
+		$("#mult_address").val("${broadcast }");
 		return;
 	}
-	$.ajax({
-        type:"POST",
-        url:"<%=request.getContextPath() %>/domain/setbroadcast",
-        data:{broadcast:broadcast},
-        datatype: "json",
-        success:function(data){
-        	var re = eval(data);
-       		if(re.status == "success"){
-       			window.location.href = "<%=request.getContextPath() %>/domain/manage";
-       		}else{
-       			alert(re.message);
-       		}       
-        },
-        complete: function(XMLHttpRequest, textStatus){
-        },
-        error: function(){
-        }         
-     });
+	jQuery.messager.confirm('提示:','修改组播地址后,所有服务将会重启,确定修改吗?',function(event){ 
+			if(event){ 
+				$.ajax({
+			        type:"POST",
+			        url:"<%=request.getContextPath() %>/domain/setbroadcast",
+			        data:{broadcast:broadcast},
+			        datatype: "json",
+			        success:function(data){
+			        	var re = eval(data);
+			       		if(re.status == "success"){
+			       			jQuery.messager.alert('提示:','修改成功','info'); 
+			       			window.location.href = "<%=request.getContextPath() %>/domain/manage";
+			       		}else{
+			       			jQuery.messager.alert('提示:',re.message,'error'); 
+			       			$("#mult_address").val("${broadcast }");
+			       		}       
+			        },
+			        complete: function(XMLHttpRequest, textStatus){
+			        },
+			        error: function(){
+			        }         
+			     });
+			}
+	}); 
 }
 //保存域名信息
 function saveDomain(){
 	var domain = $("#domain_address").val();
 	if(/.*[\u4e00-\u9fa5]+.*$/.test(domain)) 
 	{ 
-		alert("域名不能含有中文!"); 
+		jQuery.messager.alert('提示:','域名不能含有中文','error'); 
 		return; 
 	} 
 	if(domain.length!=""&&domain.length>100){
-		alert("域名长度超出定义的100个字符,请重新输入");
+		jQuery.messager.alert('提示:','域名长度超出定义的100个字符,请重新输入','error'); 
 		return;
 	}
-	$.ajax({
-        type:"POST",
-        url:"<%=request.getContextPath() %>/domain/setdomain",
-        data:{domain:domain},
-        datatype: "json",
-        success:function(data){
-        	var re = eval(data);
-       		if(re.status == "success"){
-       			window.location.href = "<%=request.getContextPath() %>/domain/manage";
-       		}else{
-       			alert(re.message);
-       		}       
-        },
-        complete: function(XMLHttpRequest, textStatus){
-        },
-        error: function(){
-        }         
-     });
+	
+	jQuery.messager.confirm('提示:','修改域名后,所有服务将会重启,确定修改吗?',function(event){ 
+		if(event){ 
+			$.ajax({
+		        type:"POST",
+		        url:"<%=request.getContextPath() %>/domain/setdomain",
+		        data:{domain:domain},
+		        datatype: "json",
+		        success:function(data){
+		        	var re = eval(data);
+		       		if(re.status == "success"){
+		       			jQuery.messager.alert('提示:','修改成功','info'); 
+		       			window.location.href = "<%=request.getContextPath() %>/domain/manage";
+		       		}else{
+		       			jQuery.messager.alert('提示:',re.message,'error'); 
+		       			$("#domain_address").val("${domain}");
+		       		}       
+		        },
+		        complete: function(XMLHttpRequest, textStatus){
+		        },
+		        error: function(){
+		        }          /\
+		        
+		     });
+		}
+	}); 
 }
 $(function(){
 	$(".btn_ma_edit").on("click",function(){
