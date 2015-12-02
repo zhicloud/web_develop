@@ -802,7 +802,7 @@ public class HttpGatewayHelper
             磁盘格式
                 0=raw，裸盘
      */
-    public JSONObject hostAttachDisk(String uuid, BigInteger disk_volume, Integer disk_type, String disk_source, Integer mode) throws MalformedURLException, IOException
+    public JSONObject hostAttachDisk(String uuid, BigInteger disk_volume, Integer disk_type, String disk_source, Integer mode, String path, String crypt) throws MalformedURLException, IOException
     {
         String url = this.baseUrl + "host?";
         url += "command=attach_disk&";
@@ -820,6 +820,8 @@ public class HttpGatewayHelper
         postDataMap.put("disk_type", StringUtil.trim(disk_type));
         postDataMap.put("disk_source", StringUtil.trim(disk_source));
         postDataMap.put("mode", StringUtil.trim(mode));
+        postDataMap.put("path", StringUtil.trim(path));
+        postDataMap.put("crypt", StringUtil.trim(crypt));
         
         byte[] encryptParam = encrypt(postDataMap);
         

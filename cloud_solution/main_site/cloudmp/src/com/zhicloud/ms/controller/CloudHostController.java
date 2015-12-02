@@ -25,6 +25,7 @@ import com.zhicloud.ms.service.ICloudHostService;
 import com.zhicloud.ms.service.ICloudHostWarehouseService;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.service.ISysDiskImageService;
+import com.zhicloud.ms.service.SharedMemoryService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.CapacityUtil;
@@ -32,6 +33,7 @@ import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.BackUpDetailVO;
 import com.zhicloud.ms.vo.CloudHostVO;
 import com.zhicloud.ms.vo.CloudHostWarehouse; 
+import com.zhicloud.ms.vo.SharedMemoryVO;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
@@ -74,7 +76,8 @@ public class CloudHostController {
 	private IBackUpDetailService backUpDetailService;
 	@Resource
     private IOperLogService operLogService;
-	
+	@Resource
+    private SharedMemoryService sharedMemoryService;
 	
 	/**
 	 * 查询所有云主机
@@ -415,9 +418,18 @@ public class CloudHostController {
         if(StringUtil.isBlank(dataDisk)){
             return new MethodResult(MethodResult.FAIL,"磁盘大小不能为空");
         }
+        String path = "";
+        String crypt = "crypt";
+		if("2".equals(diskType)){
+			SharedMemoryVO sharedMemory = sharedMemoryService.queryAvailable();
+			if(sharedMemory==null || sharedMemory.getUrl()==null){
+				return new MethodResult(MethodResult.FAIL,"没有可用的共享存储路径");
+			}
+			path = sharedMemory.getUrl();
+		}
         try{
             HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-            JSONObject result = channel.hostAttachDisk(uuid, CapacityUtil.fromCapacityLabel(dataDisk+"GB"), new Integer(diskType), diskId, new Integer(mode));
+            JSONObject result = channel.hostAttachDisk(uuid, CapacityUtil.fromCapacityLabel(dataDisk+"GB"), new Integer(diskType), diskId, new Integer(mode), path, crypt);
             if("success".equals(result.getString("status"))){
                 return new MethodResult(MethodResult.SUCCESS,"添加成功");
             }
