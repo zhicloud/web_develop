@@ -25,6 +25,7 @@ import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.BackUpDetailVO;
 import com.zhicloud.ms.vo.CloudHostConfigModel;
 import com.zhicloud.ms.vo.CloudHostVO;
+import com.zhicloud.ms.vo.SharedMemoryVO;
 import com.zhicloud.ms.vo.SysDiskImageVO;
 import com.zhicloud.ms.vo.SysTenant;
 
@@ -73,7 +74,8 @@ public class SysTenantController {
     
     @Resource
     ISysDiskImageService sysDiskImageService;
-    
+    @Resource
+    private SharedMemoryService sharedMemoryService;
     
 	/**
 	 * 查询所有租户
@@ -938,6 +940,15 @@ public class SysTenantController {
         if(StringUtil.isBlank(dataDisk)){
             return new MethodResult(MethodResult.FAIL,"磁盘大小不能为空");
         }
+        String path = "";
+        String crypt = "crypt";
+		if("2".equals(diskType)){
+			SharedMemoryVO sharedMemory = sharedMemoryService.queryAvailable();
+			if(sharedMemory==null || sharedMemory.getUrl()==null){
+				return new MethodResult(MethodResult.FAIL,"没有可用的共享存储路径");
+			}
+			path = sharedMemory.getUrl();
+		}
         try{
             List<CloudHostVO> hostList = cloudHostService.getHostInTenant(tenantId);
             String name = "";
@@ -956,7 +967,7 @@ public class SysTenantController {
             }  
             
             HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-            JSONObject result = channel.hostAttachDisk(uuid, CapacityUtil.fromCapacityLabel(dataDisk+"GB"), new Integer(diskType), diskId, new Integer(mode));
+            JSONObject result = channel.hostAttachDisk(uuid, CapacityUtil.fromCapacityLabel(dataDisk+"GB"), new Integer(diskType), diskId, new Integer(mode), path, crypt);
             if("success".equals(result.getString("status"))){
                 return new MethodResult(MethodResult.SUCCESS,"添加成功");
             }
