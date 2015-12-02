@@ -127,7 +127,7 @@ public class ManSysUserServiceImpl implements ManSysUserService {
              //验证该用户ID，是否已经登录。当前用户比较已登录到系统的静态变量中的值，是否存在。  
              Boolean hasLogin = TransFormLoginHelper.isRepeatLogin(TransformConstant.transform_billid_admin, request);
              if(hasLogin){
-            	 operLog.setContent("超级管理员["+usercount+"]登录失败-管理员已登录");
+                 operLog.setContent("超级管理员["+usercount+"]登录失败-管理员已登录");
                  operLog.setStatus(2);
                  return toSuccessReply("用户已经登录", false);
              }
@@ -139,81 +139,81 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             operLog.setStatus(1);
         } else {
             if (manSystemUserVO == null) {
-            	//管理员登录不成功，尝试终端用户登录
-            	Integer type = AppConstant.SYS_USER_TYPE_TERMINAL_USER;
-         		SysUserMapper userMapper = this.sqlSession.getMapper(SysUserMapper.class);
-        		Map<String,Object> userCondition = new LinkedHashMap<String,Object>();
-        		userCondition.put("username", usercount);
-        		userCondition.put("password",  MD5.md5(usercount, password)); 
-        		userCondition.put("type", type);
-        		//返回查询结果
-        		SysUser  sysUser = userMapper.checkLogin(userCondition);
-        		
-        		//未查询到用户信息，返回密码错误
-        		if(sysUser == null ){
-        			//如果用户名登录查不到结果，我们认为是使用别名登录
-        			//通过别名查询用户
-        			sysUser = userMapper.queryUserByAlias(usercount);
-        			//如果用户存在，取出用户名再和密码进行查询
-        			if(sysUser!=null){
-        				//String name = sysUser.getUsername();
-        				Map<String,Object> myCondition = new LinkedHashMap<String,Object>();
-        				myCondition.put("username", usercount);
-        				myCondition.put("password", MD5.md5(usercount, password)); 
-        				myCondition.put("type", type);
-        				//返回结果
-        				sysUser = userMapper.checkLogin(condition);
-        				if(sysUser==null){
-        					return toSuccessReply("用户名或密码错误", false);
-        				}else{
-        					//查询用户详细信息
-                			TerminalUserMapper terminalUserMapper = this.sqlSession.getMapper(TerminalUserMapper.class);
-                			TerminalUserVO terminalUser = terminalUserMapper.getById(sysUser.getId());
-                			//用户已被禁用
-                			if(terminalUser.getStatus() == 1){
-                				return toSuccessReply("该账户已经被停用", false);
-                			}else{
-                 				//验证该用户ID，是否已经登录。当前用户比较已登录到系统的静态变量中的值，是否存在。  
-                	            Boolean hasLogin = TransFormLoginHelper.isRepeatLogin(terminalUser.getId(), request);
-                	            if(hasLogin){
-                	                return toSuccessReply("用户已经登录", false);
-                	            }else{
-                	            	// 设置菜单权限（终端用户登录无需设置功能权限）
-                	            	this.setTerminalUserInfo(request, terminalUser);
-                	            	result.put(TransformConstant.transform_session_admin, terminalUser.getId());
-                	                request.getSession().setAttribute("displayname", terminalUser.getName());
-//                	                return toSuccessReply(result, true);
-                	                return toSuccessReply("终端用户已经登录成功了", false);
-                	            }
-                			}
-        				}
-        			}else{
-        				return toSuccessReply("用户名或密码错误", false);
-        			}
-        		}else{
-        			//查询用户详细信息
-        			TerminalUserMapper terminalUserMapper = this.sqlSession.getMapper(TerminalUserMapper.class);
-        			TerminalUserVO terminalUser = terminalUserMapper.getById(sysUser.getId());
-        			//用户已被禁用
-        			if(terminalUser.getStatus() == 1){
-        				return toSuccessReply("该账户已经被停用", false);
-        			}else{
-         				//验证该用户ID，是否已经登录。当前用户比较已登录到系统的静态变量中的值，是否存在。  
-        	            Boolean hasLogin = TransFormLoginHelper.isRepeatLogin(terminalUser.getId(), request);
-        	            if(hasLogin){
-        	                return toSuccessReply("用户已经登录", false);
-        	            }else{
-        	            	// 设置菜单权限（终端用户登录无需设置功能权限）
-        	            	this.setTerminalUserInfo(request, terminalUser);
-        	            	result.put(TransformConstant.transform_session_admin, terminalUser.getId());
-        	                request.getSession().setAttribute("displayname", terminalUser.getName());
-//        	                return toSuccessReply(result, true);
-        	                return toSuccessReply("终端用户已经登录成功了", false);
+                //管理员登录不成功，尝试终端用户登录
+                Integer type = AppConstant.SYS_USER_TYPE_TERMINAL_USER;
+                SysUserMapper userMapper = this.sqlSession.getMapper(SysUserMapper.class);
+                Map<String,Object> userCondition = new LinkedHashMap<String,Object>();
+                userCondition.put("username", usercount);
+                userCondition.put("password",  MD5.md5(usercount, password)); 
+                userCondition.put("type", type);
+                //返回查询结果
+                SysUser  sysUser = userMapper.checkLogin(userCondition);
+                
+                //未查询到用户信息，返回密码错误
+                if(sysUser == null ){
+                    //如果用户名登录查不到结果，我们认为是使用别名登录
+                    //通过别名查询用户
+                    sysUser = userMapper.queryUserByAlias(usercount);
+                    //如果用户存在，取出用户名再和密码进行查询
+                    if(sysUser!=null){
+                        //String name = sysUser.getUsername();
+                        Map<String,Object> myCondition = new LinkedHashMap<String,Object>();
+                        myCondition.put("username", usercount);
+                        myCondition.put("password", MD5.md5(usercount, password)); 
+                        myCondition.put("type", type);
+                        //返回结果
+                        sysUser = userMapper.checkLogin(condition);
+                        if(sysUser==null){
+                            return toSuccessReply("用户名或密码错误", false);
+                        }else{
+                            //查询用户详细信息
+                            TerminalUserMapper terminalUserMapper = this.sqlSession.getMapper(TerminalUserMapper.class);
+                            TerminalUserVO terminalUser = terminalUserMapper.getById(sysUser.getId());
+                            //用户已被禁用
+                            if(terminalUser.getStatus() == 1){
+                                return toSuccessReply("该账户已经被停用", false);
+                            }else{
+                                //验证该用户ID，是否已经登录。当前用户比较已登录到系统的静态变量中的值，是否存在。  
+                                Boolean hasLogin = TransFormLoginHelper.isRepeatLogin(terminalUser.getId(), request);
+                                if(hasLogin){
+                                    return toSuccessReply("用户已经登录", false);
+                                }else{
+                                    // 设置菜单权限（终端用户登录无需设置功能权限）
+                                    this.setTerminalUserInfo(request, terminalUser);
+                                    result.put(TransformConstant.transform_session_admin, terminalUser.getId());
+                                    request.getSession().setAttribute("displayname", terminalUser.getName());
+//                                  return toSuccessReply(result, true);
+                                    return toSuccessReply("终端用户已经登录成功了", false);
+                                }
+                            }
+                        }
+                    }else{
+                        return toSuccessReply("用户名或密码错误", false);
+                    }
+                }else{
+                    //查询用户详细信息
+                    TerminalUserMapper terminalUserMapper = this.sqlSession.getMapper(TerminalUserMapper.class);
+                    TerminalUserVO terminalUser = terminalUserMapper.getById(sysUser.getId());
+                    //用户已被禁用
+                    if(terminalUser.getStatus() == 1){
+                        return toSuccessReply("该账户已经被停用", false);
+                    }else{
+                        //验证该用户ID，是否已经登录。当前用户比较已登录到系统的静态变量中的值，是否存在。  
+                        Boolean hasLogin = TransFormLoginHelper.isRepeatLogin(terminalUser.getId(), request);
+                        if(hasLogin){
+                            return toSuccessReply("用户已经登录", false);
+                        }else{
+                            // 设置菜单权限（终端用户登录无需设置功能权限）
+                            this.setTerminalUserInfo(request, terminalUser);
+                            result.put(TransformConstant.transform_session_admin, terminalUser.getId());
+                            request.getSession().setAttribute("displayname", terminalUser.getName());
+//                          return toSuccessReply(result, true);
+                            return toSuccessReply("终端用户已经登录成功了", false);
 
-        	            }
-        			}
-        			
-        		}
+                        }
+                    }
+                    
+                }
                 
             }
             // 判断用户是否被禁用
@@ -311,7 +311,7 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             SysUserMapper userMapper = this.sqlSession.getMapper(SysUserMapper.class);
             SysUser terminalUser = userMapper.queryUserByUsername(usercount);
             if(terminalUser != null){
-            	return "用户名或邮箱已经存在";
+                return "用户名或邮箱已经存在";
             }
             String billid = StringUtil.generateUUID();
             condition.put("billid", billid);
@@ -359,7 +359,7 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             logger.error(e);
             throw new AppException("添加失败");
         }
-    }
+    } 
 
     /**
      * @author 张翔
@@ -870,43 +870,43 @@ public class ManSysUserServiceImpl implements ManSysUserService {
         }
     }
 
-	@Override
-	public List<ManSystemUserVO> queryUserOutTenant(String id) {
+    @Override
+    public List<ManSystemUserVO> queryUserOutTenant(String id) {
         ManSystemUserMapper systemUserMapper = this.sqlSession.getMapper(ManSystemUserMapper.class);
-		return systemUserMapper.queryUserOutTenant(id);
-	}
+        return systemUserMapper.queryUserOutTenant(id);
+    }
 
-	@Override
-	public List<ManSystemUserVO> queryUserTenant(String id) {
+    @Override
+    public List<ManSystemUserVO> queryUserTenant(String id) {
         ManSystemUserMapper systemUserMapper = this.sqlSession.getMapper(ManSystemUserMapper.class);
         return systemUserMapper.queryUserTenant(id);
-	}
+    }
 
-	/**
-	 * 更新租户的用户设置
-	* <p>Title: setTenantUser</p> 
-	* <p>Description: </p> 
-	* @param id
-	* @param userIds
-	* @return 
-	* @see com.zhicloud.ms.transform.service.ManSysUserService#setTenantUser(java.lang.String, java.lang.String)
-	 */
-	@Override
+    /**
+     * 更新租户的用户设置
+    * <p>Title: setTenantUser</p> 
+    * <p>Description: </p> 
+    * @param id
+    * @param userIds
+    * @return 
+    * @see com.zhicloud.ms.transform.service.ManSysUserService#setTenantUser(java.lang.String, java.lang.String)
+     */
+    @Override
     @Transactional(readOnly=false)
-	public MethodResult setTenantUser(String id, String userIds) {
- 		ManSystemUserMapper systemUserMapper = this.sqlSession.getMapper(ManSystemUserMapper.class);
-		systemUserMapper.deleteRelationshipByTenantId(id);	
-		String[] idArray = userIds.split(",");
-		Map<String, Object> condition = new LinkedHashMap<String, Object>();
+    public MethodResult setTenantUser(String id, String userIds) {
+        ManSystemUserMapper systemUserMapper = this.sqlSession.getMapper(ManSystemUserMapper.class);
+        systemUserMapper.deleteRelationshipByTenantId(id);  
+        String[] idArray = userIds.split(",");
+        Map<String, Object> condition = new LinkedHashMap<String, Object>();
         condition.put("tenantId", id);
-		for (String userId : idArray){
+        for (String userId : idArray){
             condition.put("id", StringUtil.generateUUID());    
-			condition.put("userId", userId);	
-			systemUserMapper.addUserTenantRelationship(condition);
-		}
-		return new MethodResult(MethodResult.SUCCESS, "重新设置租户用户成功");
-	}
-	
+            condition.put("userId", userId);    
+            systemUserMapper.addUserTenantRelationship(condition);
+        }
+        return new MethodResult(MethodResult.SUCCESS, "重新设置租户用户成功");
+    }
+    
     /**
      * @Description:直接修改密码操作
      * @param billid

@@ -5,11 +5,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
+ 
 import org.apache.ibatis.session.SqlSession;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Service;
+import org.apache.log4j.Logger; 
 import org.springframework.transaction.annotation.Transactional;
 
 import com.zhicloud.ms.constant.AppInconstant;
@@ -28,8 +26,7 @@ import com.zhicloud.ms.vo.DictionaryVO;
  */
  @Transactional(readOnly=true)
 public class DictionaryServiceImpl implements IDictionaryService {
-	private static final Logger logger = Logger.getLogger(DictionaryServiceImpl.class); 
- 	private SqlSession sqlSession;
+  	private SqlSession sqlSession;
  	
 
 	public SqlSession getSqlSession() {

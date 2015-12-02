@@ -1,15 +1,13 @@
 package com.zhicloud.ms.app.pool.serverInfoPool;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.List; 
 
 import org.apache.log4j.Logger;
 
 public class ServerInfoPoolManager {
 
-	private final static Logger logger = Logger.getLogger(ServerInfoPoolManager.class);
-	private static ServerInfoPoolManager instance = null;
+ 	private static ServerInfoPoolManager instance = null;
 	private final ServerInfoPool pool;
 
 	public synchronized static ServerInfoPoolManager singleton() {

@@ -5,7 +5,6 @@ import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,11 +15,11 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
+  
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.zhicloud.ms.common.util.NumberUtil;
-import com.zhicloud.ms.common.util.StringUtil;
+import com.zhicloud.ms.common.util.NumberUtil; 
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
 import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.exception.AppException;
@@ -52,6 +51,7 @@ public class CloudHostPoolManager {
         BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml");  
         
 		cloudHostService = (ICloudHostService)factory.getBean("cloudHostService"); 
+//		factory.
 
 		// 初始化时，从数据库获取云主机的配置信息
  		List<CloudHostVO> allCloudHosts = cloudHostService.getAllCloudHost();

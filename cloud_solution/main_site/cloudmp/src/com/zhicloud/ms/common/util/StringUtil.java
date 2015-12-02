@@ -903,7 +903,7 @@ public class StringUtil {
      */
     public static String[] getIpFromUrl(String str) {
         Matcher m = Pattern.compile("ip address ((\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3}))").matcher(str);
-        String[] ips = null;
+        String[] ips = {};
         int i = 0;
         while (m.find()) {
             ips[i] = m.group(1);

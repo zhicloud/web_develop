@@ -15,8 +15,7 @@ import com.zhicloud.ms.util.RegionHelper.RegionData;
 public class HttpGatewayManager
 {
 	
-	private static Logger logger = Logger.getLogger(HttpGatewayManager.class);
-	
+ 	
 	private static Map<Integer, HttpGatewayChannelPool> channelPoolCache = new HashMap<Integer, HttpGatewayChannelPool>();
 	private static HttpGatewayReceiveChannelPool receiveChannelPool = new HttpGatewayReceiveChannelPool();
 	private final static Map<Integer, HttpGatewayAsyncChannelPool> asyncChannelPoolMap = new Hashtable<Integer, HttpGatewayAsyncChannelPool>();

@@ -2,11 +2,12 @@ package com.zhicloud.ms.httpGateway;
 
 import net.sf.json.JSONObject;
 
-import org.apache.log4j.Logger;
+import org.apache.log4j.Logger; 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
+import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.constant.AppInconstant;
 import com.zhicloud.ms.controller.HttpGatewayMessageController;
 import com.zhicloud.ms.exception.AppException;

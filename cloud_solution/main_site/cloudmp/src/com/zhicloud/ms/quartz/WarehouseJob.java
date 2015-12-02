@@ -3,11 +3,12 @@ package com.zhicloud.ms.quartz;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.quartz.JobExecutionException; 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.zhicloud.ms.app.listener.WarehouseCheckTimeListener;
+import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.service.ICloudHostWarehouseService;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.CloudHostWarehouse;

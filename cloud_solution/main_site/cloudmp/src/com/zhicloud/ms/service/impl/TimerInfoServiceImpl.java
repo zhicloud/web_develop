@@ -5,11 +5,9 @@ import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.ITimerInfoService;
 import com.zhicloud.ms.vo.TimerInfoVO;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Service;
+import org.apache.log4j.Logger; 
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.annotation.Resource;
+ 
 import java.util.LinkedHashMap;
 /**
  * 
@@ -21,7 +19,6 @@ import java.util.LinkedHashMap;
  */ 
 @Transactional(readOnly=false)
 public class TimerInfoServiceImpl implements ITimerInfoService {
-    private static final Logger logger = Logger.getLogger(TimerInfoServiceImpl.class);
 
      private SqlSession sqlSession;
      

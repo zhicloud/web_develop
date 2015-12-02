@@ -827,11 +827,12 @@ public class VpcServiceImpl implements IVpcService {
 			}
 			VpcBaseInfoMapper vpcBaseInfoMapper = this.sqlSession.getMapper(VpcBaseInfoMapper.class);
 			VpcBaseInfoVO vpc = vpcBaseInfoMapper.queryVpcById(vpcId);
-			mr.setProperty("name", vpc.getName());
 			if(vpc == null ){
-			    mr.message = "未找到VPC信息";
+                mr.message = "未找到VPC信息";
                 return mr; 
-			}
+            }
+			mr.setProperty("name", vpc.getName());
+			
 			if(StringUtil.isBlank(hostAmount)){	
 			    mr.message = "请输入主机个数";
                 return mr; 

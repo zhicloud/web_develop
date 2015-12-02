@@ -2,9 +2,11 @@ package com.zhicloud.ms.app.listener.task;
 
 import com.zhicloud.ms.app.listener.RealCloudHostFetcherListener;
 import com.zhicloud.ms.app.pool.CloudHostPoolManager;
+import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.ICloudHostService;
-import org.apache.log4j.Logger;
+
+import org.apache.log4j.Logger; 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -25,10 +27,10 @@ public class RealCloudHostFetcherRunnable implements Runnable {
 
 	public RealCloudHostFetcherRunnable(RealCloudHostFetcherListener handler, int intervalTime) {
 		this.handler = handler;
-		this.intervalTime = intervalTime;  
-		BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml");  
+		this.intervalTime = intervalTime;   
+        BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml");  
         
-		cloudHostService = (ICloudHostService)factory.getBean("cloudHostService"); 
+		cloudHostService = (ICloudHostService)factory.getBean("cloudHostService");  
 	}
 
 	/**

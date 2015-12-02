@@ -2,6 +2,9 @@ package com.zhicloud.ms.constant;
 
 import java.math.BigDecimal;
 
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 public class AppConstant
 {
 
@@ -307,6 +310,8 @@ public class AppConstant
 
     // 中税默认密码
     public static final String DEFAULT_USER_PASSWORD = "scgs88888";
+    
+    public static BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml");  
 
 
 }

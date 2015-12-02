@@ -1,29 +1,25 @@
 package com.zhicloud.ms.controller;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+ 
+import java.util.LinkedHashMap; 
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import net.sf.json.JSONArray;
+ 
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+ import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.zhicloud.ms.app.pool.host.back.HostBackupProgressData;
-import com.zhicloud.ms.remote.MethodResult;
+ import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.IIntelligentRouterService;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
-import com.zhicloud.ms.vo.CloudHostVO;
 /**
  * 
 * @ClassName: IntelligentRouterRuleController 

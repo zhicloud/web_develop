@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimerTask;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -15,6 +16,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
 
+import com.zhicloud.op.app.propeties.AppProperties;
 import com.zhicloud.op.common.util.NumberUtil;
 import com.zhicloud.op.common.util.StringUtil;
 import com.zhicloud.op.common.util.json.JSONLibUtil;
@@ -31,6 +33,7 @@ public class CloudHostPoolManager {
 	private final CloudHostPool cloudHostPool = new CloudHostPool();
 	private boolean initialized = false;
 	private final static BlockingQueue<JSONArray> hostVOueue = new ArrayBlockingQueue<JSONArray>(2000);
+	private final String log_on_off = AppProperties.getValue("log_on_off", "yes"); 
 
 	public static CloudHostPoolManager getSingleton() {
 		return singleton;
@@ -134,6 +137,11 @@ public class CloudHostPoolManager {
 
 		// 获取池里面已有的数据
 		CloudHostData oldCloudHostData = cloudHostPool.getByRealHostId(uuid);
+		if("yes".equals(log_on_off)){
+		    logger.info("###########################################");
+		    logger.info("oldCloudHostData : "+oldCloudHostData);
+		    logger.info("newCloudHostData : "+realCloudHost);
+		}
 
 		CloudHostData newCloudHostData = null;
 		if (oldCloudHostData == null) {

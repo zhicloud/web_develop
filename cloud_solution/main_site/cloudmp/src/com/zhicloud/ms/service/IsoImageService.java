@@ -1,6 +1,6 @@
 package com.zhicloud.ms.service;
 
-import java.io.InputStream;
+
 
 import com.zhicloud.ms.app.pool.isoImagePool.IsoImageProgressData;
 import com.zhicloud.ms.remote.MethodResult;
