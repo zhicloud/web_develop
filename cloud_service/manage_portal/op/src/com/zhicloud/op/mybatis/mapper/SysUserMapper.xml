@@ -166,7 +166,9 @@
 				on u.id = t.id
 		</if>
 		where u.type = #{type}
+		<if test="type != 1">
 		and (u.account = #{account} or t.phone = #{account})
+		</if>
 		and u.password = #{password}
 	</select>
 	

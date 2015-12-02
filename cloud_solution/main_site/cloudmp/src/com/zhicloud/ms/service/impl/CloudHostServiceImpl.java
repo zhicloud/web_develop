@@ -1009,7 +1009,13 @@ public class CloudHostServiceImpl implements ICloudHostService {
                     }
                     String poolId = (String) computerObject.get("uuid");
                     // 从http gateway获取所有的云主机
-                     hostQueryResult = channel.hostQuery(poolId);
+                    try{
+                        hostQueryResult = channel.hostQuery(poolId);
+
+                    }catch(Exception e){
+                        logger.error(" fail to query hosts info from pool "+poolId);
+                        continue;
+                    }
                     if (HttpGatewayResponseHelper.isSuccess(hostQueryResult) == false) {// 失败则跳过该region
                         logger.info(String.format("fail to query host from http gateway. region[%s], message[%s]", regionData.getId(), HttpGatewayResponseHelper.getMessage(hostQueryResult)));
                         continue;
@@ -2597,7 +2603,12 @@ public class CloudHostServiceImpl implements ICloudHostService {
                     }
                     
                     // 从http gateway获取所有的云主机
-                     hostQueryResult = channel.hostQuery((String) computerObject.get("uuid"));
+                    try{
+                        hostQueryResult = channel.hostQuery((String) computerObject.get("uuid"));
+                    }catch(Exception e){
+                        logger.info("fail to get hosts info from pool");
+                        continue;
+                    }
                     if (HttpGatewayResponseHelper.isSuccess(hostQueryResult) == false) {// 失败则跳过该region
                         logger.info(String.format("fail to query host from http gateway. region[%s], message[%s]", regionData.getId(), HttpGatewayResponseHelper.getMessage(hostQueryResult)));
                         continue;

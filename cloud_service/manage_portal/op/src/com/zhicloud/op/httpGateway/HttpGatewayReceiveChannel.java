@@ -59,7 +59,7 @@ public class HttpGatewayReceiveChannel extends HttpGatewayChannelExt
 	}
 	
 	
-	
+	                              
 	public JSONObject decryptReceivedData(HttpServletRequest request) throws IOException
 	{
 		return getHelper().decryptReceivedData(request);
