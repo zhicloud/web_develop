@@ -507,7 +507,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		HostBackupProgressData hostBackup = pool.get(uuid);
 				
 		//对象不存在
-		if(hostBackup != null){
+		if(hostBackup == null){
 			hostBackup = new HostBackupProgressData();
 			hostBackup.setSessionId(sessionId);
 			hostBackup.setUuid(uuid);
@@ -568,7 +568,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		hostBackup.setSuccess(true);
 		hostBackup.updateTime();
 		hostBackup.setBackupStatus(10);
-		channel.release();
+//		channel.release();
 		System.err.println(String.format("[%s]start to resume host. uuid[%s]", sessionId, uuid));
 		
 	}
@@ -602,7 +602,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		hostBackup.setSuccess(true);
 		hostBackup.setBackupStatus(10);
 		hostBackup.updateTime();
-		channel.release();
+//		channel.release();
 		System.err.println(String.format("[%s]resume host at progress %d%%. uuid[%s]", sessionId, level, uuid));
 
 		
@@ -645,7 +645,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 			pool.remove(hostBackup);
  			System.err.println(String.format("[%s]resume host fail. uuid[%s]", sessionId, uuid));			
 		}
-		
+		pool.put(hostBackup);
 		channel.release();
 		
 		
@@ -1563,7 +1563,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        channel.release();
+//        channel.release();
     }
 
 
