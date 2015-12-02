@@ -95,6 +95,9 @@ public class SysDiskImageServiceImpl implements ISysDiskImageService {
 		hostdata.put("id", image.getFromHostId());
 		
 		CloudHostVO cloudHostVO = cloudHostMapper.getCloudHostById(hostdata);
+		if(cloudHostVO.getRunningStatus().equals(AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING)){
+		    return new MethodResult(MethodResult.FAIL, "主机未关机，请先关闭主机");
+		}
 		//异步回调-创建磁盘镜像
 		String sessionId = null;
 		try {
@@ -361,7 +364,7 @@ public class SysDiskImageServiceImpl implements ISysDiskImageService {
 					String description = JSONLibUtil.getString(diskImage, "description"); 
 					String[] identity  = JSONLibUtil.getStringArray(diskImage, "identity");
 					Integer fileType  = JSONLibUtil.getInteger(diskImage, "file_type");
-					BigInteger size   =JSONLibUtil.getBigInteger(diskImage, "size");
+					BigInteger size   = JSONLibUtil.getBigInteger(diskImage, "size");
 					
 					// 
 					SysDiskImageVO diskImageVO = sysDiskImageMapper.getByRealImageId(uuid);

@@ -19,21 +19,21 @@
 
 	<!-- *************** -->
 	<!-- TODO:TEST --> 
-<!-- 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> -->
-<!-- 		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> -->
-<!-- 		<property name="url" value="jdbc:mysql://172.16.6.3:3306/zcop?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;autoReconnectForPools=true" /> -->
-<!--  		<property name="username" value="root" /> -->
-<!-- 		<property name="password" value="root" /> -->
-<!-- 	</bean> -->
-	
-  	<bean id="dataSource" class="com.zhicloud.op.app.AppDataSource" destroy-method="close">
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://172.18.10.3:6014/zcop?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;autoReconnectForPools=true" />
- 		<property name="minEvictableIdleTimeMillis" value="3600000" />
-		<property name="timeBetweenEvictionRunsMillis" value="60000" />
-		<property name="username" value="zcop" />
-		<property name="password" value="N8R6D+HwXU15+DwVVAVdVA==" />
+		<property name="url" value="jdbc:mysql://172.18.10.18:3306/zcop?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;autoReconnectForPools=true" />
+ 		<property name="username" value="cdms" />
+		<property name="password" value="cdms$250" /> 
 	</bean>
+	
+<!--   	<bean id="dataSource" class="com.zhicloud.op.app.AppDataSource" destroy-method="close"> -->
+<!-- 		<property name="driverClassName" value="com.mysql.jdbc.Driver" /> -->
+<!-- 		<property name="url" value="jdbc:mysql://172.18.10.18:3306/zcop?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;autoReconnectForPools=true" /> -->
+<!--  		<property name="minEvictableIdleTimeMillis" value="3600000" /> -->
+<!-- 		<property name="timeBetweenEvictionRunsMillis" value="60000" /> -->
+<!-- 		<property name="username" value="zcop" /> -->
+<!-- 		<property name="password" value="N8R6D+HwXU15+DwVVAVdVA==" /> -->
+<!-- 	</bean> -->
  
 
 <!--   	<bean id="dataSource" class="com.zhicloud.op.app.AppDataSource" destroy-method="close"> -->

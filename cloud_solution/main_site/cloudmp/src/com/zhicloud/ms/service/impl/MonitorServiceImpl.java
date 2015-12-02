@@ -18,8 +18,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.ibatis.session.SqlSession;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Service;
+import org.apache.log4j.Logger; 
 import org.springframework.transaction.annotation.Transactional;
 
 import com.zhicloud.ms.app.listener.CheckServerRoomsListener;
@@ -37,7 +36,7 @@ import com.zhicloud.ms.vo.MonitorServerVO;
  * @Description: 监控接口实现
  * @author 张本缘 于 2015年6月24日 下午4:09:03
  */
-@Service("monitorService")
+//@Service("monitorService")
 @Transactional(readOnly=false)
 public class MonitorServiceImpl implements MonitorService {
     /* 日志 */

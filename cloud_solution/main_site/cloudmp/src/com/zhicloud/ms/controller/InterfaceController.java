@@ -154,13 +154,9 @@ public class InterfaceController {
             result.put("hosts", hostList);	
             result.put("messages", infoDatas);
             result.put("name", terminalUser.getName());	
-            //默认不开通usb
-            if(terminalUser == null){           	
-            	result.put("usb", "0");			
-            }else{
-            	result.put("user_status", terminalUser.getStatus());	
-            	result.put("usb", terminalUser.getUsbStatus());			           	
-            }
+            //默认不开通usb 
+        	result.put("user_status", terminalUser.getStatus());	
+        	result.put("usb", terminalUser.getUsbStatus());		 
             BoxRealInfoVO info = boxRealInfoService.getInfoByUserId(mac);
             if(info == null){
                 info = new BoxRealInfoVO();

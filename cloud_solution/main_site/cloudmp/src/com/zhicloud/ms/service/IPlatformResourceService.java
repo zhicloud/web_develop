@@ -2,8 +2,7 @@ package com.zhicloud.ms.service;
 
 import com.zhicloud.ms.remote.MethodResult;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
+import java.io.IOException; 
 import java.util.Map;
 
 /**

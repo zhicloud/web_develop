@@ -1,16 +1,12 @@
 package com.zhicloud.ms.app.listener.task;
 
-import java.math.BigInteger;
-import java.util.List;
-
-import net.sf.json.JSONObject;
+ 
 
 import org.apache.log4j.Logger;
 
-import com.zhicloud.ms.app.pool.serverInfoPool.ServerInfoExt;
+
 import com.zhicloud.ms.app.pool.serverInfoPool.ServerInfoPool;
-import com.zhicloud.ms.app.pool.serverInfoPool.ServerInfoPoolManager;
-import com.zhicloud.ms.common.util.json.JSONLibUtil;
+import com.zhicloud.ms.app.pool.serverInfoPool.ServerInfoPoolManager; 
 
 public class ServerFetcherRunnable implements Runnable {
 

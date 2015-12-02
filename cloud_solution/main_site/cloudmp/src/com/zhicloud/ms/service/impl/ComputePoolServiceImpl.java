@@ -4,18 +4,13 @@ import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
 import com.zhicloud.ms.common.util.StringUtil;
-import com.zhicloud.ms.httpGateway.*;
-import com.zhicloud.ms.mapper.CloudHostMapper;
-import com.zhicloud.ms.mapper.CloudHostWarehouseMapper;
+import com.zhicloud.ms.httpGateway.*; 
 import com.zhicloud.ms.remote.MethodResult;
-import com.zhicloud.ms.service.IComputePoolService;
-import com.zhicloud.ms.vo.CloudHostVO;
-import com.zhicloud.ms.vo.CloudHostWarehouse;
+import com.zhicloud.ms.service.IComputePoolService; 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Service;
+import org.apache.log4j.Logger; 
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -26,7 +21,7 @@ import java.util.Map;
 /**
  * @author 张翔
  */
-@Service("computePoolService")
+//@Service("computePoolService")
 @Transactional(readOnly=true)
 public class ComputePoolServiceImpl implements IComputePoolService {
 

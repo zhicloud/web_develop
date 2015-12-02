@@ -122,6 +122,7 @@ public class AppPropertyServiceImpl extends BeanDirectCallableDefaultImpl implem
 			String monitorPhone3            = StringUtil.trim(parameter.get("monitor_phone3"));
 			String versionType              = StringUtil.trim(parameter.get("version_type"));
 			String notification_on_off      = StringUtil.trim(parameter.get("notification_on_off"));
+			String log_on_off               = StringUtil.trim(parameter.get("log_on_off"));
 			String cdMaxPorts               = StringUtil.trim(parameter.get("cd_max_ports"));
 			String addressOfIscsiGateway1   = StringUtil.trim(parameter.get("address_of_iscsi_gateway_1"));
 			String addressOfIscsiGateway2   = StringUtil.trim(parameter.get("address_of_iscsi_gateway_2"));
@@ -218,6 +219,7 @@ public class AppPropertyServiceImpl extends BeanDirectCallableDefaultImpl implem
 			AppProperties.setValue("monitor_phone3",               		monitorPhone3);
 			AppProperties.setValue("version_type",               		versionType);
 			AppProperties.setValue("notification_on_off",               notification_on_off);
+			AppProperties.setValue("log_on_off",               log_on_off);
 			AppProperties.setValue("cd_max_ports",               		cdMaxPorts);
 			AppProperties.setValue("address_of_iscsi_gateway_4",        addressOfIscsiGateway4);
 			AppProperties.setValue("address_of_iscsi_gateway_2",        addressOfIscsiGateway2);

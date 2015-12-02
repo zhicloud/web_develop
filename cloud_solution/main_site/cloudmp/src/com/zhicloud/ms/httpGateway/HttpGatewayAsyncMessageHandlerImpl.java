@@ -41,9 +41,11 @@ import com.zhicloud.ms.constant.StaticReportHandle;
 import com.zhicloud.ms.service.IBackUpDetailService;
 import com.zhicloud.ms.util.CapacityUtil;
 import com.zhicloud.ms.vo.PlatformResourceMonitorVO;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.log4j.Logger;
+
+import org.apache.log4j.Logger; 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -65,6 +67,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
     
 	@HttpGatewayMessageHandler(messageType = "host_monitor_data")
 	public Map<String, String> hostMonitorData(HttpGatewayAsyncChannel channel, JSONObject messageData) {
+	    AppConstant.factory.getBean("backUpDetailService");
 		logger.debug("start to process host monitor data.");
 		// 新起线程处理数据
 		JSONArray hostList = messageData.getJSONArray("host_list");
@@ -454,7 +457,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		hostBackup.setSuccess(true);
 		hostBackup.updateTime();
 		hostBackup.setBackupStatus(9);
-		channel.release();
+//		channel.release();
 		
 		System.err.println(String.format("[%s]start to backup host. uuid[%s]", sessionId, uuid));
 	}
@@ -487,7 +490,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		hostBackup.setSuccess(true);
 		hostBackup.updateTime();
 		hostBackup.setBackupStatus(9);
-		channel.release();
+//		channel.release();
 		System.err.println(String.format("[%s]backup host at progress %d%%. uuid[%s]", sessionId, level, uuid));
 	}
 
@@ -504,18 +507,18 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		HostBackupProgressData hostBackup = pool.get(uuid);
 				
 		//对象不存在
-		if(hostBackup != null){
-//			hostBackup = new HostBackupProgressData();
-//			hostBackup.setSessionId(sessionId);
-//			hostBackup.setUuid(uuid);
-//			pool.put(hostBackup);
-		    pool.remove(hostBackup);
+		if(hostBackup == null){
+			hostBackup = new HostBackupProgressData();
+			hostBackup.setSessionId(sessionId);
+			hostBackup.setUuid(uuid);
+			pool.put(hostBackup);
+//		    pool.remove(hostBackup);
 		}
 		
-//		hostBackup.setFinished(true);
-//		AppInconstant.hostBackupProgress.put(uuid+"backup", "backup_false");
-//		hostBackup.updateTime();
-//		hostBackup.setBackupStatus(0);
+		hostBackup.setFinished(true);
+		AppInconstant.hostBackupProgress.put(uuid+"backup", "backup_false");
+		hostBackup.updateTime();
+		hostBackup.setBackupStatus(0);
 		
 		if (HttpGatewayResponseHelper.isSuccess(messageData) == true) {
 			hostBackup.setSuccess(true);
@@ -534,6 +537,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 
             System.err.println(String.format("[%s]backup host fail. uuid[%s]", sessionId, uuid));			
 		}
+		pool.put(hostBackup);
 		channel.release();
 	}
 
@@ -564,7 +568,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		hostBackup.setSuccess(true);
 		hostBackup.updateTime();
 		hostBackup.setBackupStatus(10);
-		channel.release();
+//		channel.release();
 		System.err.println(String.format("[%s]start to resume host. uuid[%s]", sessionId, uuid));
 		
 	}
@@ -598,7 +602,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		hostBackup.setSuccess(true);
 		hostBackup.setBackupStatus(10);
 		hostBackup.updateTime();
-		channel.release();
+//		channel.release();
 		System.err.println(String.format("[%s]resume host at progress %d%%. uuid[%s]", sessionId, level, uuid));
 
 		
@@ -641,7 +645,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 			pool.remove(hostBackup);
  			System.err.println(String.format("[%s]resume host fail. uuid[%s]", sessionId, uuid));			
 		}
-		
+		pool.put(hostBackup);
 		channel.release();
 		
 		
@@ -1559,7 +1563,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        channel.release();
+//        channel.release();
     }
 
 
@@ -1897,6 +1901,9 @@ public class HttpGatewayAsyncMessageHandlerImpl {
             serviceInfoExt.success();
         } else {
             serviceInfoExt.fail();
+        }
+        synchronized (serviceInfoExt) {
+            serviceInfoExt.notifyAll();
         }
         channel.release();
         logger.info(String.format("[%s]modify service response, data '%s'", sessionId, messageData));

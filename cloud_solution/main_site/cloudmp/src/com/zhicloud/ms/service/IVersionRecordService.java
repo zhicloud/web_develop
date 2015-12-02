@@ -9,15 +9,10 @@
 
 package com.zhicloud.ms.service; 
 
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.List; 
 
 import com.zhicloud.ms.remote.MethodResult;
-import com.zhicloud.ms.vo.CloudHostVO;
-import com.zhicloud.ms.vo.VersionRecordVO;
+ import com.zhicloud.ms.vo.VersionRecordVO;
 
 /**
  * ClassName: IVersionRecordService 
