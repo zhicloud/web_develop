@@ -973,7 +973,7 @@ $(document).ready(function(){
  						}
  						else 
  						{
- 							top.$.messager.alert("警告", reply.exceptionMessage, "warning",function(){
+ 							top.$.messager.alert("警告", "重启失败", "warning",function(){
  								window.location.reload();
  							});
  						}
@@ -1349,7 +1349,7 @@ function refreshStatusForRestart(id,time){
 									}
 									else 
 									{
-										top.$.messager.alert("警告", reply.exceptionMessage, "warning");
+										top.$.messager.alert("警告", "重启失败", "warning");
 									}
 								}
 								else if (reply.result.status == "success")
@@ -1388,7 +1388,7 @@ function refreshStatusForRestart(id,time){
 			    						}
 			    						else 
 			    						{
-			    							top.$.messager.alert("警告", reply.exceptionMessage, "warning");
+			    							top.$.messager.alert("警告", "重启失败", "warning");
 			    						}
 			    					}
 			    					else//关机成功，启动云主机
@@ -1406,7 +1406,7 @@ function refreshStatusForRestart(id,time){
 			    										}
 			    										else 
 			    										{
-			    											top.$.messager.alert("警告", reply.exceptionMessage, "warning");
+			    											top.$.messager.alert("警告", "重启失败", "warning");
 			    										}
 			    									}
 			    									else if (reply.result.status == "success")
