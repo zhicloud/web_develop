@@ -842,6 +842,7 @@
 			ch.inner_port,
 			ch.outer_ip, 
 			ch.outer_port,
+			ch.pool_id,
 			ch.type
 		from cloud_host ch 
 		where ch.id = #{id}

@@ -103,6 +103,7 @@
                     
                     <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/cloudserver/addDataDisk" method="post"   >
                       <input name="uuid" type="hidden" value="${realId }"/>
+                      <input name="diskType" type="hidden" value="${diskType }"/>
                       
                       <div class="form-group">
                         <label for="input01" class="col-sm-2 control-label">磁盘大小(G) *</label>
@@ -122,28 +123,28 @@
                           </select>
                         </div>
                       </div>
-                      <div class="form-group">
-                        <label for="input01" class="col-sm-2 control-label">磁盘模式*</label>
-                        <div class="col-sm-8"> 
-                          <div class="radio radio-transparent col-md-2">
-                            <input type="radio" name="diskType" id="optionsRadios12" value="0" checked>
-                            <label for="optionsRadios12">本地</label>
-                          </div>
+<!--                       <div class="form-group"> -->
+<!--                         <label for="input01" class="col-sm-2 control-label">磁盘模式*</label> -->
+<!--                         <div class="col-sm-8">  -->
+<!--                           <div class="radio radio-transparent col-md-2"> -->
+<!--                             <input type="radio" name="diskType" id="optionsRadios12" value="0" checked> -->
+<!--                             <label for="optionsRadios12">本地</label> -->
+<!--                           </div> -->
 <!--                           <div class="radio radio-transparent col-md-2"> -->
 <!--                             <input type="radio" name="diskType" id="optionsRadios13" value="1"> -->
 <!--                             <label for="optionsRadios13">云存储</label> -->
 <!--                           </div> -->
-                          <div class="radio radio-transparent col-md-3">
-                            <input type="radio" name="diskType" id="optionsRadios14" value="2">
-                            <label for="optionsRadios14">nas磁盘</label>
-                          </div>                          
+<!--                           <div class="radio radio-transparent col-md-3"> -->
+<!--                             <input type="radio" name="diskType" id="optionsRadios14" value="2"> -->
+<!--                             <label for="optionsRadios14">nas磁盘</label> -->
+<!--                           </div>                           -->
 <!--                           <div class="radio radio-transparent col-md-2"> -->
 <!--                             <input type="radio" name="diskType" id="optionsRadios15" value="3" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');"> -->
 <!--                             <label for="optionsRadios15">ip san</label> -->
 <!--                           </div> -->
-                        </div>
-                      </div>
-                      <input type="hidden" name="diskId" value="">
+<!--                         </div> -->
+<!--                       </div> -->
+<!--                       <input type="hidden" name="diskId" value=""> -->
 <!--                        <div class="form-group"> -->
 <!--                         <label for="input07" class="col-sm-2 control-label">存储资源池*</label> -->
 <!--                         <div class="col-sm-4" id="selectbox"> -->
