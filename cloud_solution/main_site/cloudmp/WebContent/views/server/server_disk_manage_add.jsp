@@ -130,8 +130,16 @@
                             <label for="optionsRadios12">本地</label>
                           </div>
 <!--                           <div class="radio radio-transparent col-md-2"> -->
-<!--                             <input type="radio" name="memory" id="optionsRadios13" value="1"> -->
+<!--                             <input type="radio" name="diskType" id="optionsRadios13" value="1"> -->
 <!--                             <label for="optionsRadios13">云存储</label> -->
+<!--                           </div> -->
+                          <div class="radio radio-transparent col-md-3">
+                            <input type="radio" name="diskType" id="optionsRadios14" value="2">
+                            <label for="optionsRadios14">nas磁盘</label>
+                          </div>                          
+<!--                           <div class="radio radio-transparent col-md-2"> -->
+<!--                             <input type="radio" name="diskType" id="optionsRadios15" value="3" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');"> -->
+<!--                             <label for="optionsRadios15">ip san</label> -->
 <!--                           </div> -->
                         </div>
                       </div>
@@ -149,7 +157,7 @@
 <!--                           </select> -->
 <!--                         </div> -->
 <!--                       </div> -->
-                       
+                     
 
                      <div class="form-group form-footer footer-white">
                         <div class="col-sm-offset-4 col-sm-8">
