@@ -91,7 +91,9 @@ public class StateServiceImpl implements StateService {
             try{
                 sigar.close();
             }
-            catch(Exception e){}
+            catch(Exception e){
+                e.printStackTrace();
+            }
         }
     }
     
@@ -107,21 +109,30 @@ public class StateServiceImpl implements StateService {
         try{
             System.out.println(sigar.getFileSystemList());
             Mem mem = sigar.getMem();
+            logger.info("get memory "+mem);
             resUsageVO.setMemper(df.format(mem.getUsedPercent()));
+//            logger.info(mem.getUsedPercent());
         }catch(Exception ex){
             resUsageVO.setMemper("0");
         }
         try{
             CpuPerc cpu = sigar.getCpuPerc();
+            logger.info("get cpu "+cpu);
             resUsageVO.setCpuper(df.format(cpu.getCombined() * 100)); //CpuPerc.format(cpu.getCombined()));
+//            logger.info("hahahhahahahha1");
         } catch (Exception e) {
+            e.printStackTrace();
             resUsageVO.setCpuper("0");
         }
         try{
             resUsageVO.setDiskper(getDiskPercent(sigar));
+            logger.info(getDiskPercent(sigar));
+//            logger.info("hahahhahahahha");
         }catch (Exception e) {
+            e.printStackTrace();
             resUsageVO.setDiskper("0");
-        }        
+        }  
+//        logger.info("heeeeeeeeeeeee");
         resUsageVO.setData(getBandwidth(sigar));
         return resUsageVO;
     }
