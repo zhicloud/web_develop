@@ -55,9 +55,10 @@ public class DomainServiceImpl implements DomainService{
                     if (index != -1) {
                         String[] array = strLine.split(splitter);
                         findFlag = true;
-                        if (array[1].equals(ip)) {
+                        if (array[1].trim().equals(ip)) {
                             // 如果IP相同，则不更新
                             newLines.add(strLine);
+                            continue;
                         } else {
                             // 更新成设定好的IP地址
                             StringBuilder sb = new StringBuilder();
@@ -65,6 +66,7 @@ public class DomainServiceImpl implements DomainService{
                             sb.append(splitter).append(ip);
                             newLines.add(sb.toString());
                             updateFlag = true;
+                            continue;
                         }
                     }
                 }
@@ -170,9 +172,10 @@ public class DomainServiceImpl implements DomainService{
                     if (index != -1) {
                         String[] array = strLine.split(splitter);
                         findFlag = true;
-                        if (array[1].equals(domain)) {
+                        if (array[1].trim().equals(domain)) {
                             // 如果域名相同，则不更新
                             newLines.add(strLine);
+                            continue;
                         } else {
                             // 更新成设定好的域名地址
                             StringBuilder sb = new StringBuilder();
@@ -180,6 +183,7 @@ public class DomainServiceImpl implements DomainService{
                             sb.append(splitter).append(domain);
                             newLines.add(sb.toString());
                             updateFlag = true;
+                            continue;
                         }
                     }
                 }

@@ -283,6 +283,7 @@
     var realId = "${realId}";
     var curIndex = "";
     var noDisk = "${noDisk}";
+    var diskType = "${diskType}";
     $(function(){
     	if(noDisk=="yes"){
     		$("#tipscontent").html("找不到磁盘信息");
@@ -291,7 +292,7 @@
     	}
     	//添加数据磁盘
     	$("#add_data_disk").click(function(){
-    		window.location.href = path+"/warehouse/cloudhost/"+realId+"/addDataDisk";
+    		window.location.href = path+"/warehouse/cloudhost/"+realId+"/"+diskType+"/addDataDisk";
     	});
     	//删除资源节点
 	    jQuery(".delete_data_disk").click(function(){

@@ -228,11 +228,10 @@ public class CloudHostPoolManager {
 				Map<String, Object> data = new LinkedHashMap<String, Object>();
 				data.put("runningStatus", newCloudHostData.getRunningStatus());
 				data.put("realHostId", newCloudHostData.getRealHostId());
-				cloudHostService.updateRunningStatusByRealHostId(data);		
-				cloudHostPool.put(newCloudHostData);
+ 				cloudHostService.updateRunningStatusByRealHostId(data);		
+				cloudHostPool.put(newCloudHostData); 
 			}
-		}
-		
+		}  
 
 		return true;
 	}
@@ -372,9 +371,9 @@ public class CloudHostPoolManager {
 				data.put("realHostId", cloudHostData.getRealHostId());
 				cloudHostService.updateRunningStatusByRealHostId(data);
 				
-				cloudHostPool.put(cloudHostData);
 		    }
 		}
+		cloudHostPool.put(cloudHostData);
 	}
 
 	
