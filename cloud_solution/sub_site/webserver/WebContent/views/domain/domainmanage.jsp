@@ -45,12 +45,17 @@ function saveGroupIP(){
 	//var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
 	var reg = /^(2[2-3][4-9])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
 	if(!reg.test(broadcast)){
-		jQuery.messager.alert('提示:','请输入正确的组播地址格式(D类IP地址)','error'); 
+		jQuery.messager.alert('提示:','请输入正确的组播地址格式(D类IP地址)','info'); 
 		$("#mult_address").val("${broadcast }");
 		return;
 	}
 	jQuery.messager.confirm('提示:','修改组播地址后,所有服务将会重启,确定修改吗?',function(event){ 
-			if(event){ 
+			if(event){
+			    $.messager.progress({ 
+			        title: '请稍后', 
+			        msg: '由于修改后需要重启服务,大概需要10秒的时间', 
+			        text: '保存中...' 
+			    }); 
 				$.ajax({
 			        type:"POST",
 			        url:"<%=request.getContextPath() %>/domain/setbroadcast",
@@ -58,12 +63,16 @@ function saveGroupIP(){
 			        datatype: "json",
 			        success:function(data){
 			        	var re = eval(data);
+			        	$.messager.progress('close');
 			       		if(re.status == "success"){
-			       			jQuery.messager.alert('提示:','修改成功','info'); 
-			       			window.location.href = "<%=request.getContextPath() %>/domain/manage";
+			       			jQuery.messager.alert('提示:','修改成功','info',function(){
+			       				window.location.href = "<%=request.getContextPath() %>/domain/manage";
+			       			}); 
+			       			
 			       		}else{
-			       			jQuery.messager.alert('提示:',re.message,'error'); 
-			       			$("#mult_address").val("${broadcast }");
+			       			jQuery.messager.alert('提示:',re.message,'error',function(){
+			       				$("#mult_address").val("${broadcast }");
+			       			}); 
 			       		}       
 			        },
 			        complete: function(XMLHttpRequest, textStatus){
@@ -79,16 +88,21 @@ function saveDomain(){
 	var domain = $("#domain_address").val();
 	if(/.*[\u4e00-\u9fa5]+.*$/.test(domain)) 
 	{ 
-		jQuery.messager.alert('提示:','域名不能含有中文','error'); 
+		jQuery.messager.alert('提示:','域名不能含有中文','info'); 
 		return; 
 	} 
 	if(domain.length!=""&&domain.length>100){
-		jQuery.messager.alert('提示:','域名长度超出定义的100个字符,请重新输入','error'); 
+		jQuery.messager.alert('提示:','域名长度超出定义的100个字符,请重新输入','info'); 
 		return;
 	}
 	
 	jQuery.messager.confirm('提示:','修改域名后,所有服务将会重启,确定修改吗?',function(event){ 
 		if(event){ 
+		    $.messager.progress({ 
+		        title: '请稍后', 
+		        msg: '由于修改后需要重启服务,大概需要10秒的时间', 
+		        text: '保存中...' 
+		    }); 
 			$.ajax({
 		        type:"POST",
 		        url:"<%=request.getContextPath() %>/domain/setdomain",
@@ -96,18 +110,22 @@ function saveDomain(){
 		        datatype: "json",
 		        success:function(data){
 		        	var re = eval(data);
+		        	$.messager.progress('close');
 		       		if(re.status == "success"){
-		       			jQuery.messager.alert('提示:','修改成功','info'); 
-		       			window.location.href = "<%=request.getContextPath() %>/domain/manage";
+		       			jQuery.messager.alert('提示:','修改成功','info',function(){
+		       				window.location.href = "<%=request.getContextPath() %>/domain/manage";
+		       			}); 
 		       		}else{
-		       			jQuery.messager.alert('提示:',re.message,'error'); 
-		       			$("#domain_address").val("${domain}");
+		       			jQuery.messager.alert('提示:',re.message,'error',function(){
+		       				$("#domain_address").val("${domain}");
+		       			}); 
+		       			
 		       		}       
 		        },
 		        complete: function(XMLHttpRequest, textStatus){
 		        },
 		        error: function(){
-		        }          /\
+		        }          
 		        
 		     });
 		}

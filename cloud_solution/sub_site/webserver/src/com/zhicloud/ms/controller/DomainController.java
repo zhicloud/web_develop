@@ -32,10 +32,11 @@ public class DomainController {
     public static final Logger logger = Logger.getLogger(DomainController.class);
     
     /* 模块名称 */
-    public static final String data_index = "data_index";
+    public static final String data_server = "data_server";
     public static final String node_client = "node_client";
     public static final String http_gateway = "http_gateway";
     public static final String control_server = "control_server";
+    public static final String storage_server = "storage_server";
     
     /* 服务存放的公用路径 */
     public static final String commonpath = "/home/zhicloud/";
@@ -62,8 +63,8 @@ public class DomainController {
      */
     @RequestMapping(value = "/manage", method = RequestMethod.GET)
     public String managePage(HttpServletRequest request) {
-        request.setAttribute("broadcast", domainService.getBroadcast(http_gateway));
-        request.setAttribute("domain", domainService.getDomain(http_gateway));
+        request.setAttribute("broadcast", domainService.getBroadcast(data_server));
+        request.setAttribute("domain", domainService.getDomain(data_server));
         return "/domain/domainmanage";
     }
     
@@ -85,16 +86,22 @@ public class DomainController {
                 re.put("status", StatusConstant.fail);
                 re.put("message", "操作失败,请联系管理员");
             } else {
-                // 存储由于暂时还没有好，所以先注释掉
-                //domainService.setBroadcast(broadcast, data_index);
+                // 修改配置文件之前先停止服务
+                stopAllService();
+                // 让线程等待10秒以后再启动服务
+                Thread.sleep(10 * 1000);
+                
+                // DS
+                domainService.setBroadcast(broadcast, data_server);
                 // NC
                 domainService.setBroadcast(broadcast, node_client);
                 // http_gateway
                 domainService.setBroadcast(broadcast, http_gateway);
                 // CS
                 domainService.setBroadcast(broadcast, control_server);
-                // 为了使修改生效，需要重新启动服务
-                stopAllService();
+                // SS
+                domainService.setBroadcast(broadcast, storage_server);
+                
                 startAllService();
                 re.put("status", StatusConstant.success);
                 logService.addLog("设置组播地址:" + broadcast, user.getId());
@@ -125,16 +132,22 @@ public class DomainController {
                 re.put("status", StatusConstant.fail);
                 re.put("message", "操作失败,请联系管理员");
             } else {
-                // 存储还没好,暂时注释掉
-                //domainService.setDomain(domain, data_index);
+                // 修改配置文件之前先停止服务
+                stopAllService();
+                // 让线程等待10秒以后再启动服务
+                Thread.sleep(10 * 1000);
+                
+                // DS
+                domainService.setDomain(domain, data_server);
                 // NC
                 domainService.setDomain(domain, node_client);
                 // http_gateway
                 domainService.setDomain(domain, http_gateway);
                 // CS
                 domainService.setDomain(domain, control_server);
-                // 为了使修改生效，需要重新启动服务
-                stopAllService();
+                //SS
+                domainService.setDomain(domain, storage_server);
+                
                 startAllService();
                 re.put("status", StatusConstant.success);
                 logService.addLog("设置域名信息:" + domain, user.getId());
@@ -149,34 +162,28 @@ public class DomainController {
     }
     
     /**
+     * @throws IOException 
      * @Description:启动所有模块的服务
      * @throws
      */
-    public void startAllService() {
-        try {
-            //Runtime.getRuntime().exec(commonpath + data_index + "/" + data_index + " " + exec_start);
-            Runtime.getRuntime().exec(commonpath + node_client + "/" + node_client + " " + exec_start);
-            Runtime.getRuntime().exec(commonpath + http_gateway + "/" + http_gateway + " " + exec_start);
-            Runtime.getRuntime().exec(commonpath + control_server + "/" + control_server + " " + exec_start);
-        } catch (IOException e) {
-            e.printStackTrace();
-            logger.error("启动服务出错:" + e.getMessage());
-        }
+    public void startAllService() throws IOException {
+        Runtime.getRuntime().exec(commonpath + data_server + "/" + data_server + " " + exec_start);
+        Runtime.getRuntime().exec(commonpath + node_client + "/" + node_client + " " + exec_start);
+        Runtime.getRuntime().exec(commonpath + http_gateway + "/" + http_gateway + " " + exec_start);
+        Runtime.getRuntime().exec(commonpath + control_server + "/" + control_server + " " + exec_start);
+        Runtime.getRuntime().exec(commonpath + storage_server + "/" + storage_server + " " + exec_start);
     }
-    
+
     /**
+     * @throws IOException
      * @Description:停止所有模块的服务
      * @throws
      */
-    public void stopAllService() {
-        try {
-            //Runtime.getRuntime().exec(commonpath + data_index + "/" + data_index + " " + exec_stop);
-            Runtime.getRuntime().exec(commonpath + node_client + "/" + node_client + " " + exec_stop);
-            Runtime.getRuntime().exec(commonpath + http_gateway + "/" + http_gateway + " " + exec_stop);
-            Runtime.getRuntime().exec(commonpath + control_server + "/" + control_server + " " + exec_stop);
-        } catch (IOException e) {
-            e.printStackTrace();
-            logger.error("停止服务出错:" + e.getMessage());
-        }
+    public void stopAllService() throws IOException {
+        Runtime.getRuntime().exec(commonpath + data_server + "/" + data_server + " " + exec_stop);
+        Runtime.getRuntime().exec(commonpath + node_client + "/" + node_client + " " + exec_stop);
+        Runtime.getRuntime().exec(commonpath + http_gateway + "/" + http_gateway + " " + exec_stop);
+        Runtime.getRuntime().exec(commonpath + control_server + "/" + control_server + " " + exec_stop);
+        Runtime.getRuntime().exec(commonpath + storage_server + "/" + storage_server + " " + exec_stop);
     }
 }
