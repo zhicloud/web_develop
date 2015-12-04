@@ -90,14 +90,37 @@ function onLoadSuccess()
 	});
 }
 function onLoadError(data){
-	alert();
+	
 }
+//比较时间大小
+function compareTo(beginTime,endTime){  
+    var beginTimes = beginTime.substring(0,10).split('-');  
+    var endTimes   =  endTime.substring(0,10).split('-');  
+      
+    beginTime = beginTimes[1]+'-'+beginTimes[2]+'-'+beginTimes[0]+' '+beginTime.substring(10,19);  
+    endTime    = endTimes[1]+'-'+endTimes[2]+'-'+endTimes[0]+' '+endTime.substring(10,19);  
+    var a =(Date.parse(endTime)-Date.parse(beginTime))/3600/1000;  
+    if(a<0){ 
+    	return -1;//开始日期大
+    }else if (a>0){  
+    	return 1;//截止日期大
+    }else if (a==0){  
+        return 0;
+    }  
+}  
+
 $(function(){
 	// 查询
 	$("#query_btn").click(function(){
 		var queryParams = {};
+		var re = compareTo($("#start_time").datetimebox("getValue"),$("#end_time").datetimebox("getValue"));
+		if(re==-1){
+			jQuery.messager.alert('提示:','开始日期不能大于截止日期','info'); 
+			return; 
+		}
 		queryParams.start_time = $("#start_time").datetimebox("getValue");
 		queryParams.end_time = $("#end_time").datetimebox("getValue");
+		
 		$('#list_data').datagrid({
 			"queryParams": queryParams
 		});
