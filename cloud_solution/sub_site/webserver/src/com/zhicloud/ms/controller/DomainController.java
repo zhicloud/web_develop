@@ -37,7 +37,8 @@ public class DomainController {
     public static final String http_gateway = "http_gateway";
     public static final String control_server = "control_server";
     public static final String storage_server = "storage_server";
-    public static final String statistic_server = "statistic_server";
+    public static final String statistic_server = "statistic_server"; 
+
     
     /* 服务存放的公用路径 */
     public static final String commonpath = "/home/zhicloud/";
@@ -177,7 +178,7 @@ public class DomainController {
         Runtime.getRuntime().exec(commonpath + http_gateway + "/" + http_gateway + " " + exec_start);
         Runtime.getRuntime().exec(commonpath + control_server + "/" + control_server + " " + exec_start);
         Runtime.getRuntime().exec(commonpath + storage_server + "/" + storage_server + " " + exec_start);
-        Runtime.getRuntime().exec(commonpath + statistic_server + "/" + statistic_server + " " + exec_start);
+        Runtime.getRuntime().exec(commonpath + statistic_server + " " + exec_start);
     }
 
     /**
@@ -191,6 +192,6 @@ public class DomainController {
         Runtime.getRuntime().exec(commonpath + http_gateway + "/" + http_gateway + " " + exec_stop);
         Runtime.getRuntime().exec(commonpath + control_server + "/" + control_server + " " + exec_stop);
         Runtime.getRuntime().exec(commonpath + storage_server + "/" + storage_server + " " + exec_stop);
-        Runtime.getRuntime().exec(commonpath + statistic_server + "/" + statistic_server + " " + exec_stop);
+        Runtime.getRuntime().exec(commonpath + statistic_server  + " " + exec_stop);
     }
 }
