@@ -2591,98 +2591,99 @@ public class CloudHostServiceImpl implements ICloudHostService {
                 JSONObject allPool = channel.computePoolQuery();
                 if("fail".equals(allPool.getString("status"))) {
                     logger.error("CloudHostServiceImpl.updateCloudHostRunningStatus-> fail to get pool  ");
-                }
- 
-                JSONArray computerList = allPool.getJSONArray("compute_pools");
+                } else {
+                    JSONArray computerList = allPool.getJSONArray("compute_pools");
 
-                for (int i = 0; i < computerList.size(); i ++) {
-                    JSONObject computerObject = computerList.getJSONObject(i);
-                    if (computerObject == null) {// 不能获取，则跳过该region
-                        logger.error(String.format("fail to get default compute pool. region[%s].", regionData.getId()));
-                        continue;
-                    }
-                    
-                    // 从http gateway获取所有的云主机
-                    try{
-                        hostQueryResult = channel.hostQuery((String) computerObject.get("uuid"));
-                    }catch(Exception e){
-                        logger.info("fail to get hosts info from pool");
-                        continue;
-                    }
-                    if (HttpGatewayResponseHelper.isSuccess(hostQueryResult) == false) {// 失败则跳过该region
-                        logger.info(String.format("fail to query host from http gateway. region[%s], message[%s]", regionData.getId(), HttpGatewayResponseHelper.getMessage(hostQueryResult)));
-                        continue;
-                    }
-                    
-                    JSONArray hosts = (JSONArray) hostQueryResult.get("hosts");   
-                    // 循环这些云主机
-                    for (int j = 0; j < hosts.size(); j++) {
-                        JSONObject realCloudHost = (JSONObject) hosts.get(j);
-                        String uuid = JSONLibUtil.getString(realCloudHost, "uuid");
-                        String name = JSONLibUtil.getString(realCloudHost, "name");
-                        
-                        if (uuid == null) {// uuid不可以为空
-                            logger.warn(String.format("found no uuid host when fetch host list from http gateway. Host name[%s], region[%s].", name, regionData.getId()));
+                    for (int i = 0; i < computerList.size(); i ++) {
+                        JSONObject computerObject = computerList.getJSONObject(i);
+                        if (computerObject == null) {// 不能获取，则跳过该region
+                            logger.error(String.format("fail to get default compute pool. region[%s].", regionData.getId()));
                             continue;
-                        }   
-                        Integer cpuCount = JSONLibUtil.getInteger(realCloudHost, "cpu_count");
-                        Double cpuUsage = JSONLibUtil.getDouble(realCloudHost, "cpu_usage");
-                        BigInteger[] memory = JSONLibUtil.getBigIntegerArray(realCloudHost, "memory"); // [可用,总量]
-                        Double memoryUsage = JSONLibUtil.getDouble(realCloudHost, "memory_usage");
-                        BigInteger[] diskVolume = JSONLibUtil.getBigIntegerArray(realCloudHost, "disk_volume"); // [可用,总量]
-                        Double diskUsage = JSONLibUtil.getDouble(realCloudHost, "disk_usage");
-                        String[] ip = JSONLibUtil.getStringArray(realCloudHost, "ip"); // [宿主机ip,公网ip]，不分配则为""
-                        Integer runningStatus = JSONLibUtil.getInteger(realCloudHost, "status"); // 0=正常,1=告警,2=故障,3=停止
-
-                        // 获取池里面已有的数据
-                        CloudHostData oldCloudHostData = cloudHostPool.getByRealHostId(uuid);
-
-//                        CloudHostData oldCloudHostData =  new CloudHostPool().getByRealHostId(uuid);
-
-                        CloudHostData newCloudHostData = null;
-                        if (oldCloudHostData == null) {
-                            newCloudHostData = new CloudHostData();
-                            newCloudHostData.setRegion(1);
-                            newCloudHostData.setRealHostId(uuid);
-                        } else {
-                            newCloudHostData = oldCloudHostData.clone();
                         }
 
-                        newCloudHostData.setHostName(name);
-                        newCloudHostData.setCpuCore(cpuCount);
-                        newCloudHostData.setCpuUsage(cpuUsage);
-                        newCloudHostData.setMemory(memory[1]);
-                        newCloudHostData.setMemoryUsage(memoryUsage);
-                        newCloudHostData.setDataDisk(diskVolume[1]);
-                        newCloudHostData.setDataDiskUsage(diskUsage);
-                        newCloudHostData.setInnerIp(ip[0]);
-                        newCloudHostData.setOuterIp(ip[1]);
-                        newCloudHostData.setRunningStatus(transforRunningStatus(runningStatus));
-                        newCloudHostData.setLastOperStatus(0);
-                        CloudHostPoolManager.getCloudHostPool().put(newCloudHostData); 
-                        // 如果running_status变了，则更新数据库
-                        if (oldCloudHostData == null || (oldCloudHostData != null && NumberUtil.equals(newCloudHostData.getRunningStatus(), oldCloudHostData.getRunningStatus()) == false)) {
-                            boolean update_flag = true;
-                 
-                            if(update_flag){ 
-                                if(oldCloudHostData == null){
-                                    oldCloudHostData = new CloudHostData();
-                                    oldCloudHostData.setRunningStatus(null);
-                                }
-                                logger.info("CloudHostServiceImpl.updateCloudHostRunningStatus > [" + Thread.currentThread().getId() + "] 云主机状态发生变化, realHostId:[" + newCloudHostData.getRealHostId() + "], hostName:[" + newCloudHostData.getHostName() + "], oldRunningStatus:[" + oldCloudHostData.getRunningStatus()
-                                        + "], newRunningStatus:[" + newCloudHostData.getRunningStatus() + "]");
-                                Map<String, Object> data = new LinkedHashMap<String, Object>();
-                                data.put("runningStatus", newCloudHostData.getRunningStatus());
-                                data.put("realHostId", newCloudHostData.getRealHostId());
-                                cloudHostMapper.updateRunningStatusByRealHostId(data);
-                                logger.info("CloudHostServiceImpl.updateCloudHostRunningStatus-> update end");
-                                
+                        // 从http gateway获取所有的云主机
+                        try{
+                            hostQueryResult = channel.hostQuery((String) computerObject.get("uuid"));
+                        }catch(Exception e){
+                            logger.info("fail to get hosts info from pool");
+                            continue;
+                        }
+                        if (HttpGatewayResponseHelper.isSuccess(hostQueryResult) == false) {// 失败则跳过该region
+                            logger.info(String.format("fail to query host from http gateway. region[%s], message[%s]", regionData.getId(), HttpGatewayResponseHelper.getMessage(hostQueryResult)));
+                            continue;
+                        }
+
+                        JSONArray hosts = (JSONArray) hostQueryResult.get("hosts");
+                        // 循环这些云主机
+                        for (int j = 0; j < hosts.size(); j++) {
+                            JSONObject realCloudHost = (JSONObject) hosts.get(j);
+                            String uuid = JSONLibUtil.getString(realCloudHost, "uuid");
+                            String name = JSONLibUtil.getString(realCloudHost, "name");
+
+                            if (uuid == null) {// uuid不可以为空
+                                logger.warn(String.format("found no uuid host when fetch host list from http gateway. Host name[%s], region[%s].", name, regionData.getId()));
+                                continue;
                             }
-                        } 
-                        cloudHostPool.put(newCloudHostData); 
+                            Integer cpuCount = JSONLibUtil.getInteger(realCloudHost, "cpu_count");
+                            Double cpuUsage = JSONLibUtil.getDouble(realCloudHost, "cpu_usage");
+                            BigInteger[] memory = JSONLibUtil.getBigIntegerArray(realCloudHost, "memory"); // [可用,总量]
+                            Double memoryUsage = JSONLibUtil.getDouble(realCloudHost, "memory_usage");
+                            BigInteger[] diskVolume = JSONLibUtil.getBigIntegerArray(realCloudHost, "disk_volume"); // [可用,总量]
+                            Double diskUsage = JSONLibUtil.getDouble(realCloudHost, "disk_usage");
+                            String[] ip = JSONLibUtil.getStringArray(realCloudHost, "ip"); // [宿主机ip,公网ip]，不分配则为""
+                            Integer runningStatus = JSONLibUtil.getInteger(realCloudHost, "status"); // 0=正常,1=告警,2=故障,3=停止
+
+                            // 获取池里面已有的数据
+                            CloudHostData oldCloudHostData = cloudHostPool.getByRealHostId(uuid);
+
+                            //                        CloudHostData oldCloudHostData =  new CloudHostPool().getByRealHostId(uuid);
+
+                            CloudHostData newCloudHostData = null;
+                            if (oldCloudHostData == null) {
+                                newCloudHostData = new CloudHostData();
+                                newCloudHostData.setRegion(1);
+                                newCloudHostData.setRealHostId(uuid);
+                            } else {
+                                newCloudHostData = oldCloudHostData.clone();
+                            }
+
+                            newCloudHostData.setHostName(name);
+                            newCloudHostData.setCpuCore(cpuCount);
+                            newCloudHostData.setCpuUsage(cpuUsage);
+                            newCloudHostData.setMemory(memory[1]);
+                            newCloudHostData.setMemoryUsage(memoryUsage);
+                            newCloudHostData.setDataDisk(diskVolume[1]);
+                            newCloudHostData.setDataDiskUsage(diskUsage);
+                            newCloudHostData.setInnerIp(ip[0]);
+                            newCloudHostData.setOuterIp(ip[1]);
+                            newCloudHostData.setRunningStatus(transforRunningStatus(runningStatus));
+                            newCloudHostData.setLastOperStatus(0);
+                            CloudHostPoolManager.getCloudHostPool().put(newCloudHostData);
+                            // 如果running_status变了，则更新数据库
+                            if (oldCloudHostData == null || (oldCloudHostData != null && NumberUtil.equals(newCloudHostData.getRunningStatus(), oldCloudHostData.getRunningStatus()) == false)) {
+                                boolean update_flag = true;
+
+                                if(update_flag){
+                                    if(oldCloudHostData == null){
+                                        oldCloudHostData = new CloudHostData();
+                                        oldCloudHostData.setRunningStatus(null);
+                                    }
+                                    logger.info("CloudHostServiceImpl.updateCloudHostRunningStatus > [" + Thread.currentThread().getId() + "] 云主机状态发生变化, realHostId:[" + newCloudHostData.getRealHostId() + "], hostName:[" + newCloudHostData.getHostName() + "], oldRunningStatus:[" + oldCloudHostData.getRunningStatus()
+                                        + "], newRunningStatus:[" + newCloudHostData.getRunningStatus() + "]");
+                                    Map<String, Object> data = new LinkedHashMap<String, Object>();
+                                    data.put("runningStatus", newCloudHostData.getRunningStatus());
+                                    data.put("realHostId", newCloudHostData.getRealHostId());
+                                    cloudHostMapper.updateRunningStatusByRealHostId(data);
+                                    logger.info("CloudHostServiceImpl.updateCloudHostRunningStatus-> update end");
+
+                                }
+                            }
+                            cloudHostPool.put(newCloudHostData);
+                        }
+
                     }
-                       
-                }   
+                }
+
             } catch (SocketException e) { 
                 logger.error("connect to http gateway failed, exception:[" + e.getMessage() + "], region:[" + String.format("%s:%s", regionData.getId(), regionData.getName()) + "]");
             } catch (Exception e) {

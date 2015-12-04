@@ -1,10 +1,37 @@
 package com.zhicloud.ms.controller;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.zhicloud.ms.app.pool.CloudHostData;
-import com.zhicloud.ms.app.pool.CloudHostPoolManager; 
+import com.zhicloud.ms.app.pool.CloudHostPoolManager;
 import com.zhicloud.ms.app.pool.IsoImagePool;
+import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
 import com.zhicloud.ms.app.pool.IsoImagePoolManager;
-import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData; 
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
@@ -23,30 +50,24 @@ import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
 import com.zhicloud.ms.httpGateway.HttpGatewayResponseHelper;
 import com.zhicloud.ms.remote.MethodResult;
-import com.zhicloud.ms.service.*;
+import com.zhicloud.ms.service.CloudHostConfigModelService;
+import com.zhicloud.ms.service.IBackUpDetailService;
+import com.zhicloud.ms.service.ICloudHostService;
+import com.zhicloud.ms.service.ICloudHostWarehouseService;
+import com.zhicloud.ms.service.IOperLogService;
+import com.zhicloud.ms.service.ISysDiskImageService;
+import com.zhicloud.ms.service.ItenantService;
+import com.zhicloud.ms.service.SharedMemoryService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.CapacityUtil;
 import com.zhicloud.ms.util.StringUtil;
-import com.zhicloud.ms.vo.*;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.text.DecimalFormat;
-import java.util.*;
+import com.zhicloud.ms.vo.BackUpDetailVO;
+import com.zhicloud.ms.vo.CloudHostConfigModel;
+import com.zhicloud.ms.vo.CloudHostVO;
+import com.zhicloud.ms.vo.SharedMemoryVO;
+import com.zhicloud.ms.vo.SysDiskImageVO;
+import com.zhicloud.ms.vo.SysTenant;
 
 
 @Controller
@@ -69,6 +90,8 @@ public class CloudServerController {
 	private ItenantService tenantService;
     @Resource
     private IOperLogService operLogService;
+    @Resource
+    private SharedMemoryService sharedMemoryService;
 	/**
 	 * 查询所有云主机
 	 * @param model
@@ -356,6 +379,8 @@ public class CloudServerController {
 			return "not_have_access";
 		}
 		CloudHostVO host = cloudHostService.getById(id);
+		ComputeInfoExt pool = ComputeInfoPoolManager.singleton().getPool().get(host.getPoolId());
+		Integer diskType = pool.getDiskType();
 		if(host!=null && host.getRealHostId()!=null){
 			try {
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
@@ -380,6 +405,7 @@ public class CloudServerController {
 				}
 				model.addAttribute("realId", host.getRealHostId());
 				model.addAttribute("diskList", dListValue);
+				model.addAttribute("diskType", diskType);
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -390,12 +416,13 @@ public class CloudServerController {
 	}
 	 
 	
-	@RequestMapping(value="/{realId}/addDataDisk",method=RequestMethod.GET)
-	public String addDataDiskPage(@PathVariable("realId") String realId,Model model,HttpServletRequest request){
+	@RequestMapping(value="/{realId}/{diskType}/addDataDisk",method=RequestMethod.GET)
+	public String addDataDiskPage(@PathVariable("realId") String realId,@PathVariable("diskType") String diskType, Model model,HttpServletRequest request){
 		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_disk_manage_add)){
 			return "not_have_access";
 		}
 		model.addAttribute("realId", realId);
+		model.addAttribute("diskType", diskType);
 		return "/server/server_disk_manage_add";
 	}
 	
@@ -404,14 +431,25 @@ public class CloudServerController {
 	public MethodResult addDataDisk(@RequestParam("uuid") String uuid,
 			@RequestParam("dataDisk") String dataDisk,
 			@RequestParam("diskType") String diskType,
-			@RequestParam("diskId") String diskId,
 			@RequestParam("mode") String mode){
 		if(StringUtil.isBlank(dataDisk)){
 			return new MethodResult(MethodResult.FAIL,"磁盘大小不能为空");
 		}
+		//目前木有云存储模式，所以默认为空
+		String diskId = "";
+		//如果磁盘类型为nas，则取出共享存储路径
+		String path = "";
+		String crypt = "crypt";
+		if("2".equals(diskType)){
+			SharedMemoryVO sharedMemory = sharedMemoryService.queryAvailable();
+			if(sharedMemory==null || sharedMemory.getUrl()==null){
+				return new MethodResult(MethodResult.FAIL,"没有可用的共享存储路径");
+			}
+			path = sharedMemory.getUrl();
+		}
 		try{
 			HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-			JSONObject result = channel.hostAttachDisk(uuid, CapacityUtil.fromCapacityLabel(dataDisk+"GB"), new Integer(diskType), diskId, new Integer(mode));
+			JSONObject result = channel.hostAttachDisk(uuid, CapacityUtil.fromCapacityLabel(dataDisk+"GB"), new Integer(diskType), diskId, new Integer(mode), path, crypt);
 			if("success".equals(result.getString("status"))){
 				return new MethodResult(MethodResult.SUCCESS,"添加成功");
 			}

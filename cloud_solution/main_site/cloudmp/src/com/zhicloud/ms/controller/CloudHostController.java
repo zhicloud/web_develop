@@ -25,6 +25,7 @@ import com.zhicloud.ms.service.ICloudHostService;
 import com.zhicloud.ms.service.ICloudHostWarehouseService;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.service.ISysDiskImageService;
+import com.zhicloud.ms.service.SharedMemoryService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.CapacityUtil;
@@ -32,6 +33,7 @@ import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.BackUpDetailVO;
 import com.zhicloud.ms.vo.CloudHostVO;
 import com.zhicloud.ms.vo.CloudHostWarehouse; 
+import com.zhicloud.ms.vo.SharedMemoryVO;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
@@ -74,7 +76,8 @@ public class CloudHostController {
 	private IBackUpDetailService backUpDetailService;
 	@Resource
     private IOperLogService operLogService;
-	
+	@Resource
+    private SharedMemoryService sharedMemoryService;
 	
 	/**
 	 * 查询所有云主机
@@ -363,6 +366,8 @@ public class CloudHostController {
             return "not_have_access";
         }
         CloudHostVO host = cloudHostService.getById(id);
+        ComputeInfoExt pool = ComputeInfoPoolManager.singleton().getPool().get(host.getPoolId());
+		Integer diskType = pool.getDiskType();
         if(host!=null && host.getRealHostId()!=null){
             try {
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
@@ -388,6 +393,7 @@ public class CloudHostController {
                 }
                 model.addAttribute("realId", host.getRealHostId());
                 model.addAttribute("diskList", dListValue);
+                model.addAttribute("diskType", diskType);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -396,12 +402,13 @@ public class CloudHostController {
         }
         return "host_disk_manage";
     }
-    @RequestMapping(value="/{realId}/addDataDisk",method=RequestMethod.GET)
-    public String addDataDiskPage(@PathVariable("realId") String realId,Model model,HttpServletRequest request){
+    @RequestMapping(value="/{realId}/{diskType}/addDataDisk",method=RequestMethod.GET)
+    public String addDataDiskPage(@PathVariable("realId") String realId,@PathVariable("diskType") String diskType,Model model,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_disk_manage_add)){
             return "not_have_access";
         }
         model.addAttribute("realId", realId);
+        model.addAttribute("diskType", diskType);
         return "host_disk_manage_add";
     }
     
@@ -410,14 +417,24 @@ public class CloudHostController {
     public MethodResult addDataDisk(@RequestParam("uuid") String uuid,
             @RequestParam("dataDisk") String dataDisk,
             @RequestParam("diskType") String diskType,
-            @RequestParam("diskId") String diskId,
             @RequestParam("mode") String mode){
         if(StringUtil.isBlank(dataDisk)){
             return new MethodResult(MethodResult.FAIL,"磁盘大小不能为空");
         }
+        //目前木有云存储模式，所以默认为空
+      	String diskId = "";
+        String path = "";
+        String crypt = "crypt";
+		if("2".equals(diskType)){
+			SharedMemoryVO sharedMemory = sharedMemoryService.queryAvailable();
+			if(sharedMemory==null || sharedMemory.getUrl()==null){
+				return new MethodResult(MethodResult.FAIL,"没有可用的共享存储路径");
+			}
+			path = sharedMemory.getUrl();
+		}
         try{
             HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-            JSONObject result = channel.hostAttachDisk(uuid, CapacityUtil.fromCapacityLabel(dataDisk+"GB"), new Integer(diskType), diskId, new Integer(mode));
+            JSONObject result = channel.hostAttachDisk(uuid, CapacityUtil.fromCapacityLabel(dataDisk+"GB"), new Integer(diskType), diskId, new Integer(mode), path, crypt);
             if("success".equals(result.getString("status"))){
                 return new MethodResult(MethodResult.SUCCESS,"添加成功");
             }

@@ -64,8 +64,9 @@ public class StateController {
         List<BcastVO> bcast = stateService.queryBcast();
         
         ResUsageVO usage = stateService.queryUsage();
+        logger.info("1");
         ServerVO server = stateService.queryServer();
-        
+        logger.info("2");
         request.setAttribute("serviceList", service);
         request.setAttribute("netList", net);
         request.setAttribute("bcastList", bcast);
@@ -75,6 +76,7 @@ public class StateController {
         
         //UserVO user = (UserVO) request.getSession().getAttribute("user");
         //logService.addLog("查看服务器状态.", user.getId());
+        logger.info("ok");
         
         return "/state/statelist";
     }

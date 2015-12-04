@@ -2,6 +2,7 @@ package com.zhicloud.ms.controller;
 
 
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressData;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPool;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPoolManager;
@@ -25,6 +26,7 @@ import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.BackUpDetailVO;
 import com.zhicloud.ms.vo.CloudHostConfigModel;
 import com.zhicloud.ms.vo.CloudHostVO;
+import com.zhicloud.ms.vo.SharedMemoryVO;
 import com.zhicloud.ms.vo.SysDiskImageVO;
 import com.zhicloud.ms.vo.SysTenant;
 
@@ -73,7 +75,8 @@ public class SysTenantController {
     
     @Resource
     ISysDiskImageService sysDiskImageService;
-    
+    @Resource
+    private SharedMemoryService sharedMemoryService;
     
 	/**
 	 * 查询所有租户
@@ -884,6 +887,8 @@ public class SysTenantController {
             return "not_have_access";
         }
         CloudHostVO host = cloudHostService.getById(id);
+        ComputeInfoExt pool = ComputeInfoPoolManager.singleton().getPool().get(host.getPoolId());
+		Integer diskType = pool.getDiskType();
         if(host!=null && host.getRealHostId()!=null){
             try {
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
@@ -908,6 +913,7 @@ public class SysTenantController {
                 }
                 model.addAttribute("realId", host.getRealHostId());
                 model.addAttribute("diskList", dListValue);
+                model.addAttribute("diskType", diskType);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -917,13 +923,14 @@ public class SysTenantController {
         return "/tenant/server_disk_manage"; 
     }
     
-    @RequestMapping(value="/{realId}/{tenantId}/addDataDisk",method=RequestMethod.GET)
-    public String addDataDiskPage(@PathVariable("realId") String realId,@PathVariable("tenantId") String tenantId,Model model,HttpServletRequest request){
+    @RequestMapping(value="/{realId}/{tenantId}/{diskType}/addDataDisk",method=RequestMethod.GET)
+    public String addDataDiskPage(@PathVariable("realId") String realId,@PathVariable("tenantId") String tenantId,@PathVariable("diskType") String diskType,Model model,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.tenant_host_disk_manage_add)){
             return "not_have_access";
         }
         model.addAttribute("realId", realId);
         model.addAttribute("tenantId", tenantId);
+        model.addAttribute("diskType", diskType);
         return "/tenant/server_disk_manage_add";
     }
     
@@ -932,12 +939,22 @@ public class SysTenantController {
     public MethodResult addDataDisk(@RequestParam("uuid") String uuid,
             @RequestParam("dataDisk") String dataDisk,
             @RequestParam("diskType") String diskType,
-            @RequestParam("diskId") String diskId,
             @RequestParam("tenantId") String tenantId,
             @RequestParam("mode") String mode,HttpServletRequest request){
         if(StringUtil.isBlank(dataDisk)){
             return new MethodResult(MethodResult.FAIL,"磁盘大小不能为空");
         }
+        //目前木有云存储模式，所以默认为空
+      	String diskId = "";
+        String path = "";
+        String crypt = "crypt";
+		if("2".equals(diskType)){
+			SharedMemoryVO sharedMemory = sharedMemoryService.queryAvailable();
+			if(sharedMemory==null || sharedMemory.getUrl()==null){
+				return new MethodResult(MethodResult.FAIL,"没有可用的共享存储路径");
+			}
+			path = sharedMemory.getUrl();
+		}
         try{
             List<CloudHostVO> hostList = cloudHostService.getHostInTenant(tenantId);
             String name = "";
@@ -956,7 +973,7 @@ public class SysTenantController {
             }  
             
             HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
-            JSONObject result = channel.hostAttachDisk(uuid, CapacityUtil.fromCapacityLabel(dataDisk+"GB"), new Integer(diskType), diskId, new Integer(mode));
+            JSONObject result = channel.hostAttachDisk(uuid, CapacityUtil.fromCapacityLabel(dataDisk+"GB"), new Integer(diskType), diskId, new Integer(mode), path, crypt);
             if("success".equals(result.getString("status"))){
                 return new MethodResult(MethodResult.SUCCESS,"添加成功");
             }

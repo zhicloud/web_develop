@@ -745,14 +745,14 @@ public class HttpGatewayChannel
             磁盘格式
                 0=raw，裸盘
      */
-    public synchronized JSONObject hostAttachDisk(String uuid, BigInteger disk_volume, Integer disk_type, String disk_source, Integer mode) throws MalformedURLException, IOException
+    public synchronized JSONObject hostAttachDisk(String uuid, BigInteger disk_volume, Integer disk_type, String disk_source, Integer mode, String path, String crypt) throws MalformedURLException, IOException
     {
         try
         {
             logger.info("HttpGatewayChannel.hostAttachDisk() > ["+Thread.currentThread().getId()+"] uuid:["+uuid+"], disk_volume:["+disk_volume+"], disk_type:["+disk_type+"], disk_source:["+disk_source+"], mode:["+mode+"]");
             
             checkSessionRefresh();
-            JSONObject result = helper.hostAttachDisk(uuid, disk_volume, disk_type, disk_source, mode);
+            JSONObject result = helper.hostAttachDisk(uuid, disk_volume, disk_type, disk_source, mode, path, crypt);
             if( HttpGatewayReturnCode.SESSION_NOT_FOUND.equals(HttpGatewayResponseHelper.getReturnCode(result)) )
             {
                 helper = null;
