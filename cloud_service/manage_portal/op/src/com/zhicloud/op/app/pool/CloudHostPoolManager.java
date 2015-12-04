@@ -161,6 +161,7 @@ public class CloudHostPoolManager {
 		newCloudHostData.setDataDiskUsage(diskUsage);
 		newCloudHostData.setInnerIp(ip[0]);
 		newCloudHostData.setOuterIp(ip[1]);
+		cloudHostPool.put(newCloudHostData);
 		newCloudHostData.setRunningStatus(transforRunningStatus(runningStatus));
 		newCloudHostData.setLastOperStatus(0);
 		// 如果running_status变了，则更新数据库
@@ -227,11 +228,11 @@ public class CloudHostPoolManager {
 				Map<String, Object> data = new LinkedHashMap<String, Object>();
 				data.put("runningStatus", newCloudHostData.getRunningStatus());
 				data.put("realHostId", newCloudHostData.getRealHostId());
-				cloudHostService.updateRunningStatusByRealHostId(data);
-				
+				cloudHostService.updateRunningStatusByRealHostId(data);		
 				cloudHostPool.put(newCloudHostData);
 			}
 		}
+		
 
 		return true;
 	}
@@ -300,6 +301,7 @@ public class CloudHostPoolManager {
 		cloudHostData.setWriteSpeed(speed[1]);
 		cloudHostData.setReceiveSpeed(speed[2]);
 		cloudHostData.setSendSpeed(speed[3]);
+		cloudHostPool.put(cloudHostData);
 		cloudHostData.setRunningStatus(transforRunningStatus(runningStatus));
 		cloudHostData.setTimestamp(time);
 		cloudHostData.setLastOperStatus(0);

@@ -34,7 +34,7 @@
 				<div class="as-info">
 					<dl>
 						<dt>步骤一：准备资料</dt>
-						<dd>资料包下载：[ICP备案资料-ZHICLOUD.zip]</dd>
+						<dd>资料包下载：<a href="https://www.zhicloud.com/download/ICP-ZHICLOUD.zip">[ICP备案资料-ZHICLOUD.zip]</a></dd>
 						<dd>1. 网站备案信息核验单（盖章，请确保打印成 一页 ，不写日期）</dd>
 						<dd>2. 网站信息登记表（盖章，不能有空项）</dd>
 						<dd>3. 营业执照副本原件（或个人备案主体提供身份证）扫描件、复印件（盖章）</dd>
@@ -49,8 +49,8 @@
 					<dl>
 						<dt>步骤二：备案资料审查</dt>
 						<dd>请将所有资料通过E-Mail发给备案专员，备案专员会为您进行初步审核，并与您确认: </dd>
-						<dd>专员：王岚</dd>
-						<dd>手机：187 8292 1514</dd>
+						<dd>专员：刘婉露</dd>
+						<dd>电话：4000-212-999</dd>
 						<dd>邮箱：beian@zhicloud.com</dd>
 						<dd>QQ号：2041426810（备案专用QQ，不受理其他咨询问题）</dd>
 					</dl>
