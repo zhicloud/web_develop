@@ -39,14 +39,23 @@
 	</div>
 	<div class="g-ft"></div>
 <script type="text/javascript">
+//过滤空格
+String.prototype.NoSpace = function() { 
+	return this.replace(/\s+/g, ""); 
+}
 //保存组播地址
 function saveGroupIP(){
-	var broadcast = $("#mult_address").val();
+	var broadcast = $("#mult_address").val().NoSpace();
+	if("${broadcast}".NoSpace()==broadcast){
+		jQuery.messager.alert('提示:','组播地址没有改变,不需要保存','info'); 
+		//$("#mult_address").val("${broadcast}");
+		return;
+	}
 	//var reg = /^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
 	var reg = /^(2[2-3][4-9])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
 	if(!reg.test(broadcast)){
 		jQuery.messager.alert('提示:','请输入正确的组播地址格式(D类IP地址)','info'); 
-		$("#mult_address").val("${broadcast }");
+		//$("#mult_address").val("${broadcast }");
 		return;
 	}
 	jQuery.messager.confirm('提示:','修改组播地址后,所有服务将会重启,确定修改吗?',function(event){ 
@@ -85,7 +94,12 @@ function saveGroupIP(){
 }
 //保存域名信息
 function saveDomain(){
-	var domain = $("#domain_address").val();
+	var domain = $("#domain_address").val().NoSpace();
+	if("${domain}".NoSpace()==domain){
+		jQuery.messager.alert('提示:','域名没有改变,不需要保存','info'); 
+		//$("#domain_address").val("${domain}");
+		return;
+	}
 	if(/.*[\u4e00-\u9fa5]+.*$/.test(domain)) 
 	{ 
 		jQuery.messager.alert('提示:','域名不能含有中文','info'); 
