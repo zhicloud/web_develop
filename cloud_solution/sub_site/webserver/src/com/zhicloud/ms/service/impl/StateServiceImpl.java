@@ -160,7 +160,9 @@ public class StateServiceImpl implements StateService {
             sv.setName(componentvo.getRealname());
             // 通过进程判断组件是否存在
             String processid = AppProperties.getValue("find_process_id", "ps -ef|grep {%%}|grep -v grep");
-            List<String> processidList = LinuxShellUtil.getCallShell(processid.replace("{%%}", componentvo.getKeyword()));
+            //List<String> processidList = LinuxShellUtil.getCallShell(processid.replace("{%%}", componentvo.getKeyword()));
+            //根据关键字查询服务进程，存在模糊匹配，造成服务已停止了 但是还是会有结果，修改成根据路径来识别
+            List<String> processidList = LinuxShellUtil.getCallShell(processid.replace("{%%}", componentvo.getPath()));
             if(processidList.size() > 0 && processidList.get(0).length() > 0){ // 有进程号
                 sv.setStatus("0");
                 String cmdCurrent = cmd.replace("{%%}", componentvo.getKeyword());
