@@ -37,6 +37,7 @@ public class DomainController {
     public static final String http_gateway = "http_gateway";
     public static final String control_server = "control_server";
     public static final String storage_server = "storage_server";
+    public static final String statistic_server = "statistic_server";
     
     /* 服务存放的公用路径 */
     public static final String commonpath = "/home/zhicloud/";
@@ -101,6 +102,8 @@ public class DomainController {
                 domainService.setBroadcast(broadcast, control_server);
                 // SS
                 domainService.setBroadcast(broadcast, storage_server);
+                // 统计服务
+                domainService.setBroadcast(broadcast, statistic_server);
                 
                 startAllService();
                 re.put("status", StatusConstant.success);
@@ -145,8 +148,10 @@ public class DomainController {
                 domainService.setDomain(domain, http_gateway);
                 // CS
                 domainService.setDomain(domain, control_server);
-                //SS
+                // SS
                 domainService.setDomain(domain, storage_server);
+                // 统计服务
+                domainService.setDomain(domain, statistic_server);
                 
                 startAllService();
                 re.put("status", StatusConstant.success);
@@ -162,7 +167,7 @@ public class DomainController {
     }
     
     /**
-     * @throws IOException 
+     * @throws IOException
      * @Description:启动所有模块的服务
      * @throws
      */
@@ -172,6 +177,7 @@ public class DomainController {
         Runtime.getRuntime().exec(commonpath + http_gateway + "/" + http_gateway + " " + exec_start);
         Runtime.getRuntime().exec(commonpath + control_server + "/" + control_server + " " + exec_start);
         Runtime.getRuntime().exec(commonpath + storage_server + "/" + storage_server + " " + exec_start);
+        Runtime.getRuntime().exec(commonpath + statistic_server + "/" + statistic_server + " " + exec_start);
     }
 
     /**
@@ -185,5 +191,6 @@ public class DomainController {
         Runtime.getRuntime().exec(commonpath + http_gateway + "/" + http_gateway + " " + exec_stop);
         Runtime.getRuntime().exec(commonpath + control_server + "/" + control_server + " " + exec_stop);
         Runtime.getRuntime().exec(commonpath + storage_server + "/" + storage_server + " " + exec_stop);
+        Runtime.getRuntime().exec(commonpath + statistic_server + "/" + statistic_server + " " + exec_stop);
     }
 }
