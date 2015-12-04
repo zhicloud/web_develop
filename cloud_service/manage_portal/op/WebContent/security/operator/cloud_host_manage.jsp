@@ -291,7 +291,7 @@
 			<a href='#' class='datagrid_row_linkbutton open-port' style=\"color:gray;\">端口配置</a>\
 			</div>";
 		}
-		if(processStatus != null && (processStatus == 0 || processStatus == 3 || processStatus==2)){
+		if(processStatus != null && (processStatus == 0 || processStatus == 3 || processStatus==2) && realHostId==null){
 			return "<div row_index='"+index+"'>\
 			<a href='#' class='datagrid_row_linkbutton start_host_btn' style=\"color:gray;\">开机</a>\
 			<a href='#' class='datagrid_row_linkbutton shutdown_host_btn' style=\"color:gray;\">关机</a>\
