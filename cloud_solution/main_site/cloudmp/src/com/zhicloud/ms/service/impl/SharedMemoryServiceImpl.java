@@ -148,6 +148,7 @@ public class SharedMemoryServiceImpl implements SharedMemoryService {
         Map<String,String> temp = new HashMap<String,String>();
         try {
             Process pro = Runtime.getRuntime().exec("mkdir  /image");
+            pro = Runtime.getRuntime().exec("umount  /image");
             logger.info("create /image fiel");
             pro = Runtime.getRuntime().exec("mount -t nfs "+url+" /image");
             BufferedReader br = new BufferedReader(new InputStreamReader(pro.getInputStream()));
