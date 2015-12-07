@@ -36,9 +36,9 @@
 			<div class="mn-hostinfo">
 	    		<h3>服务器&nbsp;&nbsp;[<%=server.getName() %>]</h3>
 	    		<div class="mn-paraminfo">
-	    			<label>类型：</label><span><%=server.getType() %></span>
+	    			<label>操作系统：</label><span><%=server.getType() %></span>
 	    			<span>&nbsp;|&nbsp;</span>
-	    			<label>型号：</label><span><%=server.getModel() %></span>
+	    			<label>类型：</label><span><%=server.getModel() %></span>
 	    			<span>&nbsp;|&nbsp;</span>
 	    			<label>IP：</label><span><%=server.getIp() %></span>
 	    			<span>&nbsp;|&nbsp;</span>
@@ -56,11 +56,11 @@
 				</div>
 	    		<div class="cr-list">
 	    			<div class="cr-iteam">
-	    				<div class="s-left-info cr-cpu"></div>
+	    				<div class="s-left-info cr-internal"></div>
 	    				<div class="s-right-info"><h3 id="cpuper"><%=usage.getCpuper() %>%</h3><p>CPU使用率</p></div>
 	    			</div>
 	    			<div class="cr-iteam">
-	    				<div class="s-left-info cr-internal"></div>
+	    				<div class="s-left-info cr-cpu"></div>
 	    				<div class="s-right-info"><h3 id="memper"><%=usage.getMemper() %>%</h3><p>内存使用率</p></div>
 	    			</div>
 	    			<div class="cr-iteam">

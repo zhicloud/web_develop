@@ -402,6 +402,12 @@ public class BackUpController {
             return new MethodResult(MethodResult.FAIL,"主机不存在，恢复失败。");
 
         }
+        if(host.getRunningStatus()!=AppConstant.CLOUD_HOST_RUNNING_STATUS_SHUTDOWN){
+            operLogService.addLog("桌面云备份和恢复","恢复主机失败，请先关闭主机" , "1", "2", request);
+            return new MethodResult(MethodResult.FAIL,"主机处于开机状态，需关机后进行恢复。");
+
+        }
+        
         String sessionId = null;
         Map<String, Object> parameter = new LinkedHashMap<String, Object>();
         String uuid = (String) parameter.get("uuid");
@@ -458,6 +464,11 @@ public class BackUpController {
         if(host == null){
             operLogService.addLog("桌面云备份和恢复","恢复主机" , "1", "2", request);
             return new MethodResult(MethodResult.FAIL,"主机不存在，恢复失败。");
+
+        }
+        if(host.getRunningStatus()!=AppConstant.CLOUD_HOST_RUNNING_STATUS_SHUTDOWN){
+            operLogService.addLog("桌面云备份和恢复","恢复主机失败，请先关闭主机" , "1", "2", request);
+            return new MethodResult(MethodResult.FAIL,"主机处于开机状态，需关机后进行恢复。");
 
         }
         String sessionId = null;

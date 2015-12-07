@@ -2054,8 +2054,11 @@ public class CloudHostServiceImpl extends BeanDirectCallableDefaultImpl implemen
         }
         // 如果不是仓库云主机，启动云主机
         if (cloudHostVO.getType() != null && cloudHostVO.getType() != 4) {
-            CloudHostService cloudHostService = CoreSpringContextManager.getCloudHostService();
-            cloudHostService.startCloudHost(hostId);
+            if(AppInconstant.cloudHostProgress.get(cloudHostVO.getHostName())!=null){
+                CloudHostService cloudHostService = CoreSpringContextManager.getCloudHostService();
+                cloudHostService.startCloudHost(hostId);
+            }
+            
         }
         //云主机关联VPC
         if (cloudHostVO.getType() == AppConstant.CLOUD_HOST_TYPE_5_TERMINAL_USER_VPC
@@ -2102,6 +2105,7 @@ public class CloudHostServiceImpl extends BeanDirectCallableDefaultImpl implemen
                     "attach host[" + cloudHostVO.getDisplayName() + "] to VPC " + attachHostResult);
             }
         }
+        AppInconstant.cloudHostProgress.remove(cloudHostVO.getHostName());
         logger.info("CloudHostServiceImpl -> _handleFoundHost   update cloud_host end");
 
     }
