@@ -2,6 +2,9 @@ package com.zhicloud.ms.app.pool.host.back;
 
 import java.util.Date;
 
+import org.apache.log4j.Logger;
+
+import com.zhicloud.ms.controller.CloudServerController;
 import com.zhicloud.ms.vo.CloudHostVO;
 
  
@@ -39,6 +42,8 @@ public class HostBackupProgressData extends CloudHostVO {
 	}
 
 	public void setFinished(boolean finished) {
+	    Logger logger = Logger.getLogger(CloudServerController.class);
+	    logger.info("update backup&resume finish "+finished); 
 		this.finished = finished;
 	}
 
@@ -143,6 +148,9 @@ public class HostBackupProgressData extends CloudHostVO {
 	}
 
 	public void setBackupStatus(Integer backupStatus) {
+	    Logger logger = Logger.getLogger(CloudServerController.class);
+	    logger.info("update status "+backupStatus);
+	    System.out.println("哈哈哈哈哈哈哈哈哈"+backupStatus);
 		this.backupStatus = backupStatus;
 	}
 

@@ -13,10 +13,18 @@ import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.ICloudHostService;
 
 public class CloudHostSynchronousJob implements Job{
-    BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 
-    ICloudHostService cloudHostService = (ICloudHostService)factory.getBean("cloudHostService");
+    private static CloudHostSynchronousJob instance = null;
+     private static ICloudHostService cloudHostService = null;
      private final static Logger logger = Logger.getLogger(BackUpJob.class);
-    
+     public synchronized static CloudHostSynchronousJob singleton() {
+         if (CloudHostSynchronousJob.instance == null) {
+             CloudHostSynchronousJob.instance = new CloudHostSynchronousJob();
+             BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 
+             cloudHostService = (ICloudHostService)factory.getBean("cloudHostService");
+
+         }
+         return CloudHostSynchronousJob.instance;
+     }
      @Override
      public void execute(JobExecutionContext context)throws JobExecutionException { 
          try { 

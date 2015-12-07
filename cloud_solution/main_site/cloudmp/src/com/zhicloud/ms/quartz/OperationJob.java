@@ -24,13 +24,21 @@ import java.util.List;
  * Created by sean on 8/6/15.
  */
 public class OperationJob implements Job {
+    
+    private static  OperationJob instance = null;
 
     BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml");
     ICloudHostService cloudHostService = (ICloudHostService)factory.getBean("cloudHostService");
     ISetTimeOperationDetailService setTimeOperationDetailService =
         (ISetTimeOperationDetailService) factory.getBean("setTimeOperationDetailService");
     private final static Logger logger = Logger.getLogger(OperationJob.class);
-
+    public synchronized static OperationJob singleton() {
+        if (OperationJob.instance == null) {
+            OperationJob.instance = new OperationJob();
+        }
+        return OperationJob.instance;
+    }
+    
     @Override public void execute(JobExecutionContext jobExecutionContext)
         throws JobExecutionException {
         try {

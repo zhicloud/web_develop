@@ -39,7 +39,7 @@ public class BoxCumulativeOnlineTimeListener implements ServletContextListener{
                //没有任务则添加任务
                if(jdCheck==null){
                    //定义任务
-                   JobDetail jd = JobBuilder.newJob(BoxCumulativeOnlineTimeJob.class)
+                   JobDetail jd = JobBuilder.newJob(BoxCumulativeOnlineTimeJob.singleton().getClass())
                            .withIdentity(new JobKey(BOX_CUMULATIVE_TIME_QUARTZ_ID,"groupJob"))   
                            .requestRecovery(true)
                            .build();
@@ -61,7 +61,7 @@ public class BoxCumulativeOnlineTimeListener implements ServletContextListener{
             //没有任务则添加任务
             if(jdCheck==null){
                 //定义任务
-                JobDetail jd = JobBuilder.newJob(BoxCumulativeOnlineTimeBatchJob.class)
+                JobDetail jd = JobBuilder.newJob(BoxCumulativeOnlineTimeBatchJob.singleton().getClass())
                     .withIdentity(new JobKey(BOX_CUMULATIVE_TIME_BATCH_QUARTZ_ID,"groupJob"))
                     .requestRecovery(true)
                     .build();
