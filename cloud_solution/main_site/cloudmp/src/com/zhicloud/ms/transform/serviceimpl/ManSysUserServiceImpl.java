@@ -339,6 +339,7 @@ public class ManSysUserServiceImpl implements ManSysUserService {
                 try {
                     if(!StringUtil.isBlank(email)) {
                         Map<String, Object> param = new LinkedHashMap<>();
+                        param.put("email", email);
                         param.put("name", usercount);
                         param.put("password", password);
                         param.put("url", AppProperties.getValue("address_of_this_system", ""));
