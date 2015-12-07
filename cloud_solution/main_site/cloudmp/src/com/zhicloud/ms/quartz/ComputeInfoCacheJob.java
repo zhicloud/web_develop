@@ -1,33 +1,24 @@
 package com.zhicloud.ms.quartz;
 
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
+import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
+import com.zhicloud.ms.httpGateway.HttpGatewayManager;
+import com.zhicloud.ms.service.IComputePoolService;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+import org.apache.log4j.Logger;
+import org.quartz.Job;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Hashtable;
 import java.util.Map;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
-import org.apache.log4j.Logger;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException; 
- 
-
-
-
-
-
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
-import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
-import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
-import com.zhicloud.ms.constant.AppConstant;
-import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
-import com.zhicloud.ms.httpGateway.HttpGatewayManager;  
-import com.zhicloud.ms.service.IComputePoolService;
 
 public class ComputeInfoCacheJob implements Job{
     
@@ -88,20 +79,25 @@ public class ComputeInfoCacheJob implements Job{
                 }
                 logger.info("ComputeInfoCacheJob.execute->begin to get compute pool detail");
                 ComputeInfoExt computer = computePoolService.getComputePoolDetailSync(uuid);
-                computer.setCpuCount(cpuCount);
-                computer.setCpuUsage(cpuUsage);
-                computer.setDiskUsage(diskUsage);
-                computer.setDiskVolume(dcount);
-                computer.setHost(hcount);
-                computer.setMemory(mcount);
-                computer.setMemoryUsage(memoryUsage);
-                computer.setName(name);
-                computer.setNode(ncount);
-                computer.setStatus(status);
-                computer.setUuid(uuid);
-                computer.setRegion(1);
-                newPoolData.put(uuid, computer);
-                pool.putToComputePool(uuid, computer);
+                if (computer != null) {
+                    computer.setCpuCount(cpuCount);
+                    computer.setCpuUsage(cpuUsage);
+                    computer.setDiskUsage(diskUsage);
+                    computer.setDiskVolume(dcount);
+                    computer.setHost(hcount);
+                    computer.setMemory(mcount);
+                    computer.setMemoryUsage(memoryUsage);
+                    computer.setName(name);
+                    computer.setNode(ncount);
+                    computer.setStatus(status);
+                    computer.setUuid(uuid);
+                    computer.setRegion(1);
+                    newPoolData.put(uuid, computer);
+                    pool.putToComputePool(uuid, computer);
+                } else {
+                    logger.error("ComputeInfoCacheJob.execute->fail to get compute pool detail");
+                }
+
             }
             pool.clearComputePool();
             pool.setComputePool(newPoolData);
