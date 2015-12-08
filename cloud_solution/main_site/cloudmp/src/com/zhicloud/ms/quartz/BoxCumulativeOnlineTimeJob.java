@@ -1,7 +1,7 @@
 package com.zhicloud.ms.quartz;
 
 import com.zhicloud.ms.app.listener.WarehouseCheckTimeListener;
-import com.zhicloud.ms.constant.AppConstant;
+
 import com.zhicloud.ms.service.IBoxRealInfoService;
 
 import org.apache.log4j.Logger;
@@ -20,10 +20,18 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 *
  */
 public class BoxCumulativeOnlineTimeJob implements Job{
+    private static BoxCumulativeOnlineTimeJob instance = null;
     BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 
     IBoxRealInfoService boxRealInfoService = (IBoxRealInfoService)factory.getBean("boxRealInfoService");
     private final static Logger logger = Logger.getLogger(WarehouseCheckTimeListener.class);
 
+    public synchronized static BoxCumulativeOnlineTimeJob singleton() {
+        if (BoxCumulativeOnlineTimeJob.instance == null) {
+            BoxCumulativeOnlineTimeJob.instance = new BoxCumulativeOnlineTimeJob();
+        }
+        return BoxCumulativeOnlineTimeJob.instance;
+    }
+    
     @Override
     public void execute(JobExecutionContext context)throws JobExecutionException {
 

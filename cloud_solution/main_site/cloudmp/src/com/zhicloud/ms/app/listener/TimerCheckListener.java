@@ -48,7 +48,7 @@ public class TimerCheckListener implements ServletContextListener{
                //没有任务则添加任务
                if(jdCheck==null){
                    //定义任务
-                   JobDetail jd = JobBuilder.newJob(WarehouseCheckCountJob.class)
+                   JobDetail jd = JobBuilder.newJob(WarehouseCheckCountJob.singleton().getClass())
                            .withIdentity(new JobKey(AppConstant.WAREHOUSE_CHECK_COUNT_QUARTZ_ID,"groupJob"))   
                            .requestRecovery(true)
                            .build();
@@ -87,7 +87,7 @@ public class TimerCheckListener implements ServletContextListener{
                     //没有任务则添加任务
                     if(jdCheck==null){
                         //定义任务
-                        JobDetail jd = JobBuilder.newJob(BackUpJob.class)
+                        JobDetail jd = JobBuilder.newJob(BackUpJob.singleton().getClass())
                                 .withIdentity(new JobKey(timer.getId(),"groupJob"))  
                                 .usingJobData("mode", timer.getMode())
                                 .usingJobData("disk", timer.getDisk())
@@ -131,7 +131,7 @@ public class TimerCheckListener implements ServletContextListener{
                     //没有任务则添加任务
                     if(jdCheck==null){
                         //定义任务
-                        JobDetail jd = JobBuilder.newJob(BackUpJob.class)
+                        JobDetail jd = JobBuilder.newJob(BackUpJob.singleton().getClass())
                                 .withIdentity(new JobKey(timer.getId(),"groupJob"))  
                                 .usingJobData("mode", timer.getMode())
                                 .usingJobData("disk", timer.getDisk())
@@ -173,7 +173,7 @@ public class TimerCheckListener implements ServletContextListener{
                 //没有任务则添加任务
                 if(jdCheck==null){
                     //定义任务
-                    JobDetail jd = JobBuilder.newJob(OperationJob.class)
+                    JobDetail jd = JobBuilder.newJob(OperationJob.singleton().getClass())
                         .withIdentity(new JobKey(timer.getId(), "groupJob"))
                         .usingJobData("key", timer.getKey())
                         .requestRecovery(true)
@@ -224,7 +224,7 @@ public class TimerCheckListener implements ServletContextListener{
                 //没有任务则添加任务
                 if(jdCheck==null){
                     //定义任务
-                    JobDetail jd = JobBuilder.newJob(OperationJob.class)
+                    JobDetail jd = JobBuilder.newJob(OperationJob.singleton().getClass())
                         .withIdentity(new JobKey(timer.getId(), "groupJob"))
                         .usingJobData("key", timer.getKey())
                         .requestRecovery(true)
@@ -262,7 +262,7 @@ public class TimerCheckListener implements ServletContextListener{
                 //没有任务则添加任务
                 if(jdCheck==null){
                     //定义任务
-                    JobDetail jd = JobBuilder.newJob(ComputeInfoCacheJob.class)
+                    JobDetail jd = JobBuilder.newJob(ComputeInfoCacheJob.singleton().getClass())
                             .withIdentity(new JobKey(AppConstant.UPDATE_COMPUTE_POOL_CACHE_QUARTZ_ID,"groupJob"))   
                             .requestRecovery(true)
                             .build();
@@ -279,51 +279,51 @@ public class TimerCheckListener implements ServletContextListener{
             e.printStackTrace();
          }
         
-//        time = "*/3 * * * * ?";
-//        try {
-//            JobDetail jdCheck = QuartzManage.getQuartzManage().getScheduler().getJobDetail(new JobKey(AppConstant.CLOUD_HOST_CREATE_ID,"groupJob"));           
-//                //没有任务则添加任务
-//                if(jdCheck==null){
-//                    //定义任务
-//                    JobDetail jd = JobBuilder.newJob(CloudHostCreateJob.class)
-//                            .withIdentity(new JobKey(AppConstant.CLOUD_HOST_CREATE_ID,"groupJob"))   
-//                            .requestRecovery(true)
-//                            .build();
-//                    //定义触发器
-//                    CronTrigger ct = (CronTrigger)TriggerBuilder.newTrigger()
-//                            .withIdentity(new TriggerKey(AppConstant.CLOUD_HOST_CREATE_ID,"groupTrigger"))
-//                            .withSchedule(CronScheduleBuilder.cronSchedule(time).withMisfireHandlingInstructionDoNothing())
-//                            .startNow()
-//                            .build();
-//                    //添加任务
-//                    QuartzManage.getQuartzManage().addTrigger(jd, ct);
-//                }   
-//         } catch (SchedulerException e) {
-//            e.printStackTrace();
-//         }
-//        
-//        time = "*/50 * * * * ?";
-//        try {
-//            JobDetail jdCheck = QuartzManage.getQuartzManage().getScheduler().getJobDetail(new JobKey(AppConstant.CLOUD_HOST_FETCH_ID,"groupJob"));           
-//                //没有任务则添加任务
-//                if(jdCheck==null){
-//                    //定义任务
-//                    JobDetail jd = JobBuilder.newJob(CloudHostSynchronousJob.class)
-//                            .withIdentity(new JobKey(AppConstant.CLOUD_HOST_FETCH_ID,"groupJob"))   
-//                            .requestRecovery(true)
-//                            .build();
-//                    //定义触发器
-//                    CronTrigger ct = (CronTrigger)TriggerBuilder.newTrigger()
-//                            .withIdentity(new TriggerKey(AppConstant.CLOUD_HOST_FETCH_ID,"groupTrigger"))
-//                            .withSchedule(CronScheduleBuilder.cronSchedule(time).withMisfireHandlingInstructionDoNothing())
-//                            .startNow()
-//                            .build();
-//                    //添加任务
-//                    QuartzManage.getQuartzManage().addTrigger(jd, ct);
-//                }   
-//         } catch (SchedulerException e) {
-//            e.printStackTrace();
-//         }
+        time = "*/3 * * * * ?";
+        try {
+            JobDetail jdCheck = QuartzManage.getQuartzManage().getScheduler().getJobDetail(new JobKey(AppConstant.CLOUD_HOST_CREATE_ID,"groupJob"));           
+                //没有任务则添加任务
+                if(jdCheck==null){
+                    //定义任务
+                    JobDetail jd = JobBuilder.newJob(CloudHostCreateJob.singleton().getClass())
+                            .withIdentity(new JobKey(AppConstant.CLOUD_HOST_CREATE_ID,"groupJob"))   
+                            .requestRecovery(true)
+                            .build();
+                    //定义触发器
+                    CronTrigger ct = (CronTrigger)TriggerBuilder.newTrigger()
+                            .withIdentity(new TriggerKey(AppConstant.CLOUD_HOST_CREATE_ID,"groupTrigger"))
+                            .withSchedule(CronScheduleBuilder.cronSchedule(time).withMisfireHandlingInstructionDoNothing())
+                            .startNow()
+                            .build();
+                    //添加任务
+                    QuartzManage.getQuartzManage().addTrigger(jd, ct);
+                }   
+         } catch (SchedulerException e) {
+            e.printStackTrace();
+         }
+        
+        time = "*/50 * * * * ?";
+        try {
+            JobDetail jdCheck = QuartzManage.getQuartzManage().getScheduler().getJobDetail(new JobKey(AppConstant.CLOUD_HOST_FETCH_ID,"groupJob"));           
+                //没有任务则添加任务
+                if(jdCheck==null){
+                    //定义任务
+                    JobDetail jd = JobBuilder.newJob(CloudHostSynchronousJob.singleton().getClass())
+                            .withIdentity(new JobKey(AppConstant.CLOUD_HOST_FETCH_ID,"groupJob"))   
+                            .requestRecovery(true)
+                            .build();
+                    //定义触发器
+                    CronTrigger ct = (CronTrigger)TriggerBuilder.newTrigger()
+                            .withIdentity(new TriggerKey(AppConstant.CLOUD_HOST_FETCH_ID,"groupTrigger"))
+                            .withSchedule(CronScheduleBuilder.cronSchedule(time).withMisfireHandlingInstructionDoNothing())
+                            .startNow()
+                            .build();
+                    //添加任务
+                    QuartzManage.getQuartzManage().addTrigger(jd, ct);
+                }   
+         } catch (SchedulerException e) {
+            e.printStackTrace();
+         }
         
 
 
@@ -333,7 +333,7 @@ public class TimerCheckListener implements ServletContextListener{
                //没有任务则添加任务
                if(jdCheck==null){
                    //定义任务
-                   JobDetail jd = JobBuilder.newJob(CloudHostRunningStatusJob.class)
+                   JobDetail jd = JobBuilder.newJob(CloudHostRunningStatusJob.singleton().getClass())
                            .withIdentity(new JobKey(AppConstant.CLOUD_HOST_RUNNING_STATUS_CHECK,"groupJob"))   
                            .requestRecovery(true)
                            .build();
