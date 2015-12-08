@@ -15,6 +15,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger; 
 import org.springframework.transaction.annotation.Transactional;
 
+import com.zhicloud.ms.app.listener.CheckServerRoomsListener;
 import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.constant.MonitorConstant;
 import com.zhicloud.ms.mapper.SysWarnRuleMapper;
@@ -68,16 +69,22 @@ public class SysWarnServiceImpl implements SysWarnService {
         } else {
             ruleData.put("sendtime", null);
         }
-        ruleData.put("notify_phone", rule.getNotify_phone());
-        ruleData.put("notify_email", rule.getNotify_email());
-        ruleData.put("insert_user", userid);
-        ruleData.put("insert_date", StringUtil.dateToString(new Date(), "yyyy-MM-dd HH:mm:ss"));
+/*        ruleData.put("notify_phone", rule.getNotify_phone());
+        ruleData.put("notify_email", rule.getNotify_email());*/
         int n = 0;
         if ("add".equals(type)) {
+            ruleData.put("insert_user", userid);
+            ruleData.put("insert_date", StringUtil.dateToString(new Date(), "yyyy-MM-dd HH:mm:ss"));
             n = ruleMapper.addSysWarnRule(ruleData);
         }
         if ("modify".equals(type)) {
             n = ruleMapper.updateSysWarnRule(ruleData);
+        }
+        // 更新内存数据
+        if (rule.getRuletype() == 0) {// 告警
+            CheckServerRoomsListener.warn_on_off = rule.getIsnotify();
+        } else {// 故障
+            CheckServerRoomsListener.error_on_off = rule.getIsnotify();
         }
         return n;
     }
