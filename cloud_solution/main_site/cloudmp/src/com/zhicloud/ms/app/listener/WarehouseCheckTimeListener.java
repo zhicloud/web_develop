@@ -56,7 +56,7 @@ public class WarehouseCheckTimeListener implements Servlet {
 					String sec = chw.getCheckTime().substring(4);
 					String checkTiem = sec+" "+min+" "+hour+" * * ? *";
 					//定义任务
-    				JobDetail jd = JobBuilder.newJob(WarehouseJob.class)
+    				JobDetail jd = JobBuilder.newJob(WarehouseJob.singleton().getClass())
     						.withIdentity(new JobKey(chw.getId(),"groupJob"))
     						.usingJobData("id", chw.getId())
     						.requestRecovery(true)

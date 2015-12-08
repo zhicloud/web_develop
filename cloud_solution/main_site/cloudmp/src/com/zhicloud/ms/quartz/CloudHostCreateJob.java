@@ -7,14 +7,23 @@ import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.zhicloud.ms.constant.AppConstant;
-import com.zhicloud.ms.service.ICloudHostService;
+ import com.zhicloud.ms.service.ICloudHostService;
 
 public class CloudHostCreateJob implements Job{
+    
+    private static CloudHostCreateJob instance = null;
+
     
     BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 
     ICloudHostService cloudHostService = (ICloudHostService)factory.getBean("cloudHostService");
      private final static Logger logger = Logger.getLogger(BackUpJob.class);
+     
+     public synchronized static CloudHostCreateJob singleton() {
+         if (CloudHostCreateJob.instance == null) {
+             CloudHostCreateJob.instance = new CloudHostCreateJob();
+         }
+         return CloudHostCreateJob.instance;
+     }
      
     @Override
     public void execute(JobExecutionContext context)throws JobExecutionException { 

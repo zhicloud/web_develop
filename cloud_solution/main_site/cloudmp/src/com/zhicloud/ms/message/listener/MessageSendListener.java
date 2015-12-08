@@ -1,5 +1,6 @@
 package com.zhicloud.ms.message.listener;
 
+import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.message.MessageConstant;
 import com.zhicloud.ms.message.MessageEvent;
 import com.zhicloud.ms.message.MessageServiceManager;
@@ -19,7 +20,8 @@ import java.util.Map;
 
         Map<String, Object> param = (Map<String, Object>) messageEvent.getSource();
         try {
-            MessageServiceManager.singleton().getMailService().sendMail(MessageConstant.EMAIL_INFO_ADMIN_REGISTER, param);
+            MessageServiceManager.singleton().getMailService().sendMailWithBcc(MessageConstant.EMAIL_INFO_ADMIN_REGISTER,
+                StringUtil.trim(param.get("email")), param);
         } catch (Exception e) {
             e.printStackTrace();
         }

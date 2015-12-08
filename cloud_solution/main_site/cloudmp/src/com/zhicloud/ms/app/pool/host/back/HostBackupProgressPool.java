@@ -3,6 +3,8 @@ package com.zhicloud.ms.app.pool.host.back;
 import java.util.Hashtable;
 import java.util.Map;
 
+import com.sun.media.jfxmedia.logging.Logger;
+
 public class HostBackupProgressPool {
 
 	private Map<String, HostBackupProgressData> pool;
@@ -22,6 +24,8 @@ public class HostBackupProgressPool {
 			String key = uuid;
 			pool.put(key, hostBackup);
 		}
+	    System.out.println("hhahhahahhahahhahahahah put"+ uuid);
+
 	}
 
 	public HostBackupProgressData get(String uuid) {
@@ -40,6 +44,7 @@ public class HostBackupProgressPool {
 			String key = sessionId;
 			pool.remove(key);
 		}
+		System.out.println("hhahhahahhahahhahahahah remove"+ sessionId);
 	}
 	
 //	public HostBackupProgressData getDuplication(String sessionId) {
