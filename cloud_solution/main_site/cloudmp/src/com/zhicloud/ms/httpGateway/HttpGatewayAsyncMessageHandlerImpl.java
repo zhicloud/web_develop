@@ -483,15 +483,17 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 			hostBackup.setUuid(uuid);
 			pool.put(hostBackup);
 		}
+		if(hostBackup.getBackupStatus() != 0){
+		    hostBackup.setProgress(level);
+	        hostBackup.setFinished(false);
+	        hostBackup.setReady(true);
+	        hostBackup.setSuccess(true);
+	        hostBackup.updateTime();
+	        hostBackup.setBackupStatus(9);
+		}
 		
-		hostBackup.setProgress(level);
-		hostBackup.setFinished(false);
-		hostBackup.setReady(true);
-		hostBackup.setSuccess(true);
-		hostBackup.updateTime();
-		hostBackup.setBackupStatus(9);
 //		channel.release();
-		System.err.println(String.format("[%s]backup host at progress %d%%. uuid[%s]", sessionId, level, uuid));
+		logger.info(String.format("[%s]backup host at progress %d%%. uuid[%s]", sessionId, level, uuid));
 	}
 
 	@HttpGatewayMessageHandler(messageType = "backup_host")
@@ -528,14 +530,14 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 
 			
 //			String timestamp = messageData.getString("timestamp");			
-			System.err.println(String.format("[%s]backup host success. uuid[%s]", sessionId, uuid));
+			logger.info(String.format("[%s]backup host success. uuid[%s]", sessionId, uuid));
 		} else {
 			hostBackup.setSuccess(false);
  			// 失败 
                 backUpDetailService.updateDetail(uuid,  AppConstant.BACK_UP_DETAIL_STATUS_BACKINGUP, AppConstant.BACK_UP_DETAIL_STATUS_FAIL);
                 backUpDetailService.updateDetail(uuid,  AppConstant.BACK_UP_DETAIL_STATUS_ANOTHOR, AppConstant.BACK_UP_DETAIL_STATUS_SUCCESS);
 
-            System.err.println(String.format("[%s]backup host fail. uuid[%s]", sessionId, uuid));			
+            logger.info(String.format("[%s]backup host fail. uuid[%s]", sessionId, uuid));			
 		}
 		pool.put(hostBackup);
 		channel.release();
@@ -563,13 +565,15 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 			hostBackup.setUuid(uuid);
 			pool.put(hostBackup);
 		}
+		if(hostBackup.getBackupStatus() != 0){
+		    hostBackup.setReady(true);
+	        hostBackup.setSuccess(true);
+	        hostBackup.updateTime();
+	        hostBackup.setBackupStatus(10); 
+		}
 		
-		hostBackup.setReady(true);
-		hostBackup.setSuccess(true);
-		hostBackup.updateTime();
-		hostBackup.setBackupStatus(10);
 //		channel.release();
-		System.err.println(String.format("[%s]start to resume host. uuid[%s]", sessionId, uuid));
+		logger.info(String.format("[%s]start to resume host. uuid[%s]", sessionId, uuid));
 		
 	}
 
@@ -603,7 +607,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		hostBackup.setBackupStatus(10);
 		hostBackup.updateTime();
 //		channel.release();
-		System.err.println(String.format("[%s]resume host at progress %d%%. uuid[%s]", sessionId, level, uuid));
+		logger.info(String.format("[%s]resume host at progress %d%%. uuid[%s]", sessionId, level, uuid));
 
 		
 	}
@@ -643,7 +647,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 			hostBackup.setSuccess(false);
 			//移除信息
 			pool.remove(hostBackup);
- 			System.err.println(String.format("[%s]resume host fail. uuid[%s]", sessionId, uuid));			
+ 			logger.info(String.format("[%s]resume host fail. uuid[%s]", sessionId, uuid));			
 		}
 		pool.put(hostBackup);
 		channel.release();

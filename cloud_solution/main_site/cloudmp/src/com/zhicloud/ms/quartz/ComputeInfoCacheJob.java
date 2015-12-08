@@ -22,11 +22,20 @@ import java.util.Map;
 
 public class ComputeInfoCacheJob implements Job{
     
+    private static  ComputeInfoCacheJob instance = null;
+    
     private static final Logger logger = Logger.getLogger(ComputeInfoCacheJob.class); 
-    BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml");
-    IComputePoolService computePoolService = (IComputePoolService)factory.getBean("computePoolService");
+//    BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml");
+    private static IComputePoolService computePoolService = null;
 
-
+    public synchronized static ComputeInfoCacheJob singleton() {
+        if (ComputeInfoCacheJob.instance == null) {
+            ComputeInfoCacheJob.instance = new ComputeInfoCacheJob();
+            BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml");
+             computePoolService = (IComputePoolService)factory.getBean("computePoolService");
+        }
+        return ComputeInfoCacheJob.instance;
+    }
     @Override
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
         try{
