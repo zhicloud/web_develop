@@ -117,7 +117,7 @@ function initdata(){
                           <input type="text" class="form-control" name="sampletime" id="sampletime" parsley-required="true" parsley-type="digits"  parsley-maxlength="9">
                         </div>
                       </div>  
-                      <div class="form-group">
+<!--                       <div class="form-group">
                         <label for="notify_phone" class="col-sm-2 control-label">通知电话</label>
                         <div class="col-sm-4">
                           <input type="text" class="form-control" name="notify_phone" id="notify_phone" parsley-required="true"  parsley-type="phone">
@@ -127,7 +127,7 @@ function initdata(){
                         <div class="col-sm-4">
                           <input type="text" class="form-control" name="notify_email" id="notify_email" parsley-required="true" parsley-type="email" parsley-maxlength="100">
                         </div>
-                      </div>  
+                      </div>   -->
                       <div class="form-group" id="lastgroup">
                        <label for="isnotify" class="col-sm-2 control-label">是否发送通知</label>
                         <div class="col-sm-4">
@@ -188,7 +188,7 @@ function initdata(){
                           <input type="text" value="${ruleVO.sampletime}" class="form-control" name="sampletime" id="sampletime" parsley-type="digits" parsley-required="true"  parsley-maxlength="9">
                         </div>
                       </div>  
-                      <div class="form-group">
+<%--                       <div class="form-group">
                         <label for="notify_phone" class="col-sm-2 control-label">通知电话</label>
                         <div class="col-sm-4">
                           <input type="text" value="${ruleVO.notify_phone}" class="form-control" name="notify_phone" id="notify_phone" parsley-required="true"  parsley-type="phone">
@@ -198,7 +198,7 @@ function initdata(){
                         <div class="col-sm-4">
                           <input type="text" value="${ruleVO.notify_email}" class="form-control" name="notify_email" id="notify_email" parsley-required="true" parsley-type="email" parsley-maxlength="100">
                         </div>
-                      </div>  
+                      </div>  --%> 
                       <div class="form-group" id="lastgroup">
                        <label for="isnotify" class="col-sm-2 control-label">是否发送通知</label>
                         <div class="col-sm-4">
