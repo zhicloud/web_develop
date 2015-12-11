@@ -1665,7 +1665,13 @@ public class CloudHostServiceImpl implements ICloudHostService {
                 if(StringUtil.isBlank(server.getSysImageId())){
                     isUseImage = 0;
                 }
-                server.setSysDisk(chcm.getSysDisk());
+                SysDiskImageVO sysDiskImageVO = sysDiskImageMapper.getById(server.getSysImageId());
+                if(sysDiskImageVO != null){
+                   realDiskImageId = sysDiskImageVO.getRealImageId();
+                   sysDiskImageName = sysDiskImageVO.getDisplayName(); 
+                } 
+                server.setSysDisk(sysDiskImageVO.getSize());
+//                server.setSysDisk(chcm.getSysDisk());
             }else{
             	server.setDataDisk(CapacityUtil.fromCapacityLabel((server.getDataDisk()==null?server.getDiskdiy():server.getDataDisk())+"GB"));
             	server.setMemory(CapacityUtil.fromCapacityLabel(server.getMemory()+"GB"));
