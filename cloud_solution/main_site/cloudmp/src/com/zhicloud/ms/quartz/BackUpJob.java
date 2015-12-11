@@ -17,7 +17,7 @@ import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
- import com.zhicloud.ms.app.pool.host.back.HostBackupProgressData;
+import com.zhicloud.ms.app.pool.host.back.HostBackupProgressData;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPool;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPoolManager;
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
@@ -40,12 +40,24 @@ import com.zhicloud.ms.vo.CloudHostVO;
 *
  */
 public class BackUpJob implements Job {
+    
+    private static BackUpJob instance = null;
 
-    BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 
-    ICloudHostService cloudHostService = (ICloudHostService)factory.getBean("cloudHostService");
-    IBackUpDetailService backUpDetailService = (IBackUpDetailService)factory.getBean("backUpDetailService");
+//    BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 
+    private static ICloudHostService cloudHostService = null;
+    private static IBackUpDetailService backUpDetailService = null;
     private final static Logger logger = Logger.getLogger(BackUpJob.class);
     private final static int MAX_BACK_UP_COUNT = 10;
+    
+    public synchronized static BackUpJob singleton() {
+        if (BackUpJob.instance == null) {
+            BackUpJob.instance = new BackUpJob();
+            BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 
+             cloudHostService = (ICloudHostService)factory.getBean("cloudHostService");
+             backUpDetailService = (IBackUpDetailService)factory.getBean("backUpDetailService");
+        }
+        return BackUpJob.instance;
+    }
     
     @Override
     public void execute(JobExecutionContext context)throws JobExecutionException {

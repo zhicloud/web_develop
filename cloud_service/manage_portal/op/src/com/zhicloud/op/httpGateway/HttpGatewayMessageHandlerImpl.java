@@ -44,9 +44,9 @@ public class HttpGatewayMessageHandlerImpl
 			if( success==true )
 			{
 				// 创建云主机成功
-				AppInconstant.cloudHostProgress.remove(hostName);
-				JSONObject hostQueryInfoResult = receiveChannel.hostQueryInfo(realHostId);
+ 				JSONObject hostQueryInfoResult = receiveChannel.hostQueryInfo(realHostId);
 				CoreSpringContextManager.getCloudHostService().handleNewlyCreatedCloudHost(receiveChannel.getRegion(), realHostId, hostName, hostQueryInfoResult);
+				
 			}
 			else
 			{

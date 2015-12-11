@@ -22,9 +22,17 @@ import com.zhicloud.ms.vo.CloudHostWarehouse;
 *
  */
 public class WarehouseCheckCountJob implements Job{
+    private static  WarehouseCheckCountJob instance = null;
+    
     BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 
     ICloudHostWarehouseService cloudHostWarehouseService = (ICloudHostWarehouseService)factory.getBean("cloudHostWarehouseService");
     private final static Logger logger = Logger.getLogger(WarehouseCheckTimeListener.class);
+    public synchronized static WarehouseCheckCountJob singleton() {
+        if (WarehouseCheckCountJob.instance == null) {
+            WarehouseCheckCountJob.instance = new WarehouseCheckCountJob();
+        }
+        return WarehouseCheckCountJob.instance;
+    }
     @Override
     public void execute(JobExecutionContext context)throws JobExecutionException {  
         List<CloudHostWarehouse> warehouseList = cloudHostWarehouseService.getAll();

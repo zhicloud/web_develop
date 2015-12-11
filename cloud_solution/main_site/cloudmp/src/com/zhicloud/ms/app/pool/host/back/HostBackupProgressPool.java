@@ -21,7 +21,8 @@ public class HostBackupProgressPool {
 		if (uuid != null && uuid.trim().length() != 0 ) {
 			String key = uuid;
 			pool.put(key, hostBackup);
-		}
+		} 
+
 	}
 
 	public HostBackupProgressData get(String uuid) {
@@ -39,7 +40,7 @@ public class HostBackupProgressPool {
 		if (sessionId != null && sessionId.trim().length() != 0 ) {
 			String key = sessionId;
 			pool.remove(key);
-		}
+		} 
 	}
 	
 //	public HostBackupProgressData getDuplication(String sessionId) {
