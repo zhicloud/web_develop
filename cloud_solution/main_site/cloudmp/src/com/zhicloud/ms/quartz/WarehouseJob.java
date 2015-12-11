@@ -8,15 +8,21 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.zhicloud.ms.app.listener.WarehouseCheckTimeListener;
-import com.zhicloud.ms.constant.AppConstant;
-import com.zhicloud.ms.service.ICloudHostWarehouseService;
+ import com.zhicloud.ms.service.ICloudHostWarehouseService;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.CloudHostWarehouse;
 
 public class WarehouseJob implements Job{
+    private static  WarehouseJob instance = null;
 	BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 
 	ICloudHostWarehouseService cloudHostWarehouseService = (ICloudHostWarehouseService)factory.getBean("cloudHostWarehouseService");
 	private final static Logger logger = Logger.getLogger(WarehouseCheckTimeListener.class);
+	public synchronized static WarehouseJob singleton() {
+        if (WarehouseJob.instance == null) {
+            WarehouseJob.instance = new WarehouseJob();
+        }
+        return WarehouseJob.instance;
+	 }
 	@Override
 	public void execute(JobExecutionContext context)
 			throws JobExecutionException {

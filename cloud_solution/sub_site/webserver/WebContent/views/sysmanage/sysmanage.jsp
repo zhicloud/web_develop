@@ -28,8 +28,8 @@
 					<h3>服务器</h3>
 					<div class="top-cont"><img src="../images/sys_server.jpg" alt="服务器"/></div>
 					<div class="bottom-cont">
-						<img id="imgshutdown" src="../images/sys_img1.png" style="display:inline-block;cursor:pointer;margin-bottom:4px;margin-left:5px;vertical-align:middle;" alt="关闭服务器" />
-						<img id="imgreboot"   src="../images/sys_img2.png" style="display:inline-block;cursor:pointer;margin-bottom:4px;margin-left:5px;vertical-align:middle;" alt="重启服务器" />
+						<img id="imgshutdown" src="../images/sys_img1.png" style="display:inline-block;cursor:pointer;margin-bottom:4px;margin-left:5px;vertical-align:middle;" title="关闭服务器" alt="关闭服务器" />
+						<img id="imgreboot"   src="../images/sys_img2.png" style="display:inline-block;cursor:pointer;margin-bottom:4px;margin-left:5px;vertical-align:middle;" title="重启服务器" alt="重启服务器" />
 					</div>
 				</div>
 				<div class="iteam-right">
@@ -177,7 +177,7 @@
 <script type="text/javascript">
 $(function(){	
 	$('#imgshutdown').click(function(){	
-		$.messager.confirm("确认", "确定要关闭服务器吗?", function (r){
+		$.messager.confirm("确认", "关闭之后将无法访问网站,需手动启动<br>确定要关闭服务器吗?", function (r){
 			if(r){
 				$.ajax({
 			        type:"POST",

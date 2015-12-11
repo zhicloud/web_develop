@@ -27,28 +27,28 @@ public class QuickPayConf {
 	//private final static String UPOP_BASE_URL = "http://58.246.226.99/UpopWeb/api/";
 
 	/* 前台交易PM环境（准生产环境） */
-	 private final static String UPOP_BASE_URL = "https://www.epay.lxdns.com/UpopWeb/api/";
+//	 private final static String UPOP_BASE_URL = "https://www.epay.lxdns.com/UpopWeb/api/";
 
 	/* 前台交易生产环境 */
-//	private final static String UPOP_BASE_URL = "https://unionpaysecure.com/api/";
+	private final static String UPOP_BASE_URL = "https://unionpaysecure.com/api/";
 	
 	/* 后台交易测试环境 */
 	//private final static String UPOP_BSPAY_BASE_URL = "http://58.246.226.99/UpopWeb/api/";
 	
 	/* 后台交易PM环境（准生产环境） */
-     private final static String UPOP_BSPAY_BASE_URL = "https://www.epay.lxdns.com/UpopWeb/api/";
+//     private final static String UPOP_BSPAY_BASE_URL = "https://www.epay.lxdns.com/UpopWeb/api/";
 	
 	/* 后台交易生产环境 */
-//	private final static String UPOP_BSPAY_BASE_URL = "https://besvr.unionpaysecure.com/api/";
+	private final static String UPOP_BSPAY_BASE_URL = "https://besvr.unionpaysecure.com/api/";
 	
 	/* 查询交易测试环境 */
 	//private final static String UPOP_QUERY_BASE_URL = "http://58.246.226.99/UpopWeb/api/";
 	
 	/* 查询交易PM环境（准生产环境） */
-    private final static String UPOP_QUERY_BASE_URL = "https://www.epay.lxdns.com/UpopWeb/api/";
+//    private final static String UPOP_QUERY_BASE_URL = "https://www.epay.lxdns.com/UpopWeb/api/";
 	
 	/* 查询交易生产环境 */
-//	private final static String UPOP_QUERY_BASE_URL = "https://query.unionpaysecure.com/api/";
+	private final static String UPOP_QUERY_BASE_URL = "https://query.unionpaysecure.com/api/";
 
 	// 支付网址
 	public final static String gateWay = UPOP_BASE_URL + "Pay.action";
@@ -66,8 +66,8 @@ public class QuickPayConf {
 	public final static String smsUrl = UPOP_BASE_URL + "Sms.action";
 
 	// 商户代码
-	//	public final static String merCode = "898510148990251";
-	public final static String merCode = "105550149170027";
+		public final static String merCode = "898510148990251";
+//	public final static String merCode = "105550149170027";
 
 	// 商户名称
 	public final static String merName = "用户商城名称";
@@ -81,8 +81,8 @@ public class QuickPayConf {
 	public final static String signType_SHA1withRSA = "SHA1withRSA";
 
 	// 商城密匙，需要和银联商户网站上配置的一样
-//	public final static String securityKey = "EISURWIEU7CRYWUIE4CRGWGRWCYR";
-	public final static String securityKey = "88888888";
+	public final static String securityKey = "EISURWIEU7CRYWUIE4CRGWGRWCYR";
+//	public final static String securityKey = "88888888";
 
 	// 签名
 	public final static String signature = "signature";

@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.zhicloud.ms.app.propeties.AppProperties;
 import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
 import com.zhicloud.ms.constant.MonitorConstant;
@@ -22,6 +23,7 @@ import com.zhicloud.ms.message.email.EmailSendService;
 import com.zhicloud.ms.message.sms.SmsSendService;
 import com.zhicloud.ms.service.MonitorService;
 import com.zhicloud.ms.service.SysWarnService;
+import com.zhicloud.ms.util.RegionHelper;
 import com.zhicloud.ms.vo.MonitorServerVO;
 import com.zhicloud.ms.vo.SysWarnRuleVO;
 
@@ -42,10 +44,11 @@ public class CheckServerRoomsListener implements ServletContextListener {
     public static final Logger logger = Logger.getLogger(CheckServerRoomsListener.class);
     // 调度控制器
     private Timer timer = new Timer();
+    
     public static ServletContext servletContext;
     // 故障间隔通知时间
     private static final long ERROR_TIME = 60 * 60 * 1000;
-    // 定时更新内存数据间隔时间 默认五秒
+    // 定时更新内存数据间隔时间 默认十秒
     private static final long INTERVAL_TIME = 10 * 1000;
     // 一天的毫秒数
     private static final long PERIOD_DAY = 24 * 60 * 60 * 1000;
@@ -63,8 +66,8 @@ public class CheckServerRoomsListener implements ServletContextListener {
     private static Integer warn_notify_type = 0;
     private static Integer error_notify_type = 0;
     // 是否发送故障通知
-    private static Integer error_on_off = 0;
-    private static Integer warn_on_off = 0;
+    public static Integer error_on_off = 0;
+    public static Integer warn_on_off = 0;
     // 定时任务间隔执行时间(采样频率)
     private static long ERROR_PERIOD_MIN = 0;
     private static long WARN_PERIOD_MIN = 0;
@@ -84,9 +87,9 @@ public class CheckServerRoomsListener implements ServletContextListener {
     public static final String regionDataName = "成都";
     
     private boolean monitorFlag = true;
+    
     /**
      * Description:启动
-     * 
      * @param sce
      */
     @Override
@@ -136,42 +139,46 @@ public class CheckServerRoomsListener implements ServletContextListener {
                 }
             }, 0, ERROR_PERIOD_MIN);
             // 定时任务
-            if (error_notify_type == fixtime && error_on_off == yes) {
+            if (error_notify_type == fixtime) {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        try {
-                            // 每天定时汇总平均数据
-                            monitorService.saveMonitorData(MonitorConstant.monitor_rule_error,
-                                    MonitorConstant.server_flag);
-                            monitorService.saveMonitorData(MonitorConstant.monitor_rule_error,
-                                    MonitorConstant.host_flag);
-                            sendTotalEmail(MonitorConstant.monitor_rule_fixtime, MonitorConstant.monitor_rule_error,
-                                    MonitorConstant.server_flag);
-                            sendTotalEmail(MonitorConstant.monitor_rule_fixtime, MonitorConstant.monitor_rule_error,
-                                    MonitorConstant.host_flag);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            logger.error("故障定时任务出错:" + e.getMessage());
+                        if (error_on_off == yes) {
+                            try {
+                                // 每天定时汇总平均数据
+                                monitorService.saveMonitorData(MonitorConstant.monitor_rule_error,
+                                        MonitorConstant.server_flag);
+                                monitorService.saveMonitorData(MonitorConstant.monitor_rule_error,
+                                        MonitorConstant.host_flag);
+                                sendTotalEmail(MonitorConstant.monitor_rule_fixtime,
+                                        MonitorConstant.monitor_rule_error, MonitorConstant.server_flag);
+                                sendTotalEmail(MonitorConstant.monitor_rule_fixtime,
+                                        MonitorConstant.monitor_rule_error, MonitorConstant.host_flag);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                logger.error("故障定时任务出错:" + e.getMessage());
+                            }
                         }
                     }
                 }, error_cal.getTime(), PERIOD_DAY);
             }
             // 实时任务
-            if (error_notify_type == timing && error_on_off == yes) {
+            if (error_notify_type == timing) {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        try {
-                            // 发送错误邮件
-                            sendServerErrorEmail(MonitorConstant.monitor_rule_error);// 服务器
-                            sendHostErrorEmail(MonitorConstant.monitor_rule_error);// 云主机
-                            // 发送恢复邮件
-                            sendRecoverEmail(MonitorConstant.monitor_rule_recover, MonitorConstant.server_flag);
-                            sendRecoverEmail(MonitorConstant.monitor_rule_recover, MonitorConstant.host_flag);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            logger.error("故障实时任务出错:" + e.getMessage());
+                        if (error_on_off == yes) {
+                            try {
+                                // 发送错误邮件
+                                sendServerErrorEmail(MonitorConstant.monitor_rule_error);// 服务器
+                                sendHostErrorEmail(MonitorConstant.monitor_rule_error);// 云主机
+                                // 发送恢复邮件
+                                sendRecoverEmail(MonitorConstant.monitor_rule_recover, MonitorConstant.server_flag);
+                                sendRecoverEmail(MonitorConstant.monitor_rule_recover, MonitorConstant.host_flag);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                logger.error("故障实时任务出错:" + e.getMessage());
+                            }
                         }
                     }
                 }, 0, ERROR_PERIOD_MIN);
@@ -194,42 +201,46 @@ public class CheckServerRoomsListener implements ServletContextListener {
                 }
             }, 0, WARN_PERIOD_MIN);
             // 定时任务
-            if (warn_notify_type == fixtime && warn_on_off == yes) {
+            if (warn_notify_type == fixtime) {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        try {
-                            // 每天汇总平均数据
-                            monitorService.saveMonitorData(MonitorConstant.monitor_rule_warn,
-                                    MonitorConstant.server_flag);
-                            monitorService.saveMonitorData(MonitorConstant.monitor_rule_warn,
-                                    MonitorConstant.host_flag);
-                            sendTotalEmail(MonitorConstant.monitor_rule_fixtime, MonitorConstant.monitor_rule_warn,
-                                    MonitorConstant.server_flag);
-                            sendTotalEmail(MonitorConstant.monitor_rule_fixtime, MonitorConstant.monitor_rule_warn,
-                                    MonitorConstant.host_flag);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            logger.error("告警信息定时任务出错:" + e.getMessage());
+                        if (warn_on_off == yes) {
+                            try {
+                                // 每天汇总平均数据
+                                monitorService.saveMonitorData(MonitorConstant.monitor_rule_warn,
+                                        MonitorConstant.server_flag);
+                                monitorService.saveMonitorData(MonitorConstant.monitor_rule_warn,
+                                        MonitorConstant.host_flag);
+                                sendTotalEmail(MonitorConstant.monitor_rule_fixtime, MonitorConstant.monitor_rule_warn,
+                                        MonitorConstant.server_flag);
+                                sendTotalEmail(MonitorConstant.monitor_rule_fixtime, MonitorConstant.monitor_rule_warn,
+                                        MonitorConstant.host_flag);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                logger.error("告警信息定时任务出错:" + e.getMessage());
+                            }
                         }
                     }
                 }, warn_cal.getTime(), PERIOD_DAY);
             }
             // 实时任务
-            if (warn_notify_type == timing && warn_on_off == yes) {
+            if (warn_notify_type == timing) {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        try {
-                            // 发送错误邮件
-                            sendServerErrorEmail(MonitorConstant.monitor_rule_warn);// 服务器
-                            sendHostErrorEmail(MonitorConstant.monitor_rule_warn);// 云主机
-                            // 发送恢复邮件
-                            sendRecoverEmail(MonitorConstant.monitor_rule_warn, MonitorConstant.server_flag);
-                            sendRecoverEmail(MonitorConstant.monitor_rule_warn, MonitorConstant.host_flag);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            logger.error("告警信息实时任务出错:" + e.getMessage());
+                        if (warn_on_off == yes) {
+                            try {
+                                // 发送错误邮件
+                                sendServerErrorEmail(MonitorConstant.monitor_rule_warn);// 服务器
+                                sendHostErrorEmail(MonitorConstant.monitor_rule_warn);// 云主机
+                                // 发送恢复邮件
+                                sendRecoverEmail(MonitorConstant.monitor_rule_warn, MonitorConstant.server_flag);
+                                sendRecoverEmail(MonitorConstant.monitor_rule_warn, MonitorConstant.host_flag);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                logger.error("告警信息实时任务出错:" + e.getMessage());
+                            }
                         }
                     }
                 }, 0, WARN_PERIOD_MIN);
@@ -240,7 +251,6 @@ public class CheckServerRoomsListener implements ServletContextListener {
 
     /**
      * Description:销毁
-     * 
      * @param sce
      */
     @Override
@@ -248,6 +258,7 @@ public class CheckServerRoomsListener implements ServletContextListener {
         try {
             sce.getServletContext().log("取消定时更新gw监控数据任务");
             timer.cancel();
+            stopAllMonitor();
         } catch (Exception e) {
         }
     }
@@ -565,6 +576,9 @@ public class CheckServerRoomsListener implements ServletContextListener {
                 Map<String, Object> parameter = new LinkedHashMap<>();
                 parameter.put("content", createTableHtml(array));
                 parameter.put("type", "服务器");
+                parameter.put("source", "GW来源:【"
+                        + RegionHelper.singleton.getRegionData(regionDataID).getHttpGatewayAddr() + "】,系统地址:【"
+                        + AppProperties.getValue("address_of_this_system") + "】");
                 mailSendService.sendMail(code, parameter);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -573,7 +587,9 @@ public class CheckServerRoomsListener implements ServletContextListener {
             try {
                 SmsSendService smaSendService = MessageServiceManager.singleton().getSmsService();
                 Map<String, Object> parameter = new LinkedHashMap<>();
-                parameter.put("content", "【致云科技】管理员您好,云端在线 " + array.size() + "台服务器发生故障,请及时登录监控平台处理");
+                parameter.put("content", "【致云科技】管理员您好,云端在线 " + array.size() + "台服务器发生故障,请及时登录监控平台处理,GW来源:【"
+                        + RegionHelper.singleton.getRegionData(regionDataID).getHttpGatewayAddr() + "】,系统地址:【"
+                        + AppProperties.getValue("address_of_this_system") + "】");
                 smaSendService.sendSms(MonitorConstant.monitor_sm_notify, parameter);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -607,6 +623,9 @@ public class CheckServerRoomsListener implements ServletContextListener {
                 Map<String, Object> parameter = new LinkedHashMap<>();
                 parameter.put("content", createHostHtml(array));
                 parameter.put("type", "云主机");
+                parameter.put("source", "GW来源:【"
+                        + RegionHelper.singleton.getRegionData(regionDataID).getHttpGatewayAddr() + "】,系统地址:【"
+                        + AppProperties.getValue("address_of_this_system") + "】");
                 mailSendService.sendMail(code, parameter);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -616,7 +635,9 @@ public class CheckServerRoomsListener implements ServletContextListener {
             try {
                 SmsSendService smaSendService = MessageServiceManager.singleton().getSmsService();
                 Map<String, Object> parameter = new LinkedHashMap<>();
-                parameter.put("content", "【致云科技】管理员您好,云端在线 " + array.size() + "台云主机发生故障,请及时登录监控平台处理");
+                parameter.put("content", "【致云科技】管理员您好,云端在线 " + array.size() + "台云主机发生故障,请及时登录监控平台处理,GW来源:【"
+                        + RegionHelper.singleton.getRegionData(regionDataID).getHttpGatewayAddr() + "】,系统地址:【"
+                        + AppProperties.getValue("address_of_this_system") + "】");
                 smaSendService.sendSms(MonitorConstant.monitor_sm_notify, parameter);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -671,7 +692,9 @@ public class CheckServerRoomsListener implements ServletContextListener {
             try {
                 SmsSendService smaSendService = MessageServiceManager.singleton().getSmsService();
                 Map<String, Object> parameter = new LinkedHashMap<>();
-                parameter.put("content", "【致云科技】管理员您好,，云端在线 " + list_recover.size() + "台设备已恢复正常");
+                parameter.put("content", "【致云科技】管理员您好,云端在线 " + list_recover.size() + "台设备已恢复正常,GW来源:【"
+                        + RegionHelper.singleton.getRegionData(regionDataID).getHttpGatewayAddr() + "】,系统地址:【"
+                        + AppProperties.getValue("address_of_this_system") + "】");
                 smaSendService.sendSms(MonitorConstant.monitor_sm_notify, parameter);
             } catch (Exception e) {
                 e.printStackTrace();

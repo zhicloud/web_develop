@@ -20,13 +20,13 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <!-- 任务调度器 -->
-    <task:scheduler id="scheduler" pool-size="10"/>
+    <task:scheduler id="myScheduler" pool-size="10"/>
 
     <!-- 任务执行器 -->
-    <task:executor id="executor" pool-size="10"/>
+    <task:executor id="myExecutor" pool-size="10"/>
 
     <!--开启注解调度支持 @Async @Scheduled-->
-    <task:annotation-driven executor="executor" scheduler="scheduler" proxy-target-class="true"/>
+    <task:annotation-driven executor="myExecutor" scheduler="myScheduler" proxy-target-class="true"/>
 
 
     <!--创建jdbc数据源 -->

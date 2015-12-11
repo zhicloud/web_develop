@@ -347,55 +347,57 @@ public class ResourcePoolController {
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){
                     JSONObject result = channel.addressPoolQuery();
-            if ("fail".equals(result.getString("status"))){
-                logger.error("ResourcePoolController.addResourcePool>>>获取资源池失败");
-                return "not_responsed";
-            }
-                    JSONObject resultPort = channel.portPoolQuery();
-            if ("fail".equals(resultPort.getString("status"))){
-                logger.error("ResourcePoolController.addResourcePool>>>获取端口失败");
-                return "not_responsed";
-            }
 
-                    JSONArray IpPoolList = result.getJSONArray("addressPools");
-                    JSONArray portPoolList = resultPort.getJSONArray("portPools");
-                    for (int i = 0; i < IpPoolList.size(); i ++) {
-                        JSONObject ipObject = IpPoolList.getJSONObject(i);
-                        String name = ipObject.getString("name");
-                        String uid = ipObject.getString("uuid");
-                        int status = ipObject.getInt("status");
-                        
-                        JSONArray countList = ipObject.getJSONArray("count");
-                        Integer[] ccount = new Integer[countList.size()];
-                        for(int j=0;j<countList.size();j++){
-                            ccount[j] = countList.getInt(j);
+                    if ("success".equals(result.getString("status"))) {
+                        JSONArray IpPoolList = result.getJSONArray("addressPools");
+                        for (int i = 0; i < IpPoolList.size(); i++) {
+                            JSONObject ipObject = IpPoolList.getJSONObject(i);
+                            String name = ipObject.getString("name");
+                            String uid = ipObject.getString("uuid");
+                            int status = ipObject.getInt("status");
+
+                            JSONArray countList = ipObject.getJSONArray("count");
+                            Integer[] ccount = new Integer[countList.size()];
+                            for (int j = 0; j < countList.size(); j++) {
+                                ccount[j] = countList.getInt(j);
+                            }
+
+                            IpPoolVO vo = new IpPoolVO();
+                            vo.setName(name);
+                            vo.setStatus(status);
+                            vo.setUuid(uid);
+                            vo.setCount(ccount);
+                            ipList.add(vo);
                         }
-                        
-                        IpPoolVO vo = new IpPoolVO();
-                        vo.setName(name);
-                        vo.setStatus(status);
-                        vo.setUuid(uid);
-                        vo.setCount(ccount);
-                        ipList.add(vo);
+                    } else {
+                        logger.error("ResourcePoolController.addResourcePool-> fail to get address pool  ");
                     }
-                    for (int i = 0; i < portPoolList.size(); i ++) {
-                        JSONObject portObject = portPoolList.getJSONObject(i);
-                        String name = portObject.getString("name");
-                        String uid = portObject.getString("uuid");
-                        int status = portObject.getInt("status");
-                        
-                        JSONArray countList = portObject.getJSONArray("count");
-                        Integer[] pcount = new Integer[countList.size()];
-                        for(int j=0;j<countList.size();j++){
-                            pcount[j] = countList.getInt(j);
+
+                    JSONObject resultPort = channel.portPoolQuery();
+                    if ("success".equals(resultPort.getString("status"))) {
+                        JSONArray portPoolList = resultPort.getJSONArray("portPools");
+
+                        for (int i = 0; i < portPoolList.size(); i ++) {
+                            JSONObject portObject = portPoolList.getJSONObject(i);
+                            String name = portObject.getString("name");
+                            String uid = portObject.getString("uuid");
+                            int status = portObject.getInt("status");
+
+                            JSONArray countList = portObject.getJSONArray("count");
+                            Integer[] pcount = new Integer[countList.size()];
+                            for(int j=0;j<countList.size();j++){
+                                pcount[j] = countList.getInt(j);
+                            }
+
+                            PortPoolVO vo = new PortPoolVO();
+                            vo.setName(name);
+                            vo.setStatus(status);
+                            vo.setUuid(uid);
+                            vo.setCount(pcount);
+                            portList.add(vo);
                         }
-                        
-                        PortPoolVO vo = new PortPoolVO();
-                        vo.setName(name);
-                        vo.setStatus(status);
-                        vo.setUuid(uid);
-                        vo.setCount(pcount);
-                        portList.add(vo);
+                    } else {
+                        logger.error("ResourcePoolController.addResourcePool-> fail to get port pool  ");
                     }
                 }
             //获取共享存储路径

@@ -166,29 +166,33 @@
 	<update id="updateSysWarnRule">
 		update sys_warnrule 
 		<set>
-		notify_phone = #{notify_phone},
-		notify_email = #{notify_email}, 
-		sendtime = #{sendtime}, 
-		ruletype = ${ruletype},
-		frequency = #{frequency}, 
 			<if test="name!=null and name!=''">
-			name = #{name},
+				name = #{name},
 			</if>
 			<if test="code!=null and code!=''">
-			code = #{code},
+				code = #{code},
 			</if>	
 			<if test="sampletime!=null and sampletime!=''">
-			sampletime = #{sampletime},
+				sampletime = #{sampletime},
 			</if>					
 			<if test="content!=null and content!=''">
-				content = #{content},  
+				content = #{content},
 			</if>
-			<if test="isnotify!=null and isnotify!=''">
-				isnotify = #{isnotify},  
+			<if test="isnotify!=null">
+				isnotify = #{isnotify},
 			</if>	
 			<if test="realtime!=null and realtime!=''">
-				realtime = #{realtime}
+				realtime = #{realtime},
 			</if>	
+			<if test="sendtime!=null and sendtime!=''">
+				sendtime = #{sendtime},
+			</if>
+			<if test="ruletype!=null and ruletype!=''">
+				ruletype = #{ruletype},
+			</if>
+			<if test="frequency!=null and frequency!=''">
+				frequency = #{frequency}
+			</if>
 		</set>
 		where id = #{id}
 	</update>

@@ -1,4 +1,54 @@
 ******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151208-1)
+修改时间：2015/12/08
+修改人：张本缘
+修改文件：
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/app/listener/CheckServerRoomsListener.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/SysWarnRuleMapper.xml
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/SysWarnServiceImpl
+cloud_solution/main_site/cloudmp/WebContent/views/monitor/sys_warnrule_edit.jsp
+
+新增文件：
+无
+主要变更：
+1.告警规则管理编辑页面取消手机和邮箱的信息,后台使用模板;
+2.邮件模板中的监控模板修改;
+3.监控发送的短信和邮件增加GW来源和系统地址;
+4.告警规则管理修改是否发送通知可以及时生效(其他内容变更需要重启);
+
+兼容性说明：
+	无
+******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151207-1)
+修改时间：2015/12/07
+修改人：张本缘
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/transform/admin/system_user_manage.jsp
+
+
+新增文件：
+无
+主要变更：
+1.共享存储url过滤规则修改;
+
+兼容性说明：
+	无
+******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151204-1)
+修改时间：2015/12/04
+修改人：张本缘
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/js/vendor/parsley/parsley.min.js
+
+
+新增文件：
+无
+主要变更：
+1.共享存储url过滤规则修改;
+
+兼容性说明：
+	无
+******************************************************
 版本号：版本号：【云平台web】verion(2.1)(build 20151124-1)
 修改时间：2015/11/24
 修改人：张本缘

@@ -479,7 +479,7 @@
                             </form>
                           </div>
                           <div class="modal-footer" id="resetpassdiv">
-                            <button class="btn btn-green" id = "pass_manual_btn"  onclick="beforemanual()"  aria-hidden="true">手动输入</button>
+                            <button class="btn btn-green" id = "pass_manual_btn"  onclick="beforemanual()"  data-dismiss="modal" aria-hidden="true">手动输入</button>
                             <button class="btn btn-green" id = "pass_confirm_btn"  onclick="confirmreturntwo()" data-dismiss="modal" aria-hidden="true">随机</button>
                             <button class="btn btn-red" id="cancel_btn" data-dismiss="modal" aria-hidden="true">取消</button>
                           </div>
@@ -840,28 +840,30 @@
 	function beforemanual(){
 		$("#randomdiv").css("display","none");
 		$("#manualdiv").css("display","block");
+		$("#manualpass").val("");
 		var temphtml = "<button class=\"btn btn-green\" id = \"save_confirm_btn\"  onclick=\"savepassword()\" aria-hidden=\"true\">保存<\/button>";
 		$("#pass_confirm_btn").remove();
 		$("#pass_manual_btn").remove();
 		$("#cancel_btn").before(temphtml);
 	}
+	
 	//保存手动输入的密码
 	function savepassword(){
 		var manualpass = $("#manualpass");
 		manualpass.parsley('validate');
 		if(manualpass.parsley('isValid')){
+			$("#cancel_btn").click();
             var param = "billid="+tempuserid+"&manualpass="+$(manualpass).val()+"&email="+email;
             var url = "<%=request.getContextPath()%>/transform/admin/manualpassword";
 			jQuery.ajax({
 		  	 	type: "POST",
-		  	 	async:false,
+		  	 	async:true,
 		   		url: url,
 		  		data: param,
 		  		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
 		   		success: function(result){
 		   		  var obj = eval("("+result+")");
 		     	if(obj.status=="success"){
-		     		$("#cancel_btn").click();
 		     		$("#tipscontent").html(obj.result);
 		     		$("#dia").click();
 		     	}else{
@@ -871,6 +873,8 @@
 		     	}
 		   	}
 			});	
+			$("#tipscontent").html("正在保存，请稍后...");
+	 		$("#dia").click();
 		}
 	}
 	</script>
