@@ -130,7 +130,7 @@
                                     <label for="optionsRadios2">共享公网地址(端口)</label>
                                 </div>
                                 <div class="radio radio-transparent col-sm-3">
-                                    <input type="radio" name="networkType" id="optionsRadios3" value="3" onclick="networkCheck('optionsRadios3')">
+                                    <input type="radio" name="networkType" id="optionsRadios3" value="3" onclick="networkCheck('optionsRadios0')">
                                     <label for="optionsRadios3">直连</label>
                                 </div>
                             </div>

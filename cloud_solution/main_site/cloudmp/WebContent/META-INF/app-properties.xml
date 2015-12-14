@@ -207,4 +207,7 @@
 		description="version">
 		【云平台】20151120-1
 	</property>
+	<property key="black_white_list" name="黑白名单开关" type="String" description="黑白名单开关">
+		3
+	</property>
 </properties>

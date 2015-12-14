@@ -120,6 +120,23 @@
                           <input type="text" class="form-control" name="value" id="value" value="${name.value }" parsley-trigger="change" parsley-required="true" parsley-minlength="1" parsley-maxlength="9" parsley-validation-minlength="1">
                         </div>
                       </div>
+                      <div class="form-group">
+                        <label for="input01" class="col-sm-2 control-label" style="text-align:left;">黑白名单开关</label>
+                        <div class="col-sm-8">
+                          <div class="radio radio-transparent col-md-3">
+                            <input type="radio" name="blackAndWhite" id="optionsRadios1" value="1">
+                            <label for="optionsRadios1">开启黑名单</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-3">
+                            <input type="radio" name="blackAndWhite" id="optionsRadios2" value="2">
+                            <label for="optionsRadios2">开启白名单</label>
+                          </div>
+                          <div class="radio radio-transparent col-md-3">
+                            <input type="radio" name="blackAndWhite" id="optionsRadios3" value="3" checked="checked">
+                            <label for="optionsRadios3">都不开启</label>
+                          </div>
+                        </div>
+                      </div>
                      <div class="form-group form-footer footer-white">
                         <div class="col-sm-offset-4 col-sm-8">
                           <button type="button" class="btn btn-greensea" id="save_btn"><i class="fa fa-plus"></i>
@@ -239,7 +256,7 @@
     $(function(){
       //chosen select input
       $(".chosen-select").chosen({disable_search_threshold: 10});
-
+      $("input[name='blackAndWhite'][value='${blackAndWhite}']").attr("checked","checked");
       //check toggling
       $('.check-toggler').on('click', function(){
         $(this).toggleClass('checked');
