@@ -73,6 +73,9 @@ public class HttpGatewayReceiveChannel extends HttpGatewayChannelExt
 	 */
 	public class MessagePushRegisterAction implements Runnable
 	{
+	    public synchronized void stop() {
+	        flag = false;
+	    }
 		public void run()
 		{
  			loop1: while( getFlag() )
@@ -93,6 +96,7 @@ public class HttpGatewayReceiveChannel extends HttpGatewayChannelExt
 						
 						// message push register
 						result = getHelper().messagePushRegister(registerUrl);
+						logger.info("HttpGatewayReceiveChannel.messagePushRegister() > "+registerUrl);
 						if( HttpGatewayResponseHelper.isSuccess(result)==false )
 						{
 							logger.error("HttpGatewayReceiveChannel.messagePushRegister() > ["+Thread.currentThread().getId()+"] register message push url ["+registerUrl+"] in http gateway failed, region:["+getRegion()+"], result: "+result);
@@ -144,5 +148,8 @@ public class HttpGatewayReceiveChannel extends HttpGatewayChannelExt
 				
 			}  
 		};
+		
+		
+		
 	}
 }
