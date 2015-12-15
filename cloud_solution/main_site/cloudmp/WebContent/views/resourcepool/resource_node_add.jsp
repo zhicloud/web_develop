@@ -101,7 +101,7 @@
                   <!-- tile body -->
                   <div class="tile-body">
                     
-                    <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/computeresourcepool/an" method="post"   >
+                    <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/cdrpm/an" method="post"   >
                       <input type="hidden" name="uuid" value="${poolId }">
                       <div class="form-group" id="port_pool">
                         <label for="input007" class="col-sm-2 control-label">资源(节点)*</label>

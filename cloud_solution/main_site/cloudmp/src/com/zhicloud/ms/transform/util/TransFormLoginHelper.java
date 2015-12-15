@@ -265,8 +265,7 @@ public class TransFormLoginHelper {
                     sb.append(htmlsb);
                 }
             }
-        }
-        System.out.println(sb);
+        } 
         return sb;
     }  
   
