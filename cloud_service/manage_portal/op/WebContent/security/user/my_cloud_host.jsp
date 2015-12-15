@@ -1376,7 +1376,7 @@ function refreshStatusForRestart(id,time){
 						},4000);
 					}else{//此处强制关机
 						ajax.remoteCall("bean://cloudHostService:haltCloudHost",
-			    				[ self.cloudHostHaltId ], 
+			    				[ id ], 
 			    				function(reply) {
 			    					if (reply.status=="exception")
 			    					{

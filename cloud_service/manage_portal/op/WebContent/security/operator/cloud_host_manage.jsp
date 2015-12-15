@@ -363,6 +363,18 @@
 			<a href='#' class='datagrid_row_linkbutton open-port' style=\"color:gray;\">端口配置</a>\
 			</div>";
 		}
+		if(status==1 && (runningStatus==5 || runningStatus==6 || runningStatus==7) ){
+			return "<div row_index='"+index+"'>\
+			<a href='#' class='datagrid_row_linkbutton start_host_btn' style=\"color:gray;\">开机</a>\
+			<a href='#' class='datagrid_row_linkbutton shutdown_host_btn' style=\"color:gray;\">关机</a>\
+			<a href='#' class='datagrid_row_linkbutton halt_host_btn' style=\"color:gray;\">强制关机</a>\
+			<a href='#' class='datagrid_row_linkbutton restart_host_btn' style=\"color:gray;\">重启</a>\
+			<a href='#' class='datagrid_row_linkbutton force_restart_host_btn' style=\"color:gray;\">强制重启</a><br>\
+			<a href='#' class='datagrid_row_linkbutton inactivate_host_btn'>停用</a>\
+			<a href='#' class='datagrid_row_linkbutton reinactivate_host_btn' style=\"color:gray;\">恢复</a>\
+			<a href='#' class='datagrid_row_linkbutton open-port' style=\"color:gray;\">端口配置</a>\
+			</div>";
+		}
 		return "<div row_index='"+index+"'>\
 		<a href='#' class='datagrid_row_linkbutton start_host_btn' style=\"color:gray;\">开机</a>\
 		<a href='#' class='datagrid_row_linkbutton shutdown_host_btn' style=\"color:gray;\">关机</a>\

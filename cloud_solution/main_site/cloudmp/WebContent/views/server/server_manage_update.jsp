@@ -162,7 +162,7 @@
                           </div>
                           <div class="radio radio-transparent col-md-2">
                             <input type="radio" name="memory" id="optionsRadios16" value="16">
-                            <label for="optionsRadios6">16GB</label>
+                            <label for="optionsRadios16">16GB</label>
                           </div>
                           <div class="radio radio-transparent col-md-2">
                             <input type="radio" name="memory" id="optionsRadios17" value="32">
