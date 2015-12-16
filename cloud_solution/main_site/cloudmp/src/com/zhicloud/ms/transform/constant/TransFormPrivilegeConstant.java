@@ -409,6 +409,13 @@ public class TransFormPrivilegeConstant {
     public static final String iso_image_delete = "iso_image_delete";// 镜像删除
 
     public static final String desktop_warehouse_set_maxconcurrent = "desktop_warehouse_set_maxconcurrent";// 主机仓库设置最大并发数
+
+    //上传镜像地址管理
+    public static final String image_upload_address_query = "image_upload_address_query";// 上传地址查询
+    public static final String image_upload_address_add = "image_upload_address_add";// 新增上传地址
+    public static final String image_upload_address_mod = "image_upload_address_mod";// 修改上传地址
+    public static final String image_upload_address_delete = "image_upload_address_delete";// 删除上传地址
+
 }
  
  

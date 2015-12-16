@@ -137,7 +137,7 @@ public class UserController {
 		model.addAttribute("terminal_user_list", terminalUserList);
 		List<CloudHostWarehouse> warelist = cloudHostWarehouseService.getAll();
 		model.addAttribute("warelist", warelist);
-		return "terminal_user_manage";
+		return "terminal_user/terminal_user_manage";
 	}
 	@RequestMapping(value="/addpage",method=RequestMethod.GET)
 	public String addPage(Model model,HttpServletRequest request){ 
@@ -146,7 +146,7 @@ public class UserController {
 		}
 		List<SysGroupVO> sysGroupList = sysGroupService.queryAll();
 		model.addAttribute("sys_group_list", sysGroupList);
-		return "terminal_user_add";
+		return "terminal_user/terminal_user_add";
 	}
 	
 	@RequestMapping(value="/warehouse/list",method=RequestMethod.GET)
@@ -195,7 +195,7 @@ public class UserController {
 		model.addAttribute("user", user);
 		List<SysGroupVO> sysGroupList = sysGroupService.queryAll();
 		model.addAttribute("sys_group_list", sysGroupList);
-		return "terminal_user_mod";
+		return "terminal_user/terminal_user_mod";
 	}
 	
 	@RequestMapping(value="/{id}/update",method=RequestMethod.POST)

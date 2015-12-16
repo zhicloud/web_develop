@@ -266,5 +266,9 @@ public class HttpGatewayAsyncChannel extends HttpGatewayChannelExt {
             throws MalformedURLException, IOException {
         return this.query_operate_summary(target, begin, end, this.callback);
     }
+
+    public synchronized JSONObject imageServiceQuery() throws MalformedURLException, IOException {
+        return this.imageServiceQuery(this.callback);
+    }
 	
 }
