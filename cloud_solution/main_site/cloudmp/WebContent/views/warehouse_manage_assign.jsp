@@ -96,7 +96,7 @@
 
                   <!-- tile header -->
                   <div class="tile-header">
-                    <h3><a href="<%=request.getContextPath() %>/warehouse/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>分配给用户</h3>
+                    <h3><a href="javascript:history.back(-1)" style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>分配给用户</h3>
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                     </div>

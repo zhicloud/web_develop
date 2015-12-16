@@ -154,7 +154,7 @@ public class BlacklistController {
     @RequestMapping(value="/checkip",method=RequestMethod.POST)
     @ResponseBody
     public MethodResult checkIp(@RequestParam("ip") String ip){
-    	boolean flag = Pattern.matches("^\\d{0,3}\\*{0,1}\\.\\d{0,3}\\*{0,1}\\.\\d{0,3}\\*{0,1}\\.\\d{0,3}+$", ip);
+    	boolean flag = Pattern.matches("^\\d{0,3}\\*{0,1}\\.\\d{0,3}\\*{0,1}\\.\\d{0,3}\\*{0,1}\\.\\d{0,3}\\*{0,1}$", ip);
     	if(flag){
     		return new MethodResult(MethodResult.SUCCESS, "ip格式正确");
     	}
