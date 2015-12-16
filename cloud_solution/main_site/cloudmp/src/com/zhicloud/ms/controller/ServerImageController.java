@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList; 
 import java.util.List; 
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,6 +32,7 @@ import com.zhicloud.ms.service.ICloudHostWarehouseService;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.service.ISysDiskImageService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
+import com.zhicloud.ms.transform.util.TransFormLoginHelper;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.CloudHostConfigModel;
@@ -84,6 +86,11 @@ public class ServerImageController {
 		}
 		List<SysDiskImageVO> sysDiskImageList = sysDiskImageService.querySysDiskImageByImageType(AppConstant.DISK_IMAGE_TYPE_SERVER); 
 		model.addAttribute("sysDiskImageList", sysDiskImageList); 
+        try {
+            request.setAttribute("clientIP", TransFormLoginHelper.getClientIP(request));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
  		return "/server/sys_disk_image_manage";
 	}
 	@RequestMapping(value="/login",method=RequestMethod.GET)
@@ -294,7 +301,6 @@ public class ServerImageController {
 		}
 		String[] idsArr = ids.split(",");
         int statusInt = Integer.parseInt(imageType);
-        int result = 0;
         
         MethodResult mr =  sysDiskImageService.updateImageType(idsArr, statusInt); 
         if(mr.isSuccess()){
@@ -305,6 +311,28 @@ public class ServerImageController {
         return mr;
  	}
 	
+	/**
+	 * @Description:上传镜像页面跳转
+	 * @param model
+	 * @param hostID
+	 * @param request
+	 * @return String
+	 */
+	@RequestMapping(value="/upload",method=RequestMethod.POST)
+    public String toUploadPage(Model model,String hostID,HttpServletRequest request){ 
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_image_add)){
+            return "not_have_access";
+        }
+        List<CloudHostVO> hostList = cloudHostService.getAllServer();
+        model.addAttribute("hostList", hostList); 
+        model.addAttribute("hostID", hostID); 
+        return "/server/sys_disk_image_upload";
+    }
 
+	
+    @RequestMapping(value="/beforeupload",method=RequestMethod.GET)
+    public String beforeUpload(Model model){ 
+        return "/server/sys_disk_iso_upload";
+    } 
 }
 

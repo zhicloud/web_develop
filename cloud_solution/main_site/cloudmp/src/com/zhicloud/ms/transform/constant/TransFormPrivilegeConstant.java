@@ -110,6 +110,8 @@ public class TransFormPrivilegeConstant {
 
     public static final String desktop_resource_pool_query = "desktop_resource_pool_query";     //资源池查询
     public static final String desktop_resource_node_query = "desktop_resource_node_query";     //资源池节点查询
+    public static final String desktop_resource_node_add = "desktop_resource_node_add";     //资源池节点新增
+    public static final String desktop_resource_node_delete = "desktop_resource_node_delete";     //资源池节点删除
     public static final String desktop_resource_host_query = "desktop_resource_host_query";     //资源池主机查询
     public static final String desktop_resource_pool_add = "desktop_resource_pool_add";     //增加主机资源池
     public static final String desktop_resource_pool_mod = "desktop_resource_pool_mod";           //修改资源池
@@ -409,6 +411,17 @@ public class TransFormPrivilegeConstant {
     public static final String iso_image_delete = "iso_image_delete";// 镜像删除
 
     public static final String desktop_warehouse_set_maxconcurrent = "desktop_warehouse_set_maxconcurrent";// 主机仓库设置最大并发数
+    
+    //黑白名单相关权限
+    public static final String blacklist_manage = "blacklist_manage";// 黑名单管理
+    public static final String blacklist_manage_add = "blacklist_manage_add";// 黑名单添加
+    public static final String blacklist_manage_update = "blacklist_manage_update";// 黑名单修改
+    public static final String blacklist_manage_delete = "blacklist_manage_delete";// 黑名单删除
+    
+    public static final String whitelist_manage = "whitelist_manage";// 白名单管理
+    public static final String whitelist_manage_add = "whitelist_manage_add";// 白名单添加
+    public static final String whitelist_manage_update = "whitelist_manage_update";// 白名单修改
+    public static final String whitelist_manage_delete = "whitelist_manage_delete";// 白名单删除
 }
  
  

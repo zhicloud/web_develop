@@ -7,7 +7,9 @@ import com.zhicloud.ms.common.util.RandomPassword;
 import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.common.util.constant.MailConstant;
 import com.zhicloud.ms.constant.AppConstant;
+import com.zhicloud.ms.constant.AppInconstant;
 import com.zhicloud.ms.exception.AppException;
+import com.zhicloud.ms.mapper.DictionaryMapper;
 import com.zhicloud.ms.mapper.SysUserMapper;
 import com.zhicloud.ms.mapper.TerminalUserMapper;
 import com.zhicloud.ms.message.MessageServiceManager;
@@ -19,17 +21,21 @@ import com.zhicloud.ms.transform.constant.TransformConstant;
 import com.zhicloud.ms.transform.mapper.ManSystemLogMapper;
 import com.zhicloud.ms.transform.mapper.ManSystemMenuMapper;
 import com.zhicloud.ms.transform.mapper.ManSystemRightMapper;
+import com.zhicloud.ms.transform.mapper.ManSystemRoleMapper;
 import com.zhicloud.ms.transform.mapper.ManSystemUserMapper;
 import com.zhicloud.ms.transform.service.ManSysUserService;
 import com.zhicloud.ms.transform.util.TransFormLoginHelper;
 import com.zhicloud.ms.transform.util.TransFormLoginInfo;
 import com.zhicloud.ms.transform.vo.ManSystemMenuVO;
 import com.zhicloud.ms.transform.vo.ManSystemRightVO;
+import com.zhicloud.ms.transform.vo.ManSystemRoleVO;
 import com.zhicloud.ms.transform.vo.ManSystemUserVO;
 import com.zhicloud.ms.util.MD5;
+import com.zhicloud.ms.vo.DictionaryVO;
 import com.zhicloud.ms.vo.OperLogVO;
 import com.zhicloud.ms.vo.SysUser;
 import com.zhicloud.ms.vo.TerminalUserVO;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +47,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import java.util.*;
 
 /**
@@ -321,20 +328,54 @@ public class ManSysUserServiceImpl implements ManSysUserService {
              * HttpServletRequest request = RequestContext.getHttpRequest(); LoginInfo loginInfo =
              * LoginHelper.getLoginInfo(request);
              */
-            condition.put("insert_user", login.getBillid());
+            if(login != null){ 
+                condition.put("insert_user", login.getBillid());
+            }
             // 添加用户数据
             int n = systemUserMapper.addSystemUser(condition);
-
+            int m = 1;
             // 添加日志信息
-            Map<String, Object> operatorData = new LinkedHashMap<String, Object>();
-            operatorData.put("billid", StringUtil.generateUUID());
-            operatorData.put("operateid", login.getBillid());
-            operatorData.put("content", "新增了用户：" + usercount);
-            operatorData.put("operate_date", insert_date);
-            operatorData.put("type", TransformConstant.transform_log_user);
-
-            int m = this.addSystemLogInfo(operatorData);
+            if(login != null){ 
+                Map<String, Object> operatorData = new LinkedHashMap<String, Object>();
+                operatorData.put("billid", StringUtil.generateUUID());
+                operatorData.put("operateid", login.getBillid());
+                operatorData.put("content", "新增了用户：" + usercount);
+                operatorData.put("operate_date", insert_date);
+                operatorData.put("type", TransformConstant.transform_log_user);
+                m = this.addSystemLogInfo(operatorData);
+                
+            }
+            
             if (n > 0 && m > 0) {
+                if(AppInconstant.initUser.equals("false")){ 
+                    ManSystemRoleMapper systemRoleMapper = this.sqlSession.getMapper(ManSystemRoleMapper.class);
+                    List<ManSystemRoleVO> roleList = systemRoleMapper.getAll();
+                    if(roleList != null && roleList.size()>0){
+                      //将用户和角色关联
+                        Map<String, Object> relateData = new LinkedHashMap<String, Object>();
+                        relateData.put("billid", StringUtil.generateUUID());
+                        relateData.put("userid", billid);
+                        relateData.put("roleid", roleList.get(0).getBillid());
+                        systemRoleMapper.saveUserRole(relateData);
+                    }
+                    
+                    //更新字典表和缓存的数据
+                    DictionaryMapper dictionaryMapper = this.sqlSession.getMapper(DictionaryMapper.class);
+                    List<DictionaryVO> dList = dictionaryMapper.queryValueByCode("init_user");
+                    if(dList != null && dList.size()>0){                      
+                        Map<String,Object> data = new LinkedHashMap<String,Object>();
+                        data.put("id", dList.get(0).getId());
+                        data.put("value", "true");
+                        data.put("modifyTime",  StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+                        dictionaryMapper.updateValueById(data); 
+                        //同步代码
+                        synchronized (AppInconstant.initUser) {
+                             AppInconstant.initUser = "true";      
+                        } 
+                    }
+                    
+
+                }
                 // 发送注册通知邮件
                 try {
                     if(!StringUtil.isBlank(email)) {
@@ -741,6 +782,41 @@ public class ManSysUserServiceImpl implements ManSysUserService {
         TransFormLoginHelper.putSessionMap(loginInfo.getBillid(), loginInfo, request);
     }
     
+    public List<ManSystemMenuVO> getALL() {
+        ManSystemMenuMapper menuMapper = this.sqlSession.getMapper(ManSystemMenuMapper.class);
+        ManSystemRightMapper rightMapper = this.sqlSession.getMapper(ManSystemRightMapper.class);
+        TransFormLoginInfo loginInfo = new TransFormLoginInfo(true);
+        loginInfo.setBillid(TransformConstant.transform_billid_admin);
+        loginInfo.setUsercount(TransformConstant.transform_username_admin);
+        // 管理员获取所有菜单权限
+        List<ManSystemMenuVO> menuList = menuMapper.getAllParent();
+        List<ManSystemMenuVO> newList = new LinkedList<ManSystemMenuVO>();
+        if (menuList != null && menuList.size() > 0) {
+            for (ManSystemMenuVO menu : menuList) {
+                // 管理员登录的时候 过滤掉特殊的菜单
+                if (!"登录管理".equals(menu.getMenuname())) {
+                    newList.add(menu);
+                }
+            }
+            for (ManSystemMenuVO menu : newList) {
+
+                // 根据上级节点信息查询该节点拥有的子节点信息
+                List<ManSystemMenuVO> children = menuMapper.getChildren(menu.getBillid());
+                if (children != null && children.size() > 0) {
+                    Set<ManSystemMenuVO> childrenMenu = new LinkedHashSet<ManSystemMenuVO>();
+                    // 将List转换成Set
+                    for (ManSystemMenuVO child : children) {
+                        childrenMenu.add(child);
+                    }
+                    menu.setChildren(childrenMenu);
+                }
+            } 
+        }
+        
+        return newList;
+         
+    }
+    
     /**
      * Description:查询用户对象并返回
      * @param billid
@@ -810,6 +886,9 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             condition.put("status", status);
             // 添加日志信息
             for (String billid : array) {
+                if(billid.equals(login.getBillid()) && status.equals(AppConstant.USER_STATUS_DELETE.toString())){
+                    continue;
+                }
                 Map<String, Object> operatorData = new LinkedHashMap<String, Object>();
                 operatorData.put("billid", StringUtil.generateUUID());
                 operatorData.put("operateid", login.getBillid());

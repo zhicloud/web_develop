@@ -10,6 +10,7 @@
 package com.zhicloud.ms.controller; 
 
 import com.zhicloud.ms.constant.AppConstant;
+import com.zhicloud.ms.quartz.ComputeInfoCacheJob;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.CloudHostConfigModelService;
 import com.zhicloud.ms.service.ICloudHostService;
@@ -24,6 +25,7 @@ import com.zhicloud.ms.vo.CloudHostVO;
 import com.zhicloud.ms.vo.CloudHostWarehouse;
 import com.zhicloud.ms.vo.SysDiskImageVO;
 
+import org.quartz.JobExecutionException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -352,6 +354,33 @@ public class SysDiskImageController {
         }
 		return mr;
  	}
+	
+	
+	/**
+	 * 
+	* @Title: updateImage 
+	* @Description: 用户用户变更之后 
+	* @param @param type disk 表示磁盘镜像 iso表示光盘镜像
+	* @param @param request
+	* @param @return      
+	* @return MethodResult     
+	* @throws
+	 */
+	@RequestMapping(value="/update",method=RequestMethod.GET)
+    @ResponseBody
+    public MethodResult updateImage(String type, HttpServletRequest request) {
+        if ("disk".equals(type)) {
+            sysDiskImageService.initSysDiskImageFromHttpGateway();
+        } else if ("iso".equals(type)) {
+            try {
+                ComputeInfoCacheJob.singleton().execute(null);
+            } catch (JobExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return new MethodResult(MethodResult.SUCCESS, "success");
+    }
 	
 
 }

@@ -52,5 +52,7 @@ public class AppInconstant {
 	public static Map<String,Object> serviceEnableResult = Collections.synchronizedMap(new HashMap<String,Object>());
 
 	public static Map<String,Object> serviceDisableResult = Collections.synchronizedMap(new HashMap<String,Object>());
+	
+	public static String initUser = "false";
 
 }

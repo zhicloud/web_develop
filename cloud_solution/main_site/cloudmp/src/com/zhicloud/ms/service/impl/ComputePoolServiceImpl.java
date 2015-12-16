@@ -1,5 +1,6 @@
 package com.zhicloud.ms.service.impl;
 
+import com.zhicloud.ms.app.pool.computePool.ComputeInfo;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
@@ -7,13 +8,16 @@ import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.httpGateway.*; 
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.IComputePoolService; 
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger; 
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Map;
@@ -274,6 +278,10 @@ public class ComputePoolServiceImpl implements IComputePoolService {
                     	//没有NC，删除资源池
                         JSONObject drp = channel.computePoolDelete(uuid);
                         if("success".equals(drp.getString("status"))){
+                            ComputeInfoPool  pool = ComputeInfoPoolManager.singleton().getPool();
+                            ComputeInfo computeInfo = new ComputeInfo();
+                            computeInfo.setUuid(uuid);
+                            pool.removeFromComputePool(computeInfo);
                             return new MethodResult(MethodResult.SUCCESS,"资源池删除成功");
                         }else{
                         	return new MethodResult(MethodResult.FAIL,"资源池删除失败");
