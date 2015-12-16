@@ -7,7 +7,7 @@ jQuery(function() {
 	    progresswid,
 	    uploader,
 	    sendmethod = 'PUT',
-	    serverurl = 'http://172.18.10.18:9080/iso_image',
+	    serverurl = 'http://'+serverIP+':9080/iso_image',
 	    filesize,
 	    md5value;
     uploader = WebUploader.create({
@@ -58,6 +58,7 @@ jQuery(function() {
 	        $percent.find(".green").html(progresswid  + '%');
     });
     uploader.on( 'uploadSuccess', function( file,response ) {
+    	updateMemoryData('iso');
     	$('#closebtn').click();
     	$("#successconfirm").click();
     });
