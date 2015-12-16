@@ -149,8 +149,7 @@ public class HostBackupProgressData extends CloudHostVO {
 
 	public void setBackupStatus(Integer backupStatus) {
 	    Logger logger = Logger.getLogger(CloudServerController.class);
-	    logger.info("update status "+backupStatus);
-	    System.out.println("哈哈哈哈哈哈哈哈哈"+backupStatus);
+	    logger.info("update status "+backupStatus); 
 		this.backupStatus = backupStatus;
 	}
 

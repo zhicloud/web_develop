@@ -2741,12 +2741,15 @@ public class CloudHostServiceImpl implements ICloudHostService {
             JSONObject obj = new JSONObject();
             obj.put("pool_id", ext.getUuid());
             obj.put("pool_name", ext.getName());
-            obj.put("max_creating", 0);
+            obj.put("max_creating", 0); 
             // 循环比对
             for (CloudHostWarehouse cloud : maxconcurrent_lists) {
                 if (ext.getUuid().equals(cloud.getPoolId())) {
-                    obj.put("max_creating", cloud.getMax_creating());
+                    obj.put("max_creating", cloud.getMax_creating()); 
                     break;
+                }else{
+                    //如果数据库中没有设置，需要给一个默认值2
+                    obj.put("max_creating", 2); 
                 }
             }
             pool_arrays.add(obj);

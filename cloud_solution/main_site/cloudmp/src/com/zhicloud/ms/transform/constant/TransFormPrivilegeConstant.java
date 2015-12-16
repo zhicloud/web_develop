@@ -110,6 +110,8 @@ public class TransFormPrivilegeConstant {
 
     public static final String desktop_resource_pool_query = "desktop_resource_pool_query";     //资源池查询
     public static final String desktop_resource_node_query = "desktop_resource_node_query";     //资源池节点查询
+    public static final String desktop_resource_node_add = "desktop_resource_node_add";     //资源池节点新增
+    public static final String desktop_resource_node_delete = "desktop_resource_node_delete";     //资源池节点删除
     public static final String desktop_resource_host_query = "desktop_resource_host_query";     //资源池主机查询
     public static final String desktop_resource_pool_add = "desktop_resource_pool_add";     //增加主机资源池
     public static final String desktop_resource_pool_mod = "desktop_resource_pool_mod";           //修改资源池
