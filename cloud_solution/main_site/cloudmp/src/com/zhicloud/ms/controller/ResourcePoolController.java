@@ -1,19 +1,24 @@
 package com.zhicloud.ms.controller;
 
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
+import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
 import com.zhicloud.ms.app.pool.storage.StorageManager;
 import com.zhicloud.ms.app.pool.storage.StorageResult;
 import com.zhicloud.ms.httpGateway.HttpGatewayAsyncChannel;
 import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
+import com.zhicloud.ms.quartz.ComputeInfoCacheJob;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.*;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.*;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -74,60 +80,63 @@ public class ResourcePoolController {
                 logger.error("ResourcePoolController.getAll>>>获取资源池失败");
                 return "not_responsed";
             }
-                    JSONArray computerList = result.getJSONArray("compute_pools");
-                    for (int i = 0; i < computerList.size(); i ++) {
-                        JSONObject computerObject = computerList.getJSONObject(i);
-                        String uuid = computerObject.getString("uuid");
-                        String name = computerObject.getString("name");
-                        if(!name.contains("desktop_pool")){
-                            continue;
-                        }
-                        int status = computerObject.getInt("status");
-                        Integer cpuCount = computerObject.getInt("cpu_count");
-                        BigDecimal cpuUsage = new BigDecimal(computerObject.getString("cpu_usage"));
-                        BigDecimal memoryUsage = new BigDecimal(computerObject.getString("memory_usage"));
-                        BigDecimal diskUsage = new BigDecimal(computerObject.getString("disk_usage"));
-                        
-                        JSONArray memoryList = computerObject.getJSONArray("memory");
-                        BigInteger[] mcount = new BigInteger[memoryList.size()];
-                        for(int j=0;j<memoryList.size();j++){
-                            mcount[j] = new BigInteger(memoryList.getString(j));
-                        }
-                        
-                        JSONArray diskList = computerObject.getJSONArray("disk_volume");
-                        BigInteger[] dcount = new BigInteger[diskList.size()];
-                        for(int j=0;j<diskList.size();j++){
-                            dcount[j] = new BigInteger(diskList.getString(j));
-                        }
-                        
-                        JSONArray nList = computerObject.getJSONArray("node");
-                        Integer[] ncount = new Integer[nList.size()];
-                        for(int j=0;j<nList.size();j++){
-                            ncount[j] = nList.getInt(j);
-                        }
-                        
-                        JSONArray hList = computerObject.getJSONArray("host");
-                        Integer[] hcount = new Integer[hList.size()];
-                        for(int j=0;j<hList.size();j++){
-                            hcount[j] = hList.getInt(j);
-                        }
+            ComputeInfoPool  pool = ComputeInfoPoolManager.singleton().getPool();
 
-                        ComputeInfoExt computer = computePoolService.getComputePoolDetailSync(uuid);
-                        computer.setCpuCount(cpuCount);
-                        computer.setCpuUsage(cpuUsage);
-                        computer.setDiskUsage(diskUsage);
-                        computer.setDiskVolume(dcount);
-                        computer.setHost(hcount);
-                        computer.setMemory(mcount);
-                        computer.setMemoryUsage(memoryUsage);
-                        computer.setName(name);
-                        computer.setNode(ncount);
-                        computer.setStatus(status);
-                        computer.setUuid(uuid);
-                        computer.setRegion(1);
-                        cList.add(computer);
-                    }
+            JSONArray computerList = result.getJSONArray("compute_pools");
+            for (int i = 0; i < computerList.size(); i ++) {
+                JSONObject computerObject = computerList.getJSONObject(i);
+                String uuid = computerObject.getString("uuid");
+                String name = computerObject.getString("name");
+                if(!name.contains("desktop_pool")){
+                    continue;
                 }
+                int status = computerObject.getInt("status");
+                Integer cpuCount = computerObject.getInt("cpu_count");
+                BigDecimal cpuUsage = new BigDecimal(computerObject.getString("cpu_usage"));
+                BigDecimal memoryUsage = new BigDecimal(computerObject.getString("memory_usage"));
+                BigDecimal diskUsage = new BigDecimal(computerObject.getString("disk_usage"));
+                
+                JSONArray memoryList = computerObject.getJSONArray("memory");
+                BigInteger[] mcount = new BigInteger[memoryList.size()];
+                for(int j=0;j<memoryList.size();j++){
+                    mcount[j] = new BigInteger(memoryList.getString(j));
+                }
+                
+                JSONArray diskList = computerObject.getJSONArray("disk_volume");
+                BigInteger[] dcount = new BigInteger[diskList.size()];
+                for(int j=0;j<diskList.size();j++){
+                    dcount[j] = new BigInteger(diskList.getString(j));
+                }
+                
+                JSONArray nList = computerObject.getJSONArray("node");
+                Integer[] ncount = new Integer[nList.size()];
+                for(int j=0;j<nList.size();j++){
+                    ncount[j] = nList.getInt(j);
+                }
+                
+                JSONArray hList = computerObject.getJSONArray("host");
+                Integer[] hcount = new Integer[hList.size()];
+                for(int j=0;j<hList.size();j++){
+                    hcount[j] = hList.getInt(j);
+                }
+
+                ComputeInfoExt computer = computePoolService.getComputePoolDetailSync(uuid);
+                computer.setCpuCount(cpuCount);
+                computer.setCpuUsage(cpuUsage);
+                computer.setDiskUsage(diskUsage);
+                computer.setDiskVolume(dcount);
+                computer.setHost(hcount);
+                computer.setMemory(mcount);
+                computer.setMemoryUsage(memoryUsage);
+                computer.setName(name);
+                computer.setNode(ncount);
+                computer.setStatus(status);
+                computer.setUuid(uuid);
+                computer.setRegion(1);
+                cList.add(computer);
+                pool.putToComputePool(uuid, computer);
+            }
+        }
             
             model.addAttribute("computerPool", cList);
         } catch (MalformedURLException e) {
@@ -490,9 +499,7 @@ public class ResourcePoolController {
             if("success".equals(result.status)){
                 operLogService.addLog("桌面云资源池管理", "创建计算资源池", "1", "1", request);
                 return new MethodResult(result.status, result.message);
-
             }
-
 
         }  catch (Exception e) {
             e.printStackTrace();
@@ -760,7 +767,10 @@ public class ResourcePoolController {
      * @return
      */
     @RequestMapping(value="/{uuid}/an",method=RequestMethod.GET)
-    public String addNodePage(@PathVariable("uuid") String uuid,Model model){
+    public String addNodePage(HttpServletRequest request,@PathVariable("uuid") String uuid,Model model){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_node_add)){
+            return "not_have_access";
+        }
         List<ComputeInfoExt> curList = new ArrayList<>();
         HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
         try {
@@ -797,7 +807,10 @@ public class ResourcePoolController {
      */
     @RequestMapping(value="/an",method=RequestMethod.POST)
     @ResponseBody
-    public MethodResult addNode(String uuid,String name){
+    public MethodResult addNode(HttpServletRequest request,String uuid,String name){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_node_add)){
+            return new MethodResult(MethodResult.FAIL,"您没有添加资源节点的权限，请联系管理员");
+        }
         if(StringUtil.isBlank(uuid)){
             return new MethodResult(MethodResult.FAIL,"资源池ID不能为空");
         }
@@ -828,10 +841,13 @@ public class ResourcePoolController {
      */
     @RequestMapping(value="/dn",method=RequestMethod.POST)
     @ResponseBody
-    public MethodResult deleteNode(@RequestParam("name") String name,
+    public MethodResult deleteNode(HttpServletRequest request,@RequestParam("name") String name,
             @RequestParam("ip") String ip,
             @RequestParam("poolId") String poolId){
         try {
+            if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_node_delete)){
+                return new MethodResult(MethodResult.FAIL,"您没有删除资源节点的权限，请联系管理员");
+            }
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){
                     JSONObject result = channel.hostQuery(poolId);

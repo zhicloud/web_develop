@@ -161,6 +161,8 @@ public class CloudHostConfigModelServiceImpl implements CloudHostConfigModelServ
          condition.put("sysImageName", sysDiskImage.getName());            
        }
 		condition.put("modifiedTime", DateUtil.dateToString(new Date(),"yyyyMMddHHmmssSSS"));
+	    condition.put("supportH264",chcm.getSupportH264());
+
 		int n = chcmMapper.updateById(condition);
 		return n;
 	}
@@ -275,6 +277,7 @@ public class CloudHostConfigModelServiceImpl implements CloudHostConfigModelServ
 			condition.put("sysImageId", sysImageId);
 			condition.put("sysImageName", sysDiskImage==null?null:sysDiskImage.getDisplayName());
 			condition.put("modifiedTime", DateUtil.dateToString(new Date(),"yyyyMMddHHmmssSSS"));
+			condition.put("supportH264",chcm.getSupportH264());
 			int n = chcmMapper.updateById(condition);
 			if(n > 0){
 				return new MethodResult(MethodResult.SUCCESS,"修改成功");

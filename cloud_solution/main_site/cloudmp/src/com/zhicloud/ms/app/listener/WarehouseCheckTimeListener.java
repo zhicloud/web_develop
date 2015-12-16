@@ -79,6 +79,11 @@ public class WarehouseCheckTimeListener implements Servlet {
 	@Override
 	public void destroy() {
 		logger.info("destory all the service fetcher listers");
+		try {
+            QuartzManage.getQuartzManage().getScheduler().shutdown();
+        } catch (SchedulerException e) { 
+            e.printStackTrace();
+        }
 	}
 
 	@Override

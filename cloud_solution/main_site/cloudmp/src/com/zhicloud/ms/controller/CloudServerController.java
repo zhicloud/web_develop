@@ -793,8 +793,7 @@ public class CloudServerController {
 
 	public HostBackupProgressData getProgressData(String uuid) {
 		HostBackupProgressPool pool = HostBackupProgressPoolManager.singleton().getPool();
-		System.out.println(pool+"##############getProgressData");
-		return pool.get(uuid);
+ 		return pool.get(uuid);
 	}
    /**
     * 

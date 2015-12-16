@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.BlacklistMapper">
+
+
+	<resultMap type="com.zhicloud.ms.vo.BlacklistVO" id="BlacklistVO">
+		<id     column="rule_id"       property="ruleId" />
+		<result column="rule_name"     property="ruleName" />
+		<result column="rule_ip"       property="ruleIp" />
+		<result column="description"   property="description" />
+	</resultMap>
+
+
+	<select id="getAll" resultMap="BlacklistVO">
+		select
+		      b.rule_id,
+		      b.rule_name,
+		      b.rule_ip,
+		      b.description 
+		 from blacklist b
+	</select>
+	
+	<select id="getByRuleId" resultMap="BlacklistVO">
+		select
+		      b.rule_id,
+		      b.rule_name,
+		      b.rule_ip,
+		      b.description 
+		 from blacklist b
+		 where b.rule_id = #{ruleId}
+	</select>
+	
+	<select id="getByRuleName" resultMap="BlacklistVO">
+		select
+		      b.rule_id,
+		      b.rule_name,
+		      b.rule_ip,
+		      b.description 
+		 from blacklist b
+		 where b.rule_name = #{ruleName}
+	</select>
+
+    <!-- ***************** -->
+
+    <insert id="add">
+		insert INTO blacklist
+		(rule_id,rule_name, rule_ip, description)
+		 values
+		 (#{ruleId},#{ruleName},#{ruleIp},#{description});
+	</insert>
+	
+	<!-- ***************** --> 
+	
+	<update id="update">
+	    update blacklist
+	    set rule_name = #{ruleName},
+	    rule_ip = #{ruleIp},
+	    description = #{description}
+	    where rule_id = #{ruleId}
+	</update>
+	
+	<delete id="deleteById">
+		delete from blacklist
+		where rule_id = #{ruleId}
+	</delete>
+	
+	<delete id="deleteByRuleIds">
+		delete from blacklist
+		where rule_id in
+		<foreach collection="list" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+</mapper>

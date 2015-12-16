@@ -177,7 +177,9 @@ public class TransFormAdminController extends TransFormBaseAction{
 		}
     	
     	String systemAddr = AppProperties.getValue("address_of_this_system");
+    	String blackAndWhite = AppProperties.getValue("black_white_list");
     	model.addAttribute("systemAddr", systemAddr);
+    	model.addAttribute("blackAndWhite", blackAndWhite);
     	List<DictionaryVO> voList = dictionaryService.getValuesByCode("product_name");
     	if(voList!=null&&voList.size()>0){
         	model.addAttribute("name", voList.get(0));
@@ -197,11 +199,15 @@ public class TransFormAdminController extends TransFormBaseAction{
      */
     @RequestMapping(value="/transform/system/add",method=RequestMethod.POST)
     @ResponseBody
-    public MethodResult updateOption(@RequestParam("sysAddress") String sysAddress,DictionaryVO productName,HttpServletRequest request){
+    public MethodResult updateOption(@RequestParam("sysAddress") String sysAddress,@RequestParam("blackAndWhite") String blackAndWhite ,DictionaryVO productName,HttpServletRequest request){
     	if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.transform_system_update)){
 			return new MethodResult(MethodResult.FAIL,"您没有系统配置的权限，请联系管理员");
 		}
     	String oldAddressOfThisSystem = AppProperties.getValue("address_of_this_system");
+    	String oldBlackAndWhite = AppProperties.getValue("black_white_list");
+    	if(!oldBlackAndWhite.equals(blackAndWhite)){
+    		AppProperties.setValue("black_white_list", blackAndWhite);
+    	}
     	// 如果系统地址变更，需要重新去gw注册回调地址
     	try{
     	    if(!oldAddressOfThisSystem.equals(sysAddress)){ 

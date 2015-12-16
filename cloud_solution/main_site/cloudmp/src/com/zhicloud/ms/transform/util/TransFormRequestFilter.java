@@ -28,6 +28,7 @@ public class TransFormRequestFilter extends OncePerRequestFilter{
     	synchronized (AppInconstant.productName){
         	request.setAttribute("productName", AppInconstant.productName);
     	}
+    	
         // 取得请求路径
         String URI = request.getRequestURI();
         // 特殊路径放开限制
@@ -37,6 +38,16 @@ public class TransFormRequestFilter extends OncePerRequestFilter{
                 || URI.indexOf("interface") > -1 || URI.indexOf("cloudserver/getbackupprogress") > -1
                 || URI.indexOf("/transform/updateuserlogin") > -1 || URI.indexOf("/monitor/shieldobject") > -1) {
         } else {
+            if(AppInconstant.initUser.equals("false")){
+                if(URI.indexOf("/transform/useradmin/saveuser") > -1){
+                    chain.doFilter(request, response);
+                    return;
+                }
+                request.setAttribute("modflag", "0");
+                
+                request.getRequestDispatcher("/transform/useradmin/init").forward(request, response);
+                return;
+            }
             boolean islogin = TransFormLoginHelper.hasLogin(request);
             if (islogin) {
                 if ((request.getContextPath() + "/").equals(URI)) {

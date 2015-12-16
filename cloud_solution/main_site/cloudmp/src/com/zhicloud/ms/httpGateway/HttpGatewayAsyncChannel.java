@@ -24,6 +24,7 @@ public class HttpGatewayAsyncChannel extends HttpGatewayChannelExt {
 		if (httpGatewayAddr.endsWith("/") == false) {
 			httpGatewayAddr += "/";
 		}
+		logger.info("get AsyncChannel of "+httpGatewayAddr);
 		this.callback = httpGatewayAddr + "hgMessage/push.do";
 	}
 
