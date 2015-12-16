@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.ImageUploadAddressMapper">
+
+
+	<resultMap type="com.zhicloud.ms.vo.ImageUploadAddressVO" id="ImageUploadAddressVO">
+		<id     column="service_name"   property="serviceName" />
+		<result column="local_ip"       property="localIp" />
+        <result column="local_port"     property="localPort" />
+        <result column="public_ip"      property="publicIp" />
+        <result column="public_port"    property="publicPort" />
+		<result column="service_enable" property="serviceEnable" />
+        <result column="description"    property="description" />
+
+    </resultMap>
+	
+	<!-- ********************* -->
+	
+	<insert id="updateAddress">
+		insert into image_upload_address
+		(
+          <if test="local_ip != null"> local_ip,</if>
+          <if test="local_port != null">local_port,</if>
+          <if test="public_ip != null">public_ip,</if>
+          <if test="public_port != null">public_port,</if>
+          <if test="service_enable != null">service_enable,</if>
+          <if test="description != null">description,</if>
+          service_name
+		)
+		values
+		(
+          <if test="local_ip != null"> #{local_ip},</if>
+          <if test="local_port != null"> #{local_port},</if>
+          <if test="public_ip != null"> #{public_ip},</if>
+          <if test="public_port != null"> #{public_port},</if>
+          <if test="service_enable != null"> #{service_enable},</if>
+          <if test="description != null"> #{description},</if>
+          #{service_name}
+		)
+		ON DUPLICATE KEY UPDATE
+          <if test="local_ip != null">local_ip = VALUES (local_ip),</if>
+          <if test="local_port != null">local_port = VALUES (local_port),</if>
+          <if test="public_ip != null">public_ip = VALUES (public_ip),</if>
+          <if test="public_port != null">public_port = VALUES (public_port),</if>
+          <if test="service_enable != null">service_enable = VALUES (service_enable),</if>
+          <if test="description != null">description = VALUES (description),</if>
+          service_name = VALUES(service_name)
+	</insert>
+	
+	<!-- ********************* -->
+
+	<select id="queryAllAddress" resultMap="ImageUploadAddressVO">
+		select 
+			service_name,
+			local_ip,
+			local_port,
+			public_ip,
+			public_port,
+			service_enable,
+			description
+		from image_upload_address
+		<where>
+            1=1
+            <if test="service_enable != null">
+                AND service_enable = #{service_enable}
+            </if>
+        </where>
+	</select>
+
+    <!-- ********************* -->
+
+    <select id="queryAddressByServiceName" resultMap="ImageUploadAddressVO">
+        select
+        service_name,
+        local_ip,
+        local_port,
+        public_ip,
+        public_port,
+        service_enable,
+        description
+        from image_upload_address
+        <where>
+            service_name = #{service_name}
+        </where>
+    </select>
+	
+	<!-- ********************* -->
+
+	<delete id="deleteAddresses">
+		delete
+		from image_upload_address
+		where service_name in
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	
+</mapper>
