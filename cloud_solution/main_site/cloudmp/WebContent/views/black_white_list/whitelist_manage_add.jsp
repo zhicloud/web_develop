@@ -113,7 +113,7 @@
                       <div class="form-group">
                         <label for="input01" class="col-sm-2 control-label">IP *</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="ruleIp" name="ruleIp"  parsley-trigger="change" parsley-required="true"  parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
+                          <input type="text" class="form-control" id="ruleIp" name="ruleIp"  parsley-trigger="change" parsley-checkip="true" parsley-required="true"  parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
                         </div>
                       </div>
                      <div class="form-group">
