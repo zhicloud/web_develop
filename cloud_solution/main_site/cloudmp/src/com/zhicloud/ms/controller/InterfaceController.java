@@ -11,6 +11,7 @@ package com.zhicloud.ms.controller;
 
 import com.zhicloud.ms.app.cache.box.BoxRealInfoCacheManager;
 import com.zhicloud.ms.app.helper.AppHelper;
+import com.zhicloud.ms.common.util.HttpUtil;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.*;
 import com.zhicloud.ms.util.ServiceUtil;
@@ -20,14 +21,11 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import sun.net.util.IPAddressUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.*;
 
 /**
@@ -100,7 +98,7 @@ public class InterfaceController {
 		response.setContentType("text/json; charset=utf-8"); 
 		logger.info(request.getLocalAddr());
 		logger.info(request.getHeader("X-Forwarded-For"));
- 		boolean ipInnerFlag = isIpAddr(request);
+ 		boolean ipInnerFlag = HttpUtil.isIpAddr(request);
 		//获取用户名
 		String username = StringUtil.trim(request.getParameter("user_name"));
 		//获取密码
@@ -407,73 +405,7 @@ public class InterfaceController {
 		os.close();
 		in.close(); 	 
 	}
-	/**
-	 * 
-	* @Title: isIpAddr 
-	* @Description: 判断是否是外网ip请求，true：innerIP false：outerIp
-	* @param @param request
-	* @param @return      
-	* @return boolean     
-	* @throws
-	 */
-	private boolean isIpAddr(HttpServletRequest request) {
-	     String ipAddress = null;
-	     ipAddress =  request.getHeader("x-forwarded-for");
-	     if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
-	      ipAddress = request.getHeader("Proxy-Client-IP");
-	     }
-	     if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
-	         ipAddress = request.getHeader("WL-Proxy-Client-IP");
-	     }
-	     if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
-	      ipAddress = request.getRemoteAddr();
-	      if(ipAddress.equals("127.0.0.1")){
-	       //根据网卡取本机配置的IP
-	       InetAddress inet=null;
-	    try {
-	     inet = InetAddress.getLocalHost();
-	    } catch (UnknownHostException e) {
-	     e.printStackTrace();
-	    }
-	    ipAddress= inet.getHostAddress();
-	      }
-	         
-	     }
-	     //对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
-	     if(ipAddress!=null && ipAddress.length()>15){ //"***.***.***.***".length() = 15
-	         if(ipAddress.indexOf(",")>0){
-	             ipAddress = ipAddress.substring(0,ipAddress.indexOf(","));
-	         }
-	     }
- 	     byte[] addr = IPAddressUtil.textToNumericFormatV4(ipAddress);
- 	    final byte b0 = addr[0];
-	    final byte b1 = addr[1];
-	    //10.x.x.x/8
-	    final byte SECTION_1 = 0x0A;
-	    //172.16.x.x/12
-	    final byte SECTION_2 = (byte) 0xAC;
-	    final byte SECTION_3 = (byte) 0x10;
-	    final byte SECTION_4 = (byte) 0x1F;
-	    //192.168.x.x/16
-	    final byte SECTION_5 = (byte) 0xC0;
-	    final byte SECTION_6 = (byte) 0xA8;
-	    switch (b0) {
-	        case SECTION_1:
-	            return true;
-	        case SECTION_2:
-	            if (b1 >= SECTION_3 && b1 <= SECTION_4) {
-	                return true;
-	            }
-	        case SECTION_5:
-	            switch (b1) {
-	                case SECTION_6:
-	                    return true;
-	            }
-	        default:
-	            return false;
-	    }
-	  }
-	
+
 	@RequestMapping(value="/updatehoststatus",method=RequestMethod.GET)
     public void updateHostStatus(HttpServletRequest request, HttpServletResponse response) throws IOException
     { 
@@ -515,7 +447,7 @@ public class InterfaceController {
         response.setContentType("text/json; charset=utf-8"); 
         logger.info(request.getLocalAddr());
         logger.info(request.getHeader("X-Forwarded-For"));
-        boolean ipInnerFlag = isIpAddr(request);
+        boolean ipInnerFlag = HttpUtil.isIpAddr(request);
         //获取用户名
         String username = StringUtil.trim(request.getParameter("user_name"));
         String time = StringUtil.trim(request.getParameter("time"));
@@ -565,7 +497,7 @@ public class InterfaceController {
         response.setContentType("text/json; charset=utf-8"); 
         logger.info(request.getLocalAddr());
         logger.info(request.getHeader("X-Forwarded-For"));
-        boolean ipInnerFlag = isIpAddr(request);
+        boolean ipInnerFlag = HttpUtil.isIpAddr(request);
         //获取用户名
         String username = StringUtil.trim(request.getParameter("user_name"));
         SysUser sysUser = userService.getUserInfoByName(username);
