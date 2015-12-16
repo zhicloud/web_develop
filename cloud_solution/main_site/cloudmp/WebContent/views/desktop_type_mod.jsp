@@ -227,23 +227,23 @@
                         <label for="input01" class="col-sm-2 control-label">带宽 *</label>
                         <div class="col-sm-8"> 
                           <div class="radio radio-transparent col-md-2">
-                            <input type="radio" name="bandwidth" id="optionsRadios43" value="1" checked onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <input type="radio" name="bandwidth" id="optionsRadios43" value="1" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
                             <label for="optionsRadios43">1M</label>
                           </div>
                           <div class="radio radio-transparent col-md-2">
-                            <input type="radio" name="bandwidth" id="optionsRadios38" value="2" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <input type="radio" name="bandwidth" id="optionsRadios38" value="2" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
                             <label for="optionsRadios38">2M</label>
                           </div>
                           <div class="radio radio-transparent col-md-2">
-                            <input type="radio" name="bandwidth" id="optionsRadios39" value="4" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <input type="radio" name="bandwidth" id="optionsRadios39" value="4" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
                             <label for="optionsRadios39">4M</label>
                           </div>
                           <div class="radio radio-transparent col-md-2">
-                            <input type="radio" name="bandwidth" id="optionsRadios40" value="6" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <input type="radio" name="bandwidth" id="optionsRadios40" value="6" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
                             <label for="optionsRadios40">6M</label>
                           </div>
                           <div class="radio radio-transparent col-md-4">
-                            <input type="radio" name="bandwidth" id="optionsRadios41" value="10" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <input type="radio" name="bandwidth" id="optionsRadios41" value="10" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
                             <label for="optionsRadios41">10M</label>
                           </div> 
                           <div class="radio radio-transparent col-md-2">
@@ -251,7 +251,7 @@
                             <label for="optionsRadios42" style="float:left;min-width:64px;">自定义</label>                         
                           </div>
                           <div class="col-sm-3">
-                          <input type="text" class="form-control" id="bandwidthdiy" name=bandwidthdiy disabled="disabled" parsley-trigger="change" parsley-required="true"  parsley-type="integer" parsley-max="1000" parsley-validation-minlength="1">
+                          <input type="text" class="form-control" id="bandwidthdiy" name="bandwidthdiy" disabled="disabled" parsley-trigger="change" parsley-required="true"  parsley-type="integer" parsley-max="1000" parsley-validation-minlength="1">
                         </div>
                         </div>
                       </div>
@@ -324,6 +324,19 @@
                           </div>
                           
                         </div>
+                      </div>
+                      
+                      
+                      <div class="form-group">
+                        <label for="input01" class="col-sm-2 control-label">编码格式 *</label>
+                        <div class="col-sm-4" id="supportH264selectbox">
+                           <select class="chosen-select chosen-transparent form-control" name="supportH264" id="supportH264" parsley-trigger="change" parsley-required="true" parsley-error-container="#supportH264selectbox">
+                           <option value="2" <c:if test="${chcm.supportH264==2 }">selected</c:if>>全屏H.264编码</option> 
+                           <option value="1" <c:if test="${chcm.supportH264==1 }">selected</c:if>>局部H.264编码</option>   
+                           <option value="0" <c:if test="${chcm.supportH264==0 }">selected</c:if>>MJPEG编码</option>   
+                         </select>
+                          </div>
+                          
                       </div>
                       
                       
@@ -463,13 +476,11 @@
     <script>
     
     var path = '<%=request.getContextPath()%>'; 
-
     $(function(){
 
       //chosen select input
     	$(".chosen-select").chosen({disable_search_threshold: 10});
         initData();
-        
       //initialize slider
         $('#slider').noUiSlider({
       	  range: {
@@ -538,10 +549,10 @@
     function initData(){
     	$('input[name="bandwidth"]').removeAttr("checked");
     	$('input[name="dataDisk"]').removeAttr("checked");
+        $("input[name='bandwidth'][value='${chcm.bandwidthText}']").attr("checked","checked");
         $("input[name='cpuCore'][value='${chcm.cpuCore}']").attr("checked","checked");
         $("input[name='memory'][value='${chcm.memoryText}']").attr("checked","checked"); 
         $("input[name='dataDisk'][value='${chcm.dataDiskText}']").attr("checked","checked");
-        $("input[name='bandwidth'][value='${chcm.bandwidthText}']").attr("checked","checked");
         if($('input[name="dataDisk"]:checked').val()==null){
       	  $("#optionsRadios37").click();
       	  $("#optionsRadios37").attr("checked","checked");
