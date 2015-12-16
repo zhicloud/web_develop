@@ -108,11 +108,11 @@
                       <div class="tile-header">
                           <button type="button" class="btn btn-red delete" id="imageupload">
                               <i class="fa fa-plus"></i>
-                              <span> 上传镜像 </span>
+                              <span> 共享存储上传镜像</span>
                           </button>
 		                    <button type="button" class="btn btn-blue delete" onclick="uploadImage();">
 		                              <i class="fa fa-file-zip-o"></i>
-		                              <span> 上传光盘镜像 </span>
+		                              <span> 本地存储上传镜像 </span>
 		                    </button>    
                           <%--<button type="button" class="btn btn-blue delete" onclick="$('#file').trigger('click');">--%>
                               <%--<i class="fa fa-file-excel-o"></i>--%>
@@ -278,7 +278,6 @@
 		                        <div class="col-sm-8">
 		                           <select class="chosen-select form-control" id="usergroup">
 			                            <option value="system">system</option>  
-			                            <option value="system1">system1</option> 
 			                       </select>
 <!-- 		                          <input type="text" class="form-control" name="usergroup" id="usergroup" parsley-required="true"  parsley-maxlength="50">
  -->		                        </div>
@@ -288,7 +287,6 @@
 		                        <div class="col-sm-8">
                                    <select class="chosen-select form-control" id="userbelong">
 			                            <option value="system"  >system</option>  
-			                            <option value="system1"  >system1</option> 
 			                       </select>
 <!-- 		                          <input type="text" class="form-control" name="userbelong" id="userbelong" parsley-required="true"  parsley-maxlength="50">
  -->		                        </div>
