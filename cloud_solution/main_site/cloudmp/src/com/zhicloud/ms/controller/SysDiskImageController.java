@@ -17,6 +17,7 @@ import com.zhicloud.ms.service.ICloudHostService;
 import com.zhicloud.ms.service.ICloudHostWarehouseService;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.service.ISysDiskImageService;
+import com.zhicloud.ms.service.ImageUploadAddressService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormLoginHelper;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
@@ -73,8 +74,8 @@ public class SysDiskImageController {
 	@Resource
 	private IOperLogService operLogService;
 	
-	
-	
+	@Resource
+	private ImageUploadAddressService imageUploadAddressService;
 	
 	/**
 	 * 
@@ -138,6 +139,12 @@ public class SysDiskImageController {
       model.addAttribute("warehouseList", warehouseList);
       //获取客户端IP，提供了镜像上传使用
       model.addAttribute("clientIP", TransFormLoginHelper.getClientIP(request));
+      try {
+        model.addAttribute("serverIP", imageUploadAddressService.getAvailableAddress(request));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
       return "sys_disk_image_manage";
 	}
 	@RequestMapping(value="/login",method=RequestMethod.GET)

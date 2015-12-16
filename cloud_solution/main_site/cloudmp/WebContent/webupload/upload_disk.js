@@ -7,7 +7,7 @@ jQuery(function() {
         progresswid,
         uploader,
         sendmethod = 'PUT',
-        serverurl = 'http://'+serverIP+':9080/disk_image',
+        serverurl = 'http://'+serverIP+'/disk_image',
         filesize,
         md5value;
     uploader = WebUploader.create({
