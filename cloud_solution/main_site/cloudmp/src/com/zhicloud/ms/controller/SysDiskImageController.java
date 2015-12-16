@@ -18,6 +18,7 @@ import com.zhicloud.ms.service.ICloudHostWarehouseService;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.service.ISysDiskImageService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
+import com.zhicloud.ms.transform.util.TransFormLoginHelper;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.CloudHostConfigModel;
@@ -135,6 +136,8 @@ public class SysDiskImageController {
       List<CloudHostWarehouse> warehouseList = cloudHostWarehouseService.getAll();
       model.addAttribute("sysDiskImageList", sysDiskImageList);
       model.addAttribute("warehouseList", warehouseList);
+      //获取客户端IP，提供了镜像上传使用
+      model.addAttribute("clientIP", TransFormLoginHelper.getClientIP(request));
       return "sys_disk_image_manage";
 	}
 	@RequestMapping(value="/login",method=RequestMethod.GET)
@@ -382,6 +385,32 @@ public class SysDiskImageController {
         return new MethodResult(MethodResult.SUCCESS, "success");
     }
 	
+
+    /**
+     * @Description:上传前验证是否具有上传权限
+     * @param type(disk 磁盘,iso 光盘)
+     * @param request
+     * @return MethodResult
+     */
+    @RequestMapping(value = "/hasprivilege", method = RequestMethod.GET)
+    @ResponseBody
+    public MethodResult isHasPrivilege(String type, HttpServletRequest request) {
+        if ("disk".equals(type)) {
+            if (!new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.disk_image_upload)) {
+                return new MethodResult(MethodResult.FAIL, "您没有磁盘镜像上传权限");
+            } else {
+                return new MethodResult(MethodResult.SUCCESS, "您有磁盘镜像上传权限");
+            }
+        } else if ("iso".equals(type)) {
+            if (!new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.iso_image_upload)) {
+                return new MethodResult(MethodResult.FAIL, "您没有光盘镜像上传权限");
+            } else {
+                return new MethodResult(MethodResult.SUCCESS, "您有光盘镜像上传权限");
+            }
+        }
+
+        return new MethodResult(MethodResult.FAIL, "您没有权限");
+    }
 
 }
 
