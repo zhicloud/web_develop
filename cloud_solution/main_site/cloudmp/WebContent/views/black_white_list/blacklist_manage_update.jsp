@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
-<html>
+ <html>
   <head>
     <title>控制台-${productName}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,16 +12,11 @@
     <!-- Bootstrap -->
     <link href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="<%=request.getContextPath()%>/font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/animate/animate.min.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/animate/animate.css">
     <link type="text/css" rel="stylesheet" media="all" href="<%=request.getContextPath()%>/assets/js/vendor/mmenu/css/jquery.mmenu.all.css" />
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/videobackground/css/jquery.videobackground.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap-checkbox.css">
 
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/rickshaw/css/rickshaw.min.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/morris/css/morris.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/tabdrop/css/tabdrop.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote-bs3.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen.min.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen-bootstrap.css">
 
@@ -30,15 +25,16 @@
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-      <script src="<%=request.getContextPath()%>/assets/js/html5shiv.js"></script>
-      <script src="<%=request.getContextPath()%>/assets/js/respond.min.js"></script>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
   </head>
   <body class="bg-1">
 
  
 
-    <!-- Preloader -->
+
+     <!-- Preloader -->
     <div class="mask"><div id="loader"></div></div>
     <!--/Preloader -->
 
@@ -67,7 +63,7 @@
           <div class="pageheader">
             
 
-            <h2><i class="fa fa-cog"></i> 系统配置</h2>
+            <h2><i class="fa fa-file-text"></i>  修改黑名单</h2>
             
 
           </div>
@@ -85,17 +81,18 @@
             <!-- row -->
             <div class="row">
               
-              
-              <!-- col 6 -->
-          <div class="col-md-12">
+              <div class="col-md-12">
 
-				  <section class="tile color transparent-black">
+
+
+                <!-- tile -->
+                <section class="tile color transparent-black">
 
 
 
                   <!-- tile header -->
                   <div class="tile-header">
-                    <h3>系统配置信息</h3>
+                    <h3><a href="<%=request.getContextPath() %>/blacklist/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入黑名单信息</h3>
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                     </div>
@@ -105,42 +102,38 @@
                   <!-- tile body -->
                   <div class="tile-body">
                     
-                    <form class="form-horizontal" id="sys_group_form" role="form" action="${pageContext.request.contextPath }/transform/system/add" method="post">
+                    <form class="form-horizontal" role="form"  parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/blacklist/update" method="post"   >
+                      <input type="hidden" name="ruleId" value="${blacklist.ruleId }">
+                      <div class="form-group">
+                        <label for="input01" class="col-sm-2 control-label">规则名 *</label>
+                        <div class="col-sm-4">
+                          <input type="text" class="form-control" id="ruleName"  name="ruleName" oldName="${blacklist.ruleName}" parsley-checkblacklistname="true" value="${blacklist.ruleName}"  parsley-trigger="change" parsley-required="true"   parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="input01" class="col-sm-2 control-label">IP *</label>
+                        <div class="col-sm-4">
+                          <input type="text" class="form-control" id="ruleIp" name="ruleIp" value="${blacklist.ruleIp}" parsley-trigger="change" parsley-required="true"  parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
+                        </div>
+                      </div>  
+                     <div class="form-group">
+                        <label for="input05" class="col-sm-2 control-label">描述</label>
+                        <div class="col-sm-4">
+                          <textarea class="form-control" name="description" id="description" rows="6" parsley-maxlength="100">${blacklist.description}</textarea>
+                        </div>
+                      </div>
                       
-                      <div class="form-group">
-                        <label for="group_name" class="col-sm-3 control-label" style="text-align:left;width:190px;">系统地址(用于接口回调):</label>
-                        <div class="col-sm-4">
-                          <input type="text" class="form-control" name="sysAddress" id="sysAddress" value="${systemAddr }" parsley-trigger="change" parsley-required="true" parsley-minlength="1" parsley-maxlength="50" parsley-validation-minlength="1">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="group_name" class="col-sm-3 control-label" style="text-align:left;width:190px;">产品名称:</label>
-                        <div class="col-sm-4">
-                          <input name="id" type="hidden" value="${name.id }"/>
-                          <input type="text" class="form-control" name="value" id="value" value="${name.value }" parsley-trigger="change" parsley-required="true" parsley-minlength="1" parsley-maxlength="9" parsley-validation-minlength="1">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="input01" class="col-sm-2 control-label" style="text-align:left;">黑白名单开关</label>
-                        <div class="col-sm-8">
-                          <div class="radio radio-transparent col-md-3">
-                            <input type="radio" name="blackAndWhite" id="optionsRadios1" value="1">
-                            <label for="optionsRadios1">开启黑名单</label>
-                          </div>
-                          <div class="radio radio-transparent col-md-3">
-                            <input type="radio" name="blackAndWhite" id="optionsRadios2" value="2">
-                            <label for="optionsRadios2">开启白名单</label>
-                          </div>
-                          <div class="radio radio-transparent col-md-3">
-                            <input type="radio" name="blackAndWhite" id="optionsRadios3" value="3" checked="checked">
-                            <label for="optionsRadios3">都不开启</label>
-                          </div>
-                        </div>
-                      </div>
+                     
+                      
+                       
+                      
+
+                       
+
                      <div class="form-group form-footer footer-white">
                         <div class="col-sm-offset-4 col-sm-8">
-                          <button type="button" class="btn btn-greensea" id="save_btn"><i class="fa fa-plus"></i>
-                              <span> 保 存 </span></button>
+                          <button type="button" class="btn btn-greensea" onclick="saveForm();"><i class="fa fa-plus"></i>
+                              <span> 保存</span></button>
                           <button type="reset" class="btn btn-red"><i class="fa fa-refresh"></i>
                               <span> 重 置 </span></button>
                         </div>
@@ -149,13 +142,14 @@
                     </form>
 
                   </div>
-                  <!-- /tile body -->
-                  
+                  <!-- /tile body --> 
                 
 
 
                 </section>
-				<div class="tile-body">
+                <!-- /tile -->
+                
+                <div class="tile-body">
 
                     <a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>
                     <a href="#modalConfirm" id="con" role="button"   data-toggle="modal"> </a>
@@ -165,7 +159,7 @@
                       <div class="modal-dialog">
                         <div class="modal-content" style="width:60%;margin-left:20%;">
                           <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="window.location.reload();">Close</button>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
                             <h3 class="modal-title" id="modalDialogLabel"><strong>提示</strong></h3>
                           </div>
                           <div class="modal-body">
@@ -202,20 +196,16 @@
 
                   </div>
 
-                
-                
-              </div>
-           
-                           
 
 
 
+              </div> 
+
+
+              
             </div>
             <!-- /row -->
-
-
-            
-
+          
 
 
           </div>
@@ -228,6 +218,13 @@
 
         </div>
         <!-- Page content end -->
+
+
+
+
+         
+
+
 
 
 
@@ -245,44 +242,66 @@
 
     <section class="videocontent" id="video"></section>
 
+   <script type="text/javascript" src="<%=request.getContextPath()%>/js/plugins/jquery.form.js"></script>
 
+    <script>
+    
+    var path = '<%=request.getContextPath()%>'; 
 
-
-
-
-	
-    <script type="text/javascript">
-    var path = "<%=request.getContextPath()%>";
     $(function(){
+
       //chosen select input
       $(".chosen-select").chosen({disable_search_threshold: 10});
-      $("input[name='blackAndWhite'][value='${blackAndWhite}']").attr("checked","checked");
-      //check toggling
-      $('.check-toggler').on('click', function(){
-        $(this).toggleClass('checked');
-      });
-	  
       
-      jQuery("#save_btn").click(function(){
-      	var options = {
-  				success:function result(data){
-					jQuery("#tipscontent").html(data.message);
-		   		    jQuery("#dia").click();
-  				},
-  				dataType:'json',
-  				timeout:10000
-  		};
-      	var form = jQuery("#sys_group_form");
-		form.parsley('validate');
-		if(form.parsley('isValid')){  		        				
-			jQuery("#sys_group_form").ajaxSubmit(options); 
-		}
-       });
-    })
+      
+      
+    });
+    function saveForm(){
+		jQuery.ajax({
+	        url: path+'/main/checklogin',
+	        type: 'post', 
+	        dataType: 'json',
+	        timeout: 10000,
+	        async: true,
+	        error: function()
+	        {
+	            alert('Error!');
+	        },
+	        success: function(result)
+	        {
+	        	if(result.status == "fail"){ 
+	        		  $("#tipscontent").html("登录超时，请重新登录");
+	     		      $("#dia").click();
+		        	}else{ 
+ 		        			var options = {
+ 		        					success:function result(data){
+ 		        						if(data.status == "fail"){
+							        		  $("#tipscontent").html("保存失败");
+							     		      $("#dia").click();  		        							
+ 		        						}else{  		        							
+	   		        						location.href = path + "/blacklist/all";
+ 		        						}
+ 		        					},
+ 		        					dataType:'json',
+ 		        					timeout:10000
+ 		        			};
+ 		        			var form = jQuery("#basicvalidations");
+ 		        			form.parsley('validate');
+ 		        			if(form.parsley('isValid')){  		        				
+			        			jQuery("#basicvalidations").ajaxSubmit(options); 
+ 		        			}
+		        	} 
+	        }
+	     }); 
+		
+	}
       
     </script>
-    
   </body>
 </html>
       
 
+      
+
+      
+ 

@@ -26,6 +26,12 @@ public class BoxCumulativeOnlineTimeListener implements ServletContextListener{
 
     @Override
     public void contextDestroyed(ServletContextEvent arg0) {
+        try {
+            QuartzManage.getQuartzManage().getScheduler().shutdown();
+        } catch (SchedulerException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         // TODO Auto-generated method stub       
     }
 

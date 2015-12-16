@@ -89,12 +89,12 @@
                       <table  class="table table-datatable table-custom" id="basicDataTable">
                         <thead>
                           <tr>
-						    <th class="no-sort">
-                            <div class="checkbox check-transparent">
-                              <input type="checkbox" value="1" id="allchck">
-                              <label for="allchck"></label>
-                            </div>
-                          </th>
+<!-- 						    <th class="no-sort"> -->
+<!--                             <div class="checkbox check-transparent"> -->
+<!--                               <input type="checkbox" value="1" id="allchck"> -->
+<!--                               <label for="allchck"></label> -->
+<!--                             </div> -->
+<!--                           </th> -->
                             <th class="no-sort">资源池ID</th>
                             <th class="no-sort">资源池名称</th>
                             <th class="no-sort">最大并发创建数</th>
@@ -105,13 +105,13 @@
                         <c:forEach items="${lists}" var="data">
                         
                           <tr class="odd gradeX">
-						          <td>
-									<div class="checkbox check-transparent">
-									  <input type="checkbox" value="${data.uuid }" id="${data.uuid }">
-									  <label for="${data.uuid }"></label>
-									  <input type="hidden" name="hiddenval" value="${data.max_creating }">
-									</div>
-                                 </td>
+<!-- 						          <td> -->
+<!-- 									<div class="checkbox check-transparent"> -->
+<%-- 									  <input type="checkbox" value="${data.uuid }" id="${data.uuid }"> --%>
+<%-- 									  <label for="${data.uuid }"></label> --%>
+<%-- 									  <input type="hidden" name="hiddenval" value="${data.max_creating }"> --%>
+<!-- 									</div> -->
+<!--                                  </td> -->
                                   <td class="cut">
                                   ${data.uuid }
                                   </td>

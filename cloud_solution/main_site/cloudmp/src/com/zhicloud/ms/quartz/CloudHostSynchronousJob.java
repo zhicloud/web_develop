@@ -17,13 +17,13 @@ public class CloudHostSynchronousJob implements Job{
      private static ICloudHostService cloudHostService = null;
      private final static Logger logger = Logger.getLogger(BackUpJob.class);
      public synchronized static CloudHostSynchronousJob singleton() {
-         if (CloudHostSynchronousJob.instance == null) {
-             CloudHostSynchronousJob.instance = new CloudHostSynchronousJob();
+         if (instance == null) {
+             instance = new CloudHostSynchronousJob();
              BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 
              cloudHostService = (ICloudHostService)factory.getBean("cloudHostService");
 
          }
-         return CloudHostSynchronousJob.instance;
+         return instance;
      }
      @Override
      public void execute(JobExecutionContext context)throws JobExecutionException { 

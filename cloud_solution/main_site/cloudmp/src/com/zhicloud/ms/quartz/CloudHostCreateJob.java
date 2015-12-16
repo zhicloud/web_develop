@@ -14,13 +14,14 @@ public class CloudHostCreateJob implements Job{
     private static CloudHostCreateJob instance = null;
 
     
-    BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 
-    ICloudHostService cloudHostService = (ICloudHostService)factory.getBean("cloudHostService");
+     private static ICloudHostService cloudHostService = null;
      private final static Logger logger = Logger.getLogger(BackUpJob.class);
      
      public synchronized static CloudHostCreateJob singleton() {
          if (CloudHostCreateJob.instance == null) {
              CloudHostCreateJob.instance = new CloudHostCreateJob();
+             BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 
+             cloudHostService = (ICloudHostService)factory.getBean("cloudHostService");
          }
          return CloudHostCreateJob.instance;
      }
@@ -31,5 +32,10 @@ public class CloudHostCreateJob implements Job{
         cloudHostService.createOneCloudHost();
         
      }
+    
+    public void destroy() {
+        logger.info("destory the device fetcher listener");
+         
+    }
 
 }

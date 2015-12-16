@@ -89,6 +89,16 @@ public class DictionaryServiceImpl implements IDictionaryService {
 			
 		}
 		
+        dictionaryList = dictionaryMapper.queryValueByCode("init_user");
+        if(dictionaryList!=null && dictionaryList.size() >0){
+            //同步代码
+             synchronized (AppInconstant.initUser) {
+                 DictionaryVO initUser = dictionaryList.get(0); 
+                 AppInconstant.initUser = initUser.getValue();      
+             }
+            
+        }
+		
 		
 	}
 
