@@ -3,17 +3,22 @@ package com.zhicloud.ms.transform.controller;
 
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
 import com.zhicloud.ms.constant.AppConstant;
+import com.zhicloud.ms.constant.AppInconstant;
+import com.zhicloud.ms.mapper.DictionaryMapper;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.service.IUserService;
 import com.zhicloud.ms.service.ItenantService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.constant.TransformConstant;
+import com.zhicloud.ms.transform.mapper.ManSystemMenuMapper;
 import com.zhicloud.ms.transform.service.ManSysRightService;
 import com.zhicloud.ms.transform.service.ManSysRoleService;
 import com.zhicloud.ms.transform.service.ManSysUserService;
 import com.zhicloud.ms.transform.util.TransFormLoginHelper;
 import com.zhicloud.ms.transform.util.TransFormLoginInfo;
+import com.zhicloud.ms.transform.vo.ManSystemMenuVO;
 import com.zhicloud.ms.util.StringUtil;
+import com.zhicloud.ms.vo.DictionaryVO;
 import com.zhicloud.ms.vo.SysTenant;
 
 import net.sf.json.JSONArray;
@@ -205,6 +210,15 @@ public class TransFormRoleController extends TransFormBaseAction {
             }
             return TransformConstant.transform_jsp_useredit;
     }
+    @RequestMapping("/transform/useradmin/init")
+    public String init(HttpServletRequest request, HttpServletResponse response) throws Exception {
+            List<SysTenant> list = tenantService.getAllSysTenant(new SysTenant()); 
+            request.setAttribute("tenantList", list);     
+            request.setAttribute("modflag", "0"); 
+            request.getSession().setAttribute(TransformConstant.transform_session_menu,
+                    "");
+            return "/transform/admin/system_user_init";
+    }
     
     /**
      * @Description:新增用户信息
@@ -238,11 +252,13 @@ public class TransFormRoleController extends TransFormBaseAction {
 
         } else {
             boolean flag = isHasPrivilege(request, TransFormPrivilegeConstant.transform_user_add);
+            if(AppInconstant.initUser.equals("false")){
+                flag = true;
+            }
             if (flag) {
                 data.put("password", request.getParameter("password"));
                 try {
                     result = manSysUserService.addSysUser(data, login);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -274,6 +290,13 @@ public class TransFormRoleController extends TransFormBaseAction {
         boolean flag = isHasPrivilege(request, TransFormPrivilegeConstant.transform_user_delete);
         if (flag) {
             TransFormLoginInfo login = this.getLoginInfo(request);
+            if(billids.contains(login.getBillid())){
+                String[] array = billids.split(",");
+                if(array.length == 1){
+                    printWriter(response, JSONLibUtil.toJSONString(toSuccessReply("您无法删除自己的账户", false)));
+                    return;
+                }
+            }
             result = manSysUserService.updateUserStatus(billids, AppConstant.USER_STATUS_DELETE.toString(), login);
 //            result = manSysUserService.deleteSysUser(billids, login);
         } else {

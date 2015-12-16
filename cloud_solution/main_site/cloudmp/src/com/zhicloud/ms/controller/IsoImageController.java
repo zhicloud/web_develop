@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File; 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONObject;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +29,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
  
+
+
+
 import com.zhicloud.ms.app.pool.IsoImagePool;
 import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
 import com.zhicloud.ms.app.pool.IsoImagePoolManager; 
@@ -36,6 +42,7 @@ import com.zhicloud.ms.service.IsoImageService;
 import com.zhicloud.ms.service.SharedMemoryService;
 import com.zhicloud.ms.service.impl.EmailTemplateServiceImpl;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
+import com.zhicloud.ms.transform.util.TransFormLoginHelper;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.vo.SharedMemoryVO;
 @Controller
@@ -69,20 +76,18 @@ public class IsoImageController {
     }
     
     @RequestMapping(value="/isoimage/add",method=RequestMethod.GET)
-    public String addPage(HttpServletRequest request, HttpServletResponse response) throws IOException
-    { 
-        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.iso_image_add)){
+    public String addPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (!new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.iso_image_add)) {
             return "not_have_access";
         }
-       return "isoimage/iso_image_add";
+        request.setAttribute("clientIP", TransFormLoginHelper.getClientIP(request));
+        return "isoimage/iso_image_add";
     }
     
     @RequestMapping(value="/isoimage/add",method=RequestMethod.POST)
     @ResponseBody
     public MethodResult add(@RequestParam("file")MultipartFile attach,String imagename,String type,String description,HttpServletRequest request, HttpServletResponse response) throws IOException
     { 
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods", "get, post");
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.iso_image_add)){
             return new MethodResult(MethodResult.FAIL,"您没有上传镜像的权限，请联系管理员");
         }
@@ -108,17 +113,17 @@ public class IsoImageController {
             fp.mkdirs();
         }
         
-        File file = new File(filePath+"/"+uuid+".iso");
+        //File file = new File(filePath+"/"+uuid+".iso");
         
         // 上传文件
-        FileUtils.copyInputStreamToFile(attach.getInputStream(), file);
-        MethodResult result = isoImageService.upload(imagename, uuid, "iso_image/system/"+uuid+".iso", type, description);
+        //FileUtils.copyInputStreamToFile(attach.getInputStream(), file);
+/*        MethodResult result = isoImageService.upload(imagename, uuid, "iso_image/system/"+uuid+".iso", type, description);
         if(result.isSuccess()){
             operLogService.addLog("iso镜像", "上传镜像"+imagename, "1", "1", multipartRequest);
         }else{
             operLogService.addLog("iso镜像", "上传镜像"+imagename, "1", "2", multipartRequest);
-        }
-        return result;
+        }*/
+        return new MethodResult();
     }
     
     @RequestMapping(value="/isoimage/checkNas",method=RequestMethod.GET)
@@ -235,5 +240,4 @@ public class IsoImageController {
         return mr;
     }
     
-
 }
