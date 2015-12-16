@@ -3,8 +3,8 @@ package com.zhicloud.ms.httpGateway;
 import com.zhicloud.ms.app.pool.CloudHostData;
 import com.zhicloud.ms.app.pool.CloudHostPoolManager;
 import com.zhicloud.ms.app.pool.IsoImagePool;
-import com.zhicloud.ms.app.pool.IsoImagePoolManager;
 import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
+import com.zhicloud.ms.app.pool.IsoImagePoolManager;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
@@ -33,6 +33,8 @@ import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoPool;
 import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoPoolManager;
 import com.zhicloud.ms.app.pool.snapshot.SnapshotManager;
 import com.zhicloud.ms.app.pool.storage.StorageManager;
+import com.zhicloud.ms.app.pool.uploadAddressPool.ImageUploadAddressPool;
+import com.zhicloud.ms.app.pool.uploadAddressPool.ImageUploadAddressPoolManager;
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
 import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.constant.AppInconstant;
@@ -40,12 +42,11 @@ import com.zhicloud.ms.constant.MonitorConstant;
 import com.zhicloud.ms.constant.StaticReportHandle;
 import com.zhicloud.ms.service.IBackUpDetailService;
 import com.zhicloud.ms.util.CapacityUtil;
+import com.zhicloud.ms.vo.ImageUploadAddressVO;
 import com.zhicloud.ms.vo.PlatformResourceMonitorVO;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
-import org.apache.log4j.Logger; 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -53,11 +54,8 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
- 
+import java.util.*;
+
 public class HttpGatewayAsyncMessageHandlerImpl {
 
 	private final static Logger logger = Logger.getLogger(HttpGatewayAsyncMessageHandlerImpl.class);
@@ -1963,5 +1961,47 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         // 处理回调的数据
         StaticReportHandle.updateSummaryDataToMemory(messageData, 2);
         channel.release();
+    }
+
+    /**
+     * @Description:查询镜像服务接口后的异步回调接收数据方法
+     * @param channel
+     * @param messageData
+     */
+    @HttpGatewayMessageHandler(messageType = "query_image_service")
+    public void imageServiceQuery(HttpGatewayAsyncChannel channel, JSONObject messageData) {
+        logger.debug("recieve query_image_service data.");
+        // 处理回调的数据
+
+        try{
+            ImageUploadAddressPool imageUploadAddressPool = ImageUploadAddressPoolManager.singleton().getPool();
+
+            List <ImageUploadAddressVO> imageUploadAddresses = imageUploadAddressPool.getAll();
+
+            imageUploadAddresses.clear();
+
+            if (HttpGatewayResponseHelper.isSuccess(messageData) == true) {
+                JSONArray addressList = messageData.getJSONArray("servers");
+                for (int i = 0; i < addressList.size(); i ++) {
+                    JSONObject addressObject = addressList.getJSONObject(i);
+                    String name = addressObject.getString("name");
+                    String ip = addressObject.getString("ip");
+                    int port = addressObject.getInt("port");
+
+                    ImageUploadAddressVO address = new ImageUploadAddressVO();
+                    address.setServiceName(name);
+                    address.setLocalIp(ip);
+                    address.setLocalPort(port);
+                    imageUploadAddressPool.add(address);
+                }
+            }
+            synchronized (imageUploadAddresses) {
+                imageUploadAddresses.notifyAll();
+            }
+            channel.release();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

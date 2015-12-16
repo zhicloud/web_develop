@@ -1,12 +1,10 @@
 package com.zhicloud.ms.common.util;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import sun.net.util.IPAddressUtil;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
+import java.net.*;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -133,14 +131,110 @@ public class HttpUtil {
 		}
 	}
 
-	// ------------------
+    /**
+     *
+     * @Title: isIpAddr
+     * @Description: 判断是否是外网ip请求，true：innerIP false：outerIp
+     * @param @param request
+     * @param @return
+     * @return boolean
+     * @throws
+     */
+    public static boolean isIpAddr(HttpServletRequest request) {
+        String ipAddress = null;
+        ipAddress =  request.getHeader("x-forwarded-for");
+        if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
+            ipAddress = request.getHeader("Proxy-Client-IP");
+        }
+        if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
+            ipAddress = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if(ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
+            ipAddress = request.getRemoteAddr();
+            if(ipAddress.equals("127.0.0.1") || "0:0:0:0:0:0:0:1".equals(ipAddress)){
+                //根据网卡取本机配置的IP
+                InetAddress inet=null;
+                try {
+                    inet = InetAddress.getLocalHost();
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
+                ipAddress= inet.getHostAddress();
+            }
 
-	public static void main(String[] args) throws MalformedURLException, IOException {
+        }
+        //对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
+        if(ipAddress!=null && ipAddress.length()>15){ //"***.***.***.***".length() = 15
+            if(ipAddress.indexOf(",")>0){
+                ipAddress = ipAddress.substring(0,ipAddress.indexOf(","));
+            }
+        }
+        byte[] addr = IPAddressUtil.textToNumericFormatV4(ipAddress);
+        final byte b0 = addr[0];
+        final byte b1 = addr[1];
+        //10.x.x.x/8
+        final byte SECTION_1 = 0x0A;
+        //172.16.x.x/12
+        final byte SECTION_2 = (byte) 0xAC;
+        final byte SECTION_3 = (byte) 0x10;
+        final byte SECTION_4 = (byte) 0x1F;
+        //192.168.x.x/16
+        final byte SECTION_5 = (byte) 0xC0;
+        final byte SECTION_6 = (byte) 0xA8;
+        switch (b0) {
+            case SECTION_1:
+                return true;
+            case SECTION_2:
+                if (b1 >= SECTION_3 && b1 <= SECTION_4) {
+                    return true;
+                }
+            case SECTION_5:
+                switch (b1) {
+                    case SECTION_6:
+                        return true;
+                }
+            default:
+                return false;
+        }
+    }
+
+
+    // ----------------
+
+	public static void main(String[] args) throws IOException {
 		// http://192.168.66.202:8000/Zeus/gateway/api/connection?command=establish&verify_method=M1&version=1.0
 		// http://192.168.66.202:8000/Zeus/gateway/api/isoImage?command=query&session_id=7c096804-2e68-4a83-afaf-b4255fbcc44a&
 		// String url = "http://localhost:8080/webtest/a.jsp";
-		String url = "http://192.168.66.202:8000/Zeus/gateway/api/isoImage?command=query&session_id=7c096804-2e68-4a83-afaf-b4255fbcc44a&";
-		byte[] bytes = post(url, null);
-		System.out.println(new String(bytes));
-	}
+		String url = "http://172.18.10.18:9080/image_usage";
+
+      URL obj = new URL(url);
+      HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+      // optional default is GET
+      con.setRequestMethod("GET");
+
+      //add request header
+//      con.setRequestProperty("User-Agent", USER_AGENT);
+
+      int responseCode = con.getResponseCode();
+
+      System.err.println(responseCode);
+
+
+//      BufferedReader in = new BufferedReader(
+//          new InputStreamReader(con.getInputStream()));
+//      String inputLine;
+//      StringBuffer response = new StringBuffer();
+//
+//      while ((inputLine = in.readLine()) != null) {
+//          response.append(inputLine);
+//      }
+//      in.close();
+//
+//      //print result
+//      System.out.println(response.toString());
+
+
+
+  }
 }

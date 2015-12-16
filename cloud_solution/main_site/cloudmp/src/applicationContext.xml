@@ -102,6 +102,9 @@
     </bean>
     <bean id="platformResourceService" class="com.zhicloud.ms.service.impl.PlatformResourceServiceImpl">
     </bean>
+    <bean id="imageUploadAddressService" class="com.zhicloud.ms.service.impl.ImageUploadAddressServiceImpl">
+        <property name="sqlSession" ref="sqlSession"></property>
+    </bean>
 
 
 	<!-- transform start -->

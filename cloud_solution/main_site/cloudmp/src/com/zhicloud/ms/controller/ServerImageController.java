@@ -31,6 +31,7 @@ import com.zhicloud.ms.service.ICloudHostService;
 import com.zhicloud.ms.service.ICloudHostWarehouseService;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.service.ISysDiskImageService;
+import com.zhicloud.ms.service.ImageUploadAddressService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormLoginHelper;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
@@ -64,10 +65,11 @@ public class ServerImageController {
 	@Resource
 	private CloudHostConfigModelService cloudHostConfigModelService;
 	
-   @Resource
+    @Resource
     private IOperLogService operLogService;
 	
-	
+    @Resource
+    private ImageUploadAddressService imageUploadAddressService;
 	
 	
 	/**
@@ -88,6 +90,7 @@ public class ServerImageController {
 		model.addAttribute("sysDiskImageList", sysDiskImageList); 
         try {
             request.setAttribute("clientIP", TransFormLoginHelper.getClientIP(request));
+            request.setAttribute("serverIP", imageUploadAddressService.getAvailableAddress(request));
         } catch (Exception e) {
             e.printStackTrace();
         }

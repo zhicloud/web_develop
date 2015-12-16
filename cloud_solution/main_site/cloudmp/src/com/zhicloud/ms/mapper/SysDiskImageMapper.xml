@@ -59,7 +59,7 @@
 	    <if test="_parameter!=1">
 			and (image_type = #{_parameter} or image_type = 1)
 	    </if> 
-		order by t.name
+		order by t.create_time desc
 	</select>
 
     <select id="querySysDiskImageByMultiParams" resultMap="SysDiskImageVO">
@@ -91,7 +91,7 @@
                 AND  t.image_type = #{image_type}
             </if>
         </where>
-        order by t.name
+        order by t.create_time desc
     </select>
 	
 	<select id="getSysDiskImageByName" resultMap="SysDiskImageVO">

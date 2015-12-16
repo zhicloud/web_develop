@@ -106,6 +106,89 @@ window.onload = function(){
 function exportData(url){
 	window.location.href = "<%=request.getContextPath() %>"+url;
 }
+//检测客户端IP是否可用
+function checkIPAvailable(){
+	var returnval = false;
+	jQuery.ajax({
+  	 	type: "GET",
+  	 	async:false,
+   		url: "<%=request.getContextPath()%>/blacklist/checkIpAvailable",
+  		data: null,
+  		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
+   		success: function(result){
+     		if(result.success){
+     			returnval = true;
+     		}
+   	}
+	});	
+	return returnval;
+}
+//更新镜像缓存数据
+function updateMemoryData(obj){
+	var returnval = false;
+	jQuery.ajax({
+  	 	type: "GET",
+  	 	async:false,
+   		url: "<%=request.getContextPath()%>/image/update",
+  		data: {type:obj},
+  		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
+   		success: function(result){
+     		if(result.success){
+     			returnval = true;
+     		}
+   	}
+	});	
+	return returnval;
+}
+//检测登录超时
+function checkLoginOut(){
+	var returnval = true;
+	jQuery.ajax({
+  	 	type: "post",
+  	 	async:false,
+   		url: "<%=request.getContextPath()%>/main/checklogin",
+  		data: null,
+   		success: function(result){
+   			if(result.status == "fail"){ 
+      		  $("#tipscontent").html("登录超时，请重新登录");
+ 		      $("#dia").click();
+ 		     returnval = false;
+     		}
+   	}
+	});
+	return returnval;
+}
+//判断是否具有权限
+function uploadHasPrivilege(obj){
+	var returnval = false;
+	jQuery.ajax({
+  	 	type: "GET",
+  	 	async:false,
+   		url: "<%=request.getContextPath()%>/image/hasprivilege",
+  		data: {type:obj},
+  		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
+   		success: function(result){
+     		if(result.success==true){
+     			returnval = true;
+     		}
+   	}
+	});	
+	return returnval;
+}
+//获取SS可用地址
+function getAvailableAdress(){
+	var returnval = "";
+	jQuery.ajax({
+  	 	type: "GET",
+  	 	async:false,
+   		url: "<%=request.getContextPath()%>/image/getavailableadress",
+  		data: null,
+   		success: function(result){
+   			returnval = result;
+   	}
+	});	
+	return returnval;
+}
 </script>
   <body class="bg-1">
     <!-- Preloader -->

@@ -7,7 +7,7 @@ jQuery(function() {
         progresswid,
         uploader,
         sendmethod = 'PUT',
-        serverurl = 'http://172.18.10.18:9080/disk_image',
+        serverurl = 'http://'+serverIP+'/disk_image',
         filesize,
         md5value;
     uploader = WebUploader.create({
@@ -21,12 +21,12 @@ jQuery(function() {
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
         pick: '#picker',
         fileNumLimit: 1,
-        method:'PUT'
-/*	    accept: {
+        method:'PUT',
+	    accept: {
 	            title: 'ISO',
 	            extensions: 'iso',
 	            mimeTypes: 'iso/*'
-	        }*/
+	        }
     });
 	//添加文件之前先清空原来数据
     uploader.on( 'beforeFileQueued', function( file ) {
@@ -67,6 +67,7 @@ jQuery(function() {
 	        $percent.find(".green").html(progresswid  + '%');
     });
     uploader.on( 'uploadSuccess', function( file,response ) {
+    	updateMemoryData('disk');
     	$('#closebtn').click();
     	$("#successconfirm").click();
     });
@@ -82,7 +83,6 @@ jQuery(function() {
 		 headers['zc-format'] = $("input[name='isotype']:checked").val();
     	 headers['zc-group'] = $("#usergroup").val();
     	 headers['zc-user'] = $("#userbelong").val();
-    	 return;
      	});
      
     uploader.on( 'uploadError', function( file,reason ) {
