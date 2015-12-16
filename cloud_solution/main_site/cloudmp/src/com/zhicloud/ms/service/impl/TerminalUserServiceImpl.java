@@ -387,8 +387,7 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
 	        terminalBoxMapper.releaseTerminalBoxByUserId(userId);
 //			Integer terminalUserResult = terminalUserMapper.deleteTerminalUserById(userId);
 			
-			System.out.println("terminalUserResult" + terminalUserResult);
-			
+ 			
 			if (terminalUserResult > 0) {
 //				sysUserMapper.deleteSysUserById(userId); 
 				count ++;
