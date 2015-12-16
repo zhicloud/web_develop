@@ -272,6 +272,21 @@ public class CloudHostWarehouseController {
 		return "warehouse_manage_assign";
 	}
 	
+	/**
+	 * 跳转到分配页面
+	 * 
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/assign",method=RequestMethod.GET)
+	public String assignOne(HttpServletRequest request){
+		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_allocate)){
+			return "not_have_access";
+		}
+		return "warehouse_manage_assign";
+	}
+	
 	@RequestMapping(value="/assign",method=RequestMethod.POST)
 	@ResponseBody
 	public MethodResult AssignWareTwo(@RequestParam("warehouseId") String warehouseId, @RequestParam("ids[]") String[] ids,HttpSession session,HttpServletRequest request){

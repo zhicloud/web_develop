@@ -150,4 +150,15 @@ public class BlacklistController {
     		return new MethodResult(MethodResult.SUCCESS,"该IP可上传镜像");
     	}
     }
+    
+    @RequestMapping(value="/checkip",method=RequestMethod.POST)
+    @ResponseBody
+    public MethodResult checkIp(@RequestParam("ip") String ip){
+    	boolean flag = Pattern.matches("^\\d{0,3}\\*{0,1}\\.\\d{0,3}\\*{0,1}\\.\\d{0,3}\\*{0,1}\\.\\d{0,3}+$", ip);
+    	if(flag){
+    		return new MethodResult(MethodResult.SUCCESS, "ip格式正确");
+    	}
+    	return new MethodResult(MethodResult.FAIL,"ip格式不正确");
+    	
+    }
 }

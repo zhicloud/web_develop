@@ -106,7 +106,7 @@
                   <!-- tile body -->
                   <div class="tile-body no-vpadding" style="height:460px;"> 
                    
-                    <div class="table-responsive" style="width:100%;height:80%;float: left;overflow: auto;">
+                    <div class="table-responsive" id="table-responsive" style="width:100%;height:80%;float: left;overflow: hidden;">
                     	<div id="assigntree"></div>
 
                     </div>
@@ -355,6 +355,17 @@ function saveMenu(){
 function backhome(){
 	window.location.href = "<%=request.getContextPath()%>/warehouse/all";
 }
+$(function(){
+	$("#table-responsive").niceScroll({
+		cursoropacitymin:0.5,
+		cursorcolor:"#424242",  
+		cursoropacitymax:0.5,  
+		touchbehavior:false,  
+		cursorwidth:"8px",  
+		cursorborder:"0",  
+		cursorborderradius:"7px" ,
+	});
+});
     </script>
     
   </body>
