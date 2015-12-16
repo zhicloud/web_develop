@@ -372,7 +372,6 @@ response.setHeader("Access-Control-Allow-Origin", "*");
 		                        <div class="col-sm-8">
 		                           <select class="chosen-select form-control" id="usergroup">
 			                            <option value="system">system</option>  
-			                            <option value="system1">system1</option> 
 			                       </select>
 <!-- 		                          <input type="text" class="form-control" name="usergroup" id="usergroup" parsley-required="true"  parsley-maxlength="50">
  -->		                        </div>
@@ -382,7 +381,6 @@ response.setHeader("Access-Control-Allow-Origin", "*");
 		                        <div class="col-sm-8">
                                    <select class="chosen-select form-control" id="userbelong">
 			                            <option value="system"  >system</option>  
-			                            <option value="system1"  >system1</option> 
 			                       </select>
 <!-- 		                          <input type="text" class="form-control" name="userbelong" id="userbelong" parsley-required="true"  parsley-maxlength="50">
  -->		                        </div>
@@ -524,7 +522,7 @@ response.setHeader("Access-Control-Allow-Origin", "*");
         "oLanguage": {
           "sSearch": "搜索"
         },
-        "aaSorting": [ [5,'desc']],
+        "aaSorting": [],
         "aoColumnDefs": [
                          { 'bSortable': false, 'aTargets': [ "no-sort" ] }
                        ], 
