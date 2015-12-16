@@ -175,7 +175,20 @@ function uploadHasPrivilege(obj){
 	});	
 	return returnval;
 }
-var serverIP = "172.18.10.18";
+//获取SS可用地址
+function getAvailableAdress(){
+	var returnval = "";
+	jQuery.ajax({
+  	 	type: "GET",
+  	 	async:false,
+   		url: "<%=request.getContextPath()%>/image/getavailableadress",
+  		data: null,
+   		success: function(result){
+   			returnval = result;
+   	}
+	});	
+	return returnval;
+}
 </script>
   <body class="bg-1">
     <!-- Preloader -->

@@ -42,6 +42,7 @@
   </head>
  <script type="text/javascript">
  var clientIP = '${clientIP}';
+ var serverIP = '${serverIP}';
  </script>
  <script src="<%=request.getContextPath() %>/webupload/upload_iso.js"></script>
   <body class="bg-1">

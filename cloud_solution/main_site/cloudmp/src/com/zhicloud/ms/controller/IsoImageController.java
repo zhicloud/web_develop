@@ -32,12 +32,14 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 
 
+
 import com.zhicloud.ms.app.pool.IsoImagePool;
 import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
 import com.zhicloud.ms.app.pool.IsoImagePoolManager; 
 import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.IOperLogService;
+import com.zhicloud.ms.service.ImageUploadAddressService;
 import com.zhicloud.ms.service.IsoImageService;
 import com.zhicloud.ms.service.SharedMemoryService;
 import com.zhicloud.ms.service.impl.EmailTemplateServiceImpl;
@@ -59,6 +61,9 @@ public class IsoImageController {
     
     @Resource
     private SharedMemoryService sharedMemoryService;
+    
+    @Resource
+    private ImageUploadAddressService imageUploadAddressService;
      
     
     
@@ -72,6 +77,8 @@ public class IsoImageController {
         IsoImagePool pool = IsoImagePoolManager.getSingleton().getIsoImagePool();
         List<IsoImageData> isoArray = pool.getAllIsoImageData();
         model.addAttribute("isoArray", isoArray); 
+        model.addAttribute("clientIP", TransFormLoginHelper.getClientIP(request));
+        model.addAttribute("serverIP", imageUploadAddressService.getAvailableAddress(request));
         return "isoimage/iso_image_manage";
     }
     
@@ -80,7 +87,6 @@ public class IsoImageController {
         if (!new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.iso_image_add)) {
             return "not_have_access";
         }
-        request.setAttribute("clientIP", TransFormLoginHelper.getClientIP(request));
         return "isoimage/iso_image_add";
     }
     
