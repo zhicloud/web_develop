@@ -139,10 +139,10 @@ public class BlacklistController {
     			for(WhitelistVO whitelist : whitelistList){
     				boolean b = Pattern.matches(whitelist.getRuleIp(), userIp);
     				if(b){
-    					return new MethodResult(MethodResult.FAIL,"该IP可上传镜像");
+    					return new MethodResult(MethodResult.SUCCESS,"该IP可上传镜像");
     				}
     			}
-    			return new MethodResult(MethodResult.SUCCESS,"该IP不可上传镜像");
+    			return new MethodResult(MethodResult.FAIL,"该IP不可上传镜像");
     		}else{
     			return new MethodResult(MethodResult.FAIL,"该IP不可上传镜像");
     		}
