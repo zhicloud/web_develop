@@ -368,18 +368,18 @@ public class SysDiskImageController {
 	 */
 	@RequestMapping(value="/update",method=RequestMethod.GET)
     @ResponseBody
-    public MethodResult updateImage(String type,HttpServletRequest request){
-        if("disk".equals(type)){
-            sysDiskImageService.initSysDiskImageFromHttpGateway();           
-        }else if("iso".equals(type)){
+    public MethodResult updateImage(String type, HttpServletRequest request) {
+        if ("disk".equals(type)) {
+            sysDiskImageService.initSysDiskImageFromHttpGateway();
+        } else if ("iso".equals(type)) {
             try {
                 ComputeInfoCacheJob.singleton().execute(null);
             } catch (JobExecutionException e) {
                 e.printStackTrace();
             }
         }
-                System.out.println();
-        return new MethodResult(MethodResult.SUCCESS);
+
+        return new MethodResult(MethodResult.SUCCESS, "success");
     }
 	
 
