@@ -837,8 +837,9 @@
     }
     //上传镜像到SS
     function uploadImage(){
-    	//clearAllUpload();
-    	$("#uploadimage").click();
+    	if(checkIPAvailable()){
+    		$("#uploadimage").click();
+    	}
     } 
     function uploadAfter(){
     	window.location.reload();

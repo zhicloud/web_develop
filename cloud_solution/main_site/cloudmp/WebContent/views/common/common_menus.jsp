@@ -106,6 +106,40 @@ window.onload = function(){
 function exportData(url){
 	window.location.href = "<%=request.getContextPath() %>"+url;
 }
+//检测客户端IP是否可用
+function checkIPAvailable(){
+	var returnval = false;
+	jQuery.ajax({
+  	 	type: "GET",
+  	 	async:false,
+   		url: "<%=request.getContextPath()%>/blacklist/checkIpAvailable",
+  		data: null,
+  		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
+   		success: function(result){
+     		if(result.success){
+     			returnval = true;
+     		}
+   	}
+	});	
+	return returnval;
+}
+//更新镜像缓存数据
+function updateMemoryData(obj){
+	var returnval = false;
+	jQuery.ajax({
+  	 	type: "GET",
+  	 	async:false,
+   		url: "<%=request.getContextPath()%>/image/update",
+  		data: {type:obj},
+  		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
+   		success: function(result){
+     		if(result.success){
+     			returnval = true;
+     		}
+   	}
+	});	
+	return returnval;
+}
 </script>
   <body class="bg-1">
     <!-- Preloader -->
