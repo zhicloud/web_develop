@@ -254,7 +254,7 @@
                         <div class="modal-content">
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
-                            <h3 class="modal-title" id="modalConfirmLabel"><strong>上传光盘镜像</strong></h3>
+                            <h3 class="modal-title" id="modalConfirmLabel"><strong>本地存储上传镜像</strong></h3>
                           </div>
                           <div class="modal-body">
                            
