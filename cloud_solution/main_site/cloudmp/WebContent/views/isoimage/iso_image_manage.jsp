@@ -9,31 +9,41 @@
     <meta charset="UTF-8" />
 
     <link rel="icon" type="image/ico" href="<%=request.getContextPath()%>/assets/images/favicon.ico" />
-    <!-- Bootstrap -->
-    <link href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link href="<%=request.getContextPath()%>/font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/animate/animate.min.css">
-    <link type="text/css" rel="stylesheet" media="all" href="<%=request.getContextPath()%>/assets/js/vendor/mmenu/css/jquery.mmenu.all.css" />
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/videobackground/css/jquery.videobackground.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap-checkbox.css">
 
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/rickshaw/css/rickshaw.min.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/morris/css/morris.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/tabdrop/css/tabdrop.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote-bs3.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen.min.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen-bootstrap.css">
-
-    <link href="<%=request.getContextPath()%>/assets/css/zhicloud.css" rel="stylesheet">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="<%=request.getContextPath()%>/assets/js/html5shiv.js"></script>
-      <script src="<%=request.getContextPath()%>/assets/js/respond.min.js"></script>
-    <![endif]-->
+	<script src="<%=request.getContextPath() %>/webupload/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/webupload/webuploader.css" />
+	<script src="<%=request.getContextPath() %>/webupload/webuploader.js"></script>
+	
+<style type="text/css">
+#graphbox{
+ border:1px solid #e7e7e7;
+ padding:0px;
+ background-color:#f8f8f8;
+ margin:0;
+ display:none;
+ border-radius: 4px;
+ }
+.graph .orange, .green, .blue, .red, .black{
+ position:relative;
+ text-align:left;
+ color:#ffffff;
+ height:18px;
+ line-height:18px;
+ font-family:Arial;
+ display:block;
+ }
+ .graph .green{background-color:#66CC33;
+   border-radius: 4px;
+ }
+  body #content .modal .modal-dialog .modal-content .chosen-container{
+ 	width:100% !important;
+ }
+</style>	
   </head>
+ <script type="text/javascript">
+ var clientIP = '${clientIP}';
+ </script>
+ <script src="<%=request.getContextPath() %>/webupload/upload_iso.js"></script>
   <body class="bg-1">
 
  
@@ -99,6 +109,10 @@
                               <i class="fa fa-plus"></i>
                               <span> 上传镜像 </span>
                           </button>
+		                    <button type="button" class="btn btn-blue delete" onclick="uploadImage();">
+		                              <i class="fa fa-file-zip-o"></i>
+		                              <span> 上传光盘镜像 </span>
+		                    </button>    
                           <%--<button type="button" class="btn btn-blue delete" onclick="$('#file').trigger('click');">--%>
                               <%--<i class="fa fa-file-excel-o"></i>--%>
                               <%--<span> 导入Excel </span>--%>
@@ -190,7 +204,9 @@
 
                     <a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>
                     <a href="#modalConfirm" id="con" role="button"   data-toggle="modal"> </a>
-
+					<a href="#uploadImage" id="uploadimage" role="button"   data-toggle="modal"> </a>
+					<a href="#successDialog" id="successconfirm" role="button"   data-toggle="modal"> </a>
+					
                     <div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
                       <div class="modal-dialog">
                         <div class="modal-content" style="width:60%;margin-left:20%;">
@@ -229,8 +245,101 @@
                           </div>
                         </div><!-- /.modal-content -->
                       </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->                        
-
+                    </div><!-- /.modal -->     
+                    
+                    <!-- 上传镜像弹出层 -->
+                    <div class="modal fade" id="uploadImage" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <h3 class="modal-title" id="modalConfirmLabel"><strong>上传光盘镜像</strong></h3>
+                          </div>
+                          <div class="modal-body">
+                           
+                            <form id="uploadform" name="uploadform"  class="form-horizontal" role="form" parsley-validate id="basicvalidations_uploadimage"  method="post"  enctype="multipart/form-data">
+                              
+				              <div class="form-group">
+		                        <label for="isoName" class="col-sm-3 control-label">镜像名称</label>
+		                        <div class="col-sm-8">
+		                          <input type="text" class="form-control" name="isoName" id="isoName" parsley-type="nochinese" parsley-required="true"  parsley-maxlength="50">
+		                        </div>
+		                      </div>
+		                      <div class="form-group">
+		                        <label for="isoDes" class="col-sm-3 control-label">镜像描述</label>
+		                        <div class="col-sm-8">
+		                          <input type="text" class="form-control" name="isoDes" id="isoDes" parsley-required="true"  parsley-maxlength="50">
+		                        </div>
+		                      </div>
+		                      
+		                      <div class="form-group">
+		                        <label for="usergroup" class="col-sm-3 control-label">所属用户组</label>
+		                        <div class="col-sm-8">
+		                           <select class="chosen-select form-control" id="usergroup">
+			                            <option value="system">system</option>  
+			                            <option value="system1">system1</option> 
+			                       </select>
+<!-- 		                          <input type="text" class="form-control" name="usergroup" id="usergroup" parsley-required="true"  parsley-maxlength="50">
+ -->		                        </div>
+		                      </div>
+		                      <div class="form-group">
+		                        <label for="userbelong" class="col-sm-3 control-label">所属用户</label>
+		                        <div class="col-sm-8">
+                                   <select class="chosen-select form-control" id="userbelong">
+			                            <option value="system"  >system</option>  
+			                            <option value="system1"  >system1</option> 
+			                       </select>
+<!-- 		                          <input type="text" class="form-control" name="userbelong" id="userbelong" parsley-required="true"  parsley-maxlength="50">
+ -->		                        </div>
+		                      </div>		
+		                      
+	                      <div class="form-group">
+	                        <label for="isopath" class="col-sm-3 control-label">镜像路径</label>
+	                        <div class="col-sm-8">
+	                         <div style="float:left;width:75%;">
+	                         	<input id="isopath" type="text" style="width:100%;" disabled="disabled" class="form-control" parsley-required="true">
+	                         </div>
+	                         <div id="picker" style="width:25%;float: left;">选择文件</div>
+	                         <div id="chooseinfo" style="display:none;color: red;">请选择镜像文件</div>
+	                        </div>
+	                      </div>
+	                      <div class="form-group">
+	                      <label for="isopath" class="col-sm-3 control-label"></label>
+	                       <div class="col-sm-8">
+	                       <div id="graphbox">
+			                  <div class="graph"><span class="green" style="width:0%;"></span></div>
+			                  </div>
+			                </div>
+						  </div>
+                            </form>
+                          </div>
+	                    
+                          <div class="modal-footer" style="margin-top:-10px;">
+                    		<button id="ctlBtn" class="btn btn-default">开始上传</button>
+                            <button id="closebtn" class="btn btn-red" data-dismiss="modal" aria-hidden="true">关闭</button>
+                          </div>
+                        </div><!-- /.modal-content -->
+                      </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->      
+                                     
+					<!-- 上传成功提示框 -->
+					<div class="modal fade" id="successDialog" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
+                      <div class="modal-dialog">
+                        <div class="modal-content" style="width:60%;margin-left:20%;">
+                          <div class="modal-header">
+                            <button type="button" onclick="uploadAfter()" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <h3 class="modal-title" id="modalConfirmLabel">提示</h3>
+                          </div>
+                          <div class="modal-body">
+                            	<h4>上传成功</h4>
+                          </div>
+                          <div class="modal-footer">
+<!--                             <button class="btn btn-green" onclick="uploadAfter()"   data-dismiss="modal" aria-hidden="true">确定</button>
+ -->                            <button class="btn btn-red"   onclick="uploadAfter()" data-dismiss="modal" aria-hidden="true">关闭</button>
+                          </div>
+                        </div><!-- /.modal-content -->
+                      </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->  
                   </div> 
  
                 </section>
@@ -391,6 +500,15 @@
           $(this).toggleClass('checked');
         })
         
+    	$("#uploadImage").niceScroll({
+    		cursoropacitymin:0.5,
+    		cursorcolor:"#424242",  
+    		cursoropacitymax:0.5,  
+    		touchbehavior:false,  
+    		cursorwidth:"8px",  
+    		cursorborder:"0",  
+    		cursorborderradius:"7px" ,
+    	});
       });
 
     //删除镜像
@@ -411,7 +529,25 @@
 			}
 		});
     }
-      
+    //上传镜像到SS
+    function uploadImage(){
+    	if(!checkLoginOut()) return;
+    	if(checkIPAvailable()){
+    		if(uploadHasPrivilege('iso')){
+    			$("#uploadimage").click();
+    		}else{
+    		  	  $("#tipscontent").html("您没有上传权限");
+    		      $("#dia").click(); 
+    		}
+    		
+    	}else{
+  		  	  $("#tipscontent").html("该IP不可上传镜像");
+		      $("#dia").click(); 
+    	}
+    }   
+    function uploadAfter(){
+    	window.location.reload();
+    }
     </script>
     
   </body>

@@ -1,39 +1,49 @@
 <%@ page pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%
+response.setHeader("Access-Control-Allow-Origin", "*");
+%>
 <!DOCTYPE html>
 <html>
   <head>
     <title>控制台-${productName}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8" />
-
     <link rel="icon" type="image/ico" href="<%=request.getContextPath()%>/assets/images/favicon.ico" />
-    <!-- Bootstrap -->
-    <link href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link href="<%=request.getContextPath()%>/font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/animate/animate.min.css">
-    <link type="text/css" rel="stylesheet" media="all" href="<%=request.getContextPath()%>/assets/js/vendor/mmenu/css/jquery.mmenu.all.css" />
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/videobackground/css/jquery.videobackground.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap-checkbox.css">
-
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/rickshaw/css/rickshaw.min.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/morris/css/morris.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/tabdrop/css/tabdrop.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote-bs3.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen.min.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen-bootstrap.css">
-
-    <link href="<%=request.getContextPath()%>/assets/css/zhicloud.css" rel="stylesheet">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="<%=request.getContextPath()%>/assets/js/html5shiv.js"></script>
-      <script src="<%=request.getContextPath()%>/assets/js/respond.min.js"></script>
-    <![endif]-->
-  </head>
+	<script src="<%=request.getContextPath() %>/webupload/jquery.js"></script>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/webupload/webuploader.css" />
+	<script src="<%=request.getContextPath() %>/webupload/webuploader.js"></script>
+<style type="text/css">
+#graphbox{
+ border:1px solid #e7e7e7;
+ padding:0px;
+ background-color:#f8f8f8;
+ margin:0;
+ display:none;
+ border-radius: 4px;
+ }
+.graph .orange, .green, .blue, .red, .black{
+ position:relative;
+ text-align:left;
+ color:#ffffff;
+ height:18px;
+ line-height:18px;
+ font-family:Arial;
+ display:block;
+ }
+ .graph .green{background-color:#66CC33;
+   border-radius: 4px;
+ }
+ body #content .modal .modal-dialog .modal-content .chosen-container{
+ 	width:100% !important;
+ }
+</style>
+ </head>
+ <script type="text/javascript">
+ var clientIP = '${clientIP}';
+ </script>
+<script src="<%=request.getContextPath() %>/webupload/upload_disk.js"></script>
   <body class="bg-1">
 
  
@@ -41,7 +51,7 @@
     <!-- Preloader -->
     <div class="mask"><div id="loader"></div></div>
     <!--/Preloader -->
-
+ 
     <!-- Wrap all page content here -->
     <div id="wrap">
 
@@ -102,6 +112,10 @@
                     <button type="button" class="btn btn-green file-excel-o" onclick="exportData('/export/serverimagedata')">
                               <i class="fa fa-file-excel-o"></i>
                               <span>导出数据</span>
+                    </button> 
+                    <button type="button" class="btn btn-blue" onclick="uploadImage();">
+                              <i class="fa fa-file-zip-o"></i>
+                              <span> 上传磁盘镜像 </span>
                     </button>                    
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
@@ -217,8 +231,8 @@
                     <a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>
                     <a href="#modalConfirm" id="con" role="button"   data-toggle="modal"> </a>
                     <a href="#modalimagetype" id="imagetype" role="button"   data-toggle="modal"> </a>
-
-                    
+					<a href="#uploadImage" id="uploadimage" role="button"   data-toggle="modal"> </a>
+                    <a href="#successDialog" id="successconfirm" role="button"   data-toggle="modal"> </a>
                     
 
                     <div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
@@ -306,8 +320,120 @@
                           </div>
                         </div><!-- /.modal-content -->
                       </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->                        
+                    </div><!-- /.modal -->    
+                    
+                    <!-- 上传镜像弹出层 -->
+                    <div class="modal fade" id="uploadImage" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <h3 class="modal-title" id="modalConfirmLabel"><strong>上传磁盘镜像</strong></h3>
+                          </div>
+                          <div class="modal-body">
+                           
+                            <form id="uploadform" name="uploadform"  class="form-horizontal" role="form" parsley-validate id="basicvalidations_uploadimage"  method="post"  enctype="multipart/form-data">
+                              
+				              <div class="form-group">
+		                        <label for="isoName" class="col-sm-3 control-label">镜像名称</label>
+		                        <div class="col-sm-8">
+		                          <input type="text" class="form-control" name="isoName" id="isoName" parsley-type="nochinese" parsley-required="true"  parsley-maxlength="50">
+		                        </div>
+		                      </div>
+		                      <div class="form-group">
+		                        <label for="isoDes" class="col-sm-3 control-label">镜像描述</label>
+		                        <div class="col-sm-8">
+		                          <input type="text" class="form-control" name="isoDes" id="isoDes" parsley-required="true"  parsley-maxlength="50">
+		                        </div>
+		                      </div>
+		                      <div class="form-group">
+		                        <label for="isoTag" class="col-sm-3 control-label">镜像标签</label>
+		                        <div class="col-sm-8">
+		                          <input type="text" class="form-control" name="isoTag" id="isoTag" parsley-required="true"  parsley-maxlength="50">
+		                        </div>
+		                      </div>		                      
 
+		                      <div class="form-group">
+		                        <label for="isotype" class="col-sm-3 control-label">镜像类型</label>
+		                        <div class="col-sm-8"> 
+		                          <div class="radio  col-md-3">
+		                            <input type="radio" name="isotype"   id="uploadtype1" value="raw" checked>
+		                            <label for="uploadtype1">raw</label>
+		                          </div>
+		                          <div class="radio  col-md-3">
+		                            <input type="radio" name="isotype"   id="uploadtype2" value="qcow2">
+		                            <label for="uploadtype2">qcow2</label>
+		                          </div>
+		                        </div>
+		                      </div>
+		                      <div class="form-group">
+		                        <label for="usergroup" class="col-sm-3 control-label">所属用户组</label>
+		                        <div class="col-sm-8">
+		                           <select class="chosen-select form-control" id="usergroup">
+			                            <option value="system">system</option>  
+			                            <option value="system1">system1</option> 
+			                       </select>
+<!-- 		                          <input type="text" class="form-control" name="usergroup" id="usergroup" parsley-required="true"  parsley-maxlength="50">
+ -->		                        </div>
+		                      </div>
+		                      <div class="form-group">
+		                        <label for="userbelong" class="col-sm-3 control-label">所属用户</label>
+		                        <div class="col-sm-8">
+                                   <select class="chosen-select form-control" id="userbelong">
+			                            <option value="system"  >system</option>  
+			                            <option value="system1"  >system1</option> 
+			                       </select>
+<!-- 		                          <input type="text" class="form-control" name="userbelong" id="userbelong" parsley-required="true"  parsley-maxlength="50">
+ -->		                        </div>
+		                      </div>	
+		                      
+	                      <div class="form-group">
+	                        <label for="isopath" class="col-sm-3 control-label">镜像路径</label>
+	                        <div class="col-sm-8">
+	                         <div style="float:left;width:75%;">
+	                         	<input id="isopath" type="text" style="width:100%;" disabled="disabled" class="form-control" parsley-required="true">
+	                         </div>
+	                         <div id="picker" style="width:25%;float: left;">选择文件</div>
+	                         <div id="chooseinfo" style="display:none;color: red;">请选择镜像文件</div>
+	                        </div>
+	                      </div>
+	                      <div class="form-group">
+	                      <label for="isopath" class="col-sm-3 control-label"></label>
+	                       <div class="col-sm-8">
+	                       <div id="graphbox">
+			                  <div class="graph"><span class="green" style="width:0%;"></span></div>
+			                  </div>
+			                </div>
+						  </div>
+                            </form>
+                          </div>
+	                    
+                          <div class="modal-footer" style="margin-top:-10px;">
+                    		<button id="ctlBtn" class="btn btn-default">开始上传</button>
+                            <button id="closebtn" class="btn btn-red" data-dismiss="modal" aria-hidden="true">关闭</button>
+                          </div>
+                        </div><!-- /.modal-content -->
+                      </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->                    
+					
+					<!-- 上传成功提示框 -->
+					<div class="modal fade" id="successDialog" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
+                      <div class="modal-dialog">
+                        <div class="modal-content" style="width:60%;margin-left:20%;">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <h3 class="modal-title" id="modalConfirmLabel">提示</h3>
+                          </div>
+                          <div class="modal-body">
+                            	<h4>上传成功</h4>
+                          </div>
+                          <div class="modal-footer">
+<!--                             <button class="btn btn-green" onclick="uploadAfter()"   data-dismiss="modal" aria-hidden="true">确定</button>
+ -->                            <button class="btn btn-red"   onclick="uploadAfter()" data-dismiss="modal" aria-hidden="true">关闭</button>
+                          </div>
+                        </div><!-- /.modal-content -->
+                      </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->  
                   </div> 
  
                 </section>
@@ -354,7 +480,7 @@
     </div>
     <!-- Wrap all page content end -->
 
-    
+  <iframe id="uploadFrame"  style="width:0; height:0; margin-top:-10px;" name="uploadFrame"></iframe>
 
     <section class="videocontent" id="video"></section>
 
@@ -419,7 +545,6 @@
       };
  	  $("div[class='col-md-4 text-right sm-center']").attr("class","tile-footer text-right"); 
 
-       
       
     })
     
@@ -444,8 +569,17 @@
         $('.check-toggler').on('click', function(){
           $(this).toggleClass('checked');
         })
-        
-      });
+
+    	$("#uploadImage").niceScroll({
+    		cursoropacitymin:0.5,
+    		cursorcolor:"#424242",  
+    		cursoropacitymax:0.5,  
+    		touchbehavior:false,  
+    		cursorwidth:"8px",  
+    		cursorborder:"0",  
+    		cursorborderradius:"7px" ,
+    	});
+      }); 
     function deleteImage(id){ 
     	operid = id;
 		jQuery.ajax({
@@ -607,7 +741,33 @@
 	     }); 
 		
 	}
-      
+    //清除上传信息
+    function clearAllUpload(){
+    	var obj = new Array("isoName","isoDes","isoTag","isopath");
+    	for(var i=0;i<obj.length;i++){
+    		$("#"+obj[i]).val("");
+    		$("#"+obj[i]).attr("class","form-control");
+    	}
+    }
+    //上传镜像到SS
+    function uploadImage(){
+    	if(!checkLoginOut()) return;
+    	if(checkIPAvailable()){
+    		if(uploadHasPrivilege('disk')){
+    			$("#uploadimage").click();
+    		}else{
+    		  	  $("#tipscontent").html("您没有上传权限");
+    		      $("#dia").click(); 
+    		}
+    		
+    	}else{
+  		  	  $("#tipscontent").html("该IP不可上传镜像");
+		      $("#dia").click(); 
+    	}
+    } 
+    function uploadAfter(){
+    	window.location.reload();
+    }
     </script>
     
   </body>

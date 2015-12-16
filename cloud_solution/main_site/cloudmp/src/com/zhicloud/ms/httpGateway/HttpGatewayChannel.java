@@ -2991,4 +2991,18 @@ public class HttpGatewayChannel
             throw e;
         }
     }
+
+    public synchronized JSONObject imageServiceQuery(String callback) throws MalformedURLException, IOException {
+        try {
+            checkSessionRefresh();
+            JSONObject result = helper.imageServiceQuery(callback);
+            if (HttpGatewayReturnCode.SESSION_NOT_FOUND.equals(HttpGatewayResponseHelper.getReturnCode(result))) {
+                helper = null;
+            }
+            return result;
+        } catch (IOException e) {
+            helper = null;
+            throw e;
+        }
+    }
 }
