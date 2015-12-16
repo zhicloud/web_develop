@@ -1,4 +1,39 @@
 ******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151211-1)
+修改时间：2015/12/11
+修改人：周亚锋
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/assets/js/vendor/parsley/parsley.min.js
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostServiceImpl.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/transform/constant/TransFormPrivilegeConstant.java
+
+新增文件：
+cloud_solution/main_site/cloudmp/WebContent/views/black_white_list/blacklist_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/black_white_list/blacklist_manage_add.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/black_white_list/blacklist_manage_update.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/black_white_list/whitelist_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/black_white_list/whitelist_manage_add.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/black_white_list/whitelist_manage_update.jsp
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/BlacklistController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/controller/WhitelistController.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/BlacklistMapper.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/BlacklistMapper.xml
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/WhitelistMapper.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/WhitelistMapper.xml
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/IBlacklistService.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/IWhitelistService.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/BlacklistServiceImpl.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/WhitelistServiceImpl.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/BlacklistVO.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/WhitelistVO.java
+
+主要变更：
+1.添加黑白名单功能;
+2.修改创建云服务器时提示镜像ID无效的BUG;
+
+兼容性说明：
+	无
+******************************************************
 版本号：版本号：【云平台web】verion(2.1)(build 20151208-1)
 修改时间：2015/12/08
 修改人：张本缘

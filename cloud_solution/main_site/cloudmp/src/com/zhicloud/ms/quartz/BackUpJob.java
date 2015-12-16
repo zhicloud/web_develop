@@ -49,7 +49,7 @@ public class BackUpJob implements Job {
     private final static Logger logger = Logger.getLogger(BackUpJob.class);
     private final static int MAX_BACK_UP_COUNT = 10;
     
-    public synchronized static BackUpJob singleton() {
+    public  static BackUpJob singleton() {
         if (BackUpJob.instance == null) {
             BackUpJob.instance = new BackUpJob();
             BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 

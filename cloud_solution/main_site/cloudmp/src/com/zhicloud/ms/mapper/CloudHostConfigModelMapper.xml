@@ -131,7 +131,8 @@
 				data_disk = #{dataDisk},
 				bandwidth = #{bandwidth},
 				sys_image_name = #{sysImageName},
-				modified_time = #{modifiedTime}
+				modified_time = #{modifiedTime},
+				support_h264 = #{supportH264}
 			</set>
 		where id = #{id}
 	</update>

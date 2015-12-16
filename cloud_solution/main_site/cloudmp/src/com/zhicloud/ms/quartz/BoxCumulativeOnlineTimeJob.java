@@ -21,13 +21,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class BoxCumulativeOnlineTimeJob implements Job{
     private static BoxCumulativeOnlineTimeJob instance = null;
-    BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 
-    IBoxRealInfoService boxRealInfoService = (IBoxRealInfoService)factory.getBean("boxRealInfoService");
+    private static IBoxRealInfoService boxRealInfoService = null;
     private final static Logger logger = Logger.getLogger(WarehouseCheckTimeListener.class);
 
-    public synchronized static BoxCumulativeOnlineTimeJob singleton() {
+    public  static BoxCumulativeOnlineTimeJob singleton() {
         if (BoxCumulativeOnlineTimeJob.instance == null) {
             BoxCumulativeOnlineTimeJob.instance = new BoxCumulativeOnlineTimeJob();
+            BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 
+            boxRealInfoService = (IBoxRealInfoService)factory.getBean("boxRealInfoService");
         }
         return BoxCumulativeOnlineTimeJob.instance;
     }

@@ -4,6 +4,7 @@ package com.zhicloud.ms.transform.util;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -264,9 +265,37 @@ public class TransFormLoginHelper {
                     sb.append(htmlsb);
                 }
             }
-        }
+        } 
         return sb;
     }  
+  
+  
+  public static  StringBuffer createMenuHtml(HttpServletRequest request) {
+      StringBuffer sb = new StringBuffer();   
+      sb.append("<li class=\"dropdown ");
+      StringBuffer htmlsb = new StringBuffer();
+      htmlsb.append("<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">");
+      htmlsb.append("<i class=\"" + "fa fa-th-large" + "\"></i> ");
+      htmlsb.append("系统管理");
+      htmlsb.append("<b class=\"fa fa-plus dropdown-plus\"></b></a>");  
+      
+
+     
+      htmlsb.append("<li class=\"active\">");  
+      htmlsb.append("<a href=\"" + "/transform/useradmin/init"); 
+      htmlsb.append("\"");
+      htmlsb.append(">");
+      htmlsb.append("<i class=\"fa fa-caret-right\"></i>");
+      htmlsb.append("用户管理");
+      htmlsb.append("</a></li>");
+      
+      htmlsb.append("</li>");
+      sb.append(htmlsb);
+                  
+       
+
+      return sb;
+  }  
   
   /**
    * @Description:截取字符串到第N次出现str的位置为止
