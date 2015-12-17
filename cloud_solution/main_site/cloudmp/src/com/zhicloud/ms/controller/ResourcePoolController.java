@@ -121,6 +121,9 @@ public class ResourcePoolController {
                 }
 
                 ComputeInfoExt computer = computePoolService.getComputePoolDetailSync(uuid);
+                if(computer ==null){
+                    continue;
+                }
                 computer.setCpuCount(cpuCount);
                 computer.setCpuUsage(cpuUsage);
                 computer.setDiskUsage(diskUsage);
