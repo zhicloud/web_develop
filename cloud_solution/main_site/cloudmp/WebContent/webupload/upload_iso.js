@@ -7,7 +7,7 @@ jQuery(function() {
 	    progresswid,
 	    uploader,
 	    sendmethod = 'PUT',
-	    serverurl = 'http://172.18.10.18:9080/iso_image',
+	    serverurl = 'http://'+serverIP+'/iso_image',
 	    filesize,
 	    md5value;
     uploader = WebUploader.create({
@@ -31,6 +31,13 @@ jQuery(function() {
 	//添加文件之前先清空原来数据
     uploader.on( 'beforeFileQueued', function( file ) {
     	uploader.reset();
+    	$("#chooseinfo").css("display","none");
+    	$("#chooseinfo").html("");
+    	
+        $percent = $('#graphbox');
+        $percent.find(".green").css('width', '0%' );
+        $percent.find(".green").html('0%');
+        $percent.css("display","none");
     });
     // 当有文件添加进来的时候
     uploader.on('fileQueued', function( file ) {
@@ -51,13 +58,14 @@ jQuery(function() {
     // 文件上传过程中创建进度条实时显示。
     uploader.on( 'uploadProgress', function( file, percentage ) {
         var $li = $('.statusBar'),
-            $percent = $('#graphbox');
+	        $percent = $('#graphbox');
 	        progresswid = Math.round(percentage * 100);
 	        $percent.css("display","block");
 	        $percent.find(".green").css('width', progresswid + '%' );
 	        $percent.find(".green").html(progresswid  + '%');
     });
     uploader.on( 'uploadSuccess', function( file,response ) {
+    	updateMemoryData('iso');
     	$('#closebtn').click();
     	$("#successconfirm").click();
     });

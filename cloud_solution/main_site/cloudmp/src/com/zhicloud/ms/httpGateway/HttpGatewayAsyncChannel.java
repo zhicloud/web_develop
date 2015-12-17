@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class HttpGatewayAsyncChannel extends HttpGatewayChannelExt {
 
-	private final String callback;
+	private String callback;
 	private long lastReceiveTime;
 
 	public HttpGatewayAsyncChannel(int region) {
@@ -26,6 +26,10 @@ public class HttpGatewayAsyncChannel extends HttpGatewayChannelExt {
 		}
 		logger.info("get AsyncChannel of "+httpGatewayAddr);
 		this.callback = httpGatewayAddr + "hgMessage/push.do";
+	}
+	
+	public void updateCallback(String url){ 
+        this.callback = url;
 	}
 
 	public String getSessionId() {
@@ -266,10 +270,11 @@ public class HttpGatewayAsyncChannel extends HttpGatewayChannelExt {
     public synchronized JSONObject query_operate_summary(String[] target, String begin, String end)
             throws MalformedURLException, IOException {
         return this.query_operate_summary(target, begin, end, this.callback);
-    }
+    }   
 
     public synchronized JSONObject imageServiceQuery() throws MalformedURLException, IOException {
         return this.imageServiceQuery(this.callback);
     }
+ 
 	
 }
