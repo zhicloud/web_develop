@@ -140,6 +140,42 @@ function updateMemoryData(obj){
 	});	
 	return returnval;
 }
+//检测登录超时
+function checkLoginOut(){
+	var returnval = true;
+	jQuery.ajax({
+  	 	type: "post",
+  	 	async:false,
+   		url: "<%=request.getContextPath()%>/main/checklogin",
+  		data: null,
+   		success: function(result){
+   			if(result.status == "fail"){ 
+      		  $("#tipscontent").html("登录超时，请重新登录");
+ 		      $("#dia").click();
+ 		     returnval = false;
+     		}
+   	}
+	});
+	return returnval;
+}
+//判断是否具有权限
+function uploadHasPrivilege(obj){
+	var returnval = false;
+	jQuery.ajax({
+  	 	type: "GET",
+  	 	async:false,
+   		url: "<%=request.getContextPath()%>/image/hasprivilege",
+  		data: {type:obj},
+  		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
+   		success: function(result){
+     		if(result.success==true){
+     			returnval = true;
+     		}
+   	}
+	});	
+	return returnval;
+}
+var serverIP = "172.18.10.18";
 </script>
   <body class="bg-1">
     <!-- Preloader -->

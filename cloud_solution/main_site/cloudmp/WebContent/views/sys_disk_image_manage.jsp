@@ -664,7 +664,15 @@
                  $("#search_btn").click();
              }
          });
-        
+     	$("#uploadImage").niceScroll({
+    		cursoropacitymin:0.5,
+    		cursorcolor:"#424242",  
+    		cursoropacitymax:0.5,  
+    		touchbehavior:false,  
+    		cursorwidth:"8px",  
+    		cursorborder:"0",  
+    		cursorborderradius:"7px" ,
+    	});
       });
     function deleteImage(id){ 
     	operid = id;
@@ -837,8 +845,18 @@
     }
     //上传镜像到SS
     function uploadImage(){
+    	if(!checkLoginOut()) return;
     	if(checkIPAvailable()){
-    		$("#uploadimage").click();
+    		if(uploadHasPrivilege('disk')){
+    			$("#uploadimage").click();
+    		}else{
+    		  	  $("#tipscontent").html("您没有上传权限");
+    		      $("#dia").click(); 
+    		}
+    		
+    	}else{
+  		  	  $("#tipscontent").html("该IP不可上传镜像");
+		      $("#dia").click(); 
     	}
     } 
     function uploadAfter(){
