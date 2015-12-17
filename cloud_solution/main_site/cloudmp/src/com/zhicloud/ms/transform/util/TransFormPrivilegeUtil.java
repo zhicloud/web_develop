@@ -32,12 +32,10 @@ public class TransFormPrivilegeUtil {
 	 * @return boolean
 	 * @since JDK 1.7
 	 */ 
-    public boolean isHasPrivilege(HttpServletRequest request, String privilege) {
-        TransFormLoginInfo login = TransFormLoginHelper.getLoginInfo(request);
-        if (login == null)
-            return false;
-        return login.hasRight(privilege);
-    }
+	 public boolean isHasPrivilege(HttpServletRequest request, String privilege) {
+ 	        TransFormLoginInfo login = TransFormLoginHelper.getLoginInfo(request); 
+	        return login.hasRight(privilege);
+	    }
 
 }
 

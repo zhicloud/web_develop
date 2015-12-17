@@ -254,7 +254,7 @@
 		                            	</c:if>
 		                                 <c:if test="${hostList.runningStatus==1}">
 			                              <li><a href="javascript:void(0);" onclick="startHostBtn('${hostList.id }');" >开机</a></li>
-			                              <li><a href="javascript:void(0);" onclick="startHostISOBtn('${hostList.id }');" >从光盘启动</a></li>
+			                              <li><a href="javascript:void(0);" onclick="startHostISOBtn('${serverList.id }');" >从光盘启动</a></li>
 			                              <li><a href="javascript:void(0);" onclick="updateHostBtn('${hostList.id }','1');">配置修改</a></li>
 			                              <li><a href="javascript:void(0);" onclick="diskManageBtn('${hostList.id }');">磁盘管理</a></li>
 			                              <li><a href="javascript:void(0);" onclick="backupHostBtn('${hostList.id }');">备份与恢复</a></li> 
@@ -311,10 +311,21 @@
 					<a href="#modalForm" id="mform" role="button"   data-toggle="modal"> </a>
 					<a href="#modalhostallocate" id="tenant" role="button"   data-toggle="modal"> </a>
 					<a href="#changename" id="changenameBtn" role="button"   data-toggle="modal"> </a>
-					<a href="#modaliso" id="isoBTN" role="button"   data-toggle="modal"> </a>
 					
                     
-                    
+                    <div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content" style="width:60%;margin-left:20%;">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <h3 class="modal-title" id="modalDialogLabel"><strong>提示</strong></h3>
+                          </div>
+                          <div class="modal-body">
+                            <p id="tipscontent"></p>
+                          </div>
+                        </div><!-- /.modal-content -->
+                      </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
 
                     <div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
                       <div class="modal-dialog">
@@ -411,7 +422,6 @@
                         </div><!-- /.modal-content -->
                       </div><!-- /.modal-dialog -->
                     </div><!-- /.modal --> 
-                     
                     
                     
                     <!-- update displayname form -->
@@ -442,21 +452,6 @@
                         </div><!-- /.modal-content -->
                       </div><!-- /.modal-dialog -->
                     </div><!-- /.modal --> 
-                    
-                    <div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content" style="width:60%;margin-left:20%;">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
-                            <h3 class="modal-title" id="modalDialogLabel"><strong>提示</strong></h3>
-                          </div>
-                          <div class="modal-body">
-                            <p id="tipscontent"></p>
-                          </div>
-                        </div><!-- /.modal-content -->
-                      </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
-                    
                   </div>
  
                 </section>
@@ -903,7 +898,7 @@
    		        			if(form.parsley('isValid')){  		        				
    		        				jQuery.get(path + "/warehouse/cloudhost/"+currentId+"/"+$("#imageId").val()+"/start",function(data){
    		        					if(data.status == "success"){   
-   		        			    		window.location.reload();
+   		        			    		location.href = path + "/cloudserver/all";
    		        					}else{  
    		        						$("#tipscontent").html(data.message);
    		        						$("#dia").click();

@@ -34,7 +34,7 @@ public class CloudHostRunningStatusJob implements Job {
      
     @Override
     public void execute(JobExecutionContext context)throws JobExecutionException { 
-        logger.info("begin to update cloud host running status");
+        logger.info("嘿嘿嘿begin to update cloud host running status");
         cloudHostService.updateCloudHostRunningStatus();
         
      }

@@ -29,8 +29,6 @@ import com.zhicloud.ms.app.helper.RegionHelper.RegionData;
 import com.zhicloud.ms.app.propeties.AppProperties;
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
 import com.zhicloud.ms.constant.AppInconstant;
-import com.zhicloud.ms.httpGateway.HttpGatewayActiveAsyncChannelPool;
-import com.zhicloud.ms.httpGateway.HttpGatewayAsyncChannel;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
 import com.zhicloud.ms.httpGateway.HttpGatewayReceiveChannel;
 import com.zhicloud.ms.remote.MethodResult;
@@ -249,13 +247,9 @@ public class TransFormAdminController extends TransFormBaseAction{
                     String registerUrl = sysAddress + "hgMessage/receive.do";
                     HttpGatewayReceiveChannel receiveChannel = new HttpGatewayReceiveChannel(regionData.getId()); 
                     receiveChannel.messagePushRegisterThreadly(registerUrl); 
-                     
-                    HttpGatewayAsyncChannel channel = HttpGatewayManager.getAsyncChannel(1);
-                    channel.updateCallback(registerUrl);
                 }
             }
     	}catch(Exception e){
-    	    e.printStackTrace();
     	    operLogService.addLog("系统配置", "更新系统配置失败", "1", "2", request);
     	    return new MethodResult(MethodResult.FAIL,"系统地址注册失败");
     	}

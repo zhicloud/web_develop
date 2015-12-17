@@ -429,8 +429,6 @@ public class TransFormPrivilegeConstant {
     public static final String image_upload_address_mod = "image_upload_address_mod";// 修改上传地址
     public static final String image_upload_address_delete = "image_upload_address_delete";// 删除上传地址
 
-    public static final String disk_image_upload = "disk_image_upload";// 磁盘镜像上传
-    public static final String iso_image_upload = "iso_image_upload";// 光盘镜像上传
 }
  
  

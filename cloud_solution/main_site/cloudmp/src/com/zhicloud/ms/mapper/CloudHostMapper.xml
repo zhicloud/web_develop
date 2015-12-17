@@ -752,15 +752,6 @@
 		</set>
 		where host_id = #{hostId}
 	</update>
-	
-	<update id="updateImageIdById">
-		update cloud_host
-		<set>
-			sys_image_id = #{sysIamgeId},
-			sys_image_name = #{sysImageName}
-		</set>
-		where id = #{id}
-	</update>
 	 
 	<insert id="insertCloudHost">
 		insert into cloud_host (id,real_host_id,user_id,warehouse_id,host_name,display_name,account,password,cpu_core,memory,sys_image_id,sys_disk,data_disk,bandwidth,running_status,status,inner_ip,inner_port,sys_image_name,create_time,modified_time,outer_ip,outer_port,type,pool_id) 

@@ -414,16 +414,6 @@ public interface CloudHostMapper {
      * @return
      */
     public int updateDisplayNameById(Map<String,Object> condition);
-    /**
-     * 
-    * @Title: updateImageIdById 
-    * @Description: 根据主机id更新主机image_id和image_name
-    * @param @param condition
-    * @param @return      
-    * @return int     
-    * @throws
-     */
-    public int updateImageIdById(Map<String,Object> condition);
 }
 
 

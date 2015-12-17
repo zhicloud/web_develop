@@ -22,8 +22,6 @@ package com.zhicloud.ms.service.impl;
 import com.zhicloud.ms.app.pool.CloudHostData;
 import com.zhicloud.ms.app.pool.CloudHostPool;
 import com.zhicloud.ms.app.pool.CloudHostPoolManager;
-import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
-import com.zhicloud.ms.app.pool.IsoImagePoolManager;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
@@ -2544,14 +2542,10 @@ public class CloudHostServiceImpl implements ICloudHostService {
             }
             HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(cloudHost.getRegion());
             JSONObject startResullt = channel.hostStart(realHostId, 1, imageId);
-            //获取光盘镜像信息
-            IsoImageData iamgeData = IsoImagePoolManager.getSingleton().getIsoImagePool().getByRealImageId(imageId);
+
             Map<String, Object> cloudHostData = new LinkedHashMap<String, Object>();
             cloudHostData.put("runningStatus", AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING);
             cloudHostData.put("realHostId", realHostId);
-            cloudHostData.put("id", cloudHost.getId());
-            cloudHostData.put("sysImageId", imageId);
-            cloudHostData.put("sysImageName", "光盘镜像"+iamgeData.getName());
             if (HttpGatewayResponseHelper.isSuccess(startResullt)) { 
                 //更新缓存主机状态
                 CloudHostData newCloudHostData = myCloudHostData.clone();
@@ -2559,10 +2553,8 @@ public class CloudHostServiceImpl implements ICloudHostService {
                 newCloudHostData.setLastStatus(AppConstant.CLOUD_HOST_RUNNING_STATUS_SHUTDOWN);
                 newCloudHostData.setLastOperTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
                 CloudHostPoolManager.getCloudHostPool().put(newCloudHostData);
-                //更新主机运行状态
+                
                 cloudHostMapper.updateRunningStatusByRealHostId(cloudHostData);
-                //更新主机的镜像信息
-                cloudHostMapper.updateImageIdById(cloudHostData);
                 logger.info("CloudHostServiceImpl.startCloudHost() > [" + Thread.currentThread().getId() + "] start host succeeded");
                 MethodResult result = new MethodResult(MethodResult.SUCCESS, "启动成功");
                 result.put("hostId", cloudHostId);
