@@ -423,8 +423,8 @@ public class TransFormPrivilegeConstant {
     public static final String whitelist_manage_update = "whitelist_manage_update";// 白名单修改
     public static final String whitelist_manage_delete = "whitelist_manage_delete";// 白名单删除
 
-//上传镜像地址管理
-public static final String image_upload_address_query = "image_upload_address_query";// 上传地址查询
+    //上传镜像地址管理
+    public static final String image_upload_address_query = "image_upload_address_query";// 上传地址查询
     public static final String image_upload_address_add = "image_upload_address_add";// 新增上传地址
     public static final String image_upload_address_mod = "image_upload_address_mod";// 修改上传地址
     public static final String image_upload_address_delete = "image_upload_address_delete";// 删除上传地址
