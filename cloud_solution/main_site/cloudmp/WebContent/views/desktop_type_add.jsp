@@ -225,23 +225,23 @@
                         <label for="input01" class="col-sm-2 control-label">带宽 *</label>
                         <div class="col-sm-8"> 
                           <div class="radio radio-transparent col-md-2">
-                            <input type="radio" name="bandwidth" id="optionsRadios43" value="1" checked onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <input type="radio" name="bandwidth" id="optionsRadios43" value="1" checked onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
                             <label for="optionsRadios43">1Mb</label>
                           </div>
                           <div class="radio radio-transparent col-md-2">
-                            <input type="radio" name="bandwidth" id="optionsRadios38" value="2" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <input type="radio" name="bandwidth" id="optionsRadios38" value="2" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
                             <label for="optionsRadios38">2Mb</label>
                           </div>
                           <div class="radio radio-transparent col-md-2">
-                            <input type="radio" name="bandwidth" id="optionsRadios39" value="4" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <input type="radio" name="bandwidth" id="optionsRadios39" value="4" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
                             <label for="optionsRadios39">4Mb</label>
                           </div>
                           <div class="radio radio-transparent col-md-2">
-                            <input type="radio" name="bandwidth" id="optionsRadios40" value="6" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <input type="radio" name="bandwidth" id="optionsRadios40" value="6" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
                             <label for="optionsRadios40">6Mb</label>
                           </div>
                           <div class="radio radio-transparent col-md-4">
-                            <input type="radio" name="bandwidth" id="optionsRadios41" value="10" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#diskdiy').val('')">
+                            <input type="radio" name="bandwidth" id="optionsRadios41" value="10" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
                             <label for="optionsRadios41">10Mb</label>
                           </div> 
                           <div class="radio radio-transparent col-md-2">
