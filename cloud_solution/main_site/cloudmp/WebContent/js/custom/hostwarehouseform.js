@@ -219,7 +219,7 @@ function saveWarehouseForm(){
 			jQuery("#hostwarehouseform").ajaxSubmit(options); 
 		}
 }
-function saveAddAmount(){
+function saveAddAmount(type){
 	var options = {
 			success:function result(data){
 				if(data.status=="success"){
@@ -234,10 +234,18 @@ function saveAddAmount(){
 			dataType:'json',
 			timeout:10000
 	};
-	var form = jQuery("#addAmountForm");
-	form.parsley('validate');
-	if(form.parsley('isValid')){  		        				
-		jQuery("#addAmountForm").ajaxSubmit(options); 
+	if(type==1){
+		var form = jQuery("#addAmountForm1");
+		form.parsley('validate');
+		if(form.parsley('isValid')){  		        				
+			jQuery("#addAmountForm1").ajaxSubmit(options); 
+		}
+	}else{
+		var form = jQuery("#addAmountForm2");
+		form.parsley('validate');
+		if(form.parsley('isValid')){  		        				
+			jQuery("#addAmountForm2").ajaxSubmit(options); 
+		}
 	}
 }
 /*function saveImageForm(){

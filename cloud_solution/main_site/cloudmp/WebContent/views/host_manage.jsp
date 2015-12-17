@@ -774,7 +774,7 @@
 			async: false,
 			success:function(data){
 				if(data.status == "success"){
-					location.href=path +"/views/warehouse_manage_assign.jsp"; 
+					location.href=path +"/warehouse/assign"; 
 				}else if(data.status == "fail"){
 					return;
 				}
