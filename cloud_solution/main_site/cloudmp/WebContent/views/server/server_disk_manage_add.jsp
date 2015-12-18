@@ -91,7 +91,7 @@
 
                   <!-- tile header -->
                   <div class="tile-header">
-                    <h3>输入数据磁盘信息</h3>
+                    <h3><a href="javascript:history.back(-1);"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入数据磁盘信息</h3>
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                     </div>

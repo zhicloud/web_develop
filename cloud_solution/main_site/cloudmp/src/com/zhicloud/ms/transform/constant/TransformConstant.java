@@ -9,8 +9,8 @@ public class TransformConstant {
     
     //       超级管理员账号和密码
     public static final String transform_billid_admin = "superadmin";
-    public static final String transform_username_admin = "";
-    public static final String transform_password_admin = "";
+    public static final String transform_username_admin = "superadmin";
+    public static final String transform_password_admin = "superadmin";
     public static final String transform_session_admin = "userlogin";
     public static final String transform_session_menu = "menuhtml";
     
