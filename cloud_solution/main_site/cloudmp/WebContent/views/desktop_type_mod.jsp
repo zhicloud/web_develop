@@ -332,7 +332,7 @@
                         <div class="col-sm-4" id="supportH264selectbox">
                            <select class="chosen-select chosen-transparent form-control" name="supportH264" id="supportH264" parsley-trigger="change" parsley-required="true" parsley-error-container="#supportH264selectbox">
                            <option value="2" <c:if test="${chcm.supportH264==2 }">selected</c:if>>全屏H.264编码</option> 
-                           <option value="1" <c:if test="${chcm.supportH264==1 }">selected</c:if>>局部H.264编码</option>   
+<%--                            <option value="1" <c:if test="${chcm.supportH264==1 }">selected</c:if>>局部H.264编码</option>    --%>
                            <option value="0" <c:if test="${chcm.supportH264==0 }">selected</c:if>>MJPEG编码</option>   
                          </select>
                           </div>
