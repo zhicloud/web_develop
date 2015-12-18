@@ -226,18 +226,19 @@
                              </c:forEach>   
                           </select>
                         </div>
-                      </div> --%> 
-                      
+                      </div> --%>
                       <div class="form-group" id="h264">
-                        <label for="input01" class="col-sm-2 control-label">编码格式 *</label>
-                        <div class="col-sm-4" id="supportH264selectbox">
-                           <select class="chosen-select chosen-transparent form-control" name="supportH264" id="supportH264" parsley-trigger="change" parsley-required="true" parsley-error-container="#supportH264selectbox">
-                           <option value="2" <c:if test="${cloudServer.supportH264==2 }">selected</c:if>>全屏H.264编码</option> 
-<%--                            <option value="1" <c:if test="${cloudServer.supportH264==1 }">selected</c:if>>局部H.264编码</option>    --%>
-                           <option value="0" <c:if test="${cloudServer.supportH264==0 }">selected</c:if>>MJPEG编码</option>   
-                         </select>
+                        <label for="input01" class="col-sm-2 control-label">是否支持H264 *</label>
+                        <div class="col-sm-8"> 
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="supportH264" id="supportH264_1" value="0" checked>
+                            <label for="supportH264_1">否</label>
                           </div>
-                          
+                          <div class="radio radio-transparent col-md-2">
+                            <input type="radio" name="supportH264" id="supportH264_2" value="1">
+                            <label for="supportH264_2">是</label>
+                          </div>
+                        </div>
                       </div>
                        
                       

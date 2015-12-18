@@ -23,9 +23,9 @@ jQuery(function() {
         fileNumLimit: 1,
         method:'PUT',
 	    accept: {
-	            title: 'DISK',
-	            extensions: 'iso,img,qcow2',
-	            mimeTypes: 'iso/*,application/x-img,text/plain'
+	            title: 'ISO',
+	            extensions: 'iso',
+	            mimeTypes: 'iso/*'
 	        }
     });
 	//添加文件之前先清空原来数据
@@ -47,6 +47,14 @@ jQuery(function() {
 		$("#isopath").css("border","0");
 		$("#chooseinfo").css("display","none");
 		
+        var start =  +new Date();
+        // 返回的是 promise 对象
+        this.md5File(file, 0, 1 * 1024 * 1024)
+            // 处理完成后触发
+            .then(function(ret) {
+                var end = +new Date();
+                md5value = ret;
+            });
     });
 
     // 文件上传过程中创建进度条实时显示。
@@ -68,7 +76,7 @@ jQuery(function() {
     	 headers['host'] = clientIP;
     	 headers['Content-Length'] = obj.file.size;
     	 headers['zc-name'] = $("#isoName").val();
-    	 headers['zc-md5'] = obj.file.source.uid;
+    	 headers['zc-md5'] = md5value;
     	 headers['zc-description'] = $("#isoDes").val();
 		 headers['zc-tag'] = $("#isoTag").val();
 		 headers['zc-size'] = filesize;
@@ -76,10 +84,10 @@ jQuery(function() {
     	 headers['zc-group'] = $("#usergroup").val();
     	 headers['zc-user'] = $("#userbelong").val();
      	});
-    
+     
     uploader.on( 'uploadError', function( file,reason ) {
     	$("#chooseinfo").css("display","block");
-    	$("#chooseinfo").html("上传出错:"+reason);
+    	$("#chooseinfo").html("上传出错");
     });
     uploader.on( 'uploadComplete', function( file ) {
        //$( '#'+file.id ).find('.progress').fadeOut();

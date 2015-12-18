@@ -845,11 +845,6 @@
     //上传镜像到SS
     function uploadImage(){
     	if(!checkLoginOut()) return;
-    	if(serverIP==undefined||serverIP==""){
-		  	  $("#tipscontent").html("上传地址不可用");
-		      $("#dia").click(); 
-		      return;
-  		}
     	if(checkIPAvailable()){
     		if(uploadHasPrivilege('disk')){
     			$("#uploadimage").click();
