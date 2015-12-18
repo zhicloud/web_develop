@@ -1869,25 +1869,11 @@ public class CloudHostServiceImpl implements ICloudHostService {
             //获取主机信息
 			JSONObject hostInfo = (JSONObject)result.get("host");
 			Integer[] options = new Integer[4];
-			int index = 0;
-			if(hostInfo!=null && server.getSupportH264()!=null){
-				//获取option
-				Integer[] option = JSONLibUtil.getIntegerArray(hostInfo, "option");
-				if(option.length==5){
-					//判断当前操作是否有修改，如果没有则传入空数组，表示不做修改
-					if(option[4]==server.getSupportH264()){
-						options = new Integer[]{};
-					}else{
-						for(int i=0;i<option.length;i++){
-							//移除数组的第二个值，因为查询接口返回的option数组中的第二个值与修改接口相比是多余的。
-							if(i == 1){
-								continue;
-							}else{
-								options[index++] = option[i];
-							}
-						}
-					}
-				}
+			options[0] = 1;
+			options[1] = 1;
+			options[2] = 1; 
+			if(hostInfo!=null && server.getSupportH264()!=null){ 
+			    options[3] = server.getSupportH264();
 			}else{
 				options = new Integer[]{};
 			}
@@ -1903,6 +1889,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             Map<String,Object> condition = new LinkedHashMap<String, Object>();
             condition.put("id",server.getId());
             condition.put("cpuCore", realCpu);
+            condition.put("supportH264", server.getSupportH264());
             condition.put("memory", CapacityUtil.fromCapacityLabel(server.getMemory()+"GB"));
 //          condition.put("bandwidth", FlowUtil.fromFlowLabel(bandwidth+"Mbps"));
             int n = chMapper.updateById(condition);

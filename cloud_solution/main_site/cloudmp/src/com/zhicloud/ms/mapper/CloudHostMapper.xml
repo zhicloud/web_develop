@@ -862,7 +862,7 @@
 		update cloud_host 
 			<set>
 				cpu_core = #{cpuCore},
-				memory = #{memory},
+				memory = #{memory} 
 			</set>
 		where id = #{id}
 	</update>
