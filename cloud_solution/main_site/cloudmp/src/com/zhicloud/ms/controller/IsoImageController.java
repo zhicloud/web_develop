@@ -119,16 +119,16 @@ public class IsoImageController {
             fp.mkdirs();
         }
         
-        //File file = new File(filePath+"/"+uuid+".iso");
+        File file = new File(filePath+"/"+uuid+".iso");
         
         // 上传文件
-        //FileUtils.copyInputStreamToFile(attach.getInputStream(), file);
-/*        MethodResult result = isoImageService.upload(imagename, uuid, "iso_image/system/"+uuid+".iso", type, description);
+        FileUtils.copyInputStreamToFile(attach.getInputStream(), file);
+        MethodResult result = isoImageService.upload(imagename, uuid, "iso_image/system/"+uuid+".iso", type, description);
         if(result.isSuccess()){
             operLogService.addLog("iso镜像", "上传镜像"+imagename, "1", "1", multipartRequest);
         }else{
             operLogService.addLog("iso镜像", "上传镜像"+imagename, "1", "2", multipartRequest);
-        }*/
+        }
         return new MethodResult();
     }
     
