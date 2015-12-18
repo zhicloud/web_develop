@@ -1529,7 +1529,7 @@ function refreshRestartStatus(id){
 				} 
 				else if (reply.result.status == "success") 
 				{
-					if(reply.result.status.properties.runningstatus == 2){
+					if(reply.result.properties.runningstatus == 2){
 						$('#status'+id).html("<strong class='gray'>运行中</strong>");
 						$('#start'+id).addClass("alpha");
 						$('#start'+id).removeClass("launch_host");
@@ -1554,7 +1554,7 @@ function refreshRestartStatus(id){
 						$('#backup'+id).attr("backup", "2");
 						$('#reset'+id).addClass("alpha");
 						$('#reset'+id).attr("reset", "2");
-					}else if(reply.result.status.properties.runningstatus == 1){
+					}else if(reply.result.properties.runningstatus == 1){
 						$('#status'+id).html("<strong class='gray'>已关机</strong>");
 						$('#start'+id).removeClass("alpha");
 						$('#start'+id).addClass("launch_host");
