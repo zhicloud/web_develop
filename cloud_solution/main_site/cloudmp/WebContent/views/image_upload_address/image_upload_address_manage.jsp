@@ -135,15 +135,25 @@
                                                 <td class="cut">${address.localIp}</td>
                                                 <td class="cut">${address.localPort}</td>
                                                 <td class="cut">
-                                                <c:if test="${address.publicIp == null}">
-                                                    &nbsp;
-                                                </c:if>
-                                                    ${address.publicIp}</td>
+                                                    <c:choose>
+                                                        <c:when test="${address.publicIp == ''}">
+                                                            暂无
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                        ${address.publicIp}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
                                                 <td class="cut">
-                                                    <c:if test="${address.publicPort == null}">
-                                                        &nbsp;
-                                                    </c:if>
-                                                        ${address.publicPort}</td>
+                                                    <c:choose>
+                                                        <c:when test="${address.publicPort == 0}">
+                                                            暂无
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                        ${address.publicPort}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
                                                 <td>
                                                     <div class="btn-group">
                                                         <button type="button"
