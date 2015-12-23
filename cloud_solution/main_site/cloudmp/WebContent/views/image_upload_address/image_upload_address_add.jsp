@@ -123,20 +123,20 @@
                                     <div class="form-group">
                                         <label for="local_port" class="col-sm-2 control-label">内网端口*</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="local_port" name="localPort" value="" parsley-trigger="change" parsley-required="true"readonly="readonly">
+                                            <input type="text" class="form-control" id="local_port" name="localPort" value="" parsley-trigger="change" parsley-required="true" readonly="readonly">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="public_ip" class="col-sm-2 control-label">公网IP*</label>
+                                        <label for="public_ip" class="col-sm-2 control-label">公网IP</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="public_ip" name="publicIp" value="" parsley-trigger="change" parsley-required="true" parsley-ip="true">
+                                            <input type="text" class="form-control" id="public_ip"  name="publicIp" parsley-trigger="change" parsley-ip="true">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="public_port" class="col-sm-2 control-label">公网端口*</label>
+                                        <label for="public_port" class="col-sm-2 control-label">公网端口</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="public_port" name="publicPort" value="" parsley-trigger="change" parsley-required="true" parsley-port="true">
+                                            <input type="text" class="form-control" id="public_port" name="publicPort" parsley-trigger="change" parsley-port="true">
                                         </div>
                                     </div>
 
@@ -155,6 +155,7 @@
                             </div>
                             <!-- /tile body -->
 
+                        </section>
                             <div class="tile-body">
                                 <a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>
 
@@ -174,7 +175,6 @@
                                 </div><!-- /.modal -->
 
                             </div>
-                        </section>
                         <!-- /tile -->
 
                     </div>
@@ -200,9 +200,23 @@
 <script>
     var path = "<%=request.getContextPath()%>";
     var isCommited = false;
+
     $(function(){
 
         jQuery("#save_btn").click(function(){
+
+            // 空值处理
+            var publicIp = $("#public_ip").val();
+            var publicPort = $("#public_port").val();
+
+            if (publicIp == "") {
+                $("#public_ip").removeAttr("name");
+            }
+
+            if (publicPort == "") {
+                $("#public_port").removeAttr("name");
+            }
+
             var options = {
                 success:function result(data){
                     if (data.status == "success") {
