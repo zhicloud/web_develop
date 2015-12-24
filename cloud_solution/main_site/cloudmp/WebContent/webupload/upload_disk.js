@@ -76,10 +76,13 @@ jQuery(function() {
     	 headers['zc-group'] = $("#usergroup").val();
     	 headers['zc-user'] = $("#userbelong").val();
      	});
-    
+/*     uploader.on( 'error', function( handler ) {
+     	
+       });*/
     uploader.on( 'uploadError', function( file,reason ) {
     	$("#chooseinfo").css("display","block");
     	$("#chooseinfo").html("上传出错:"+reason);
+
     });
     uploader.on( 'uploadComplete', function( file ) {
        //$( '#'+file.id ).find('.progress').fadeOut();
