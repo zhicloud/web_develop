@@ -1,5 +1,6 @@
 package com.zhicloud.ms.constant;
 
+import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,5 +55,7 @@ public class AppInconstant {
 	public static Map<String,Object> serviceDisableResult = Collections.synchronizedMap(new HashMap<String,Object>());
 	
 	public static String initUser = "false";
+	
+	public static BigInteger chunkSize = new BigInteger("524288000");
 
 }
