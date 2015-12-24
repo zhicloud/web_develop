@@ -1,0 +1,70 @@
+/* RESET CSS */
+html, body, div, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, pre, form, dfn, del, p, blockquote, fieldset, input, textarea, select, article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, button, canvas, video {margin: 0;padding: 0;}
+h1, h2, h3, h4, h5, h6, pre, code, address, caption, cite, code, th, dfn, del {font-weight: normal;font-style: normal;}
+ul, ol {list-style: none;}
+fieldset, img {border: none;}
+caption, th {text-align: left;}
+table {border-collapse: collapse;border-spacing: 0;}
+input[type="button"], input[type="submit"], input[type="reset"], button {cursor: pointer;line-height: normal;}
+button, input {line-height: normal;}
+input[type="hidden"], [hidden], .hidden {display: none;}
+textarea {overflow: auto;resize: none;}
+article, aside, details, figcaption, figure, footer, header, nav, section, .clearfix {display: block;}
+audio, canvas, video {display: inline-block;}
+a > img {vertical-align: bottom;}
+strong, b {font-weight: bold;}
+em, i {font-style: italic;}
+del {text-decoration: line-through;}
+:focus {outline: none;}
+a{text-decoration: none;}
+
+/* TOOLS CSS */
+.clear {clear: both;display: block;line-height: 0;height: 0;font-size: 0;}
+.clearfix:after, aside:after, section:after, article:after {content: ".";display: block;clear: both;visibility: hidden;line-height: 0;height: 0;font-size: 0;}
+.f-fl{float: left;}
+.f-fr{float: right;}
+.font12 {font-size: 12px;}
+.font16 {font-size: 16px;}
+.font24 {font-size: 24px;}
+.c-3c4 {color: #3c464c;}
+.c-9da {color: #9da7af;}
+.c-48a {color: #48a0eb;}
+.c-4db {color: #4dba5c;}
+.c-ff8 {color: #ff8686;}
+.c-ffb {color: #ffbb45;}
+.c-669 {color: #669de1;}
+.c-fff {color: #ffffff;}
+.c-257 {color: #2573e8;}
+.c-196 {color: #1965d6;}
+.c-71c {color: #71c86e;}
+.c-ff6 {color: #ff6969;}
+.c-fda {color: #fda44b;}
+.c-7b8 {color: #7b8a90;}
+.c-f0f {color: #f0f5f8;}
+.c-fbf {color: #fbfdfd;}
+.c-f5f {color: #f5f8f9;}
+.c-eef {color: #eef8ff;}
+.c-ff6{color: #ff6c6c;}
+.b-sty-dis {background: #eaeaea;}
+.b-sty1 {background: #669de1;}
+.b-sty1:hover {background: #6cafea;}
+.b-sty1:active {background: #4993d4;}
+.b-sty2 {background: #74c672;}
+.b-sty2:hover {background: #7ece7b;}
+.b-sty2:active {background: #5db55a;}
+.b-sty3 {background: #788692;}
+.b-sty3:hover {background: #8c9ea5;}
+.b-sty3:active {background: #6e7c82;}
+.b-sty4 {background: #f37476;}
+.b-sty4:hover {background: #f87f81;}
+.b-sty4:active {background: #ef5557;}
+/*margin|padding*/
+.f-mt05{margin-top:.25rem;}.f-mt10{margin-top:.5rem;}.f-mt15{margin-top:.75rem;}.f-mt20{margin-top:1rem;}
+.f-mr05{margin-right:.25rem;}.f-mr10{margin-right:.5rem;}.f-mr15{margin-right:.75rem;}.f-mr20{margin-right:1rem;}
+.f-mb05{margin-bottom:.25rem;}.f-mb10{margin-bottom:.5rem;}.f-mb15{margin-bottom:.75rem;}.f-mb20{margin-bottom:1rem;}
+.f-ml05{margin-left:.25rem;}.f-ml10{margin-left:.5rem;}.f-ml15{margin-left:.75rem;}.f-ml20{margin-left:1rem;}
+.f-pt05{padding-top:.25rem;}.f-pt10{padding-top:.5rem;}.f-pt15{padding-top:.75rem;}.f-pt20{padding-top:1rem;}
+.f-pr05{padding-right:.25rem;}.f-pr10{padding-right:.5rem;}.f-pr15{padding-right:.75rem;}.f-pr20{padding-right:1rem;}
+.f-pb05{padding-bottom:.25rem;}.f-pb10{padding-bottom:.5rem;}.f-pb15{padding-bottom:.75rem;}.f-pb20{padding-bottom:1rem;}
+.f-pl05{padding-left:.25rem;}.f-pl10{padding-left:.5rem;}.f-pl15{padding-left:.75rem;}.f-pl20{padding-left:1rem;}
+

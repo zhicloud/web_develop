@@ -65,6 +65,20 @@ public class OperatorServiceImpl extends BeanDirectCallableDefaultImpl implement
 		
 		return "/security/admin/operator_manage.jsp";
 	}
+	@Callable
+	public String operatorIndexPage(HttpServletRequest request, HttpServletResponse response)
+	{
+		logger.debug("OperatorServiceImpl.operatorIndexPage()");
+		
+		// 权限判断
+//		LoginInfo loginInfo = LoginHelper.getLoginInfo(request);
+//		if( loginInfo.hasPrivilege(PrivilegeConstant.operator_manage_page) == false )
+//		{
+//			return "/public/have_not_access.jsp";
+//		}
+		
+		return "/security/operator/operator_index.jsp";
+	}
 	
 
 	@Callable
