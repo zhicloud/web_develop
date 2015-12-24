@@ -136,15 +136,15 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="public_ip" class="col-sm-2 control-label">公网IP*</label>
+                                        <label for="public_ip" class="col-sm-2 control-label">公网IP</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="public_ip" name="publicIp" value="${image_upload_address.publicIp}" parsley-trigger="change" parsley-required="true" parsley-ip="true">
+                                            <input type="text" class="form-control" id="public_ip" name="publicIp" value="${image_upload_address.publicIp}" parsley-trigger="change"  parsley-ip="true">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="public_port" class="col-sm-2 control-label">公网端口*</label>
+                                        <label for="public_port" class="col-sm-2 control-label">公网端口</label>
                                         <div class="col-sm-4">
-                                            <input type="text" class="form-control" id="public_port" name="publicPort" value="${image_upload_address.publicPort}" parsley-trigger="change" parsley-required="true" parsley-port="true">
+                                            <input type="text" class="form-control" id="public_port" name="publicPort" value="${image_upload_address.publicPort == 0 ? "" : image_upload_address.publicPort}"  parsley-trigger="change"  parsley-port="true">
                                         </div>
                                     </div>
 
@@ -161,6 +161,7 @@
                                 </form>
 
                             </div>
+                        </section>
                             <!-- /tile body -->
 
                             <div class="tile-body">
@@ -183,7 +184,7 @@
 
                             </div>
 
-                        </section>
+
                         <!-- /tile -->
 
                     </div>
@@ -209,11 +210,25 @@
 <script>
     var path = "<%=request.getContextPath()%>";
     var isCommited = false;
+
     $(function(){
 
         changeLocal();
 
         jQuery("#save_btn").click(function(){
+
+            // 空值处理
+            var publicIp = $("#public_ip").val();
+            var publicPort = $("#public_port").val();
+
+            if (publicIp == "") {
+                $("#public_ip").removeAttr("name");
+            }
+
+            if (publicPort == "") {
+                $("#public_port").removeAttr("name");
+            }
+
             var options = {
                 success:function result(data){
                     if (data.status == "success") {
