@@ -372,7 +372,7 @@
                     		</form>
                           </div>
                           <div class="modal-footer">
-                            <button class="btn btn-green"  id="form_btn" onclick="saveAddAmount();">确定</button>
+                            <button class="btn btn-green"  id="form_btn" onclick="saveAddAmount(3);">确定</button>
                             <button onclick="setNullBtn();" class="btn btn-red" data-dismiss="modal" aria-hidden="true">取消</button>
                             
                           </div>

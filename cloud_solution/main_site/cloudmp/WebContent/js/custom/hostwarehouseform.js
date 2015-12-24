@@ -240,11 +240,17 @@ function saveAddAmount(type){
 		if(form.parsley('isValid')){  		        				
 			jQuery("#addAmountForm1").ajaxSubmit(options); 
 		}
-	}else{
+	}else if(type==2){
 		var form = jQuery("#addAmountForm2");
 		form.parsley('validate');
 		if(form.parsley('isValid')){  		        				
 			jQuery("#addAmountForm2").ajaxSubmit(options); 
+		}
+	}else{
+		var form = jQuery("#addAmountForm");
+		form.parsley('validate');
+		if(form.parsley('isValid')){  		        				
+			jQuery("#addAmountForm").ajaxSubmit(options); 
 		}
 	}
 }
