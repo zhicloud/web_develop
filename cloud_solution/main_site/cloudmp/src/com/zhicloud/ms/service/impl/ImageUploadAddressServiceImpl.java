@@ -194,6 +194,8 @@ public class ImageUploadAddressServiceImpl implements ImageUploadAddressService 
             int serviceEnable = 0;
             String description = StringUtil.trim(parameter.get("description"));
 
+
+
             if(serviceName == null || serviceName==""){
                 return new MethodResult(MethodResult.FAIL,"服务名称不能为空");
             }
@@ -217,6 +219,7 @@ public class ImageUploadAddressServiceImpl implements ImageUploadAddressService 
             }
 
             Map<String, Object> data = new LinkedHashMap<String, Object>();
+
             data.put("service_name", serviceName);
             data.put("local_ip", localIp);
             data.put("local_port", localPort);
