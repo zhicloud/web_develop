@@ -29,9 +29,10 @@
 		</script>
 		<title>运营商 - 云端在线</title>
 		
-		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/default/easyui.css">
-		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css"> 
-		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/control2.css" />
+		<link rel="shortcut icon" href="<%=request.getContextPath()%>/newoperator/common/img/favicon.ico" type="image/x-icon" /> 
+		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/newoperator/common/css/global.css" media="all"/>
+		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/newoperator/css/oper_common.css" media="all"/>
+    	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/newoperator/css/operation.css" media="all"/>
 		<style type="text/css">
 		body
 		{
@@ -41,178 +42,246 @@
 	</head>
 
 	<body>
-		
-		<table id="main_table" border="0" cellspacing="0" cellpadding="0" style="height:100%;">
-			<tr>
-				<td id="c1" class="navbar" style="width:200px; vertical-align:top;">
-					<div class="navbarlogo" style="width:145px;height:30px;padding:15px 28px 15px 10px;">
-						<a href="<%=request.getContextPath()%>/"><img
-							src="<%=request.getContextPath()%>/control/logo_145_30.png"
-							 alt="云端在线" />
-						</a>
-					</div>
+		<div class="g-hd">
+			<div class="header-info">
+				<div class="hd-left-cont">
+					<a class="l-logo" href="javascript:;"><img src="<%=request.getContextPath()%>/newoperator/img/logo.png" alt="logo" /></a>
+					<h3 class="f-ml05">致云运营平台 </h3>
+				</div>
+				<div class="hd-right-cont">
+					<img src="<%=request.getContextPath()%>/newoperator/img/portrait.png" alt="portrait" />
+					<label class="f-ml10">29447403799@sian.cn | <a href="#" id="operator_logout_link"><font color="white">注销</font></a></label>
+				</div>
+			</div>
+			
+			</div>
+			
+
+					<div class="g-sd">
+			<div class="nav-list">
+				<div class="nav-item">
+					<a class="oper-sty current single" href="javascritp:;" id="operator_index_link"><i class="icon-tit icon-operational-overview"></i>运营概览</a>
+				</div>
+				<div class="nav-item">
+					<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-user-management"></i>用户管理<i class="icon-arrow icon-arrow-bottom"></i></a>
 					<ul>
-						<li><a><span>+</span>用户管理</a>
-					      <ul>
-					      	<li><a href="#" id="mark_manage_link">标签管理</a></li>
-				    	    <li><a href="#" id="agent_manage_link">代理商管理</a></li>
-							<li><a href="#" id="terminal_user_manage_link">终端用户管理</a></li>
-							<li><a href="#" id="view_all_user_oper_log">用户日志</a></li>
-							<li><a href="#" id="bill_manage_link">账单查询</a></li>
-					      </ul>
-					    </li>
+						<li><a class="sub-sty" href="javascritp:;" id="mark_manage_link">标签管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="agent_manage_link">代理商管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="terminal_user_manage_link">终端用户管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="view_all_user_oper_log">用户日志</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="bill_manage_link">账单查询</a></li>
+					</ul>
+				</div>
+				<div class="nav-item">
+					<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-product-management"></i>产品管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+					<ul>
+						<li><a class="sub-sty" href="javascritp:;" id="self_use_cloud_host_link">自用云主机</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="cloud_host_manage_link">云服务器管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="vpc_manage_link">用户专属云管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="cloud_disk_manage_link">云硬盘管理</a></li>
+					</ul>
+				</div>
+				<div class="nav-item">
+					<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-package-management"></i>套餐管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+					<ul>
+						<li><a class="sub-sty" href="javascritp:;" id="package_option_manage_link">套餐项管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="package_price_manage_link">套餐价格自定义</a></li>
+					</ul>
+				</div>
+				<div class="nav-item">
+					<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-resource-management"></i>资源池管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+					<ul>
+						<li><a class="sub-sty" href="javascritp:;" id="computer_resource_manage_link">计算资源池管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="storage_resource_manage_link">存储资源池管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="address_resource_manage_link">地址资源池管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="port_resource_manage_link">端口资源池管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="database_monitor_link">数据库监控</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="platform_resource_monitor_link">平台资源监控</a></li>
+					</ul>
+				</div>
+				<div class="nav-item">
+					<a class="oper-sty single" href="javascritp:;" id="intelligent_rout_manage"><i class="icon-tit icon-routing-management"></i>智能路由管理</a>
+				</div>
+				<div class="nav-item">
+					<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-whmirror-management"></i>仓库和镜像管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+					<ul>
+						<li><a class="sub-sty" href="javascritp:;" id="sys_disk_image_manage_link">系统镜像管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="warehouse_manage_link">仓库类型管理</a></li>
+					</ul>
+				</div>
+				<div class="nav-item">
+					<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-statistical-analysis"></i>统计分析<i class="icon-arrow icon-arrow-bottom"></i></a>
+					<ul>
+						<li><a class="sub-sty" href="javascritp:;" id="report_statistic_link">报表统计</a></li>
+					</ul>
+				</div>
+				<div class="nav-item">
+					<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-financial-management"></i>财务管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+					<ul>
+						<li><a class="sub-sty" href="javascritp:;" id="cash_coupon_link">现金券管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="invoice_manage_link">发票管理</a></li>
+					</ul>
+				</div>
+				<div class="nav-item">
+					<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-system-management"></i>系统管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+					<ul>
+						<li><a class="sub-sty" href="javascritp:;" id="operator_basic_information_link">基本信息</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="operator_update_password_link">修改密码</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="operator_suggestion_link">意见反馈</a></li>
+					</ul>
+				</div>
+				<div class="nav-item">
+					<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-mail-management"></i>邮件管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+					<ul>
+						<li><a class="sub-sty" href="javascritp:;" id="email_config_link">配置管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="email_template_link">模块管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="email_record_link">发送记录</a></li>
+					</ul>
+				</div>
+				<div class="nav-item">
+					<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-mesg-management"></i>短信管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+					<ul>
+						<li><a class="sub-sty" href="javascritp:;" id="sms_config_link">配置管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="sms_template_link">模块管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="sms_record_link">发送记录</a></li>
+					</ul>
+				</div>
+				<div class="nav-item">
+					<a class="oper-sty single" href="javascritp:;" id="egg_plan_manage_link"><i class="icon-tit icon-eggplan-management"></i>蛋壳计划管理</a>
+				</div>
+				<div class="nav-item">
+					<a class="oper-sty single" href="javascritp:;" id="image_host_application_manage_link"><i class="icon-tit icon-mirrorhost-management"></i>镜像主机申请管理</a>
+				</div>
+				<div class="nav-item">
+					<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-monitinfor-management"></i>监控信息管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+					<ul>
+					    <li><a class="sub-sty" href="javascritp:;" id="operator_service_link">服务管理</a></li>		
+						<li><a class="sub-sty" href="javascritp:;" id="total_monitor_link">总体概况查看</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="room_monitor_link">机房信息查看</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="rack_monitor_link">机架信息查看</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="server_monitor_link">服务器信息查看</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="cloudhost_monitor_link">云主机信息查看</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="sys_warnrule_link">预警规则管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="sys_resource_link">资源监控管理</a></li>
+						<li><a class="sub-sty" href="javascritp:;" id="sys_total_link">系统全局监控</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+<!-- 					<ul> -->
+<!-- 						<li><a><span>+</span>用户管理</a> -->
+<!-- 					      <ul> -->
+<!-- 					      	<li><a href="#" id="mark_manage_link">标签管理</a></li> -->
+<!-- 				    	    <li><a href="#" id="agent_manage_link">代理商管理</a></li> -->
+<!-- 							<li><a href="#" id="terminal_user_manage_link">终端用户管理</a></li> -->
+<!-- 							<li><a href="#" id="view_all_user_oper_log">用户日志</a></li> -->
+<!-- 							<li><a href="#" id="bill_manage_link">账单查询</a></li> -->
+<!-- 					      </ul> -->
+<!-- 					    </li> -->
 					    
-					    <li><a><span>+</span>产品管理</a>
-					      <ul>
-					      	<li><a href="#" id="self_use_cloud_host_link">自用云主机</a></li>
-							<li><a href="#" id="cloud_host_manage_link">云服务器管理</a></li>
-							<li><a href="#" id="vpc_manage_link">用户专属云管理</a></li>
-							<li><a href="#" id="cloud_disk_manage_link">云硬盘管理</a></li>
-					      </ul>
-					    </li>				    
+<!-- 					    <li><a><span>+</span>产品管理</a> -->
+<!-- 					      <ul> -->
+<!-- 					      	<li><a href="#" id="self_use_cloud_host_link">自用云主机</a></li> -->
+<!-- 							<li><a href="#" id="cloud_host_manage_link">云服务器管理</a></li> -->
+<!-- 							<li><a href="#" id="vpc_manage_link">用户专属云管理</a></li> -->
+<!-- 							<li><a href="#" id="cloud_disk_manage_link">云硬盘管理</a></li> -->
+<!-- 					      </ul> -->
+<!-- 					    </li>				     -->
 
-						<li><a><span>+</span>套餐管理</a>
-					      <ul>
-					      	<li><a href="#" id="package_option_manage_link">套餐项管理</a></li>
-							<li><a href="#" id="package_price_manage_link">套餐价格自定义</a></li>
-					      </ul>
-					    </li>					    
+<!-- 						<li><a><span>+</span>套餐管理</a> -->
+<!-- 					      <ul> -->
+<!-- 					      	<li><a href="#" id="package_option_manage_link">套餐项管理</a></li> -->
+<!-- 							<li><a href="#" id="package_price_manage_link">套餐价格自定义</a></li> -->
+<!-- 					      </ul> -->
+<!-- 					    </li>					     -->
 
-					    <li><a><span>+</span>资源池管理</a>
-					      <ul>
-					      	<li><a href="#" id="computer_resource_manage_link">计算资源池管理</a></li>
-							<li><a href="#" id="storage_resource_manage_link">存储资源池管理</a></li>
-							<li><a href="#" id="address_resource_manage_link">地址资源池管理</a></li>
-							<li><a href="#" id="port_resource_manage_link"> 端口资源池管理</a></li>
-							<li><a href="#" id="database_monitor_link"> 数据库监控</a></li>
-							<li><a href="#" id="platform_resource_monitor_link"> 平台资源监控</a></li>
-					      </ul>
-					    </li>
+<!-- 					    <li><a><span>+</span>资源池管理</a> -->
+<!-- 					      <ul> -->
+<!-- 					      	<li><a href="#" id="computer_resource_manage_link">计算资源池管理</a></li> -->
+<!-- 							<li><a href="#" id="storage_resource_manage_link">存储资源池管理</a></li> -->
+<!-- 							<li><a href="#" id="address_resource_manage_link">地址资源池管理</a></li> -->
+<!-- 							<li><a href="#" id="port_resource_manage_link"> 端口资源池管理</a></li> -->
+<!-- 							<li><a href="#" id="database_monitor_link"> 数据库监控</a></li> -->
+<!-- 							<li><a href="#" id="platform_resource_monitor_link"> 平台资源监控</a></li> -->
+<!-- 					      </ul> -->
+<!-- 					    </li> -->
 					     
-						<li><a href="#" id="intelligent_rout_manage">智能路由设置</a></li> 	
+<!-- 						<li><a href="#" id="intelligent_rout_manage">智能路由设置</a></li> 	 -->
 
-						<li><a><span>+</span>仓库和镜像管理</a>
-					      <ul>
-							<li><a href="#" id="sys_disk_image_manage_link">系统镜像管理</a></li>
-							<li><a href="#" id="warehouse_manage_link">仓库类型管理</a></li>
-					      </ul>
-					    </li>
+<!-- 						<li><a><span>+</span>仓库和镜像管理</a> -->
+<!-- 					      <ul> -->
+<!-- 							<li><a href="#" id="sys_disk_image_manage_link">系统镜像管理</a></li> -->
+<!-- 							<li><a href="#" id="warehouse_manage_link">仓库类型管理</a></li> -->
+<!-- 					      </ul> -->
+<!-- 					    </li> -->
 					    
-					    <li><a><span>+</span>统计分析</a>
-					      <ul>
-							<li><a href="#" id="report_statistic_link">报表统计</a></li>
-					      </ul>
-					    </li>	
+<!-- 					    <li><a><span>+</span>统计分析</a> -->
+<!-- 					      <ul> -->
+<!-- 							<li><a href="#" id="report_statistic_link">报表统计</a></li> -->
+<!-- 					      </ul> -->
+<!-- 					    </li>	 -->
 					    
-					    <li><a><span>+</span>财务管理</a>
-					      <ul>
-							<li><a href="#" id="cash_coupon_link">现金券管理</a></li>
-							<li><a href="#" id="invoice_manage_link">发票管理</a></li>
-					      </ul>
-					    </li>	
+<!-- 					    <li><a><span>+</span>财务管理</a> -->
+<!-- 					      <ul> -->
+<!-- 							<li><a href="#" id="cash_coupon_link">现金券管理</a></li> -->
+<!-- 							<li><a href="#" id="invoice_manage_link">发票管理</a></li> -->
+<!-- 					      </ul> -->
+<!-- 					    </li>	 -->
 					    
-					    <li><a><span>+</span>系统管理</a>
-					      <ul id="my_ul">
-				    		<li><a href="#" id="operator_basic_information_link" class="navbarnavactive">基本信息</a></li>
-							<li><a href="#" id="operator_update_password_link">修改密码</a></li>
-							<li><a href="#" id="operator_suggestion_link">意见反馈</a></li>
-							<li><a href="#" id="operator_logout_link">注销</a></li>
-					      </ul>
-					    </li>
- 						<li><a><span>+</span>邮件管理</a> 
- 							<ul>
- 								<li><a href="#" id="email_config_link" class="navbarnavactive">配置管理</a></li>
- 								<li><a href="#" id="email_template_link">模版管理</a></li>
- 								<li><a href="#" id="email_record_link">发送记录</a></li>
- 							</ul> 
- 						</li>
-                        <li><a><span>+</span>短信管理</a>
-                            <ul>
-                                <li><a href="#" id="sms_config_link" class="navbarnavactive">配置管理</a></li>
-                                <li><a href="#" id="sms_template_link">模版管理</a></li>
-                                <li><a href="#" id="sms_record_link">发送记录</a></li>
-                            </ul>
-                        </li>
-					    <li><a href="#" id="egg_plan_manage_link">蛋壳计划管理</a></li>	
-					    <li><a href="#" id="image_host_application_manage_link">镜像主机申请管理</a></li>	
+<!-- 					    <li><a><span>+</span>系统管理</a> -->
+<!-- 					      <ul id="my_ul"> -->
+<!-- 				    		<li><a href="#" id="operator_basic_information_link" class="navbarnavactive">基本信息</a></li> -->
+<!-- 							<li><a href="#" id="operator_update_password_link">修改密码</a></li> -->
+<!-- 							<li><a href="#" id="operator_suggestion_link">意见反馈</a></li> -->
+<!-- 							<li><a href="#" id="operator_logout_link">注销</a></li> -->
+<!-- 					      </ul> -->
+<!-- 					    </li> -->
+<!--  						<li><a><span>+</span>邮件管理</a>  -->
+<!--  							<ul> -->
+<!--  								<li><a href="#" id="email_config_link" class="navbarnavactive">配置管理</a></li> -->
+<!--  								<li><a href="#" id="email_template_link">模版管理</a></li> -->
+<!--  								<li><a href="#" id="email_record_link">发送记录</a></li> -->
+<!--  							</ul>  -->
+<!--  						</li> -->
+<!--                         <li><a><span>+</span>短信管理</a> -->
+<!--                             <ul> -->
+<!--                                 <li><a href="#" id="sms_config_link" class="navbarnavactive">配置管理</a></li> -->
+<!--                                 <li><a href="#" id="sms_template_link">模版管理</a></li> -->
+<!--                                 <li><a href="#" id="sms_record_link">发送记录</a></li> -->
+<!--                             </ul> -->
+<!--                         </li> -->
+<!-- 					    <li><a href="#" id="egg_plan_manage_link">蛋壳计划管理</a></li>	 -->
+<!-- 					    <li><a href="#" id="image_host_application_manage_link">镜像主机申请管理</a></li>	 -->
 					    
-					     <li><a><span>+</span>监控信息管理</a>
-					      <ul>
-					       	<li><a href="#" id="operator_service_link">服务管理</a></li>		
-							<li><a href="#" id="total_monitor_link">总体概况查看</a></li>
-							<li><a href="#" id="room_monitor_link">机房信息查看</a></li>
-							<li><a href="#" id="rack_monitor_link">机架信息查看</a></li>
-							<li><a href="#" id="server_monitor_link">服务器信息查看</a></li>
-							<li><a href="#" id="cloudhost_monitor_link">云主机信息查看</a></li>
-							<li><a href="#" id="sys_warnrule_link">预警规则管理</a></li>
-							<li><a href="#" id="sys_resource_link">资源监控管理</a></li>
-							<li><a href="#" id="sys_total_link">系统全局监控</a></li>
-					      </ul>
-					    </li>		    					    					    
-  					</ul>
-				</td>
-				<td id="c2" class="control" style="width:-1px; vertical-align:top;">
-				
-					<%-- <div id="c2_r1" class="controlheader" style="height:60px; position:relative; background:#fcfcfc; border-bottom:solid 1px #acc0b7;">
-						<div class="controlheaderbutton l">
-							<a href="<%=request.getContextPath()%>/" style="width: 28px;">首页</a>
-						</div>
-						<div class="controlheaderbutton productbutton l">
-							<a href="#" style="width: 28px;">产品</a>
-						</div>
-						<div class="controlheaderbutton l">
-							<a href="<%=request.getContextPath()%>/user/buy.do"
-								style="width: 70px;">定制云主机</a>
-						</div>
-						<div class="controlheaderbutton l">
-							<a href="<%=request.getContextPath()%>/public/downloadPage.do"
-								style="width: 56px;">相关下载</a>
-						</div>
-						<div class="controlheaderlogout r">
-							<a href="#" id="logout_link">注销</a>
-						</div>
-						<div class="controlheaderuser r"><%=loginInfo.getAccount()%>
-						</div>
-						<div id="productmenu" style="position:absolute; left:69px; top:60px; width:96px; height:180px;
-							background:#acc0b7; border:solid 1px #acc0b7; display:none;">
-							<div>
-								<a href="<%=request.getContextPath()%>/user/cloudsever.do">云主机</a>
-							</div>
-							<div>
-								<a href="<%=request.getContextPath()%>/user/cloudstorage.do">云存储</a>
-							</div>
-							<div>
-								<a href="<%=request.getContextPath()%>/user/database.do">云数据库</a>
-							</div>
-							<div>
-								<a href="<%=request.getContextPath()%>/user/banancing.do">负载均衡</a>
-							</div>
-							<div>
-								<a href="<%=request.getContextPath()%>/user/sdn.do">SDN</a>
-							</div>
-							<div>
-								<a href="<%=request.getContextPath()%>/user/recovery.do">云容灾</a>
-							</div>
-						</div>
-					</div> --%>
+<!-- 					     <li><a><span>+</span>监控信息管理</a> -->
+<!-- 					      <ul> -->
+<!-- 					       	<li><a href="#" id="operator_service_link">服务管理</a></li>		 -->
+<!-- 							<li><a href="#" id="total_monitor_link">总体概况查看</a></li> -->
+<!-- 							<li><a href="#" id="room_monitor_link">机房信息查看</a></li> -->
+<!-- 							<li><a href="#" id="rack_monitor_link">机架信息查看</a></li> -->
+<!-- 							<li><a href="#" id="server_monitor_link">服务器信息查看</a></li> -->
+<!-- 							<li><a href="#" id="cloudhost_monitor_link">云主机信息查看</a></li> -->
+<!-- 							<li><a href="#" id="sys_warnrule_link">预警规则管理</a></li> -->
+<!-- 							<li><a href="#" id="sys_resource_link">资源监控管理</a></li> -->
+<!-- 							<li><a href="#" id="sys_total_link">系统全局监控</a></li> -->
+<!-- 					      </ul> -->
+<!-- 					    </li>		    					    					     -->
+<!--   					</ul> -->
+			
+	
+				<div class="g-mn" id="c2_r2">
+			
+			
 					
-					<div id="c2_r2" style="height:-1px;">
+					
 						<iframe id="content_frame" scrolling="no" frameborder="0" hspace="0" vspace="0" style="width:100%; height:100%; border:0px solid #005500;"
 							src=""
 							></iframe>
-					</div>
 					
-<!-- 					<div id="c2_r3" style="height:60px; line-height:60px; background:#f0f0f0; text-align:center; border-top:solid 1px #acc0b7;">
-						<div style="color:#668e90;">
-							Copyright &copy; 2014 
-							<a href="http://www.zhicloud.com" target="_blank" style="color:#00ab51;">致云科技有限公司</a>,
-							All rights reserved.
-							蜀ICP备14004217号-1
-						</div>
-					</div> -->
-				</td>
-			</tr>
-		</table>
+		
+			</div>
+</div>
+		
 		
 	</body>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.js"></script>
@@ -300,6 +369,11 @@
 	
 	function onSwitch(target)
 	{
+		// 首页
+		if( target.id=="operator_index_link" )
+		{
+			$("#content_frame").attr("src", "<%=request.getContextPath()%>/bean/page.do?userType=<%=userType%>&bean=operatorService&method=operatorIndexPage");
+		}
 		// 运营商基本资料
 		if( target.id=="operator_basic_information_link" )
 		{
@@ -518,16 +592,22 @@
 	}
 	
 	$(function(){
+		$(".icon-arrow").each(function(){
+			$(this).removeClass("icon-arrow-bottom");
+			$(this).addClass("icon-arrow-right");
+			$(this).parent("a").next("ul").slideUp("fast");
+		});
+		
 		// 布局初始化
 		$("#c2").css("width", $(document.body).width() - $("#c1").width());
-		$("#c2_r2").css("height", $("#c2").height() - $("#c2_r1").height() - $("#c2_r3").height() - 2);
+		$("#c2_r2").css("height", $(document.body).height()-55);
 		
 		// 左边按钮的事件
-		$(".navbar li a").click(function(){
+		$(".nav-item li a,.single").click(function(){
 			if( isSwitchable(this)==true )
 			{
-				$(".navbarnavactive").removeClass("navbarnavactive");
-				$(this).addClass("navbarnavactive");
+				$(".current").removeClass("current");
+				$(this).addClass("current");
 				onSwitch(this);
 			}
 		});
@@ -553,22 +633,21 @@
 			logout();
 		});
 		//
-		$("#content_frame").attr("src", "<%=request.getContextPath()%>/bean/page.do?userType=<%=userType%>&bean=operatorService&method=basicInformationPage");
+		$("#content_frame").attr("src", "<%=request.getContextPath()%>/bean/page.do?userType=<%=userType%>&bean=operatorService&method=operatorIndexPage");
 	});
 	$(document).ready(function(){
-		$("#my_ul").slideDown(0);
-		  $(".navbar li a").click(function(){
-		    if($(this).find("span").html()=="+"){
-				$(".navbar > ul > li > a > span:contains('-')").html("+");
-				$(".navbar > ul > li > ul").slideUp(200);
-				$(this).find("span").html("-");
+		  $(".icon-arrow").parent("a").click(function(){
+		    if($(this).children().last().hasClass("icon-arrow-right")){
+		    	$(this).children().last().removeClass("icon-arrow-right");
+		    	$(this).children().last().addClass("icon-arrow-bottom");
 				$(this).next("ul").slideDown(200);
-			}else if($(this).find("span").html()=="-"){
-				$(this).find("span").html("+");
+			}else if($(this).children().last().hasClass("icon-arrow-bottom")){
+				$(this).children().last().removeClass("icon-arrow-bottom");
+		    	$(this).children().last().addClass("icon-arrow-right");
 				$(this).next("ul").slideUp(200);
 			}else{
-				$(".navbarnavactive").removeClass("navbarnavactive");
-				$(this).addClass("navbarnavactive");
+				$(".current").removeClass("current");
+				$(this).addClass("current");
 			}
 		  });
 		  $(".productbutton > a").mouseenter(function(){
