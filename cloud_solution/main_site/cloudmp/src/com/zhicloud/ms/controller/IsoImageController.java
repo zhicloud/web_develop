@@ -129,7 +129,7 @@ public class IsoImageController {
         }else{
             operLogService.addLog("iso镜像", "上传镜像"+imagename, "1", "2", multipartRequest);
         }
-        return new MethodResult();
+        return result;
     }
     
     @RequestMapping(value="/isoimage/checkNas",method=RequestMethod.GET)

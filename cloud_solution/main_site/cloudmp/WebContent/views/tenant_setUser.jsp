@@ -133,7 +133,7 @@ function saveUserInfo(){
  
                   <!-- tile header -->
                   <div class="tile-header"> 
-                    <button type="button" class="btn btn-success delete" onclick="window.location.href='<%=request.getContextPath()%>/transform/menuadmin/children?parentid=${parentid}';">
+                    <button type="button" class="btn btn-success delete" onclick="window.location.href='<%=request.getContextPath()%>/tenant/all';">
                               <i class="fa fa-step-backward"></i>
                               <span> 返回上级</span>
                     </button>
