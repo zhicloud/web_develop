@@ -45,6 +45,8 @@ public interface OperatorService
 	
 	public MethodResult resetPasswordById(Map<String, Object> parameter);
 	
+	public String operatorIndexPage(HttpServletRequest request, HttpServletResponse response);
+	
 	
 
 }
