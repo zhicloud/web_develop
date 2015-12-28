@@ -219,7 +219,7 @@ public class QosController {
                 break;
             }
             default:{
-                if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_qos_add)){
+                if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_qos_remove)){
                     return new MethodResult(MethodResult.FAIL,"您没有删除QoS规则的权限，请联系管理员");
                 }
                 break;
