@@ -344,7 +344,7 @@
                             <h3 class="modal-title" id="modalConfirmLabel">提示</h3>
                           </div>
                           <div class="modal-body">
-                            	<h4>上传成功</h4>
+                            	<h4 id="tips">上传成功</h4>
                           </div>
                           <div class="modal-footer">
 <!--                             <button class="btn btn-green" onclick="uploadAfter()"   data-dismiss="modal" aria-hidden="true">确定</button>

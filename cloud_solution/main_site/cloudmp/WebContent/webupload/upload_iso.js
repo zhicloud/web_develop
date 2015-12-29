@@ -23,7 +23,7 @@ jQuery(function() {
         pick: '#picker',
         fileNumLimit: 1, 
         method:'PUT',
-        sendAsBinary: false,
+        sendAsBinary: true,
         threads:1,
         chunked:true,
         chunkSize:chunkSize,
@@ -75,19 +75,23 @@ jQuery(function() {
     	$("#successconfirm").click();
     });
     
+ 
+    
      uploader.on('uploadBeforeSend', function(obj, data, headers) { 
     	  
 	   	 headers['host'] = clientIP;
 		 headers['Content-Length'] = obj.file.size;
+		 headers['Content-Type'] = 'application/x-www-form-urlencoded';
 		 headers['zc-name'] = $("#isoName").val();
 		 headers['zc-md5'] = md5value;
 		 headers['zc-description'] = $("#isoDes").val();
 		 headers['zc-group'] = $("#usergroup").val();
-		 headers['zc-user'] = $("#userbelong").val(); 
+		 headers['zc-user'] = $("#userbelong").val();   
+		 headers['zc-filesize'] = obj.file.size;  
 		 //headers['now_slice'] = obj.chunk;
     	 //headers['all_slice'] = obj.chunks;
     	 headers['zc-progress'] = "all_slice="+obj.chunks+",now_slice="+obj.chunk;
-    	 headers['zc-fileID'] = guid;  
+    	 
      	});
      
     uploader.on( 'uploadError', function( file,reason ) {
