@@ -197,7 +197,7 @@
 						<div class="form-group">
 						<label for="path" class="col-sm-2 control-label">存储路径</label>
 							<div class="col-sm-4">
-							     <input type="text" class="form-control" id="path" name="path" value="${path}" readonly="readonly" />
+							     <input type="text" class="form-control" id="path" name="path" value="${path}" placeholder="${path == null ? "还未配置共享存储,请配置后再做修改" : ""}" parsley-required="true" readonly="readonly" />
 							</div>
 						</div>                      
 						<%--<div class="form-group">--%>
