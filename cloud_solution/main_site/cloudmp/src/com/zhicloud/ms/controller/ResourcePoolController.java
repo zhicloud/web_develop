@@ -8,17 +8,14 @@ import com.zhicloud.ms.app.pool.storage.StorageResult;
 import com.zhicloud.ms.httpGateway.HttpGatewayAsyncChannel;
 import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
-import com.zhicloud.ms.quartz.ComputeInfoCacheJob;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.*;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.*;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -466,7 +462,7 @@ public class ResourcePoolController {
         if(StringUtil.isBlank(String.valueOf(diskType))){
             return new MethodResult(MethodResult.FAIL,"存储类型不能为空");
         }
-        if(!("0".equals(String.valueOf(diskType))) && StringUtil.isBlank(diskSource)){
+        if(("1".equals(String.valueOf(diskType))) && StringUtil.isBlank(diskSource)){
             return new MethodResult(MethodResult.FAIL,"存储资源池不能为空");
         }
 

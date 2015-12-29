@@ -1,7 +1,6 @@
 
 package com.zhicloud.ms.transform.serviceimpl;
 
-import com.zhicloud.ms.message.MessageEvent;
 import com.zhicloud.ms.app.propeties.AppProperties;
 import com.zhicloud.ms.common.util.RandomPassword;
 import com.zhicloud.ms.common.util.StringUtil;
@@ -15,14 +14,12 @@ import com.zhicloud.ms.mapper.TerminalUserMapper;
 import com.zhicloud.ms.message.MessageServiceManager;
 import com.zhicloud.ms.message.email.EmailSendService;
 import com.zhicloud.ms.message.email.EmailTemplateConstant;
+import com.zhicloud.ms.message.util.MessageAsyncHelper;
+import com.zhicloud.ms.message.util.MessageConstant;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.transform.constant.TransformConstant;
-import com.zhicloud.ms.transform.mapper.ManSystemLogMapper;
-import com.zhicloud.ms.transform.mapper.ManSystemMenuMapper;
-import com.zhicloud.ms.transform.mapper.ManSystemRightMapper;
-import com.zhicloud.ms.transform.mapper.ManSystemRoleMapper;
-import com.zhicloud.ms.transform.mapper.ManSystemUserMapper;
+import com.zhicloud.ms.transform.mapper.*;
 import com.zhicloud.ms.transform.service.ManSysUserService;
 import com.zhicloud.ms.transform.util.TransFormLoginHelper;
 import com.zhicloud.ms.transform.util.TransFormLoginInfo;
@@ -35,7 +32,6 @@ import com.zhicloud.ms.vo.DictionaryVO;
 import com.zhicloud.ms.vo.OperLogVO;
 import com.zhicloud.ms.vo.SysUser;
 import com.zhicloud.ms.vo.TerminalUserVO;
-
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +43,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.*;
 
 /**
@@ -69,7 +64,7 @@ public class ManSysUserServiceImpl implements ManSysUserService {
 
     @Autowired
     private ApplicationContext applicationContext;
-    
+
     /**
      * @Description:sqlSession注入
      * @param sqlSession
@@ -384,8 +379,10 @@ public class ManSysUserServiceImpl implements ManSysUserService {
                         param.put("name", usercount);
                         param.put("password", password);
                         param.put("url", AppProperties.getValue("address_of_this_system", ""));
+                        param.put(MessageConstant.EMAIL_SEND_TYPE_KEY, MessageConstant.EMAIL_TO_RECIPIENT_WITH_BCC);
+                        param.put(MessageConstant.EMAIL_TEMPLATE_KEY, EmailTemplateConstant.INFO_ADMIN_REGISTER);
                         //异步发送邮件
-                        publishMessageEvent(param);
+                        MessageAsyncHelper.getInstance().publishMessageEvent(param);
                     }
                 } catch (Exception e) {
                     logger.error(e);
@@ -402,15 +399,6 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             throw new AppException("添加失败");
         }
     } 
-
-    /**
-     * @author 张翔
-     * @function 消息发送事件发布
-     * @param parameter
-     */
-    private void publishMessageEvent(Map<String, Object> parameter) {
-        applicationContext.publishEvent(new MessageEvent(parameter));
-    }
 
     /**
      * @Description:添加日志信息
