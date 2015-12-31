@@ -33,10 +33,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 
 
+
 import com.zhicloud.ms.app.pool.IsoImagePool;
 import com.zhicloud.ms.app.pool.IsoImagePool.IsoImageData;
 import com.zhicloud.ms.app.pool.IsoImagePoolManager; 
 import com.zhicloud.ms.common.util.StringUtil;
+import com.zhicloud.ms.constant.AppInconstant;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.service.ImageUploadAddressService;
@@ -79,6 +81,7 @@ public class IsoImageController {
         model.addAttribute("isoArray", isoArray); 
         model.addAttribute("clientIP", TransFormLoginHelper.getClientIP(request));
         model.addAttribute("serverIP", imageUploadAddressService.getAvailableAddress(request));
+        model.addAttribute("chunkSize", AppInconstant.chunkSize);
         return "isoimage/iso_image_manage";
     }
     

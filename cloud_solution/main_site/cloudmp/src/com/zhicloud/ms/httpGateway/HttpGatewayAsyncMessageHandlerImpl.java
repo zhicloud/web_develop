@@ -519,7 +519,7 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		AppInconstant.hostBackupProgress.put(uuid+"backup", "backup_false");
 		hostBackup.updateTime();
 		hostBackup.setBackupStatus(0);
-		
+		pool.put(hostBackup);
 		if (HttpGatewayResponseHelper.isSuccess(messageData) == true) {
 			hostBackup.setSuccess(true);
 			// 成功 
@@ -597,13 +597,15 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 			hostBackup.setUuid(uuid);
 			pool.put(hostBackup);
 		}
+		if(hostBackup.getBackupStatus() != 0){
+		    hostBackup.setProgress(level);
+	        hostBackup.setFinished(false);
+	        hostBackup.setReady(true);
+	        hostBackup.setSuccess(true);
+	        hostBackup.setBackupStatus(10);
+	        hostBackup.updateTime();
+		}
 		
-		hostBackup.setProgress(level);
-		hostBackup.setFinished(false);
-		hostBackup.setReady(true);
-		hostBackup.setSuccess(true);
-		hostBackup.setBackupStatus(10);
-		hostBackup.updateTime();
 //		channel.release();
 		logger.info(String.format("[%s]resume host at progress %d%%. uuid[%s]", sessionId, level, uuid));
 

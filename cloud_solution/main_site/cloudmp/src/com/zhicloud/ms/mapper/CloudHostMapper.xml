@@ -763,8 +763,8 @@
 	</update>
 	 
 	<insert id="insertCloudHost">
-		insert into cloud_host (id,real_host_id,user_id,warehouse_id,host_name,display_name,account,password,cpu_core,memory,sys_image_id,sys_disk,data_disk,bandwidth,running_status,status,inner_ip,inner_port,sys_image_name,create_time,modified_time,outer_ip,outer_port,type,pool_id) 
-			values (#{id},#{realHostId},#{userId},#{warehouseId},#{hostName},#{displayName},#{account},#{password},#{cpuCore},#{memory},#{sysImageId},#{sysDisk},#{dataDisk},#{bandwidth},#{runningStatus},#{status},#{innerIp},#{innerPort},#{sysImageName},#{createTime},#{modifiedTime},#{outerIp},#{outerPort},#{type},#{poolId})
+		insert into cloud_host (id,real_host_id,user_id,warehouse_id,host_name,display_name,account,password,cpu_core,memory,sys_image_id,sys_disk,data_disk,bandwidth,running_status,status,inner_ip,inner_port,sys_image_name,create_time,modified_time,outer_ip,outer_port,type,pool_id,is_auto_start) 
+			values (#{id},#{realHostId},#{userId},#{warehouseId},#{hostName},#{displayName},#{account},#{password},#{cpuCore},#{memory},#{sysImageId},#{sysDisk},#{dataDisk},#{bandwidth},#{runningStatus},#{status},#{innerIp},#{innerPort},#{sysImageName},#{createTime},#{modifiedTime},#{outerIp},#{outerPort},#{type},#{poolId},#{isAutoStartup})
 	</insert>
 	
 	<insert id="addHostIntoTimer">

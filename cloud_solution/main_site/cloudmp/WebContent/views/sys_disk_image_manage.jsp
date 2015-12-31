@@ -41,6 +41,7 @@
  <script type="text/javascript">
  var clientIP = '${clientIP}';
  var serverIP = '${serverIP}';
+ var chunkSize = '${chunkSize}'
  </script>
 <script src="<%=request.getContextPath() %>/webupload/upload_disk.js"></script>    
   </head>
@@ -113,10 +114,10 @@
                               <i class="fa fa-file-excel-o"></i>
                               <span>导出数据</span>
                     </button>
-<!--                     <button type="button" class="btn btn-blue" onclick="uploadImage();"> -->
-<!--                               <i class="fa fa-file-zip-o"></i> -->
-<!--                               <span> 上传磁盘镜像 </span> -->
-<!--                     </button>                         -->
+                    <button type="button" class="btn btn-blue" onclick="uploadImage();">
+                              <i class="fa fa-file-zip-o"></i>
+                              <span> 上传磁盘镜像 </span>
+                    </button>                        
                     <div class="controls">
                     </div>
 

@@ -10,6 +10,7 @@
 package com.zhicloud.ms.controller; 
 
 import com.zhicloud.ms.constant.AppConstant;
+import com.zhicloud.ms.constant.AppInconstant;
 import com.zhicloud.ms.quartz.ComputeInfoCacheJob;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.CloudHostConfigModelService;
@@ -144,6 +145,7 @@ public class SysDiskImageController {
       } catch (IOException e) {
         e.printStackTrace();
       }
+      model.addAttribute("chunkSize", AppInconstant.chunkSize);
 
       return "sys_disk_image_manage";
 	}
