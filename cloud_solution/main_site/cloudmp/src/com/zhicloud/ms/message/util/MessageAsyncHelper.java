@@ -6,18 +6,22 @@ import org.springframework.web.context.ContextLoader;
 import java.util.Map;
 
 /**
- * Created by sean on 12/28/15.
+ * @author 张翔
+ * @description 异步消息发送工具类
+ * @date 12/28/15
+ * @version 1.1
+ * @since 1.1
  */
 public class MessageAsyncHelper {
 
     private static MessageAsyncHelper instance;
 
-    ApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
+    private ApplicationContext applicationContext = ContextLoader.getCurrentWebApplicationContext();
 
     private MessageAsyncHelper(){
 
     }
-
+    
     public static MessageAsyncHelper getInstance() {
         if (instance == null) {
             instance = new MessageAsyncHelper();
@@ -26,6 +30,10 @@ public class MessageAsyncHelper {
         return instance;
     }
 
+    /**
+     * @function 发布消息时间
+     * @param parameter 消息内容相关参数
+     */
     public void publishMessageEvent(Map<String, Object> parameter) {
         applicationContext.publishEvent(new MessageEvent(parameter));
     }
