@@ -231,11 +231,11 @@
             var publicPort = $("#public_port").val();
 
             if (publicIp == "") {
-                $("#public_ip").removeAttr("name");
+                $("#public_ip").attr("disabled",true);
             }
 
             if (publicPort == "") {
-                $("#public_port").removeAttr("name");
+                $("#public_port").attr("disabled",true);
             }
 
             var options = {
