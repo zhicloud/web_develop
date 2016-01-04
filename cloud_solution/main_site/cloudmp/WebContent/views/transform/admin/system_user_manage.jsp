@@ -474,7 +474,7 @@
                                </div>
 							  <div class="form-group" style="display:none;" id="manualdiv">
                                 <label for="manualpass">新密码:</label>
-                                <input type="text" class="form-control" id="manualpass" parsley-required="true" parsley-maxlength="6"  placeholder="请输入1-6位字符">
+                                <input type="text" class="form-control" id="manualpass" parsley-required="true" parsley-maxlength="20">
                               </div>
                             </form>
                           </div>
