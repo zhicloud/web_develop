@@ -119,6 +119,7 @@
                                             <th class="sortable sort-alpha">内网端口</th>
                                             <th class="sortable sort-alpha">公网IP</th>
                                             <th class="sortable sort-alpha">公网端口</th>
+                                            <th class="sortable sort-alpha">服务状态</th>
                                             <th class="no-sort">操作</th>
                                         </tr>
                                         </thead>
@@ -135,15 +136,35 @@
                                                 <td class="cut">${address.localIp}</td>
                                                 <td class="cut">${address.localPort}</td>
                                                 <td class="cut">
-                                                <c:if test="${address.publicIp == null}">
-                                                    &nbsp;
-                                                </c:if>
-                                                    ${address.publicIp}</td>
+                                                    <c:choose>
+                                                        <c:when test="${address.publicIp == ''}">
+                                                            暂无
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                        ${address.publicIp}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
                                                 <td class="cut">
-                                                    <c:if test="${address.publicPort == null}">
-                                                        &nbsp;
-                                                    </c:if>
-                                                        ${address.publicPort}</td>
+                                                    <c:choose>
+                                                        <c:when test="${address.publicPort == 0}">
+                                                            暂无
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                        ${address.publicPort}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td class="cut">
+                                                    <c:choose>
+                                                        <c:when test="${address.serviceEnable == 0}">
+                                                            <span class="label label-red">禁用</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="label label-greensea">启用</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
                                                 <td>
                                                     <div class="btn-group">
                                                         <button type="button"

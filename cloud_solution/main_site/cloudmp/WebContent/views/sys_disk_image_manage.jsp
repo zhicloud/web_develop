@@ -41,6 +41,7 @@
  <script type="text/javascript">
  var clientIP = '${clientIP}';
  var serverIP = '${serverIP}';
+ var chunkSize = '${chunkSize}'
  </script>
 <script src="<%=request.getContextPath() %>/webupload/upload_disk.js"></script>    
   </head>

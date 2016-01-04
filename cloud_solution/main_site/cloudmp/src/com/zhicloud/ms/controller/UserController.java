@@ -381,12 +381,9 @@ public class UserController {
 		try {
 			
 			//获取前台参数
-			
-			System.out.println("uploadFile is running");
-			
 			MultipartHttpServletRequest  multipartRequest = (MultipartHttpServletRequest) request;
 			
-			MultipartFile attach = multipartRequest.getFile("attach");
+			MultipartFile attach = multipartRequest.getFile("file");
 			
 			
 			//获取文件名
@@ -410,10 +407,10 @@ public class UserController {
 			FileUtils.copyInputStreamToFile(attach.getInputStream(), file);
 			
 			MethodResult result = terminalUserService.importTerminalUser(file.getAbsolutePath());
-			
+
 			message = result.message;
 			status = result.status;
-			
+
 			if(MethodResult.SUCCESS.equals(status)){
 	            operLogService.addLog("终端用户", "导入用户成功", "1", "1", request);
 				return new MethodResult(MethodResult.SUCCESS, message);

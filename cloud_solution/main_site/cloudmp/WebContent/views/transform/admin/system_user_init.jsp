@@ -276,7 +276,7 @@
                         </div>
                       </div>
 
-                      <div class="form-group">
+                      <div class="form-group" style="display:none;">
                         <label for="userType" class="col-sm-2 control-label">用户类型</label>
                         <div class="col-sm-4"> 
                             <div class="col-sm-16" id="userTypebox">
@@ -286,14 +286,13 @@
                         </div>
                       </div>  
                       
-                      <div class="form-group">
+                      <div class="form-group" style="display:none;">
                         <label for="status" class="col-sm-2 control-label">状态 *</label>
                         <div class="col-sm-4"> 
                             <div class="col-sm-16" id="selectbox">
                             <select class="chosen-select chosen-transparent form-control" id="status" parsley-required="true" parsley-error-container="#selectbox">
-                            <option value="">请选择</option>  
-                            <option value="0">正常</option>  
-                            <option value="1">禁用</option> 
+                             
+                            <option value="0" checked >正常</option>   
                           </select></div> 
                         </div>
                       </div>  
@@ -328,25 +327,23 @@
                       </div>
                              
                       
-                      <div class="form-group">
+                      <div class="form-group" style="display:none;">
                         <label for="userType" class="col-sm-2 control-label">用户类型</label>
                         <div class="col-sm-4"> 
                             <div class="col-sm-16" id="selectbox">
                             <select class="chosen-select chosen-transparent form-control" id="userType" parsley-required="true" parsley-error-container="#selectbox">
-                            <option value="">请选择</option>  
-                            <option value="0" <c:if test="${systemUser.userType==0 }">selected</c:if>>管理员用户</option>  
+                             <option value="0"  selected >管理员用户</option>  
                            </select></div> 
                         </div>
                       </div>                  
                       
-                      <div class="form-group">
+                      <div class="form-group" style="display:none;">
                         <label for="status" class="col-sm-2 control-label">状态 *</label>
                         <div class="col-sm-4"> 
                             <div class="col-sm-16" id="selectbox">
                             <select class="chosen-select chosen-transparent form-control" id="status" parsley-required="true" parsley-error-container="#selectbox">
-                            <option value="0" <c:if test="${systemUser.status==0 }">selected</c:if> >正常</option>  
-                            <option value="1" <c:if test="${systemUser.status==1 }">selected</c:if> >禁用</option> 
-                          </select></div> 
+                            <option value="0"  selected  >正常</option>  
+                           </select></div> 
                         </div>
                       </div> 
                       

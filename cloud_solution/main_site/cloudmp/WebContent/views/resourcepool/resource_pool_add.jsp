@@ -166,19 +166,19 @@
 					    <label for="input01" class="col-sm-2 control-label">磁盘模式*</label>
 					    <div class="col-sm-8">  
 					        <div class="radio radio-transparent col-md-2">
-					        	<input type="radio" name="diskType" id="input01" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');" checked>
+					        	<input type="radio" name="diskType" id="input01" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden'); $('#path').removeAttr('parsley-required');" checked>
 					       		<label for="input01">本地</label>
 					     	</div>
 					     	<div class="radio radio-transparent col-md-3">
-					       		<input type="radio" name="diskType" id="optionsRadios11" value="1" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');">
+					       		<input type="radio" name="diskType" id="optionsRadios11" value="1" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');$('#path').removeAttr('parsley-required');">
 					       		<label for="optionsRadios11">云存储</label>
 					     	</div>                          
 					     	<div class="radio radio-transparent col-md-3">
-					       		<input type="radio" name="diskType" id="optionsRadios12" value="2" onclick="$('#divNas').removeAttr('hidden');$('#divNas').attr('class','show');">
+					       		<input type="radio" name="diskType" id="optionsRadios12" value="2" onclick="$('#divNas').removeAttr('hidden');$('#divNas').attr('class','show');$('#path').attr('parsley-required', 'true');">
 					       		<label for="optionsRadios12">nas磁盘</label>
 					     	</div>                          
 					     	<div class="radio radio-transparent col-md-2">
-					       		<input type="radio" name="diskType" id="optionsRadios13" value="3" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');">
+					       		<input type="radio" name="diskType" id="optionsRadios13" value="3" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');$('#path').removeAttr('parsley-required');">
 					       		<label for="optionsRadios13">ip san</label>
 					     	</div>                          
 					   	</div>
@@ -188,7 +188,7 @@
 						<div class="form-group">
 						<label for="path" class="col-sm-2 control-label">存储路径</label>
 							<div class="col-sm-4">
-							     <input type="text" class="form-control" id="path" name="path" value="${path}" readonly="readonly"/>
+							     <input type="text" class="form-control" id="path" name="path" value="${path}" placeholder="${path == null ? "还未配置共享存储,请配置后再做修改" : ""}" readonly="readonly"/>
 							</div>
 						</div>                      
 						<%--<div class="form-group">--%>

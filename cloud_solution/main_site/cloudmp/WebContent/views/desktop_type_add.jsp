@@ -294,7 +294,7 @@
                         <label for="input01" class="col-sm-2 control-label">编码格式 *</label>
                         <div class="col-sm-4" id="supportH264selectbox">
                            <select class="chosen-select chosen-transparent form-control" name="supportH264" id="supportH264" parsley-trigger="change" parsley-required="true" parsley-error-container="#supportH264selectbox">
-                           <option value="2">全屏H.264编码</option> 
+                           <option value="1">H.264编码</option> 
 <!--                            <option value="1">局部H.264编码</option>    -->
                            <option value="0">MJPEG编码</option>   
                          </select>

@@ -43,8 +43,22 @@
  <script type="text/javascript">
  var clientIP = '${clientIP}';
  var serverIP = '${serverIP}';
+ var chunkSize = '${chunkSize}';
+ var guid = newGuid();
+ function newGuid()
+ {
+     var guid = "";
+     for (var i = 1; i <= 32; i++){
+       var n = Math.floor(Math.random()*16.0).toString(16);
+       guid +=   n;
+       if((i==8)||(i==12)||(i==16)||(i==20))
+         guid += "-";
+     }
+     return guid;    
+ }
  </script>
- <script src="<%=request.getContextPath() %>/webupload/upload_iso.js"></script>
+  <script src="<%=request.getContextPath() %>/webupload/upload_iso.js"></script>
+ 
   <body class="bg-1">
 
  
@@ -330,7 +344,7 @@
                             <h3 class="modal-title" id="modalConfirmLabel">提示</h3>
                           </div>
                           <div class="modal-body">
-                            	<h4>上传成功</h4>
+                            	<h4 id="tips">上传成功</h4>
                           </div>
                           <div class="modal-footer">
 <!--                             <button class="btn btn-green" onclick="uploadAfter()"   data-dismiss="modal" aria-hidden="true">确定</button>

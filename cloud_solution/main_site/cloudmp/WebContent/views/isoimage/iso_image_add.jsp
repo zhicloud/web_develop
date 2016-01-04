@@ -140,10 +140,19 @@
 				            </div>
 				        </div>
 				        <div class="statusBar">
-				            <div class="progress">
-				                <span class="text">0%</span>
-				                <span class="percentage"></span>
-				            </div>
+				             
+				            <div class="progress-list">
+		                      <div class="details">
+		                        <div class="title"><strong id="tips"></strong></div>
+		                       </div>
+		                      <div class="status pull-right">
+		                        <span class="animate-number" id="progress1"  data-value="0" data-animation-duration="1500">0</span>%
+		                      </div>
+		                      <div class="clearfix"></div>
+		                      <div class="progress progress-little no-radius">
+		                        <div class="progress-bar progress-bar-orange animate-progress-bar" id="progress2" data-percentage="10%"></div>
+		                      </div>
+		                    </div>
 				            <div class="info"></div>
 				            <div class="btns" style="display:none">
 				                <div id="filePicker2"></div>
@@ -200,7 +209,7 @@
                       <div class="modal-dialog">
                         <div class="modal-content" style="width:60%;margin-left:20%;">
                           <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"  id="dialog_close">Close</button>
                             <h3 class="modal-title" id="modalDialogLabel"><strong>提示</strong></h3>
                           </div>
                           <div class="modal-body">

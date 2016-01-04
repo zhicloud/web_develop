@@ -1,4 +1,18 @@
 ******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151229-1)
+修改时间：2015/12/29
+修改人：张翔
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/image_upload_address/image_upload_address_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/image_upload_address/image_upload_address_add.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/image_upload_address/image_upload_address_mod.jsp
+
+主要变更：
+新增镜像上传地址管理地址启用状况和描述字段;
+
+兼容性说明：
+	无
+******************************************************
 版本号：版本号：【云平台web】verion(2.1)(build 20151216-1)
 修改时间：2015/12/16
 修改人：张本缘
