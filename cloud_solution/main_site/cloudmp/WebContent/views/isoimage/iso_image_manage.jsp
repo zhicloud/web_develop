@@ -545,7 +545,7 @@
     //上传镜像到SS
     function uploadImage(){
     	if(!checkLoginOut()) return;
-    	if(serverIP==undefined||serverIP==""){
+    	if(serverIP==undefined||serverIP==""||serverIP=="none"){
 		  	  $("#tipscontent").html("上传地址不可用");
 		      $("#dia").click(); 
 		      return;
