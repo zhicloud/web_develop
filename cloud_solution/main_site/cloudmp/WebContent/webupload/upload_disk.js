@@ -28,7 +28,7 @@ jQuery(function() {
         chunkSize:chunkSize,
 	    accept: {
 	            title: 'DISK',
-	            extensions: 'iso,img,qcow2',
+	            extensions: 'img,qcow2',
 	            mimeTypes: 'iso/*'
 	        }
     });
