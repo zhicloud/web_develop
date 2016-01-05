@@ -13,9 +13,9 @@ import com.zhicloud.ms.common.util.ExcelReader;
 import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.mapper.*;
-import com.zhicloud.ms.message.MessageServiceManager;
-import com.zhicloud.ms.message.email.EmailSendService;
 import com.zhicloud.ms.message.email.EmailTemplateConstant;
+import com.zhicloud.ms.message.util.MessageAsyncHelper;
+import com.zhicloud.ms.message.util.MessageConstant;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.ITerminalUserService;
 import com.zhicloud.ms.service.IUserService;
@@ -25,8 +25,10 @@ import com.zhicloud.ms.util.MD5;
 import com.zhicloud.ms.vo.CloudHostVO;
 import com.zhicloud.ms.vo.TerminalUserVO;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.log4j.Logger;
 import org.apache.poi.POIXMLException;
+import org.apache.poi.poifs.filesystem.NotOLE2FileException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +53,9 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
  
     @Resource
     private SqlSession sqlSession;
+
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Resource
     private IUserService userService;
@@ -145,19 +150,21 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
 
 		if (sysUserResult > 0 && terminalUserResult > 0) {
 
-        // 发送注册通知邮件
+        // 异步发送注册通知邮件
         try {
             Map<String, Object> param = new LinkedHashMap<>();
             param.put("name", userName);
             param.put("password", password);
-            EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
+            param.put(MessageConstant.EMAIL_TEMPLATE_KEY, EmailTemplateConstant.INFO_REGISTER);
 
-            // 发送注册通知邮件
+            // 选择发送方式
             if(!StringUtil.isBlank(email)) {
-                emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_REGISTER, email, param);
+                param.put("email", email);
+                param.put(MessageConstant.EMAIL_SEND_TYPE_KEY, MessageConstant.EMAIL_TO_RECIPIENT_WITH_BCC);
             } else {
-                emailSendService.sendMail(EmailTemplateConstant.INFO_REGISTER, param);
+                param.put(MessageConstant.EMAIL_SEND_TYPE_KEY, MessageConstant.EMAIL_FROM_TEMPLATE_ONLY);
             }
+            MessageAsyncHelper.getInstance().publishMessageEvent(param);
         } catch (Exception e) {
             e.printStackTrace();
             return new MethodResult(MethodResult.SUCCESS, "添加成功，未检测到邮件模板，如需发送邮件，请创建相关模板");
@@ -175,11 +182,13 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
 	 */
 	@Override
 	@Transactional(readOnly=false)
-	public MethodResult importTerminalUser(String filePath) {
+	public MethodResult importTerminalUser(String filePath) throws NotOLE2FileException {
 		String message = "";
+
 		try {
-			ExcelReader excelReader = new ExcelReader();
-            String[] title = excelReader.readExcelTitle(filePath);
+
+        ExcelReader excelReader = new ExcelReader();
+        String[] title = excelReader.readExcelTitle(filePath);
             
             boolean flag = ("用户名".equals(title[0])) && ("显示名".equals(title[1])) && ("邮箱".equals(title[2])) && ("电话".equals(title[3]));
 
@@ -191,7 +200,6 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
 			int successResult = 0;
 			int failResult = 0;
         int duplicateResult = 0;
-			System.out.println("获得Excel表格的内容:");
 			for (int i = 1; i <= map.size(); i++) {
 				String row = map.get(i);
 				String[] result = row.split(" +");
@@ -201,17 +209,17 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
                 duplicateResult++;
                 continue;
             }
-            data.put("username", result[j]);
-            data.put("name", result[j+1]);
+            data.put("username", StringUtil.trim(result[j]));
+            data.put("name", StringUtil.trim(result[j+1]));
 //            data.put("password", AppConstant.DEFAULT_PASSWORD);
             data.put("password", AppConstant.DEFAULT_USER_PASSWORD); //中税默认密码
             data.put("group_id", AppConstant.DEFAULT_GROUP_ID);
-            data.put("email", result[j+2]);
-            data.put("phone", result[j+3]);
+            data.put("email", StringUtil.trim(result[j+2]));
+            data.put("phone", StringUtil.trim(result[j+3]));
             data.put("usb_status", AppConstant.USB_STATUS_DISABLE);
             data.put("status", AppConstant.USER_STATUS_ENABLE);
             try {
-						    addTerminalUser(data);
+						    this.addTerminalUser(data);
                 successResult++;
 					} catch (Exception e) {
 						failResult++;
@@ -227,12 +235,12 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
         }
 			return new MethodResult(MethodResult.SUCCESS, message);
 		} catch(POIXMLException e) {
-			message = "请导入Excel文件";
-			return new MethodResult(MethodResult.FAIL, message);
+        message = "请导入Excel文件";
+        return new MethodResult(MethodResult.FAIL, message);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
-			return new MethodResult(MethodResult.FAIL, message);
+        message = "请导入Excel文件";
+        return new MethodResult(MethodResult.FAIL, message);
 		} 
 	}
 

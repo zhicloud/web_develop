@@ -40,10 +40,10 @@ response.setHeader("Access-Control-Allow-Origin", "*");
  }
 </style>
  </head>
- <script type="text/javascript">
+<!--  <script type="text/javascript">
  var clientIP = '${clientIP}';
  var serverIP = '${serverIP}';
- </script>
+ </script> -->
 <script src="<%=request.getContextPath() %>/webupload/upload_disk.js"></script>
   <body class="bg-1">
 
@@ -114,10 +114,10 @@ response.setHeader("Access-Control-Allow-Origin", "*");
                               <i class="fa fa-file-excel-o"></i>
                               <span>导出数据</span>
                     </button> 
-                    <button type="button" class="btn btn-blue" onclick="uploadImage();">
+<!--                     <button type="button" class="btn btn-blue" onclick="uploadImage();">
                               <i class="fa fa-file-zip-o"></i>
                               <span> 上传磁盘镜像 </span>
-                    </button>                    
+                    </button>   -->                  
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                     </div>

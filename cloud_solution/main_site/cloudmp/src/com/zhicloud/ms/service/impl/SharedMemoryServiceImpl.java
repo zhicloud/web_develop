@@ -70,6 +70,20 @@ public class SharedMemoryServiceImpl implements SharedMemoryService {
      */
     public int deleteInfo(String[] ids) {
         SharedMemoryMapper mapper = sqlSession.getMapper(SharedMemoryMapper.class);
+        SharedMemoryVO available = mapper.queryAvailable();
+        if(available != null){
+            for(int i=0;i<ids.length;i++){
+                if(ids[i].equals(available.getId())){
+                    try {
+                        Runtime.getRuntime().exec("umount  /image");
+                        break;
+                    } catch (IOException e) {
+                         e.printStackTrace();
+                    }
+                }
+            }
+        }
+        
         return mapper.deleteInfo(ids);
     }
 

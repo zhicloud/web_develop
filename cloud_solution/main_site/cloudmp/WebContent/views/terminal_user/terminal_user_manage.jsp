@@ -24,8 +24,10 @@
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote-bs3.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen.min.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen-bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/webupload/webuploader.css" />
 
-    <link href="<%=request.getContextPath()%>/assets/css/zhicloud.css" rel="stylesheet">
+
+      <link href="<%=request.getContextPath()%>/assets/css/zhicloud.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -99,7 +101,7 @@
                               <span> 新增用户 </span>
                     </button>  
                     
-                     <button type="button" class="btn btn-blue delete" onclick="$('#file').trigger('click');">
+                     <button type="button" class="btn btn-blue delete" onclick="$('#upload').click();">
                               <i class="fa fa-file-excel-o"></i>
                               <span> 导入Excel </span>
                     </button>  
@@ -316,17 +318,83 @@
                       
                       <div class="tile-body">
 
-                    <a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>
-                    <a href="#modalConfirm" id="con" role="button"   data-toggle="modal"> </a>
-                    <a href="#modalpassword" id="pass" role="button"   data-toggle="modal"> </a>
-                    <a href="#modalusb" id="usb" role="button"   data-toggle="modal"> </a>
-                    <a href="#modaluserstatus" id="userstatus" role="button"   data-toggle="modal"> </a>
-                    <a href="#modaluserallocate" id="allocat" role="button"   data-toggle="modal"> </a>
+                          <a href="#modalUpload" id="upload" role="button"   data-toggle="modal"> </a>
+                          <a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>
+                          <a href="#modalConfirm" id="con" role="button"   data-toggle="modal"> </a>
+                          <a href="#modalpassword" id="pass" role="button"   data-toggle="modal"> </a>
+                          <a href="#modalusb" id="usb" role="button"   data-toggle="modal"> </a>
+                          <a href="#modaluserstatus" id="userstatus" role="button"   data-toggle="modal"> </a>
+                          <a href="#modaluserallocate" id="allocat" role="button"   data-toggle="modal"> </a>
 
-                    
-                    
+                          <div class="modal fade" id="modalUpload" tabindex="-1" role="dialog" aria-labelledby="modalUploadLabel" aria-hidden="true"  >
+                              <div class="modal-dialog">
+                                  <div class="modal-content">
+                                      <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="location.href = path + '/user/list';">Close</button>
+                                          <h3 class="modal-title" id="modalConfirmLabel"><strong>导入用户数据</strong></h3>
+                                      </div>
+                                      <div class="modal-body">
 
-                    <div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
+                                          <form id="uploadform" name="uploadform"  class="form-horizontal" role="form" parsley-validate id="basicvalidations_uploadimage"  method="post"  enctype="multipart/form-data">
+                                              <div class="form-group">
+                                                  <label for="attach" class="col-sm-3 control-label"></label>
+                                                  <div id="path" class="col-sm-8 btns">
+                                                      <div style="float:left;width:75%;">
+                                                          <input id="attach" type="text" style="width:95%;" disabled="disabled" class="form-control" parsley-required="true">
+                                                      </div>
+                                                      <div id="picker" style="width:25%;float: left;">选择文件</div>
+                                                  </div>
+                                              </div>
+                                              <div class="form-group">
+                                                  <label for="attach" class="col-sm-2 control-label"></label>
+                                                  <div class="col-sm-8">
+                                                      <div id="graphbox">
+                                                          <div class="graph" style="width:100%;background:darkgrey; border-radius:25px;position: relative;visibility:hidden;">
+                                                              <span class="green" style="display: inline-block;text-align:center;width:0%; height: 20px;background: lightseagreen;border-radius:25px;"></span>
+                                                              <label class="num" style="position: absolute;top: 0;left: 50%;width: 36px;line-height: 20px;margin-left: -18px;display: inline-block;text-align: center;"></label>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+
+                                              </div>
+                                              <div class="form-group">
+                                                  <label for="attach" class="col-sm-2 control-label"></label>
+                                                  <div class="col-sm-8">
+                                                      <div id="chooseinfo" style="display:none;color:cadetblue;text-align: center;"></div>
+                                                  </div>
+                                              </div>
+                                              </form>
+                                          </form>
+                                      </div>
+
+                                      <div class="modal-footer" style="margin-top:-10px;">
+                                          <button id="ctlBtn" class="btn btn-default">开始上传</button>
+                                          <button id="closebtn" class="btn btn-red" data-dismiss="modal" aria-hidden="true" onclick="location.href = path + '/user/list';">关闭</button>
+                                      </div>
+                                  </div><!-- /.modal-content -->
+                              </div><!-- /.modal-dialog -->
+                          </div><!-- /.modal -->
+
+                          <!-- 上传成功提示框 -->
+                          <div class="modal fade" id="successDialog" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
+                              <div class="modal-dialog">
+                                  <div class="modal-content" style="width:60%;margin-left:20%;">
+                                      <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                                          <h3 class="modal-title" id="modalConfirmLabel">提示</h3>
+                                      </div>
+                                      <div class="modal-body">
+                                          <h4>上传成功</h4>
+                                      </div>
+                                      <div class="modal-footer">
+                                          <!--                             <button class="btn btn-green" onclick="uploadAfter()"   data-dismiss="modal" aria-hidden="true">确定</button>
+                                           -->                            <button class="btn btn-red"   onclick="uploadAfter()" data-dismiss="modal" aria-hidden="true">关闭</button>
+                                      </div>
+                                  </div><!-- /.modal-content -->
+                              </div><!-- /.modal-dialog -->
+                          </div><!-- /.modal -->
+
+                          <div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
                       <div class="modal-dialog">
                         <div class="modal-content" style="width:60%;margin-left:20%;">
                           <div class="modal-header">
@@ -349,7 +417,8 @@
                           </div>
                         </div><!-- /.modal-content -->
                       </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->                        
+                    </div><!-- /.modal -->
+
                     <div class="modal fade" id="modalpassword" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true">
                       <div class="modal-dialog">
                         <div class="modal-content">
@@ -546,7 +615,10 @@
     
 
     <section class="videocontent" id="video"></section> 
-      <script type="text/javascript" src="<%=request.getContextPath()%>/js/plugins/jquery.form.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/js/plugins/jquery.form.js"></script>
+    <script type="text/javascript" src="<%=request.getContextPath()%>/webupload/webuploader.js"></script>
+    <%--<script src="<%=request.getContextPath() %>/webupload/jquery.js"></script>--%>
+    <script src="<%=request.getContextPath() %>/webupload/import.js"></script>
 
     <script>
     var path = '<%=request.getContextPath()%>';
@@ -554,7 +626,10 @@
     var oper = "";
     var usernames = "";
     var ids = ";"
-    
+
+
+
+
     $(function(){
 
       // Add custom class to pagination div
@@ -630,30 +705,110 @@
           $(this).toggleClass('checked');
         });
 
-        jQuery("#file").change(function(){
-        	$("#loader").delay(500).fadeOut(300);
-            
-        	 jQuery("#upload_file_form").ajaxSubmit(function(e){
-        		 $(".mask").delay(800).fadeOut(300,
-        		            function() {
-        		                widthLess1024();
-        		                widthLess768()
-        		            });
-        		 if(e.status == "success"){
-                     $("#tipscontent").html(e.message);
-                     $("#dia").click();
-
-        		 }else{
-        			 $("#tipscontent").html(e.message);
-          		      $("#dia").click(); 
-        		 }
-         		 
-        		});
-
-        });
-        $("#warehouseId_chosen").css("width","250px");
+//        jQuery("#file").change(function(){
+//        	$("#loader").delay(500).fadeOut(300);
+//
+//        	 jQuery("#upload_file_form").ajaxSubmit(function(e){
+//        		 $(".mask").delay(800).fadeOut(300,
+//        		            function() {
+//        		                widthLess1024();
+//        		                widthLess768()
+//        		            });
+//        		 if(e.status == "success"){
+//                     $("#tipscontent").html(e.message);
+//                     $("#dia").click();
+//
+//        		 }else{
+//        			 $("#tipscontent").html(e.message);
+//          		      $("#dia").click();
+//        		 }
+//
+//        		});
+//
+//        });
+//        $("#warehouseId_chosen").css("width","250px");
         
       });
+
+//    $(function(){
+//
+//        var $list=$("#thelist");
+//        var $btn =$("#ctlBtn");   //开始上传
+//
+//        var uploader = WebUploader.create({
+//
+//            auto: false,
+//
+//            // swf文件路径
+//            swf: path + '/webupload/Uploader.swf',
+//
+//            // 文件接收服务端。
+//            server: path + '/user/import',
+//
+//            // 选择文件的按钮。可选。
+//            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+//            pick: '#picker',
+//
+//            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+//            resize: false,
+//
+//            // 只允许选择excel文件。
+//            accept: {
+//                title: 'Excel',
+//                extensions: 'xls,xlsx',
+//                mimeTypes: 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+//            },
+//
+//            method: 'POST'
+//        });
+//
+//        // 当有文件被添加进队列的时候
+//        uploader.on( 'fileQueued', function( file ) {
+//            console.info("queue");
+//            $list.append( '<div id="' + file.id + '" class="item">' +
+//                    '<h4 class="info">' + file.name + '</h4>' +
+//                    '<p class="state">等待上传...</p>' +
+//                    '</div>' );
+//        });
+//
+//        // 文件上传过程中创建进度条实时显示。
+//        uploader.on( 'uploadProgress', function( file, percentage ) {
+//            console.info("progress");
+//            var $li = $( '#'+file.id ),
+//                    $percent = $li.find('.progress .progress-bar');
+//
+//            // 避免重复创建
+//            if ( !$percent.length ) {
+//                $percent = $('<div class="progress progress-striped active">' +
+//                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+//                        '</div>' +
+//                        '</div>').appendTo( $li ).find('.progress-bar');
+//            }
+//
+//            $li.find('p.state').text('上传中');
+//
+//            $percent.css( 'width', percentage * 100 + '%' );
+//        });
+//
+//        uploader.on( 'uploadSuccess', function( file ) {
+//            console.info("succes");
+//            $( '#'+file.id ).find('p.state').text('已上传');
+//        });
+//
+//        uploader.on( 'uploadError', function( file ) {
+//            console.info("error");
+//            $( '#'+file.id ).find('p.state').text('上传出错');
+//        });
+//
+//        uploader.on( 'uploadComplete', function( file ) {
+//            console.info("complete");
+//            $( '#'+file.id ).find('.progress').fadeOut();
+//        });
+//
+//
+//    });
+
+
 
     $(function(){
         $("#search_btn").click(function(){

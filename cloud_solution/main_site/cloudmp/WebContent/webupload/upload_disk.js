@@ -22,10 +22,14 @@ jQuery(function() {
         pick: '#picker',
         fileNumLimit: 1,
         method:'PUT',
+        sendAsBinary: true,
+        threads:1,
+        chunked:true,
+        chunkSize:chunkSize,
 	    accept: {
 	            title: 'DISK',
 	            extensions: 'iso,img,qcow2',
-	            mimeTypes: 'iso/*,application/x-img,text/plain'
+	            mimeTypes: 'iso/*'
 	        }
     });
 	//添加文件之前先清空原来数据
@@ -70,11 +74,16 @@ jQuery(function() {
     	 headers['zc-name'] = $("#isoName").val();
     	 headers['zc-md5'] = obj.file.source.uid;
     	 headers['zc-description'] = $("#isoDes").val();
+    	 headers['Content-Type'] = 'application/x-www-form-urlencoded';
 		 headers['zc-tag'] = $("#isoTag").val();
 		 headers['zc-size'] = filesize;
 		 headers['zc-format'] = $("input[name='isotype']:checked").val();
     	 headers['zc-group'] = $("#usergroup").val();
     	 headers['zc-user'] = $("#userbelong").val();
+    	 headers['zc-filesize'] = obj.file.size;  
+		 //headers['now_slice'] = obj.chunk;
+    	 //headers['all_slice'] = obj.chunks;
+    	 headers['zc-progress'] = "all_slice="+obj.chunks+",now_slice="+obj.chunk;
      	});
 /*     uploader.on( 'error', function( handler ) {
      	
@@ -97,9 +106,14 @@ jQuery(function() {
         }
 
         if ( state === 'uploading' ) {
-            $btn.text('暂停上传');
-        } else {
-            $btn.text('开始上传');
+            $btn.text('正在上传');
+            $btn[0].disabled = true;
+        }else if(state === 'paused'){
+            $btn.text('正在上传');
+            $btn[0].disabled = true;
+        }else{
+        	$btn.text('开始上传');
+        	$btn[0].disabled = false;
         }
     });
     $btn.on( 'click', function() {

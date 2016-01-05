@@ -173,19 +173,19 @@
 					    <label for="optionsRadios10" class="col-sm-2 control-label">磁盘模式*</label>
 					    <div class="col-sm-8">  
 					        <div class="radio radio-transparent col-md-2">
-					        	<input type="radio" name="diskType" id="optionsRadios10" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');" checked>
+					        	<input type="radio" name="diskType" id="optionsRadios10" value="0" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden'); $('#path').attr('disabled', true);" checked>
 					       		<label for="optionsRadios10">本地</label>
 					     	</div>
 					     	<div class="radio radio-transparent col-md-3">
-					       		<input type="radio" name="diskType" id="optionsRadios11" value="1" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');">
+					       		<input type="radio" name="diskType" id="optionsRadios11" value="1" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden'); $('#path').attr('disabled', true);">
 					       		<label for="optionsRadios11">云存储</label>
 					     	</div>                          
 					     	<div class="radio radio-transparent col-md-3">
-					       		<input type="radio" name="diskType" id="optionsRadios12" value="2" onclick="$('#divNas').removeAttr('hidden');$('#divNas').attr('class','show');">
+					       		<input type="radio" name="diskType" id="optionsRadios12" value="2" onclick="$('#divNas').removeAttr('hidden');$('#divNas').attr('class','show'); $('#path').attr('disabled', false);">
 					       		<label for="optionsRadios12">nas磁盘</label>
 					     	</div>                          
 					     	<div class="radio radio-transparent col-md-2">
-					       		<input type="radio" name="diskType" id="optionsRadios13" value="3" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden');">
+					       		<input type="radio" name="diskType" id="optionsRadios13" value="3" onclick="$('#divNas').removeAttr('show');$('#divNas').attr('class','hidden'); $('#path').attr('disabled', true);">
 					       		<label for="optionsRadios13">ip san</label>
 					     	</div>                          
 					   	</div>
@@ -195,7 +195,7 @@
 						<div class="form-group">
 						<label for="path" class="col-sm-2 control-label">存储路径</label>
 							<div class="col-sm-4">
-							     <input type="text" class="form-control" id="path" name="path" value="${path}" readonly="readonly" />
+							     <input type="text" class="form-control" id="path" name="path" value="${path}" placeholder="${path == null ? "还未配置共享存储,请配置后再做修改" : ""}" readonly="readonly" parsley-required="true"/>
 							</div>
 						</div>                      
 						<%--<div class="form-group">--%>
@@ -282,7 +282,7 @@
 
                      <div class="form-group form-footer footer-white">
                         <div class="col-sm-offset-4 col-sm-8">
-                          <button type="button" class="btn btn-greensea" onclick="saveForm();"><i class="fa fa-plus"></i>
+                          <button id="save" type="button" class="btn btn-greensea" onclick="saveForm();"><i class="fa fa-plus"></i>
                               <span> 保 存 </span></button>
                           <button type="reset" class="btn btn-red" onclick="window.location.reload();"><i class="fa fa-refresh"></i>
                               <span> 重 置 </span></button>
@@ -355,6 +355,7 @@
     <script>
     
     var path = '<%=request.getContextPath()%>';
+    var value = $("#path").val();
 
     $(function(){
       //chosen select input
@@ -378,6 +379,21 @@
         	$("#divNas").show();
         }
         <%--$("#option"+${computeInfoExt.option}).attr("checked", true);--%>
+
+        $("#optionsRadios10,#optionsRadios11,#optionsRadios13").click(function(){
+            $("#path").attr("disabled",true);
+            if(value == null || value == '' || value == undefined) {
+                $("#save").removeClass("disabled");
+            }
+        });
+
+        $("#optionsRadios12").click(function(){
+            $("#path").attr("disabled",false);
+            if(value == null || value == '' || value == undefined) {
+                $("#save").addClass("disabled");
+            }
+        });
+
     });
 
     function networkCheck(id) {
