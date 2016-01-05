@@ -109,11 +109,15 @@ jQuery(function() {
         } else if ( type === 'uploadFinished' ) {
             state = 'done';
         }
-
         if ( state === 'uploading' ) {
-            $btn.text('暂停上传');
-        } else {
-            $btn.text('开始上传');
+            $btn.text('正在上传');
+            $btn[0].disabled = true;
+        }else if(state === 'paused'){
+            $btn.text('正在上传');
+            $btn[0].disabled = true;
+        }else{
+        	$btn.text('开始上传');
+        	$btn[0].disabled = false;
         }
     });
     $btn.on( 'click', function() {
