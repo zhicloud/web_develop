@@ -1,4 +1,51 @@
 ******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20160105-1)
+修改时间：2016/01/05
+修改人：张本缘
+修改文件：
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/constant/AppInconstant.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostServiceImpl.java
+cloud_solution/main_site/cloudmp/WebContent/views/warehouse_concurrent.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/sys_disk_image_manage.jsp
+
+主要变更：
+1、最大并发创建数相关bug修改;
+
+兼容性说明：
+	无
+******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20160104-1)
+修改时间：2016/01/04
+修改人：张本缘
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/transform/admin/system_user_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/iso_image/iso_image_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/sys_disk_image_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/webupload/upload_disk.js
+cloud_solution/main_site/cloudmp/WebContent/webupload/upload_iso.js
+
+主要变更：
+1、取消镜像上传暂停上传功能;
+2、云平台镜像上传功能隐藏;
+3、上传镜像验证地址增加none判断;
+
+兼容性说明：
+	无
+******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20151229-1)
+修改时间：2015/12/29
+修改人：张翔
+修改文件：
+cloud_solution/main_site/cloudmp/WebContent/views/image_upload_address/image_upload_address_manage.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/image_upload_address/image_upload_address_add.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/image_upload_address/image_upload_address_mod.jsp
+
+主要变更：
+新增镜像上传地址管理地址启用状况和描述字段;
+
+兼容性说明：
+	无
+******************************************************
 版本号：版本号：【云平台web】verion(2.1)(build 20151216-1)
 修改时间：2015/12/16
 修改人：张本缘

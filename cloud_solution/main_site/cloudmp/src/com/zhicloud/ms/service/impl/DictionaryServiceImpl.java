@@ -1,11 +1,13 @@
 package com.zhicloud.ms.service.impl;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
  
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger; 
 import org.springframework.transaction.annotation.Transactional;
@@ -95,6 +97,16 @@ public class DictionaryServiceImpl implements IDictionaryService {
              synchronized (AppInconstant.initUser) {
                  DictionaryVO initUser = dictionaryList.get(0); 
                  AppInconstant.initUser = initUser.getValue();      
+             }
+            
+        }
+        
+        dictionaryList = dictionaryMapper.queryValueByCode("chunk_size");
+        if(dictionaryList!=null && dictionaryList.size() >0){
+            //同步代码
+             synchronized (AppInconstant.chunkSize) {
+                 DictionaryVO chunkSize = dictionaryList.get(0); 
+                 AppInconstant.chunkSize = new BigInteger(chunkSize.getValue());      
              }
             
         }

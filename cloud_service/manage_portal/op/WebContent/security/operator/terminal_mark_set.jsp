@@ -9,6 +9,7 @@
 String userids = (String)request.getAttribute("userids");
 List<MarkVO> markList = (List<MarkVO>)request.getAttribute("markList");
 %>
+<!-- terminal_mark_set.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/popup.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/metro/easyui.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css" /> 

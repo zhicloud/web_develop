@@ -8,6 +8,7 @@
 	String region = request.getParameter("region");
 %>
 <!DOCTYPE html>
+<!-- package_price_list.jsp -->
 <html>
 	<head>
 		<meta charset="UTF-8" />

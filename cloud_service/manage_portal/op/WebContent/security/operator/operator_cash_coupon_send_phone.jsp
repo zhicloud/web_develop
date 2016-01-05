@@ -7,6 +7,7 @@
 <%
 CashCouponVO cashCouponVO = (CashCouponVO)request.getAttribute("cashCouponVO");
 %>
+<!-- operator_cash_coupon_send_phone.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/popup.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/js/easyui/themes/metro/easyui.css" />
 <div id="send_invite_code_phone_dlg_container">

@@ -4,6 +4,7 @@
 <%
 	CloudHostBillDetailVO cloudHostBillDetail = (CloudHostBillDetailVO)request.getAttribute("cloudHostBillDetail");
 %>
+<!-- bill_detail_for_cloud_host.jsp -->
 <div id="bill_detail_cloud_host_detail_dlg_container">
 
 	<style type="text/css" scoped="scoped">

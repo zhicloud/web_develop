@@ -9,6 +9,7 @@
 	String dataDiskMin = AppProperties.getValue("dataDiskMin","");
 	String dataDiskMax = AppProperties.getValue("dataDiskMax","");
 %>
+<!-- package_price_disk_add.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/popup.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/metro/easyui.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css" /> 

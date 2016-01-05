@@ -7,7 +7,7 @@
 	String agentid = (String)request.getAttribute("agentid");
 %>
 <!DOCTYPE html>
-<!-- exported_export_manage.jsp -->
+<!-- agent_user_manage.jsp -->
 <html>
 	<head>
 		<meta charset="UTF-8" />

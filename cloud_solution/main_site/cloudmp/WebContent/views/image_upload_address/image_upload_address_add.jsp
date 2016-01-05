@@ -140,6 +140,27 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group">
+                                        <label for="service_enable_0" class="col-sm-2 control-label">启用该地址</label>
+                                        <div class="col-sm-16">
+                                            <div class="radio radio-transparent col-md-2">
+                                                <input type="radio" name="serviceEnable" id="service_enable_0" value="0" checked="checked">
+                                                <label for="service_enable_0">否</label>
+                                            </div>
+                                            <div class="radio radio-transparent col-md-2">
+                                                <input type="radio" name="serviceEnable" id="service_enable_1" value="1" >
+                                                <label for="service_enable_1">是</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="description" class="col-sm-2 control-label">描述</label>
+                                        <div class="col-sm-4">
+                                            <textarea class="form-control" name="description" id="description" rows="6" parsley-maxlength="100" parsley-validation-minlength="1"></textarea>
+                                        </div>
+                                    </div>
+
                                     <div class="form-group form-footer footer-white">
                                         <div class="col-sm-offset-4 col-sm-8">
                                             <button type="button" class="btn btn-greensea" id="save_btn"><i class="fa fa-plus"></i>
@@ -210,11 +231,11 @@
             var publicPort = $("#public_port").val();
 
             if (publicIp == "") {
-                $("#public_ip").removeAttr("name");
+                $("#public_ip").attr("disabled",true);
             }
 
             if (publicPort == "") {
-                $("#public_port").removeAttr("name");
+                $("#public_port").attr("disabled",true);
             }
 
             var options = {

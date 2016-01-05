@@ -19,7 +19,7 @@
             // 没选择文件之前的内容。
             $placeHolder = $wrap.find( '.placeholder' ),
 
-            $progress = $statusBar.find( '.progress' ).hide(),
+            $progress = $statusBar.find( '.progress-list' ).hide(),
 
             // 添加的文件数量
             fileCount = 0,
@@ -158,11 +158,11 @@
             },
             // runtimeOrder: 'flash',
 
-            // accept: {
-            //     title: 'Images',
-            //     extensions: 'gif,jpg,jpeg,bmp,png',
-            //     mimeTypes: 'image/*'
-            // },
+            accept: {
+	            title: 'ISO',
+	            extensions: 'iso',
+	            mimeTypes: 'iso/*'
+	        }
 
             // 禁掉全局的拖拽功能。这样不会出现图片拖进页面的时候，把图片打开。
 //            disableGlobalDnd: true,
@@ -212,6 +212,22 @@
 
         uploader.on('ready', function() {
             window.uploader = uploader;
+        });
+        
+        uploader.on( 'uploadAccept', function( file, response ) {
+        	$("#tipscontent").html(response.message);
+		    $("#dia").click();
+            if ( response.status == 'fail' ) {
+            	$("#dialog_close").click(function(){
+				  window.location.reload();
+				});
+                return false;
+            }else{
+            	$("#dialog_close").click(function(){
+            		window.location.href=path+"/isoimage/all"
+  				});
+            	return true;
+            }
         });
 
         // 当有文件添加进来时执行，负责view的创建
@@ -379,22 +395,7 @@
         }
 
         function updateTotalProgress() {
-            var loaded = 0,
-                total = 0,
-                spans = $progress.children(),
-                percent;
-
-            $.each( percentages, function( k, v ) {
-                total += v[ 0 ];
-                loaded += v[ 0 ] * v[ 1 ];
-            } );
-
-            percent = total ? loaded / total : 0;
-
-
-            spans.eq( 0 ).text( Math.round( percent * 100 ) + '%' );
-            spans.eq( 1 ).css( 'width', Math.round( percent * 100 ) + '%' );
-            updateStatus();
+             
         }
 
         function updateStatus() {
@@ -476,11 +477,11 @@
                 case 'finish':
                     stats = uploader.getStats();
                     if ( stats.successNum ) {
-                        window.location.href=path+"/isoimage/all"
+            //            window.location.href=path+"/isoimage/all"
                     } else {
                         // 没有成功的图片，重设
                         state = 'done';
-                        location.reload();
+             //           location.reload();
                     }
                     break;
             }
@@ -489,12 +490,11 @@
         }
 
         uploader.onUploadProgress = function( file, percentage ) {
-            var $li = $('#'+file.id),
-                $percent = $li.find('.progress span');
-
-            $percent.css( 'width', percentage * 100 + '%' );
-            percentages[ file.id ][ 1 ] = percentage;
-            updateTotalProgress();
+          
+           $("#progress2").attr("data-percentage",(percentage * 100).toFixed(0)+"%"); 
+		   $("#progress2").css("width",(percentage * 100).toFixed(0)+"%"); 
+		   $("#progress1").html((percentage * 100).toFixed(0)+""); 
+		   $("#progress1").attr("data-value",(percentage * 100).toFixed(0));
         };
 
         uploader.onFileQueued = function( file ) {

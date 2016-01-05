@@ -7,6 +7,7 @@
 <%
 	PackagePriceVO packagePrice = (PackagePriceVO)request.getAttribute("packagePrice");
 %>
+<!-- package_price_memory_mod.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/popup.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/metro/easyui.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css" /> 

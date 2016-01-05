@@ -8,6 +8,7 @@
 	EmailConfigVO mailConfigVO = (EmailConfigVO) request.getAttribute("mailConfigVO");
 
 %>
+<!-- email_config_mod.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/popup.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/js/easyui/themes/metro/easyui.css" />
 <div id="mail_config_mod_dlg_container">

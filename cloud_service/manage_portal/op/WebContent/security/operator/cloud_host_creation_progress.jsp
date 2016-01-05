@@ -10,7 +10,7 @@
 	Integer progress       = (Integer)request.getAttribute("progress");
 	Boolean creationStatus = (Boolean)request.getAttribute("creation_status");
 %>
-
+<!-- cloud_host_creation_progress.jsp -->
 <div id="cloud_host_view_detail_dlg_container">
 	<div id="cloud_host_view_detail_dlg" class="easyui-dialog" title="云主机创建进度"
 		style="width:300px; height:200px; padding:10px;"

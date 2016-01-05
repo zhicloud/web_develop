@@ -10,10 +10,9 @@
     LoginInfo loginInfo = LoginHelper.getLoginInfo(request, AppConstant.SYS_USER_TYPE_OPERATOR);
     String userId = loginInfo.getUserId();
 %>
-
+<!-- cloud_update_password.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/popup.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/js/easyui/themes/metro/easyui.css" />
-<!-- cloud_update_password.jsp -->
 
 <div id="cloud_host_update_password_dlg_container">
 	<div id="cloud_host_update_password_dlg" class="easyui-dialog" title="修改监控密码"

@@ -9,6 +9,7 @@
 	request.getSession().setAttribute("optionRegion", region);
 %>
 <!DOCTYPE html>
+<!-- package_cpu_list.jsp -->
 <html>
 	<head>
 		<meta charset="UTF-8" />

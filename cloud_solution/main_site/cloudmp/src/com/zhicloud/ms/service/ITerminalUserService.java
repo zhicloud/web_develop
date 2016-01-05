@@ -11,6 +11,7 @@ package com.zhicloud.ms.service;
 
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.vo.TerminalUserVO;
+import org.apache.poi.poifs.filesystem.NotOLE2FileException;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,7 @@ public interface ITerminalUserService {
 
 	public MethodResult addTerminalUser(Map<String, Object> parameter);
 
-	public MethodResult importTerminalUser(String filePath);
+	public MethodResult importTerminalUser(String filePath) throws NotOLE2FileException;
 
 	public MethodResult updateTerminalUserById(Map<String, Object> parameter);
 

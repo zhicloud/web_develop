@@ -1,5 +1,7 @@
 package com.zhicloud.ms.message.email;
 
+import com.zhicloud.ms.message.util.TextTemplate;
+
 import java.util.LinkedHashMap;
 
 /**
