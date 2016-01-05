@@ -57,5 +57,7 @@ public class AppInconstant {
 	public static String initUser = "false";
 	
 	public static BigInteger chunkSize = new BigInteger("524288000");
+	
+    public static final Integer init_maxcreating = 2;
 
 }

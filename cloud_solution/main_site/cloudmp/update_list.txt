@@ -1,4 +1,19 @@
 ******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20160105-1)
+修改时间：2016/01/05
+修改人：张本缘
+修改文件：
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/constant/AppInconstant.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostServiceImpl.java
+cloud_solution/main_site/cloudmp/WebContent/views/warehouse_concurrent.jsp
+cloud_solution/main_site/cloudmp/WebContent/views/sys_disk_image_manage.jsp
+
+主要变更：
+1、最大并发创建数相关bug修改;
+
+兼容性说明：
+	无
+******************************************************
 版本号：版本号：【云平台web】verion(2.1)(build 20160104-1)
 修改时间：2016/01/04
 修改人：张本缘
