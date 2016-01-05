@@ -11,6 +11,7 @@
 	for( CloudHostVO cloudHost : selfUseCloudHostList )
 	{
 %>
+<!-- self_use_cloud_host_query_part.jsp -->
 <div class="cloud_host_item_outer_box"
 	cloudHostId="<%=cloudHost.getId()%>"  cloudHostName="<%=cloudHost.getHostName()%>"  
 	style="

@@ -15,13 +15,29 @@
 <!-- package_price_manage.jsp -->
 <html>
 <head>
-<meta charset="UTF-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=9;IE=8;IE=7;" />
-<title>运营商 - 套餐项管理</title>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/default/easyui.css">
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css">
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/common.css">
+	<meta charset="UTF-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=9;IE=8;IE=7;" />
+	<title>运营商 - 套餐项管理</title>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/common.css">
+	<style type="text/css">.layout-panel-west .panel-body {border-right:1px solid #95B8E7;}</style>
+</head>
+
+<body>
+<div class="oper-wrap">
+   <div style="margin:0 0;"></div>
+   <div class="easyui-layout" style="width:auto;height:600px;">
+       <div id="p" data-options="region:'west'" title="菜单" style="width:180px;">
+           <ul id="package_tree"></ul>
+       </div>
+       <div data-options="region:'center'">
+       		<div id="package_tabs" class="easyui-tabs" data-options="fit:true,border:false" style="overflow: hidden;"></div>
+       </div>
+   </div>
+</div>
+<!-- JavaScript_start -->
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ext.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.util.js"></script>
@@ -534,64 +550,56 @@ function descColumnFormatter(val)
 	}
 }
 
-function formatFlow(val)
-{
+function formatFlow(val){
 	return FlowUtil.toFlowLabel(val, 0);
 }
-function cpuColumnFormatter(value, row, index)
-{
+
+function cpuColumnFormatter(value, row, index){
 	return "<div row_index='"+index+"'>\
 				<a href='#' class='datagrid_row_linkbutton modify_cpu_btn'>修改</a>\
 				<a href='#' class='datagrid_row_linkbutton delete_cpu_btn'>删除</a>\
 			</div>";
 }
 
-function memoryColumnFormatter(value, row, index)
-{
+function memoryColumnFormatter(value, row, index){
 	return "<div row_index='"+index+"'>\
 				<a href='#' class='datagrid_row_linkbutton modify_memory_btn'>修改</a>\
 				<a href='#' class='datagrid_row_linkbutton delete_memory_btn'>删除</a>\
 			</div>";
 }
 
-function diskColumnFormatter(value, row, index)
-{
+function diskColumnFormatter(value, row, index){
 	return "<div row_index='"+index+"'>\
 				<a href='#' class='datagrid_row_linkbutton modify_disk_btn'>修改</a>\
 				<a href='#' class='datagrid_row_linkbutton delete_disk_btn'>删除</a>\
 			</div>";
 }
 
-function bandwidthColumnFormatter(value, row, index)
-{
+function bandwidthColumnFormatter(value, row, index){
 	return "<div row_index='"+index+"'>\
 				<a href='#' class='datagrid_row_linkbutton modify_bandwidth_btn'>修改</a>\
 				<a href='#' class='datagrid_row_linkbutton delete_bandwidth_btn'>删除</a>\
 			</div>";
 }
 
-function vpcColumnFormatter(value, row, index)
-{
+function vpcColumnFormatter(value, row, index){
 	return "<div row_index='"+index+"'>\
 				<a href='#' class='datagrid_row_linkbutton modify_vpc_btn'>修改</a>\
 				<a href='#' class='datagrid_row_linkbutton delete_vpc_btn'>删除</a>\
 			</div>";
 }
 
-function packageColumnFormatter(value, row, index)
-{
+function packageColumnFormatter(value, row, index){
 	return "<div row_index='"+index+"'>\
 				<a href='#' class='datagrid_row_linkbutton delete_package_btn'>删除</a>\
 			</div>";
 }
 
-function formatCreateTime(val, row)
-{
+function formatCreateTime(val, row){
 	return $.formatDateString(val, "yyyyMMddHHmmssSSS", "yyyy-MM-dd HH:mm:ss");
 }
 
-function formatRegion(val, row)
-{  
+function formatRegion(val, row){  
 	if(val == 1){  
 	    return "广州";  
 	}else if(val == 2) {
@@ -602,19 +610,6 @@ function formatRegion(val, row)
 	 	return "香港";
 	}
 }
-
 </script>
-</head>
-<body>
-   <div style="margin:0 0;"></div>
-   <div class="easyui-layout" style="width:auto;height:600px;">
-       <div id="p" data-options="region:'west'" title="菜单" style="width:180px;">
-           <ul id="package_tree"></ul>
-       </div>
-       <div data-options="region:'center'">
-       		<div id="package_tabs" class="easyui-tabs" data-options="fit:true,border:false" style="overflow: hidden;">
-       		</div>
-       </div>
-   </div>
 </body>
 </html>

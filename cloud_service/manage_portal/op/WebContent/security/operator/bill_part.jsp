@@ -12,6 +12,7 @@
 	for( BillVO bill : billList )
 	{
 %>
+<!-- bill_part.jsp -->
 <div class="bill_item_outer_box"
 	billId="<%=bill.getId()%>"  
 	style="

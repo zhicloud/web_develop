@@ -7,6 +7,7 @@
 <%
 InviteCodeVO inviteCode = (InviteCodeVO)request.getAttribute("inviteCode");
 %>
+<!-- operator_invite_code_send_email.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/popup.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/js/easyui/themes/metro/easyui.css" />
 <div id="send_invite_code_email_dlg_container">

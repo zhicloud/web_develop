@@ -13,6 +13,7 @@
 	String bandwidthMax_2 = AppProperties.getValue("bandwidthMax_2","");
 	String bandwidthMax_4 = AppProperties.getValue("bandwidthMax_4","");
 %>
+<!-- package_price_bandwidth_add.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/popup.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/metro/easyui.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css" /> 

@@ -17,7 +17,7 @@
 	}
 %>
 <!DOCTYPE html>
-<!-- exported_export_manage.jsp -->
+<!-- oper_log_manage.jsp -->
 <html>
 	<head>
 		<meta charset="UTF-8" />
