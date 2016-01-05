@@ -10,7 +10,7 @@
 List<CloudHostVO> cloudHostList = (List<CloudHostVO>)request.getAttribute("cloudHostList");
 Integer userType = Integer.valueOf(request.getParameter("userType"));
 %>
-
+<!-- sys_disk_image_add.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/popup.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/metro/easyui.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css" /> 

@@ -17,7 +17,7 @@ List<SysDiskImageVO> sysDiskImageOptionsGZ = (List<SysDiskImageVO>)request.getAt
 List<SysDiskImageVO> sysDiskImageOptionsCD = (List<SysDiskImageVO>)request.getAttribute("sysDiskImageOptionsCD");
 List<SysDiskImageVO> sysDiskImageOptionsHK = (List<SysDiskImageVO>)request.getAttribute("sysDiskImageOptionsHK");
 %>
-
+<!-- warehouse_add.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/popup.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/metro/easyui.css" />
 

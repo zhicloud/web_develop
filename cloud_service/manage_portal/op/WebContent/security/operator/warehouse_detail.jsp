@@ -7,6 +7,7 @@
 	Integer userType = Integer.valueOf(request.getParameter("userType"));
 	String warehouseId = (String)request.getAttribute("warehouseId");
 %>
+<!-- warehouse_detail.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/popup.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/metro/easyui.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css" /> 

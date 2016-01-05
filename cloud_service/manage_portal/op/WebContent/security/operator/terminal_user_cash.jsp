@@ -7,7 +7,7 @@
 	String userid = (String)request.getAttribute("userid");
 %>
 <!DOCTYPE html>
-<!-- exported_export_manage.jsp -->
+<!-- terminal_user_cash.jsp -->
 <html>
 	<head>
 		<meta charset="UTF-8" />

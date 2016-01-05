@@ -17,7 +17,7 @@
 	String userId = (String)request.getAttribute("userId");
 %>
 <!DOCTYPE html>
-<!-- exported_export_manage.jsp -->
+<!-- recharge_record.jsp -->
 <html>
 	<head>
 		<meta charset="UTF-8" />

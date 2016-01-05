@@ -21,6 +21,7 @@
 	
 %>
 <!DOCTYPE html>
+<!-- cloud_disk_price_list.jsp -->
 <html>
 	<head>
 		<meta charset="UTF-8" />

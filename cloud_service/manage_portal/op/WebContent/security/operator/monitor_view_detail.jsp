@@ -4,7 +4,7 @@
 <%
 	JSONObject json = JSONObject.fromObject(request.getAttribute("objectdata"));
 %>
-
+<!-- monitor_view_detail.jsp -->
 <div id="vpc_detail_dlg_container">
 	<%
 		if("server".equals(json.get("type"))){

@@ -10,35 +10,34 @@
 <!DOCTYPE html>
 <!-- order_cloud_host_manage.jsp -->
 <html>
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=9;IE=8;IE=7;" />
-		
-		<title>运营商管理员 - 订购云主机管理</title>
-		
-		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/default/easyui.css">
-		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css">
-		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/common.css">
-		<style type="text/css">
-		#sys_disk_image_datagrid {
-			border: 0px solid red;
-			margin-left: -10px;
-		}
-		.panel-header {
-			border-top: 0px;
-			border-bottom: 1px solid #dddddd;
-		}
-		.panel-header,.panel-body {
-			border-left: 0px;
-			border-right: 0px;
-		}
-		.panel-body {
-			border-bottom: 0px;
-		}
-		</style>
-	</head>
-	<body style="visibility:hidden;">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=9;IE=8;IE=7;" />
+	<title>运营商管理员 - 订购云主机管理</title>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/common.css">
+	<style type="text/css">
+	#sys_disk_image_datagrid {
+		border: 0px solid red;
+		margin-left: -10px;
+	}
+	.panel-header {
+		border-top: 0px;
+		border-bottom: 1px solid #dddddd;
+	}
+	.panel-header,.panel-body {
+		border-left: 0px;
+		border-right: 0px;
+	}
+	.panel-body {
+		border-bottom: 0px;
+	}
+	</style>
+</head>
+
+<body style="visibility:hidden;">
 	<div class="iframe">
 		<form id="big_form" method="post">
 	

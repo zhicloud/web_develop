@@ -6,17 +6,17 @@
 	Integer userType = Integer.valueOf(request.getParameter("userType"));
 	LoginInfo loginInfo = LoginHelper.getLoginInfo(request, userType);
 %>
+<!-- monitor_resource_manage.jsp -->
 <html>
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=9;IE=8;IE=7;" />
-		
-		<title>资源监控 - 资源管理</title>
-		<link type="image/x-icon" rel="shortcut icon" href="favicon.ico"/>
-		<link type="text/css" rel="stylesheet"  href="<%=request.getContextPath()%>/css/global.css"/>
-		<link type="text/css" rel="stylesheet"  href="<%=request.getContextPath()%>/css/glbmonitor.css"/>
-	</head>
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=9;IE=8;IE=7;" />
+	<title>资源监控管理</title>
+	<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/global.css"/>
+	<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/glbmonitor.css"/>
+</head>
+
 <body class="no-js" style="overflow:hidden;">
 <div class="main">
 	<section class="m-right" id="r_info">
@@ -34,27 +34,16 @@
 				<div class="c-list" id="all_list">
 				</div>
 			</div>
-			<!-- <div class="m-content">
-				<div class="c-list" id="gz_list">
-				</div>
-			</div>
-			<div class="m-content">
-				<div class="c-list" id="xg_list">
-				</div>
-			</div>
-			<div class="m-content">
-				<div class="c-list" id="cd_list">
-				</div>
-			</div> -->
 		</div>
 	</section>
 </div>
+
 <!--JavaScript-->
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/glbmonitor.js"></script>
-	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ext.js"></script>
-	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.util.js"></script>
-	<script type="text/javascript" src="<%=request.getContextPath()%>/js/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ext.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.util.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script src="<%=request.getContextPath()%>/js/echarts-all.js"></script>
 <script type="text/javascript">
 var all_interval;

@@ -17,7 +17,7 @@
 	}
 %>
 <!DOCTYPE html>
-<!-- exported_export_manage.jsp -->
+<!-- consumptionlog.jsp -->
 <html>
 	<head>
 		<meta charset="UTF-8" />

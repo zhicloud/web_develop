@@ -6,29 +6,22 @@
 	Integer userType = Integer.valueOf(request.getParameter("userType"));
 	LoginInfo loginInfo = LoginHelper.getLoginInfo(request, userType);
 %>
+<!-- monitor_total_manage.jsp -->
 <html>
 <head>
 	<meta charset="UTF-8" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=9;IE=8;IE=7;" />
-	
 	<title>资源监控 - 系统监控</title>
 	<link type="image/x-icon" rel="shortcut icon" href="favicon.ico"/>
 	<link type="text/css" rel="stylesheet"  href="<%=request.getContextPath()%>/css/global.css"/>
 	<link type="text/css" rel="stylesheet"  href="<%=request.getContextPath()%>/css/glbmonitor.css"/>
-<style type="text/css">
-.pie_div{
-width:220px;height:220px; background: #fff;
-border-bottom: 1px solid #f5f9fb;
-margin-bottom:15px;
-}
-.pie_div2{
-width:380px;height:220px; background: #fff;
-border-bottom: 1px solid #f5f9fb;
-margin-bottom:15px;
-}
-</style>
+	<style type="text/css">
+	.pie_div{width:220px;height:220px; background: #fff;border-bottom: 1px solid #f5f9fb;margin-bottom:15px;}
+	.pie_div2{width:380px;height:220px; background: #fff;border-bottom: 1px solid #f5f9fb;margin-bottom:15px;}
+	</style>
 </head>
+
 <body class="no-js">
 <div class="main">
 	<section class="m-right">
@@ -54,6 +47,7 @@ margin-bottom:15px;
 		</div>
 	</section>
 </div>
+
 <!--JavaScript-->
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/glbmonitor.js"></script>
