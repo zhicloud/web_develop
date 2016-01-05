@@ -70,7 +70,7 @@ jQuery(function() {
 	        $percent.find(".green").html(progresswid  + '%');
     });
     uploader.on( 'uploadSuccess', function( file,response ) {
-    	updateMemoryData('iso');
+    	updateMemoryData('iso',response['zc-uuid']);
     	$('#closebtn').click();
     	$("#successconfirm").click();
     });
@@ -91,6 +91,8 @@ jQuery(function() {
 		 //headers['now_slice'] = obj.chunk;
     	 //headers['all_slice'] = obj.chunks;
     	 headers['zc-progress'] = "all_slice="+obj.chunks+",now_slice="+obj.chunk;
+    	 $("#chooseinfo").css("display","block");
+      	$("#chooseinfo").html("文件上传过程中，离开本页面，上传文件将中断");
     	 
      	});
      
@@ -109,11 +111,15 @@ jQuery(function() {
         } else if ( type === 'uploadFinished' ) {
             state = 'done';
         }
-
         if ( state === 'uploading' ) {
-            $btn.text('暂停上传');
-        } else {
-            $btn.text('开始上传');
+            $btn.text('正在上传');
+            $btn[0].disabled = true;
+        }else if(state === 'paused'){
+            $btn.text('正在上传');
+            $btn[0].disabled = true;
+        }else{
+        	$btn.text('开始上传');
+        	$btn[0].disabled = false;
         }
     });
     $btn.on( 'click', function() {

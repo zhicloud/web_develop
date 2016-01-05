@@ -181,7 +181,7 @@
                                          <option value="4">VPC专用镜像</option>
                                      </c:if>
                                  </select>
-                              <select id="status" class="chosen-select form-control" style="width: 150px;">
+                              <%-- <select id="status" class="chosen-select form-control" style="width: 150px;">
                                   <option value="">状态(全部)</option>
                                   <c:if test="${status == 1}">
                                       <option value="1" selected="selected">未验证</option>
@@ -195,7 +195,7 @@
                                   <c:if test="${status != 2}">
                                       <option value="2">已验证</option>
                                   </c:if>
-                              </select>
+                              </select> --%>
                               <%--</span>--%>
                               <%--<span class="input-group-btn">--%>
                                 <button id="search_btn" class="btn btn-default" type="button">查看</button>
@@ -246,15 +246,16 @@
                             &nbsp;                                                                        
                             </c:if>
                             ${image.typeName}</td> 
-                            <td  class="cut">${image.imageTypeName}</td>
                             <td  class="cut">
                             <c:if test="${image.fileType == 0}">
                              raw                                                                   
                             </c:if>
                             <c:if test="${image.fileType == 1}">
-                             qcw2                                                                   
+                             qcow2                                                                   
                             </c:if>
                             </td> 
+                            <td  class="cut">${image.imageTypeName}</td>
+
                             <td class="center">
                             <c:if test="${image.createTimeDate == null}">
                             &nbsp;                                                                        
@@ -652,9 +653,9 @@
              var name = $("#name").val();
              var image_type = $("#image_type").val();
              var type = $("#type").val();
-             var status = $("#status").val();
+             //var status = $("#status").val();
 
-             window.location.href = encodeURI(path + "/image/imagelist?name="+name+"&image_type="+image_type+"&type="+type+"&status="+status);
+             window.location.href = encodeURI(path + "/image/imagelist?name="+name+"&image_type="+image_type+"&type="+type/* +"&status="+status */);
 
          });
 
@@ -846,11 +847,11 @@
     //上传镜像到SS
     function uploadImage(){
     	if(!checkLoginOut()) return;
-    	if(serverIP==undefined||serverIP==""){
+    	if(serverIP==undefined||serverIP==""||serverIP=="none"){
 		  	  $("#tipscontent").html("上传地址不可用");
 		      $("#dia").click(); 
 		      return;
-  		}
+		}
     	if(checkIPAvailable()){
     		if(uploadHasPrivilege('disk')){
     			$("#uploadimage").click();
