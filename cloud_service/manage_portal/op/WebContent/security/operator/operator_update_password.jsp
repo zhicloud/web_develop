@@ -12,74 +12,58 @@
 <!DOCTYPE html>
 <!-- operator_update_password.jsp -->
 <html>
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=9;IE=8;IE=7;" />
-		
-		<title>密码修改</title>
-		
-		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/default/easyui.css">
-		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css">
-		<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/common.css">
-		<style type="text/css">
-		/************/
-		.panel-header {
-			border-top: 0px;
-			border-bottom: 1px solid #dddddd;
-		}
-		.panel-header, 
-		.panel-body {
-			border-left: 0px;
-			border-right: 0px;
-		}
-		.panel-body {
-			border-bottom: 0px;
-		}
-		</style>
-	</head>
-	<body>
-		<form id="operator_update_password" method="post">
-		
-			<div class="panel-header">
-				<div class="panel-title">修改密码</div>
-				<div class="panel-tool"></div>
-			</div>
-			
-			<input type="hidden" id="operator_id" name="operator_id" value="<%=operator.getId()%>" />
-			
-			<table style="margin: 10px 10px 10px 20px;">
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=9;IE=8;IE=7;" />
+	<title>密码修改</title>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/common.css">
+</head>
+
+<body>
+<div class="oper-wrap">
+	<form id="operator_update_password" method="post">
+		<div class="panel-header">
+			<div class="panel-title">修改密码</div>
+			<div class="panel-tool"></div>
+		</div>
+		<input type="hidden" id="operator_id" name="operator_id" value="<%=operator.getId()%>" />
+		<div style="background:#fff;width:100%;padding:10px 0;">
+			<table style="margin-left:10px;">
 				<tr>
 					<td style="vertical-align:middle; text-align:right;">原密码：</td>
 					<td style="padding:5px 0 5px 0">
-						<input type="password" id="old_password"  name="old_password" value="" onblur="checkOldPassword()"/>
+						<input type="password" id="old_password"  name="old_password" class="messager-input" style="width:180px;" value="" onblur="checkOldPassword()"/>
 					</td>
 					<td class="inputtip" id="operator-tip-oldPassword"></td>
 				</tr>
 				<tr>
 					<td style="vertical-align:middle; text-align:right;">新密码：</td>
 					<td style="padding:5px 0 5px 0">
-						<input type="password" id="password" name="password" value="" onblur="checkPassword()"/>
+						<input type="password" id="password" name="password" value="" class="messager-input" style="width:180px;" onblur="checkPassword()"/>
 					</td>
 					<td><span id="operator-tip-password"></span></td>
 				</tr>
 				<tr>
 					<td style="vertical-align:middle; text-align:right;">密码确认：</td>
 					<td style="padding:5px 0 5px 0">
-						<input type="password" id="confirm" name="confirm" value="" onblur="checkPasswordConf()"/>
+						<input type="password" id="confirm" name="confirm" value="" class="messager-input" style="width:180px;" onblur="checkPasswordConf()"/>
 					</td>
 					<td><span id="operator-tip-confirm"></span></td>
 				</tr>
 				<tr>
 					<td></td>
 					<td align="right" style="padding:5px 0 5px 0">
-						<a href="#" class="easyui-linkbutton" iconCls="icon-save" id="save_btn">提交修改 </a>
+						<a class="easyui-linkbutton oper-btn-sty f-ml10" href="javascript:;" data-options="iconCls:'icon-save'" id="save_btn">提交修改 </a>
 					</td>
 				</tr>
 			</table>
-			
-		</form>
-	</body>
+		</div>
+	</form>
+</div>
+</body>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.ext.js"></script>
 	<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.util.js"></script>

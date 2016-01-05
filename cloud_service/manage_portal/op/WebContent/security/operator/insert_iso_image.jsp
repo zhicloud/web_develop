@@ -14,7 +14,7 @@
 	LoginInfo loginInfo = LoginHelper.getLoginInfo(request);
 	List<IsoImageData> isoImages = IsoImagePoolManager.getIsoImagePool().getAllIsoImageDataByRegion(cloudHostVO.getRegion());
 %>
-
+<!-- insert_iso_image.jsp -->
 <div id="operator_self_use_cloud_host_insert_iso_image_dlg_container">
 
 	<div id="operator_self_use_cloud_host_insert_iso_image_dlg" class="easyui-dialog" title="加载光盘"

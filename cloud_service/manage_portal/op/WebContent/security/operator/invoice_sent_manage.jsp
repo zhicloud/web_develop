@@ -7,7 +7,7 @@
 
 %>
 <!DOCTYPE html>
-<!-- sent_sent_manage.jsp -->
+<!-- invoice_sent_manage.jsp -->
 <html>
 	<head>
 		<meta charset="UTF-8" />

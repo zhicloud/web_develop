@@ -1,9 +1,4 @@
 /* 全屏自适应布局  */
-html {width: 100%;height: 100%;_height:auto;_padding:50px 0 0;overflow:hidden;margin:0;background: #fff;}
-body {width: 100%;height: 100%;overflow:hidden;margin:0;font: 12px/24px "Microsoft YaHei", Helvetica, Arial, sans-serif;color: #3c464c;-webkit-font-smoothing: antialiased;-webkit-backface-visibility: hidden;}
-a {color: #48a0eb;cursor: pointer;transition: color 0.15s linear;-moz-transition: color 0.15s linear;-o-transition: color 0.15s linear;-webkit-transition: color 0.15s linear;}
-a:hover {color: #2573e8;}
-img {max-width: 100%;height: auto;}
 .g-doc {min-height: 100%;overflow: hidden;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}
 .g-hd,.g-sd,.g-mn{position:absolute;left:0;}
 .g-hd{width:100%;}

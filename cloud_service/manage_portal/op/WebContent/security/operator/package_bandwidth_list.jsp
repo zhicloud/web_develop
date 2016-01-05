@@ -28,6 +28,7 @@
 	request.getSession().setAttribute("optionRegion", region);
 %>
 <!DOCTYPE html>
+<!-- package_bandwidth_list.jsp -->
 <html>
 	<head>
 		<meta charset="UTF-8" />

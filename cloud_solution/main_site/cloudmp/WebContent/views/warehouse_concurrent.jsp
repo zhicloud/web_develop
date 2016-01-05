@@ -107,15 +107,16 @@
                           <tr class="odd gradeX">
 <!-- 						          <td> -->
 <!-- 									<div class="checkbox check-transparent"> -->
-<%-- 									  <input type="checkbox" value="${data.uuid }" id="${data.uuid }"> --%>
-<%-- 									  <label for="${data.uuid }"></label> --%>
-<%-- 									  <input type="hidden" name="hiddenval" value="${data.max_creating }"> --%>
+<!-- 									  <input type="checkbox" value="${data.uuid }" id="${data.uuid }"> -->
+<!-- 									  <label for="${data.uuid }"></label> -->
+<!-- 									  <input type="hidden" name="hiddenval" value="${data.max_creating }"> -->
 <!-- 									</div> -->
 <!--                                  </td> -->
                                   <td class="cut">
                                   ${data.uuid }
                                   </td>
                                   <td class="cut">
+                                  <input type="hidden" name="hiddenval" value="${data.max_creating }">
                                   ${data.name }
                                   </td>
                                   <td class="cut">

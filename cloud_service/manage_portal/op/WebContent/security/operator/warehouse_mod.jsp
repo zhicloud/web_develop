@@ -16,7 +16,7 @@ DiskPackageOptionVO diskOption = (DiskPackageOptionVO)request.getAttribute("disk
 List<SysDiskImageVO> sysDiskImageOptions = (List<SysDiskImageVO>)request.getAttribute("sysDiskImageOptions");
 CloudHostWarehouseDefinitionVO warehouseVO = (CloudHostWarehouseDefinitionVO)request.getAttribute("warehouse");
 %>
-
+<!-- warehouse_mod.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/popup.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/metro/easyui.css" />
 

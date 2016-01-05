@@ -19,6 +19,7 @@ List<MemoryPackageOptionVO> memoryOptions = (List<MemoryPackageOptionVO>)request
 List<SysDiskImageVO> sysDiskImageOptions = (List<SysDiskImageVO>)request.getAttribute("sysDiskImageOptions");
 DiskPackageOptionVO diskOption = (DiskPackageOptionVO)request.getAttribute("diskOption");
 %>
+<!-- cloud_host_create.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/popup.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/metro/easyui.css" />
 
