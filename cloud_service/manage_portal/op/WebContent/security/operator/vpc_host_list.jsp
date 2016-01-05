@@ -9,7 +9,7 @@
 	VpcBaseInfoVO vpcBaseInfoVO = (VpcBaseInfoVO)request.getAttribute("vpc");
 %>
 <!DOCTYPE html>
-<!-- exported_export_manage.jsp -->
+<!-- vpc_host_list.jsp -->
 <html>
 	<head>
 		<meta charset="UTF-8" />

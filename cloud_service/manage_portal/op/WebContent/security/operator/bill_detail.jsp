@@ -7,6 +7,7 @@
     Integer userType = AppConstant.SYS_USER_TYPE_OPERATOR;
 	List<CloudHostBillDetailVO> chbdList = (List<CloudHostBillDetailVO>)request.getAttribute("cloudHostBillDetailList");
 %>
+<!-- bill_detail.jsp -->
 <div id="bill_detail_dlg_container">
 
 	<style type="text/css" scoped="scoped">

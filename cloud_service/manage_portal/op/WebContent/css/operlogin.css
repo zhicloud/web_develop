@@ -1,0 +1,94 @@
+/* reset CSS */
+html, body, div, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, pre, form, dfn, del, p, blockquote, fieldset, input, textarea, select, article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, button, canvas, video {
+    margin: 0;
+    padding: 0;
+}
+h1, h2, h3, h4, h5, h6, pre, code, address, caption, cite, code, th, dfn, del {
+    font-weight: normal;
+    font-style: normal;
+}
+ul, ol {
+    list-style: none;
+}
+fieldset, img {
+    border: none;
+}
+caption, th {
+    text-align: left;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+input[type="button"], input[type="submit"], input[type="reset"], button {
+    cursor: pointer;
+    line-height: normal;
+}
+button, input {
+    line-height: normal;
+}
+input[type="hidden"], [hidden], .hidden {
+    display: none;
+}
+textarea {
+    overflow: auto;
+    resize: none;
+}
+article, aside, details, figcaption, figure, footer, header, nav, section, .clearfix {
+    display: block;
+}
+audio, canvas, video {
+    display: inline-block;
+}
+a > img {
+    vertical-align: bottom;
+}
+strong, b {
+    font-weight: bold;
+}
+em, i {
+    font-style: italic;
+}
+del {
+    text-decoration: line-through;
+}
+:focus {
+    outline: none;
+}
+body {
+    height: 100%;
+    font: 12px/24px "Microsoft YaHei", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -webkit-backface-visibility: hidden;
+}
+.f-pt25{padding-top:25px;}
+
+/* login CSS */
+.container{width:100%;height:100%;background:#f0f5f8;display: table;}
+.login-wraper{width:100%; height:100%; display:table-cell; vertical-align:middle;}
+.lg-box{width:850px;height:500px;background:#fff;margin:0 auto;overflow:hidden;}
+.sec-left-cont{float:left;width:425px;padding-top:93px;}
+.sec-left-cont img{display:block;margin:0 auto;height:297px;}
+.sec-right-cont{float:right;width:395px;padding-left:30px;padding-top:81px;}
+.sec-right-cont .l-rc-tit{position:relative;}
+.sec-right-cont .l-rc-tit img.rct-logo{display:block;height:52px;}
+.sec-right-cont .l-rc-tit h3{position:absolute;bottom:0;left:66px;line-height:20px;}
+input.ipt-sty{display:inline-block;width:272px;height:34px;line-height:34px;padding:5px 10px;border:1px solid #dcdcdc;}
+input.wid80{width:98px;}
+.sec-right-cont .l-rc-form{padding-top:20px;}
+.sec-right-cont .l-rc-form a.btn-login{display:block;text-decoration:none;font-size:14px;background:#2573e8;color:#fff;width:294px;height:46px;line-height:46px;text-align:center;-moz-transition: background 0.15s linear;-o-transition: background 0.15s linear;-webkit-transition: background 0.15s linear;transition: background 0.15s linear;}
+.sec-right-cont .l-rc-form a.btn-login:hover{background:#1d6ade;}
+.sec-right-cont .l-rc-form ul{overflow:hidden;}
+.sec-right-cont .l-rc-form ul li{margin-bottom:10px;}
+.sec-right-cont .l-rc-form img.verf-code{ display:inline-block;vertical-align:middle;border:1px solid #777777; width:60px; height:20px; margin-bottom:2px;margin-left:5px;}
+.sec-right-cont .l-rc-form a.change-code{display:inline-block;line-height:22px;margin-left:5px;}
+
+
+
+
+
+
+
+
+
+

@@ -7,6 +7,7 @@
 AgentVO agent = (AgentVO)request.getAttribute("agentVO");
 String resetPassword = (String)request.getAttribute("resetPassword");
 %>
+<!-- agent_reset_password.jsp -->
 <div id="agent_reset_password_dlg_container">
 	<div id="agent_reset_password_dlg" class="easyui-dialog" title="重置密码" 
 			style="

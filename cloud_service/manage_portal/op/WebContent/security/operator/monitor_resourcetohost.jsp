@@ -10,6 +10,7 @@
 	LoginInfo loginInfo = LoginHelper.getLoginInfo(request, userType);
 %>
 <!DOCTYPE html>
+<!-- monitor_resourcetohost.jsp -->
 <html>
 	<head>
 		<meta charset="UTF-8" />

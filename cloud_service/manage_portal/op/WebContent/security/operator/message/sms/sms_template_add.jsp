@@ -17,14 +17,11 @@
 	<meta charset="UTF-8" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=9;IE=8;IE=7;" />
-
 	<title>运营商管理员 - 短信模版管理</title>
-
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/default/easyui.css">
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/common.css">
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/editor/themes/default/default.css" />
-
 	<style type="text/css">
 		/************/
 		.panel-header {
