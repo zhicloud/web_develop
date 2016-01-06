@@ -8,6 +8,7 @@
 	LoginInfo loginInfo = LoginHelper.getLoginInfo(request);
 	AgentVO agent = (AgentVO) request.getAttribute("agent");
  %>
+<!-- agent_recharge.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/popup.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/js/easyui/themes/metro/easyui.css" />
 <div id="invite_code_add_dlg_container">

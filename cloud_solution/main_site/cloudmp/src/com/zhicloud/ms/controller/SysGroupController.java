@@ -1,21 +1,5 @@
 package com.zhicloud.ms.controller;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.service.ISysGroupService;
@@ -24,6 +8,16 @@ import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.vo.SysGroupVO;
 import com.zhicloud.ms.vo.SysUser;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -183,10 +177,10 @@ public class SysGroupController {
 		parameter.put("user_id_out", userIdOut);
 		MethodResult mr = sysGroupService.manageItems(parameter);
 		if(MethodResult.SUCCESS.equals(mr.status)){
-	        operLogService.addLog("群组信息", "修改群组"+mr.getProperty("names")+"成员成功", "1", "1", request);
+	        operLogService.addLog("群组信息", "修改群组"+mr.getProperty("name")+"成员成功", "1", "1", request);
 			return new MethodResult(MethodResult.SUCCESS, "更新成功");
 		}else{
-	          operLogService.addLog("群组信息", "修改群组"+mr.getProperty("names")+"成员失败", "1", "2", request);
+	          operLogService.addLog("群组信息", "修改群组"+mr.getProperty("name")+"成员失败", "1", "2", request);
 			return new MethodResult(MethodResult.FAIL, "更新失败");
 		}
 		

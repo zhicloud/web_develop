@@ -10,7 +10,7 @@
 	LoginInfo loginInfo = LoginHelper.getLoginInfo(request);
 	VpcBaseInfoVO vpcBaseInfoVO = (VpcBaseInfoVO)request.getAttribute("vpc");
 %>
-
+<!-- vpc_detail.jsp -->
 <div id="vpc_detail_dlg_container">
 	<div id="vpc_detail_dlg" class="easyui-dialog" title="专属云详情-[<%=vpcBaseInfoVO.getDisplayName() %>]"
 		style="width:800px; height:300px; padding:10px;"

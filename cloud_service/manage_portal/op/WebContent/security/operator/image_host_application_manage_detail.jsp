@@ -8,7 +8,7 @@
 	LoginInfo loginInfo = LoginHelper.getLoginInfo(request);
 	ImageHostApplicationVO imageHostApplication = (ImageHostApplicationVO)request.getAttribute("imageHostApplication");
 %>
-
+<!-- image_host_application_manage_detail.jsp -->
 <div id="vpc_detail_dlg_container">
 	<div id="vpc_detail_dlg" class="easyui-dialog" title="申请详情"
 		style="width:800px; height:300px; padding:10px;"

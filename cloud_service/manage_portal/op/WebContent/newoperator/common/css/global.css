@@ -67,4 +67,9 @@ a{text-decoration: none;}
 .f-pr05{padding-right:.25rem;}.f-pr10{padding-right:.5rem;}.f-pr15{padding-right:.75rem;}.f-pr20{padding-right:1rem;}
 .f-pb05{padding-bottom:.25rem;}.f-pb10{padding-bottom:.5rem;}.f-pb15{padding-bottom:.75rem;}.f-pb20{padding-bottom:1rem;}
 .f-pl05{padding-left:.25rem;}.f-pl10{padding-left:.5rem;}.f-pl15{padding-left:.75rem;}.f-pl20{padding-left:1rem;}
-
+/* total css*/
+html {width: 100%;height: 100%;_height:auto;_padding:50px 0 0;overflow:hidden;margin:0;}
+body {width: 100%;height: 100%;overflow:hidden;margin:0;font: 12px/24px "Microsoft YaHei", Helvetica, Arial, sans-serif;color: #3c464c;-webkit-font-smoothing: antialiased;-webkit-backface-visibility: hidden;}
+a {color: #48a0eb;cursor: pointer;transition: color 0.15s linear;-moz-transition: color 0.15s linear;-o-transition: color 0.15s linear;-webkit-transition: color 0.15s linear;}
+a:hover {color: #2573e8;}
+img {max-width: 100%;height: auto;}

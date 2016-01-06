@@ -2666,6 +2666,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
                             newCloudHostData.setOuterIp(ip[1]);
                             newCloudHostData.setRunningStatus(transforRunningStatus(runningStatus));
                             newCloudHostData.setLastOperStatus(0);
+                            newCloudHostData.setPoolId((String) computerObject.get("uuid"));
                             CloudHostPoolManager.getCloudHostPool().put(newCloudHostData);
                             // 如果running_status变了，则更新数据库
                             if (oldCloudHostData == null || (oldCloudHostData != null && NumberUtil.equals(newCloudHostData.getRunningStatus(), oldCloudHostData.getRunningStatus()) == false)) {

@@ -704,6 +704,7 @@
         $('.check-toggler').on('click', function(){
           $(this).toggleClass('checked');
         });
+        $("#warehouseId_chosen").css("width","250px");
 
 //        jQuery("#file").change(function(){
 //        	$("#loader").delay(500).fadeOut(300);
