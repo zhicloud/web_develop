@@ -8,6 +8,7 @@ request.getSession().setAttribute("thisType","4");
 TerminalUserVO terminalUser = (TerminalUserVO)request.getAttribute("terminalUserVO");
 String resetPassword = (String)request.getAttribute("resetPassword");
 %>
+<!-- terminal_user_reset_password.jsp -->
 <div id="terminal_user_reset_password_dlg_container">
 	<div id="terminal_user_reset_password_dlg" class="easyui-dialog" title="重置密码" 
 			style="

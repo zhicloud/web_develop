@@ -11,7 +11,7 @@
     BigDecimal i = new BigDecimal("1073741824");
     BigDecimal j = new BigDecimal("1000000");
 %>
-
+<!-- order_cloud_host_manage_detail.jsp -->
 <div id="cloud_host_view_detail_dlg_container">
 	<div id="cloud_host_view_detail_dlg" class="easyui-dialog" title="订购云主机详情"
 		style="width:800px; height:600px; padding:10px;"

@@ -13,7 +13,7 @@
 	List<CloudHostOpenPortVO> ports = (List<CloudHostOpenPortVO>)request.getAttribute("ports");
 	CloudHostData cloudHostData = CloudHostPoolManager.getCloudHostPool().getByRealHostId(cloudHost.getRealHostId());
 %>
-
+<!-- cloud_host_view_detail.jsp -->
 <div id="cloud_host_view_detail_dlg_container">
 	<div id="cloud_host_view_detail_dlg" class="easyui-dialog" title="云主机详情-[<%=cloudHost.getHostName() %>]"
 		style="width:800px; height:600px; padding:10px;"

@@ -10,7 +10,7 @@
 	LoginInfo loginInfo = LoginHelper.getLoginInfo(request);
 	TerminalUserVO terminalUserVO = (TerminalUserVO)request.getAttribute("user");
 %>
-
+<!-- user_detail.jsp -->
 <div id="vpc_detail_dlg_container">
 	<div id="vpc_detail_dlg" class="easyui-dialog" title="用户详情"
 		style="width:800px; height:300px; padding:10px;"

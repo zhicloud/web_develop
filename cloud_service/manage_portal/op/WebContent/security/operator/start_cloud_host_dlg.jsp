@@ -15,7 +15,7 @@
 	LoginInfo loginInfo = LoginHelper.getLoginInfo(request);
 	List<IsoImageData> isoImages = IsoImagePoolManager.getIsoImagePool().getAllIsoImageDataByRegion(cloudHostVO.getRegion());
 %>
-
+<!-- start_cloud_host_dlg.jsp -->
 <div id="start_cloud_host_dlg_container">
 
 	<div id="start_cloud_host_dlg" class="easyui-dialog" title="启动方式"

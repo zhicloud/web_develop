@@ -14,6 +14,7 @@
 	request.getSession().setAttribute("optionRegion", region);
 %>
 <!DOCTYPE html>
+<!-- vpc_price_list.jsp -->
 <html>
 	<head>
 		<meta charset="UTF-8" />

@@ -8,6 +8,7 @@
 	LoginInfo loginInfo = LoginHelper.getLoginInfo(request);
     CloudHostVO host = (CloudHostVO) request.getAttribute("host");
  %>
+<!-- cloud_host_description.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/popup.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/js/easyui/themes/metro/easyui.css" />
 <div id="invite_code_add_dlg_container">
