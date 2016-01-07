@@ -78,7 +78,6 @@
 			<set>
 				name = #{name},
 				cloud_host_config_model_id = #{cloudHostConfigModelId},
-				total_amount = #{totalAmount},
 				modify_time = #{modifyTime}
 			</set>
 		where id = #{id}

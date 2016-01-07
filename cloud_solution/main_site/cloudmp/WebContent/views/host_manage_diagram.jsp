@@ -98,7 +98,11 @@
             <td>外网IP：${server.outerIp }    
             </td>
             <td></td>
-            <td>外网端口：${server.outerPort }</td>
+            <td>外网端口：
+            <c:if test="${server.outerPort!=0 }">
+            	${server.outerPort}
+            </c:if>
+            </td>
           </tr>
           <tr>
             <td>内网IP：${server.innerIp }    

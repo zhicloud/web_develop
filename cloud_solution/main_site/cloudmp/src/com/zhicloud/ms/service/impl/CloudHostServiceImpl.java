@@ -1465,7 +1465,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             String[] uuids = new String[1];
             uuids[0] = host.getRealHostId();
             this.sqlSession.getMapper(QosMapper.class).deleteQosByHostUuids(uuids);
-            operLogService.addLog("云主机", "删除云主机"+host.getDisplayName()+"成功", "1", "2", request);
+            operLogService.addLog("云主机", "删除云主机"+host.getDisplayName()+"成功", "1", "1", request);
 
 			return new MethodResult(MethodResult.SUCCESS, "删除成功");
 		} catch (MalformedURLException e) {
@@ -2666,6 +2666,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
                             newCloudHostData.setOuterIp(ip[1]);
                             newCloudHostData.setRunningStatus(transforRunningStatus(runningStatus));
                             newCloudHostData.setLastOperStatus(0);
+                            newCloudHostData.setPoolId((String) computerObject.get("uuid"));
                             CloudHostPoolManager.getCloudHostPool().put(newCloudHostData);
                             // 如果running_status变了，则更新数据库
                             if (oldCloudHostData == null || (oldCloudHostData != null && NumberUtil.equals(newCloudHostData.getRunningStatus(), oldCloudHostData.getRunningStatus()) == false)) {
