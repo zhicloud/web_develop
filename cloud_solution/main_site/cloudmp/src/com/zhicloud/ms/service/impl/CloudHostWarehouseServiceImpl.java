@@ -142,7 +142,6 @@ import com.zhicloud.ms.vo.TerminalUserVO;
 			condition.put("id", id);
 			condition.put("cloudHostConfigModelId", chw.getCloudHostConfigModelId());
 			condition.put("name", chw.getName());
-			condition.put("totalAmount", chw.getTotalAmount());
 			condition.put("modifyTime", DateUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
 			result = chwMapper.updateWarehouse(condition);
 			if(result>0){
@@ -275,6 +274,53 @@ import com.zhicloud.ms.vo.TerminalUserVO;
 			}
 		}
         operLogService.addLog("主机仓库", "主机仓库分配主机给用户成功", "1", "1", request);
+		return new MethodResult(MethodResult.SUCCESS,"添加成功") ;
+	}
+	
+	@Override
+	@Transactional(readOnly=false)
+	public MethodResult addAmount(String id, String addAmount,String poolId,String forJob) {
+		logger.debug("CloudHostWarehouseServiceImpl.addAmount()");
+		if(StringUtil.isBlank(addAmount) || "0".equals(addAmount)){
+			return new MethodResult(MethodResult.FAIL,"添加的数量不能为0");
+		}
+		Integer myAddAmount = Integer.valueOf(addAmount);
+		CloudHostWarehouseMapper chwMapper = this.sqlSession.getMapper(CloudHostWarehouseMapper.class);
+		CloudHostConfigModelMapper chcmMapper = this.sqlSession.getMapper(CloudHostConfigModelMapper.class);
+		CloudHostMapper chMapper = this.sqlSession.getMapper(CloudHostMapper.class);
+		CloudHostWarehouse chw = this.getById(id);
+		Map<String,Object> addCondition = new HashMap<String,Object>();
+		addCondition.put("id", id);
+		addCondition.put("addAmount",myAddAmount);
+		addCondition.put("modifyTime",DateUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+		int n = chwMapper.addAmount(addCondition);
+		if(n>0){
+			Integer oldTotalAmount = chw.getTotalAmount();
+			CloudHostConfigModel chcm = chcmMapper.getById(chw.getCloudHostConfigModelId());
+			String random = RandomPassword.getRandomPwd(3).toUpperCase();
+			for(int i=0;i<myAddAmount;i++){
+				Integer curIndex = oldTotalAmount+i;
+				Map<String,Object> cloudHostData = new HashMap<String,Object>();
+				String curId = StringUtil.generateUUID();
+				cloudHostData.put("id",curId);
+				cloudHostData.put("warehouseId",chw.getId());
+				cloudHostData.put("hostName",curId+curIndex);
+				cloudHostData.put("displayName",chw.getName()+"-"+random+"-"+curIndex);
+				cloudHostData.put("account","warehouse");
+				cloudHostData.put("password",RandomPassword.getRandomPwd(16));
+				cloudHostData.put("cpuCore",chcm.getCpuCore());
+				cloudHostData.put("memory",chcm.getMemory());
+				cloudHostData.put("sysImageId",chcm.getSysImageId());
+				cloudHostData.put("sysDisk",chcm.getSysDisk());
+				cloudHostData.put("dataDisk",chcm.getDataDisk());
+				cloudHostData.put("bandwidth",chcm.getBandwidth());
+				cloudHostData.put("sysImageName",chcm.getSysImageName());
+				cloudHostData.put("status",0);
+				cloudHostData.put("type",1);
+				cloudHostData.put("poolId",poolId);
+				chMapper.insertCloudHost(cloudHostData);
+			}
+		}
 		return new MethodResult(MethodResult.SUCCESS,"添加成功") ;
 	}
 	@Override

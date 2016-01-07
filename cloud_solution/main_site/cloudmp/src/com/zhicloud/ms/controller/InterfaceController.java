@@ -463,6 +463,7 @@ public class InterfaceController {
             ServiceUtil.writeFailMessage(response.getOutputStream(), "fail");
             return;
         } 
+        logger.info("user "+username+" come to keepalive ");
         info.setLastAliveTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
 //        boxRealInfoService.addOrUpdateBoxInfo(info);
         BoxRealInfoCacheManager.singleton().getCache().put(info);
