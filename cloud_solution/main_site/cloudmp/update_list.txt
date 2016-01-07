@@ -1,4 +1,17 @@
 ******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20160106-1)
+修改时间：2016/01/06
+修改人：张本缘
+修改文件：
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/SysWarnServiceImpl.java
+cloud_solution/main_site/cloudmp/WebContent/views/monitor/sys_warnvalue_edit.jsp.jsp
+
+主要变更：
+1、告警规则bug修改;
+
+兼容性说明：
+	无
+******************************************************
 版本号：版本号：【云平台web】verion(2.1)(build 20160105-1)
 修改时间：2016/01/05
 修改人：张本缘

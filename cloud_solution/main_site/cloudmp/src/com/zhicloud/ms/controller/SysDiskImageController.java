@@ -380,8 +380,11 @@ public class SysDiskImageController {
 	 */
 	@RequestMapping(value="/update",method=RequestMethod.GET)
     @ResponseBody
-    public MethodResult updateImage(String type, HttpServletRequest request) {
-        if ("disk".equals(type)) {
+    public MethodResult updateImage(String type,String imageId, HttpServletRequest request) {
+       if(!StringUtil.isBlank(imageId)){
+           AppInconstant.uploadImage.put(imageId, imageId);
+       }
+	    if ("disk".equals(type)) {
             sysDiskImageService.initSysDiskImageFromHttpGateway();
         } else if ("iso".equals(type)) {
             try {
