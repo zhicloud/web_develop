@@ -28,7 +28,7 @@ jQuery(function() {
         chunkSize:chunkSize,
 	    accept: {
 	            title: 'DISK',
-	            extensions: 'iso,img,qcow2',
+	            extensions: 'img,qcow2',
 	            mimeTypes: 'iso/*'
 	        }
     });
@@ -63,7 +63,7 @@ jQuery(function() {
 	        $percent.find(".green").html(progresswid  + '%');
     });
     uploader.on( 'uploadSuccess', function( file,response ) {
-    	updateMemoryData('disk');
+    	updateMemoryData('disk',response['zc-uuid']);
     	$('#closebtn').click();
     	$("#successconfirm").click();
     });
@@ -84,6 +84,8 @@ jQuery(function() {
 		 //headers['now_slice'] = obj.chunk;
     	 //headers['all_slice'] = obj.chunks;
     	 headers['zc-progress'] = "all_slice="+obj.chunks+",now_slice="+obj.chunk;
+    	 $("#chooseinfo").css("display","block");
+     	$("#chooseinfo").html("文件上传过程中，离开本页面，上传文件将中断");
      	});
 /*     uploader.on( 'error', function( handler ) {
      	

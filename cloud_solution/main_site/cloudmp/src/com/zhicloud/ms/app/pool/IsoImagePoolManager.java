@@ -75,8 +75,7 @@ public class IsoImagePoolManager
 					isoImageData.setDescription(description);
 					isoImageData.setSize(size);
 					isoImageData.setStatus(status);
-					isoImageData.setRegion(1);
-					
+					isoImageData.setRegion(1);					
 					isoImagePool.put(isoImageData);
 				}
 			}

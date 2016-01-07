@@ -913,21 +913,24 @@ public class CloudHostController {
         ComputeInfoExt cPool = computePool.getFromComputePool(myCloudHostData.getPoolId());
         
         List<SysDiskImageVO> sysDiskImageList = sysDiskImageService.querySysDiskImageByImageType(AppConstant.DISK_IMAGE_TYPE_SERVER);
-        if(cPool.getMode2() == 1){
+        List<SysDiskImageVO> newSysDiskImageList = new ArrayList<SysDiskImageVO>();
+        if(cPool !=null && cPool.getMode2() == 1){
             int i = 0;
             for(SysDiskImageVO image : sysDiskImageList){
-                if(image.getFileType() != 1){
-                    sysDiskImageList.remove(i);                    
+                if(image.getFileType() == 1){
+                    newSysDiskImageList.add(image);                   
                 }
                 i++;
             }
+        }else{
+            newSysDiskImageList = sysDiskImageList;
         }
 
         System.err.println(sysDiskImageList.size());
 
         request.setAttribute("host", host);
         request.setAttribute("resetFlag", resetFlag);
-        request.setAttribute("sysDiskImageList", sysDiskImageList);
+        request.setAttribute("sysDiskImageList", newSysDiskImageList);
         return "/desktop/flush_disk_manage";
     }
     
