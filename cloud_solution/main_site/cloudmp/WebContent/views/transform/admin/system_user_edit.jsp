@@ -35,7 +35,7 @@ function saveForm(){
 		var email = $("#email").val();
 		var telphone = $("#telphone").val();
 		var status = $("#status").val();
-		var password = $("#password").val();
+		var password = $("#password1").val();
 		var displayname = $("#displayname").val();
 		var userType =  $("#userType").val();
 		var param = "usercount="+usercount+"&email="+email+"&telphone="+telphone+"&status="+status+"&password="+password+"&displayname="+displayname+"&userType="+userType;
@@ -129,7 +129,7 @@ function backhome(){
                       <div class="form-group">
                         <label for="password" class="col-sm-2 control-label">用户密码*</label>
                         <div class="col-sm-4">
-                          <input type="password" class="form-control" id="password" parsley-required="true"  parsley-maxlength="20">
+                          <input type="password" class="form-control" id="password1" parsley-required="true"  parsley-maxlength="20">
                         </div>
                       </div>                      
                       <div class="form-group">
