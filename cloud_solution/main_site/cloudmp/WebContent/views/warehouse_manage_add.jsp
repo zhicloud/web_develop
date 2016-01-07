@@ -136,7 +136,7 @@
                                 	<option value="${chcm.id }">${chcm.name }</option>
                                 </c:forEach>
                                 </select> 
-                                <a href="#" id="create_new_host_type" class="btn btn-greensea"><span>新增主机类型</span></a>
+                                <a href="#" class="btn btn-greensea create_new_host_type"><span>新增主机类型</span></a>
                             </div> 
                           
                         </div>
@@ -154,7 +154,7 @@
                                    </c:if>
                                 </c:forEach>
                                 </select> 
-                                <a href="#" id="create_new_host_type" class="btn btn-greensea"><span>新增主机类型</span></a>
+                                <a href="#" class="btn btn-greensea create_new_host_type"><span>新增主机类型</span></a>
                             </div> 
                           
                         </div>
@@ -261,7 +261,7 @@
         $(this).toggleClass('checked');
       });
 	  
-      $("#create_new_host_type").click(function(){
+      $(".create_new_host_type").click(function(){
     	  location.href = path+"/chcm/addpage";
       });
       
