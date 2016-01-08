@@ -127,7 +127,7 @@
 						<div class="form-group">
 						<label for="disk_source" class="col-sm-2 control-label">存储路径</label>
 							<div class="col-sm-4">
-							     <input type="text" class="form-control" id="disk_source" name="diskSource" value="${path}" placeholder="${path == null ? "还未配置共享存储,请配置后再做修改" : ""}" parsley-required="true" readonly="readonly" />
+							     <input type="text" class="form-control" id="disk_source" name="diskSource" value="${path}" placeholder="${path == null ? "还未配置共享存储,请配置后再做修改" : ""}" readonly="readonly" />
 							</div>
 						</div>
 					</div>
@@ -137,7 +137,7 @@
 
                      <div class="form-group form-footer footer-white">
                         <div class="col-sm-offset-4 col-sm-8">
-                          <button type="button" class="btn btn-greensea" onclick="saveForm();"><i class="fa fa-plus"></i>
+                          <button id="save" type="button" class="btn btn-greensea" onclick="saveForm();"><i class="fa fa-plus"></i>
                               <span> 保 存 </span></button>
                           <button type="reset" class="btn btn-red" onclick="window.location.reload();"><i class="fa fa-refresh"></i>
                               <span> 重 置 </span></button>
@@ -160,7 +160,7 @@
                           <div class="modal-dialog">
                               <div class="modal-content" style="width:60%;margin-left:20%;">
                                   <div class="modal-header">
-                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="window.location.reload();">Close</button>
                                       <h3 class="modal-title" id="modalDialogLabel"><strong>提示</strong></h3>
                                   </div>
                                   <div class="modal-body">
@@ -237,12 +237,26 @@
     <script>
     
     var path = '<%=request.getContextPath()%>';
+    var value = $("#disk_source").val();
 
 
     $(function(){
       //chosen select input
         $(".chosen-select").chosen({disable_search_threshold: 10});
 
+        $("#optionsRadios0").click(function(){
+            $("#disk_source").attr("disabled",true);
+            if(value == null || value == '' || value == undefined) {
+                $("#save").removeClass("disabled");
+            }
+        });
+
+        $("#optionsRadios2").click(function(){
+            $("#disk_source").attr("disabled",false);
+            if(value == null || value == '' || value == undefined) {
+                $("#save").addClass("disabled");
+            }
+        });
 
     });
 
