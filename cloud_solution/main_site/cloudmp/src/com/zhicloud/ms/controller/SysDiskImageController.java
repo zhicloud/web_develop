@@ -280,6 +280,10 @@ public class SysDiskImageController {
             operLogService.addLog("主机镜像", "批量删除镜像成功,部分镜像平台删除失败", "1", "1", request);
 			return new MethodResult(MethodResult.SUCCESS,"删除成功,部分镜像平台删除失败");			
 		}
+		if(su1 ==0 && su2>0){
+            operLogService.addLog("主机镜像", "镜像已经创建类型需先删除类型", "1", "2", request);
+            return new MethodResult(MethodResult.SUCCESS,"删除成功,部分镜像平台删除失败");            
+        }
 		if(su1 ==0 ){
             operLogService.addLog("主机镜像", "批量删除镜像失败", "1", "2", request);
 			return new MethodResult(MethodResult.FAIL,"删除失败");			

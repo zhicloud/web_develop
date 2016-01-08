@@ -1465,7 +1465,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             String[] uuids = new String[1];
             uuids[0] = host.getRealHostId();
             this.sqlSession.getMapper(QosMapper.class).deleteQosByHostUuids(uuids);
-            operLogService.addLog("云主机", "删除云主机"+host.getDisplayName()+"成功", "1", "2", request);
+            operLogService.addLog("云主机", "删除云主机"+host.getDisplayName()+"成功", "1", "1", request);
 
 			return new MethodResult(MethodResult.SUCCESS, "删除成功");
 		} catch (MalformedURLException e) {
@@ -2210,15 +2210,17 @@ public class CloudHostServiceImpl implements ICloudHostService {
 
             String password = JSONLibUtil.getString(hostInfo, "authentication");
             String account = JSONLibUtil.getString(hostInfo, "display");  
+            String[] ip = JSONLibUtil.getStringArray(hostInfo, "ip"); 
+            Integer[] displayPort = JSONLibUtil.getIntegerArray(hostInfo, "display_port");
             Map<String, Object> cloudHostData = new LinkedHashMap<String, Object>();
             cloudHostData.put("id", StringUtil.generateUUID());
             cloudHostData.put("realHostId", realHostId);
             cloudHostData.put("sysDisk", myCloudHostData.getSysDisk());
             cloudHostData.put("dataDisk", myCloudHostData.getDataDisk());
-            cloudHostData.put("innerIp", myCloudHostData.getInnerIp());
-            cloudHostData.put("innerPort", myCloudHostData.getInnerPort()); 
-            cloudHostData.put("outerIp", myCloudHostData.getOuterIp());
-            cloudHostData.put("outerPort", myCloudHostData.getOuterPort()); 
+            cloudHostData.put("innerIp", ip[0]);
+            cloudHostData.put("innerPort", displayPort[0]); 
+            cloudHostData.put("outerIp", ip[1]);
+            cloudHostData.put("outerPort", displayPort[1]); 
             cloudHostData.put("createTime", DateUtil.dateToString(new Date(),"yyyyMMddHHmmssSSS"));
             cloudHostData.put("runningStatus", myCloudHostData.getRunningStatus());
             cloudHostData.put("status", "2");
@@ -2662,7 +2664,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
                             newCloudHostData.setMemoryUsage(memoryUsage);
                             newCloudHostData.setDataDisk(diskVolume[1]);
                             newCloudHostData.setDataDiskUsage(diskUsage);
-                            newCloudHostData.setInnerIp(ip[0]);
+                            newCloudHostData.setInnerIp(ip[0]); 
                             newCloudHostData.setOuterIp(ip[1]);
                             newCloudHostData.setRunningStatus(transforRunningStatus(runningStatus));
                             newCloudHostData.setLastOperStatus(0);
