@@ -985,20 +985,22 @@ public class ManSysUserServiceImpl implements ManSysUserService {
     public String manualPassword(String billid, String newpassword, String email) {
         logger.debug("SysUserServiceImpl.manualPassword()");
         try {
-            try {
-                Map<String, Object> user = new LinkedHashMap<String, Object>();
-                user.put("password", newpassword);
-                EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
-                emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_RESET_PASSWORD_MANUAL, email, user);
-            } catch (Exception e) {
-                logger.error(e);
-                return TransformConstant.success;
-            }
+            // 先更新数据库
+            ManSystemUserMapper systemUserMapper = this.sqlSession.getMapper(ManSystemUserMapper.class);
+            LinkedHashMap<String, Object> condition = new LinkedHashMap<String, Object>();
+            condition.put("password", TransFormLoginHelper.md5(AppConstant.PASSWORD_MD5_STR, newpassword));
+            condition.put("billid", billid);
+            systemUserMapper.updateSystemUser(condition);
 
+            // 发送邮件
+            Map<String, Object> user = new LinkedHashMap<String, Object>();
+            user.put("password", newpassword);
+            EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
+            emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_RESET_PASSWORD_MANUAL, email, user);
             return TransformConstant.success;
         } catch (Exception e) {
             logger.error(e);
-            throw new AppException("添加失败");
+            return TransformConstant.fail;
         }
     }
 }
