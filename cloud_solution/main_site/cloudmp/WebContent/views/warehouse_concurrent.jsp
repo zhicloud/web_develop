@@ -267,7 +267,7 @@
 	  }
 	  //同步数据
 	  function synchronizedata(obj){
-		  var val = $(obj).parents("tr").find("td:eq(0)").find("input[type=hidden]").val();
+		  var val = $(obj).parents("tr").find("td:eq(1)").find("input[type=hidden]").val();
 		  $(obj).parents("td").prev().html(val);
 		  //$(obj).parents("td").prev().html("<input type=\"text\" class=\"form-control\" value=\""+val+"\" name=\"name\" id=\"warehouse_name\" style=\"min-height:25px;padding:2px;width:100px;\">");
 		  $(obj).parents("td").html("<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"edit(this)\">编辑</button>"+
