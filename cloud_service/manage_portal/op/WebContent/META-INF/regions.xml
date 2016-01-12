@@ -3,7 +3,7 @@
 <!--         <region id="1" name="广州" http_gateway_addr="61.142.65.1:9081" /> -->
 <!--         <region id="4" name="香港" http_gateway_addr="113.10.135.132:9081" /> -->
 <!--         <region id="2" name="成都" http_gateway_addr="125.70.12.14:10000" /> -->
-        <region id="1" name="广州" http_gateway_addr="172.18.10.24:9081" />
-        <region id="4" name="香港" http_gateway_addr="172.18.10.24:9081" />
-        <region id="2" name="成都" http_gateway_addr="172.18.10.24:9081" /> 
+        <region id="1" name="广州" http_gateway_addr="172.18.10.18:9081" />
+        <region id="4" name="香港" http_gateway_addr="172.18.10.18:9081" />
+        <region id="2" name="成都" http_gateway_addr="172.18.10.18:9081" /> 
 </regions>
