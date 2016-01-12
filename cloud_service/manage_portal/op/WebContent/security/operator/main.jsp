@@ -163,7 +163,7 @@
 <!-- slide_end -->
 
 <!-- iframe_start -->
-<div class="g-mn"><iframe id="content_frame" scrolling="no" frameborder="0" hspace="0" vspace="0" style="width:100%; height:100%; line-height:0;display:block;" src=""></iframe></div>
+<div class="g-mn"><iframe id="content_frame" scrolling="no" frameborder="0" hspace="0" vspace="0" style="width:100%; height:100%; display:block;" src=""></iframe></div>
 <!-- iframe_end -->
 
 <!-- JavaScript_start -->
