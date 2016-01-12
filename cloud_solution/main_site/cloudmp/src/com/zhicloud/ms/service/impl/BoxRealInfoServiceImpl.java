@@ -69,6 +69,7 @@ public class BoxRealInfoServiceImpl implements IBoxRealInfoService {
         //缓存中有值,先写入数据库
         if (boxRealInfoVOs.length > 0) {
             boxRealInfoMapper.updateBoxInfoBatch(Arrays.asList(boxRealInfoVOs));
+            cache.removeAll();
         }
 
         return boxRealInfoMapper.queryAllInfo();

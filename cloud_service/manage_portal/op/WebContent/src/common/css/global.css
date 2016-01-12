@@ -136,7 +136,7 @@ body{
 a{color: #474747;}
 a:hover{color: #219eff;text-decoration: none;}
 a:active{color: #219eff;}
-.wrap{width:1300px;margin: 0 auto;}
+.wrap{width:1190px;margin: 0 auto;}
 input[type="radio"],input[type="checkbox"]{vertical-align: middle;/* position: relative;top: -1px; */cursor: pointer;}
 
 /* header */
