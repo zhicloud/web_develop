@@ -52,110 +52,110 @@
 <div class="g-sd">
 	<div class="nav-list">
 		<div class="nav-item">
-			<a class="oper-sty current single" href="javascritp:;" id="operator_index_link"><i class="icon-tit icon-operational-overview"></i>运营概览</a>
+			<a class="oper-sty current single" id="operator_index_link"><i class="icon-tit icon-operational-overview"></i>运营概览</a>
 		</div>
 		<div class="nav-item">
-			<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-user-management"></i>用户管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+			<a class="oper-sty" ><i class="icon-tit icon-user-management"></i>用户管理<i class="icon-arrow icon-arrow-bottom"></i></a>
 			<ul>
-				<li><a class="sub-sty" href="javascritp:;" id="mark_manage_link">标签管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="agent_manage_link">代理商管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="terminal_user_manage_link">终端用户管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="view_all_user_oper_log">用户日志</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="bill_manage_link">账单查询</a></li>
+				<li><a class="sub-sty" id="mark_manage_link">标签管理</a></li>
+				<li><a class="sub-sty" id="agent_manage_link">代理商管理</a></li>
+				<li><a class="sub-sty" id="terminal_user_manage_link">终端用户管理</a></li>
+				<li><a class="sub-sty" id="view_all_user_oper_log">用户日志</a></li>
+				<li><a class="sub-sty" id="bill_manage_link">账单查询</a></li>
 			</ul>
 		</div>
 		<div class="nav-item">
-			<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-product-management"></i>产品管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+			<a class="oper-sty" ><i class="icon-tit icon-product-management"></i>产品管理<i class="icon-arrow icon-arrow-bottom"></i></a>
 			<ul>
-				<li><a class="sub-sty" href="javascritp:;" id="self_use_cloud_host_link">自用云主机</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="cloud_host_manage_link">云服务器管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="vpc_manage_link">用户专属云管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="cloud_disk_manage_link">云硬盘管理</a></li>
+				<li><a class="sub-sty" id="self_use_cloud_host_link">自用云主机</a></li>
+				<li><a class="sub-sty" id="cloud_host_manage_link">云服务器管理</a></li>
+				<li><a class="sub-sty" id="vpc_manage_link">用户专属云管理</a></li>
+				<li><a class="sub-sty" id="cloud_disk_manage_link">云硬盘管理</a></li>
 			</ul>
 		</div>
 		<div class="nav-item">
-			<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-package-management"></i>套餐管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+			<a class="oper-sty" ><i class="icon-tit icon-package-management"></i>套餐管理<i class="icon-arrow icon-arrow-bottom"></i></a>
 			<ul>
-				<li><a class="sub-sty" href="javascritp:;" id="package_option_manage_link">套餐项管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="package_price_manage_link">套餐价格自定义</a></li>
+				<li><a class="sub-sty" id="package_option_manage_link">套餐项管理</a></li>
+				<li><a class="sub-sty" id="package_price_manage_link">套餐价格自定义</a></li>
 			</ul>
 		</div>
 		<div class="nav-item">
-			<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-resource-management"></i>资源池管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+			<a class="oper-sty" ><i class="icon-tit icon-resource-management"></i>资源池管理<i class="icon-arrow icon-arrow-bottom"></i></a>
 			<ul>
-				<li><a class="sub-sty" href="javascritp:;" id="computer_resource_manage_link">计算资源池管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="storage_resource_manage_link">存储资源池管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="address_resource_manage_link">地址资源池管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="port_resource_manage_link">端口资源池管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="database_monitor_link">数据库监控</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="platform_resource_monitor_link">平台资源监控</a></li>
+				<li><a class="sub-sty" id="computer_resource_manage_link">计算资源池管理</a></li>
+				<li><a class="sub-sty" id="storage_resource_manage_link">存储资源池管理</a></li>
+				<li><a class="sub-sty" id="address_resource_manage_link">地址资源池管理</a></li>
+				<li><a class="sub-sty" id="port_resource_manage_link">端口资源池管理</a></li>
+				<li><a class="sub-sty" id="database_monitor_link">数据库监控</a></li>
+				<li><a class="sub-sty" id="platform_resource_monitor_link">平台资源监控</a></li>
 			</ul>
 		</div>
 		<div class="nav-item">
-			<a class="oper-sty single" href="javascritp:;" id="intelligent_rout_manage"><i class="icon-tit icon-routing-management"></i>智能路由管理</a>
+			<a class="oper-sty single" id="intelligent_rout_manage"><i class="icon-tit icon-routing-management"></i>智能路由管理</a>
 		</div>
 		<div class="nav-item">
-			<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-whmirror-management"></i>仓库和镜像管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+			<a class="oper-sty" ><i class="icon-tit icon-whmirror-management"></i>仓库和镜像管理<i class="icon-arrow icon-arrow-bottom"></i></a>
 			<ul>
-				<li><a class="sub-sty" href="javascritp:;" id="sys_disk_image_manage_link">系统镜像管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="warehouse_manage_link">仓库类型管理</a></li>
+				<li><a class="sub-sty" id="sys_disk_image_manage_link">系统镜像管理</a></li>
+				<li><a class="sub-sty" id="warehouse_manage_link">仓库类型管理</a></li>
 			</ul>
 		</div>
 		<div class="nav-item">
-			<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-statistical-analysis"></i>统计分析<i class="icon-arrow icon-arrow-bottom"></i></a>
+			<a class="oper-sty" ><i class="icon-tit icon-statistical-analysis"></i>统计分析<i class="icon-arrow icon-arrow-bottom"></i></a>
 			<ul>
-				<li><a class="sub-sty" href="javascritp:;" id="report_statistic_link">报表统计</a></li>
+				<li><a class="sub-sty" id="report_statistic_link">报表统计</a></li>
 			</ul>
 		</div>
 		<div class="nav-item">
-			<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-financial-management"></i>财务管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+			<a class="oper-sty" ><i class="icon-tit icon-financial-management"></i>财务管理<i class="icon-arrow icon-arrow-bottom"></i></a>
 			<ul>
-				<li><a class="sub-sty" href="javascritp:;" id="cash_coupon_link">现金券管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="invoice_manage_link">发票管理</a></li>
+				<li><a class="sub-sty" id="cash_coupon_link">现金券管理</a></li>
+				<li><a class="sub-sty" id="invoice_manage_link">发票管理</a></li>
 			</ul>
 		</div>
 		<div class="nav-item">
-			<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-system-management"></i>系统管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+			<a class="oper-sty" ><i class="icon-tit icon-system-management"></i>系统管理<i class="icon-arrow icon-arrow-bottom"></i></a>
 			<ul>
-				<li><a class="sub-sty" href="javascritp:;" id="operator_basic_information_link">基本信息</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="operator_update_password_link">修改密码</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="operator_suggestion_link">意见反馈</a></li>
+				<li><a class="sub-sty" id="operator_basic_information_link">基本信息</a></li>
+				<li><a class="sub-sty" id="operator_update_password_link">修改密码</a></li>
+				<li><a class="sub-sty" id="operator_suggestion_link">意见反馈</a></li>
 			</ul>
 		</div>
 		<div class="nav-item">
-			<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-mail-management"></i>邮件管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+			<a class="oper-sty" ><i class="icon-tit icon-mail-management"></i>邮件管理<i class="icon-arrow icon-arrow-bottom"></i></a>
 			<ul>
-				<li><a class="sub-sty" href="javascritp:;" id="email_config_link">配置管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="email_template_link">模块管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="email_record_link">发送记录</a></li>
+				<li><a class="sub-sty" id="email_config_link">配置管理</a></li>
+				<li><a class="sub-sty" id="email_template_link">模块管理</a></li>
+				<li><a class="sub-sty" id="email_record_link">发送记录</a></li>
 			</ul>
 		</div>
 		<div class="nav-item">
-			<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-mesg-management"></i>短信管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+			<a class="oper-sty" ><i class="icon-tit icon-mesg-management"></i>短信管理<i class="icon-arrow icon-arrow-bottom"></i></a>
 			<ul>
-				<li><a class="sub-sty" href="javascritp:;" id="sms_config_link">配置管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="sms_template_link">模块管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="sms_record_link">发送记录</a></li>
+				<li><a class="sub-sty" id="sms_config_link">配置管理</a></li>
+				<li><a class="sub-sty" id="sms_template_link">模块管理</a></li>
+				<li><a class="sub-sty" id="sms_record_link">发送记录</a></li>
 			</ul>
 		</div>
 		<div class="nav-item">
-			<a class="oper-sty single" href="javascritp:;" id="egg_plan_manage_link"><i class="icon-tit icon-eggplan-management"></i>蛋壳计划管理</a>
+			<a class="oper-sty single" id="egg_plan_manage_link"><i class="icon-tit icon-eggplan-management"></i>蛋壳计划管理</a>
 		</div>
 		<div class="nav-item">
-			<a class="oper-sty single" href="javascritp:;" id="image_host_application_manage_link"><i class="icon-tit icon-mirrorhost-management"></i>镜像主机申请管理</a>
+			<a class="oper-sty single" id="image_host_application_manage_link"><i class="icon-tit icon-mirrorhost-management"></i>镜像主机申请管理</a>
 		</div>
 		<div class="nav-item">
-			<a class="oper-sty" href="javascritp:;"><i class="icon-tit icon-monitinfor-management"></i>监控信息管理<i class="icon-arrow icon-arrow-bottom"></i></a>
+			<a class="oper-sty" ><i class="icon-tit icon-monitinfor-management"></i>监控信息管理<i class="icon-arrow icon-arrow-bottom"></i></a>
 			<ul>
-			    <li><a class="sub-sty" href="javascritp:;" id="operator_service_link">服务管理</a></li>		
-				<li><a class="sub-sty" href="javascritp:;" id="total_monitor_link">总体概况查看</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="room_monitor_link">机房信息查看</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="rack_monitor_link">机架信息查看</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="server_monitor_link">服务器信息查看</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="cloudhost_monitor_link">云主机信息查看</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="sys_warnrule_link">预警规则管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="sys_resource_link">资源监控管理</a></li>
-				<li><a class="sub-sty" href="javascritp:;" id="sys_total_link">系统全局监控</a></li>
+			    <li><a class="sub-sty" id="operator_service_link">服务管理</a></li>		
+				<li><a class="sub-sty" id="total_monitor_link">总体概况查看</a></li>
+				<li><a class="sub-sty" id="room_monitor_link">机房信息查看</a></li>
+				<li><a class="sub-sty" id="rack_monitor_link">机架信息查看</a></li>
+				<li><a class="sub-sty" id="server_monitor_link">服务器信息查看</a></li>
+				<li><a class="sub-sty" id="cloudhost_monitor_link">云主机信息查看</a></li>
+				<li><a class="sub-sty" id="sys_warnrule_link">预警规则管理</a></li>
+				<li><a class="sub-sty" id="sys_resource_link">资源监控管理</a></li>
+				<li><a class="sub-sty" id="sys_total_link">系统全局监控</a></li>
 			</ul>
 		</div>
 	</div>
