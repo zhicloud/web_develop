@@ -10,6 +10,7 @@
 	OperatorVO operator = (OperatorVO)request.getAttribute("operator");
 	Integer suggestionCount = (Integer)request.getAttribute("suggestionCount");
 	Integer invoiceCount = (Integer)request.getAttribute("invoiceCount");
+	Integer eggPlanCount = (Integer)request.getAttribute("eggPlanCount");
 %>
 <!DOCTYPE html>
 <!-- operator_index.jsp -->
@@ -41,7 +42,7 @@
 		<div class="fb-row" style="margin-bottom: 1px;">
 			<div class="fb-item fb-item-sidebar">
 				<i class="icon-facebook icon-facebook-comptsug"></i>
-				<a class="comptsug" href="javascript:;">投诉建议（<label><%=suggestionCount %></label>）</a>
+				<a class="comptsug" href="javascript:;" onclick="$('#content_frame',window.parent.document).attr('src', '<%=request.getContextPath()%>/bean/page.do?userType=<%=userType%>&bean=suggestionService&method=managePage');">投诉建议（<label><%=suggestionCount %></label>）</a>
 			</div>
 			<div class="fb-item fb-item-sidebar">
 				<i class="icon-facebook icon-facebook-workorder"></i>
@@ -53,7 +54,7 @@
 			</div>
 			<div class="fb-item fb-item-sidebar">
 				<i class="icon-facebook icon-facebook-invorqust"></i>
-				<a class="invorqust" href="javascript:;">发票申请（<label><%=invoiceCount %></label>）</a>
+				<a class="invorqust" href="javascript:;" onclick="$('#content_frame',window.parent.document).attr('src', '<%=request.getContextPath()%>/bean/page.do?userType=<%=userType%>&bean=invoiceService&method=pendingPage');">发票申请（<label><%=invoiceCount %></label>）</a>
 			</div>
 			<div class="fb-item">
 				<i class="icon-facebook icon-facebook-filiappl"></i>
@@ -63,7 +64,7 @@
 		<div class="fb-row">
 			<div class="fb-item fb-item-sidebar">
 				<i class="icon-facebook icon-facebook-eggadd"></i>
-				<a class="eggadd" href="javascript:;">蛋壳+（<label>4</label>）</a>
+				<a class="eggadd" href="javascript:;" onclick="$('#content_frame',window.parent.document).attr('src', '<%=request.getContextPath()%>/bean/page.do?userType=<%=userType%>&bean=eggPlanService&method=eggPlanManagePage');">蛋壳+（<label><%=eggPlanCount %></label>）</a>
 			</div>
 			<div class="fb-item fb-item-sidebar">
 				<i class="icon-facebook icon-facebook-cudmirrappl"></i>
@@ -195,6 +196,10 @@
 // 			main.height(thisheight);
 // 		});
 // 	}
+
+// function suggestionPage(){
+<%-- 	$("#content_frame",window.parent.document).attr("src", "<%=request.getContextPath()%>/bean/page.do?userType=<%=userType%>&bean=suggestionService&method=managePage"); --%>
+// }
 </script>
 <!-- JavaScript_end -->
 </body>

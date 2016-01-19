@@ -22,6 +22,7 @@ import com.zhicloud.op.common.util.StringUtil;
 import com.zhicloud.op.common.util.constant.MailConstant;
 import com.zhicloud.op.exception.AppException;
 import com.zhicloud.op.login.LoginInfo;
+import com.zhicloud.op.mybatis.mapper.EggPlanMapper;
 import com.zhicloud.op.mybatis.mapper.InvoiceMapper;
 import com.zhicloud.op.mybatis.mapper.OperatorMapper;
 import com.zhicloud.op.mybatis.mapper.SuggestionMapper;
@@ -83,12 +84,20 @@ public class OperatorServiceImpl extends BeanDirectCallableDefaultImpl implement
 		SuggestionMapper suggestionMapper = this.sqlSession.getMapper(SuggestionMapper.class);
 		InvoiceMapper invoiceMapper = this.sqlSession.getMapper(InvoiceMapper.class);
 		TerminalUserMapper terminalUserMapper = this.sqlSession.getMapper(TerminalUserMapper.class);
+		EggPlanMapper eggPlanMapper = this.sqlSession.getMapper(EggPlanMapper.class);
+		//意见建议
 		int suggestionCount = suggestionMapper.getAllUnprocessed();
+		//发票管理
 		Map<String,Object> invoiceCondition = new HashMap<>();
 		invoiceCondition.put("status", 2);
 		int invoiceCount = invoiceMapper.queryAllPageCount(invoiceCondition);
+		//蛋壳+
+		Map<String,Object> eggPlanCondition = new HashMap<>();
+		int eggPlanCount = eggPlanMapper.queryEggPlanCount(eggPlanCondition);
+		
 		request.setAttribute("suggestionCount", suggestionCount);
 		request.setAttribute("invoiceCount", invoiceCount);
+		request.setAttribute("eggPlanCount", eggPlanCount);
 		return "/security/operator/operator_index.jsp";
 	}
 	
