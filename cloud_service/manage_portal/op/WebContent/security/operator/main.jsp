@@ -42,7 +42,7 @@
 		</div>
 		<div class="hd-right-cont">
 			<img src="<%=request.getContextPath()%>/newoperator/img/portrait.png" alt="portrait" />
-			<label class="f-ml10">29447403799@sian.cn | <a href="#" id="oper_logout"><font color="white">注销</font></a></label>
+			<label class="f-ml10"><%=loginInfo.getAccount() %> | <a href="#" id="oper_logout"><font color="white">注销</font></a></label>
 		</div>
 	</div>
 </div>
