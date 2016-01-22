@@ -507,7 +507,6 @@ $(function(){
 	$("#del_terminal_user_btn").click(function() {
 		var rows = $('#terminal_user_datagrid').datagrid('getSelections');
 		if (rows == null || rows.length == 0) {
-			alert("aaa")
 			top.$.messager.alert("警告","未选择删除项","warning");
 			return;
 		}

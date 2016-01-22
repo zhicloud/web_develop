@@ -19,7 +19,6 @@
 .hd-right-cont{float: right;margin: 11px 10px 0 0;}
 .hd-right-cont img{display: inline-block;vertical-align: top;height: 28px;width: 28px;}
 .hd-right-cont label{display: inline-block;color: #fff;line-height: 28px;}
-
 .nav-list{padding-top: 10px;}
 .nav-list .nav-item{padding-left:20px;}
 .nav-list .nav-item a.oper-sty{display:inline-block;vertical-align:top;width:100%;height:32px;color: #3b4652;line-height:32px;overflow: hidden;}
