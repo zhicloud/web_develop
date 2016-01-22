@@ -16,6 +16,8 @@
 	<title>运营商 - 云端在线</title>
 	<link rel="shortcut icon" href="<%=request.getContextPath()%>/newoperator/common/img/favicon.ico" type="image/x-icon" /> 
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/newoperator/common/css/global.css" media="all"/>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/js/easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/newoperator/css/oper_common.css" media="all"/>
    	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/newoperator/css/operation.css" media="all"/>
 	<style type="text/css">body{overflow-y: scroll;}</style>

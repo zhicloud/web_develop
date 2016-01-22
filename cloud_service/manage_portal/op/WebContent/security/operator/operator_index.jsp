@@ -95,7 +95,10 @@
 					</ul>
 					<p><label>累计总额：</label><span class="c-257">¥ 32323.00</span></p>
 				</div>
-				<div class="chart-show"><img src="<%=request.getContextPath()%>/newoperator/img/revenue-show.png" alt="营收" width="293" height="161"/></div>
+				<div class="chart-show">
+					<canvas id="revenue" height="161"></canvas>
+				<%-- <img src="<%=request.getContextPath()%>/newoperator/img/revenue-show.png" alt="营收" width="293" height="161"/> --%>
+				</div>
 				<div class="botm-tips">
 					<ul>
 						<li><i class="icon-tips icon-tips-one"></i><label>充值营收</label></li>
@@ -112,7 +115,10 @@
 					</ul>
 					<p><label>客户总数：</label><span class="c-257">15464</span></p>
 				</div>
-				<div class="chart-show"><img src="<%=request.getContextPath()%>/newoperator/img/customer-show.png" alt="客户" width="256" height="161"/></div>
+				<div class="chart-show">
+					<canvas id="customer" height="161"></canvas>
+					<%-- <img src="<%=request.getContextPath()%>/newoperator/img/customer-show.png" alt="客户" width="256" height="161"/> --%>
+				</div>
 				<div class="botm-tips">
 					<ul>
 						<li><i class="icon-tips icon-tips-one"></i><label>新增客户</label></li>
@@ -128,7 +134,10 @@
 					</ul>
 					<p><label>产品总数：</label><span class="c-257">157</span></p>
 				</div>
-				<div class="chart-show"><img src="<%=request.getContextPath()%>/newoperator/img/product-show.png" alt="产品" width="256" height="161"/></div>
+				<div class="chart-show">
+					<canvas id="product" height="161"></canvas>
+					<%-- <img src="<%=request.getContextPath()%>/newoperator/img/product-show.png" alt="产品" width="256" height="161"/> --%>
+				</div>
 				<div class="botm-tips">
 					<ul>
 						<li><i class="icon-tips icon-tips-one"></i><label>云主机</label></li>
@@ -185,14 +194,123 @@
 </div>
 <!-- JavaScript_start -->
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/Chart.min.js"></script>
 <script type="text/javascript">
-	window.onload=function(){
-		$(window.parent.document).find("#content_frame").load(function(){
-			var main = $(window.parent.document).find("#content_frame");
-			var thisheight = $('.ov-wrap').height();
-			main.height(thisheight);
-		});
-	}
+var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+/* 营收曲线数据 */
+var revenueLineChartData = {
+	labels : ["21","22","23","24","25","26","27"],
+	datasets : [
+		{
+			label: "My First dataset",
+			fillColor : "rgba(255,191,45,0.2)",
+			strokeColor : "rgba(255,191,45,1)",
+			pointColor : "rgba(255,191,45,1)",
+			pointStrokeColor : "#fff",
+			pointHighlightFill : "#fff",
+			pointHighlightStroke : "rgba(255,191,45,1)",
+			data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+		},
+		{
+			label: "My Second dataset",
+			fillColor : "rgba(222,159,255,0.2)",
+			strokeColor : "rgba(222,159,255,1)",
+			pointColor : "rgba(222,159,255,1)",
+			pointStrokeColor : "#fff",
+			pointHighlightFill : "#fff",
+			pointHighlightStroke : "rgba(222,159,255,1)",
+			data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+		}
+	]
+}
+/* 客户曲线数据 */
+var customerLineChartData = {
+	labels : ["21","22","23","24","25","26","27"],
+	datasets : [
+		{
+			label: "My First dataset",
+			fillColor : "rgba(255,191,45,0.2)",
+			strokeColor : "rgba(255,191,45,1)",
+			pointColor : "rgba(255,191,45,1)",
+			pointStrokeColor : "#fff",
+			pointHighlightFill : "#fff",
+			pointHighlightStroke : "rgba(255,191,45,1)",
+			data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+		}
+	]
+}
+/* 产品曲线数据 */
+var productLineChartData = {
+	labels : ["21","22","23","24","25","26","27"],
+	datasets : [
+		{
+			label: "My First dataset",
+			fillColor : "rgba(255,191,45,0.2)",
+			strokeColor : "rgba(255,191,45,1)",
+			pointColor : "rgba(255,191,45,1)",
+			pointStrokeColor : "#fff",
+			pointHighlightFill : "#fff",
+			pointHighlightStroke : "rgba(255,191,45,1)",
+			data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+		},
+		{
+			label: "My Second dataset",
+			fillColor : "rgba(222,159,255,0.2)",
+			strokeColor : "rgba(222,159,255,1)",
+			pointColor : "rgba(222,159,255,1)",
+			pointStrokeColor : "#fff",
+			pointHighlightFill : "#fff",
+			pointHighlightStroke : "rgba(222,159,255,1)",
+			data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+		},
+		{
+			label: "My third dataset",
+			fillColor : "rgba(121,191,251,0.2)",
+			strokeColor : "rgba(121,191,251,1)",
+			pointColor : "rgba(121,191,251,1)",
+			pointStrokeColor : "#fff",
+			pointHighlightFill : "#fff",
+			pointHighlightStroke : "rgba(121,191,251,1)",
+			data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+		}
+	]
+}
+
+window.onload = function(){
+	$(window.parent.document).find("#content_frame").load(function(){
+		var main = $(window.parent.document).find("#content_frame");
+		var thisheight = $('.ov-wrap').height();
+		main.height(thisheight);
+	});
+	
+	/* 营收 */
+	var ctxRevenue = document.getElementById("revenue").getContext("2d");
+	window.myLine = new Chart(ctxRevenue).Line(revenueLineChartData, {
+		responsive: false,
+		scaleShowLabels : false,
+		datasetFill : false,
+		bezierCurve : false
+	});
+	
+	/* 客户 */
+	var ctxCustomer = document.getElementById("customer").getContext("2d");
+	window.myLine = new Chart(ctxCustomer).Line(customerLineChartData, {
+		responsive: false,
+		scaleShowLabels : false,
+		datasetFill : false,
+		bezierCurve : false
+	});
+	
+	/* 产品 */
+	var ctxProduct = document.getElementById("product").getContext("2d");
+	window.myLine = new Chart(ctxProduct).Line(productLineChartData, {
+		responsive: false,
+		scaleShowLabels : false,
+		datasetFill : false,
+		bezierCurve : false
+	});
+	
+}
 </script>
 <!-- JavaScript_end -->
 </body>

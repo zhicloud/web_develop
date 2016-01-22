@@ -3,7 +3,7 @@
 	
 	<property key="address_of_this_system" name="address_of_this_system" type="String" 
 		description="address_of_this_system">
-		http://182.138.102.39:40803/ms/
+		http://182.138.102.39:40805/cloudmp/
 	</property>
 	
 	<property key="control_server_external_address" name="control serverÍâ²¿µØÖ·" type="String" 
