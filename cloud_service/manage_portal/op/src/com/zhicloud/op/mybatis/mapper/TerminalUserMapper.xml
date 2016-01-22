@@ -72,15 +72,6 @@
 		where t.belonging_id = #{userId}
 	</select>
 	
-	<select id="getAllOrSevenDaysCount" resultType="int">
-		select count(1)
-		from terminal_user t
-		<where>
-			t.belonging_id = #{userId}
-			and t.stauts = 4
-		</where>
-	</select>
-	
 	<select id="newTerminalUserCount" resultType="int">
 		select count(1)
 		from terminal_user t

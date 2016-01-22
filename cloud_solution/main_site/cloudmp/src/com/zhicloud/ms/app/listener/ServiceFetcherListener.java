@@ -28,7 +28,7 @@ public class ServiceFetcherListener implements Servlet {
 		String fetchServiceIntervalTime = config.getInitParameter("fetch_service_interval_time");
 		int intervalTime = Integer.parseInt(fetchServiceIntervalTime);
 
-		int[] nodeList = new int[] { NodeTypeDefine.DATA_SERVER,NodeTypeDefine.HTTP_GATEWAY, NodeTypeDefine.CONTROL_SERVER, NodeTypeDefine.NODE_CLIENT, NodeTypeDefine.STORAGE_SERVER, NodeTypeDefine.INTELLIGENT_REOUTER };
+		int[] nodeList = new int[] { NodeTypeDefine.DATA_SERVER, NodeTypeDefine.CONTROL_SERVER, NodeTypeDefine.NODE_CLIENT, NodeTypeDefine.STORAGE_SERVER, NodeTypeDefine.INTELLIGENT_REOUTER };
 		for (int node : nodeList) {
 			ServiceFetcherRunnable fetcher = new ServiceFetcherRunnable(node, "default", intervalTime);
 			Thread thread = new Thread(fetcher);

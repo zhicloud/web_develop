@@ -78,11 +78,4 @@ public interface TerminalUserMapper
 	
 	public int getTerminalUserCountByTime(Map<String, Object> condition);
 	
-	/**
-	 * 查询所有或近七天的欠费用户
-	 * @param condition
-	 * @return
-	 */
-	public int getAllOrSevenDaysCount(Map<String,Object> condition);
-	
 }

@@ -1,7 +1,6 @@
 package com.zhicloud.op.service.impl;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,13 +21,9 @@ import com.zhicloud.op.common.util.StringUtil;
 import com.zhicloud.op.common.util.constant.MailConstant;
 import com.zhicloud.op.exception.AppException;
 import com.zhicloud.op.login.LoginInfo;
-import com.zhicloud.op.mybatis.mapper.EggPlanMapper;
-import com.zhicloud.op.mybatis.mapper.InvoiceMapper;
 import com.zhicloud.op.mybatis.mapper.OperatorMapper;
-import com.zhicloud.op.mybatis.mapper.SuggestionMapper;
 import com.zhicloud.op.mybatis.mapper.SysGroupMapper;
 import com.zhicloud.op.mybatis.mapper.SysUserMapper;
-import com.zhicloud.op.mybatis.mapper.TerminalUserMapper;
 import com.zhicloud.op.remote.BeanDirectCallableDefaultImpl;
 import com.zhicloud.op.remote.Callable;
 import com.zhicloud.op.remote.MethodResult;
@@ -76,28 +71,12 @@ public class OperatorServiceImpl extends BeanDirectCallableDefaultImpl implement
 		logger.debug("OperatorServiceImpl.operatorIndexPage()");
 		
 		// 权限判断
-		LoginInfo loginInfo = LoginHelper.getLoginInfo(request);
+//		LoginInfo loginInfo = LoginHelper.getLoginInfo(request);
 //		if( loginInfo.hasPrivilege(PrivilegeConstant.operator_manage_page) == false )
 //		{
 //			return "/public/have_not_access.jsp";
 //		}
-		SuggestionMapper suggestionMapper = this.sqlSession.getMapper(SuggestionMapper.class);
-		InvoiceMapper invoiceMapper = this.sqlSession.getMapper(InvoiceMapper.class);
-		TerminalUserMapper terminalUserMapper = this.sqlSession.getMapper(TerminalUserMapper.class);
-		EggPlanMapper eggPlanMapper = this.sqlSession.getMapper(EggPlanMapper.class);
-		//意见建议
-		int suggestionCount = suggestionMapper.getAllUnprocessed();
-		//发票管理
-		Map<String,Object> invoiceCondition = new HashMap<>();
-		invoiceCondition.put("status", 2);
-		int invoiceCount = invoiceMapper.queryAllPageCount(invoiceCondition);
-		//蛋壳+
-		Map<String,Object> eggPlanCondition = new HashMap<>();
-		int eggPlanCount = eggPlanMapper.queryEggPlanCount(eggPlanCondition);
 		
-		request.setAttribute("suggestionCount", suggestionCount);
-		request.setAttribute("invoiceCount", invoiceCount);
-		request.setAttribute("eggPlanCount", eggPlanCount);
 		return "/security/operator/operator_index.jsp";
 	}
 	

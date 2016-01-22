@@ -87,10 +87,7 @@
 
                 <!-- tile -->
                 <section class="tile color transparent-black">
-					<button type="button" style="margin: 10px auto -15px 15px;" class="btn btn-success delete" onclick="window.location.href='javascript:history.back(-1);';">
-                              <i class="fa fa-step-backward"></i>
-                              <span> 返回上级</span>
-                    </button>
+
 
  
 

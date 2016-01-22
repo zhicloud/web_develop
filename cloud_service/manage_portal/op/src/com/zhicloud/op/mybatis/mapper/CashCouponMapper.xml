@@ -150,7 +150,7 @@ left join terminal_user d on a.id = d.id) x) u
 		from cash_coupon c 
 		<where>
 		c.cash_code = #{cashCode}	
-		and c.status IN (1, 2)
+		and c.status=2
 		</where>
 	</select>
 	
