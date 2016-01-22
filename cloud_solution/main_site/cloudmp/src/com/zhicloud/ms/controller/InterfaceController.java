@@ -123,19 +123,20 @@ public class InterfaceController {
 		if(userService.checkAvailable(username) && userService.checkAlias(username)){			
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "user_name is not exsit"); 
 		}
-      //查询用户信息
-      SysUser user = userService.checkTerminalLogin(request, response);
-
-      if(user != null){
+		//查询用户信息
+		SysUser user = userService.checkTerminalLogin(request, response);
+		
+		if(user != null){
 			TerminalUserVO terminalUser = terminalUserService.queryById(user.getId());
 			if(terminalUser == null){
 			    ServiceUtil.writeFailMessage(response.getOutputStream(), "user_name is not exsit"); 
 			    return ;
 			}
-			//查询主机信息
-          List<Map<Object, Object>> hostList= cloudHostService.queryCloudHostForTerminal(user,ipInnerFlag);
-          // 行业和地区
-          String region = StringUtil.trim(request.getParameter("region"));
+			//查询主机信息		
+			List<Map<Object, Object>> hostList= cloudHostService.queryCloudHostForTerminal(user,ipInnerFlag);
+			
+            // 行业和地区
+            String region = StringUtil.trim(request.getParameter("region"));
             String industry = StringUtil.trim(request.getParameter("industry"));
             List<TerminalInformationPushVO> infoList = terminalInformationPushService.queryInfomationByCondition(
                     user.getGroupId(), time, region, industry);
@@ -153,26 +154,22 @@ public class InterfaceController {
             result.put("name", terminalUser.getName());	
             //默认不开通usb 
         	result.put("user_status", terminalUser.getStatus());	
-        	result.put("usb", terminalUser.getUsbStatus());
-        BoxRealInfoVO info = boxRealInfoService.getInfoByUserId(mac);
-          if(info == null){
-              info = new BoxRealInfoVO();
-              info.setMac(mac);
-          }
-          info.setUserId(user.getId());
-          info.setUserName(username);
-          info.setGateway(gateway);
-          info.setHardwareVersion(hardwareVersion);
-          info.setSoftwareVersion(softwareVersion);
-          info.setSubnetMask(subnetMask);
-          info.setLastAliveTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
-          info.setLastLoginTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
-          info.setIp(ip);
-          BoxRealInfoVO boxRealInfoVO = boxRealInfoService.getInfoByUserId(user.getId());
-          if (boxRealInfoVO != null) {
-              info.setCumulativeOnlineTime(boxRealInfoVO.getCumulativeOnlineTime());
-          }
-
+        	result.put("usb", terminalUser.getUsbStatus());		 
+            BoxRealInfoVO info = boxRealInfoService.getInfoByUserId(mac);
+            if(info == null){
+                info = new BoxRealInfoVO();
+                info.setMac(mac);
+            }
+            info.setUserId(user.getId());
+            info.setUserName(username);
+            info.setGateway(gateway);
+            info.setHardwareVersion(hardwareVersion);
+            info.setSoftwareVersion(softwareVersion);
+            info.setSubnetMask(subnetMask);
+            info.setLastAliveTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+            info.setLastLoginTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+            info.setIp(ip);
+//            boxRealInfoService.addOrUpdateBoxInfo(info);
         BoxRealInfoCacheManager.singleton().getCache().put(info);
 
         // 写反回流
@@ -466,7 +463,6 @@ public class InterfaceController {
             ServiceUtil.writeFailMessage(response.getOutputStream(), "fail");
             return;
         } 
-        logger.info("user "+username+" come to keepalive ");
         info.setLastAliveTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
 //        boxRealInfoService.addOrUpdateBoxInfo(info);
         BoxRealInfoCacheManager.singleton().getCache().put(info);

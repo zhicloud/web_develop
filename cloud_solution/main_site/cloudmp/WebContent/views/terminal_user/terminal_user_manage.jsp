@@ -535,7 +535,7 @@
                               <div class="form-group">
 		                        <label for="warehouseId" class="col-sm-2 control-label">仓库选择*</label>
 		                        <div class="col-sm-8" id="selectbox">
-		                          <select class="form-control" name="warehouseId" id="warehouseId"  parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
+		                          <select class="chosen-select   form-control" name="warehouseId"id="warehouseId" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
 		                            <option value="">请选择仓库</option> 
 		                            <c:forEach items="${warelist }" var="sdi">
  		                                 <option value="${sdi.id }">${sdi.name}</option>
@@ -704,7 +704,6 @@
         $('.check-toggler').on('click', function(){
           $(this).toggleClass('checked');
         });
-        $("#warehouseId_chosen").css("width","250px");
 
 //        jQuery("#file").change(function(){
 //        	$("#loader").delay(500).fadeOut(300);

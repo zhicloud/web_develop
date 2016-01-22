@@ -131,12 +131,12 @@
                         </div>
                       </div>
                         
-<!--                       <div class="form-group"> -->
-<!--                         <label for="input01" class="col-sm-2 control-label">库存个数*</label> -->
-<!--                         <div class="col-sm-4"> -->
-<%--                           <input type="text" value="${warehouse.totalAmount }" class="form-control" name="totalAmount" id="host_name" maxlength="4" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" parsley-required="true" parsley-max="100" parsley-min="${warehouse.totalAmount }"> --%>
-<!--                         </div> -->
-<!--                       </div> -->
+                      <div class="form-group">
+                        <label for="input01" class="col-sm-2 control-label">库存个数*</label>
+                        <div class="col-sm-4">
+                          <input type="text" value="${warehouse.totalAmount }" class="form-control" name="totalAmount" id="host_name" maxlength="4" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" parsley-required="true" parsley-max="100" parsley-min="${warehouse.totalAmount }">
+                        </div>
+                      </div>
                     
                        
 

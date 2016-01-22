@@ -12,11 +12,5 @@ public interface SuggestionMapper {
 	public SuggestionVO getSuggestionById(Map<String, Object> condition);
 	public int addSuggestion(Map<String, Object> condition);
 	public int updateSuggestion(Map<String, Object> condition);
-	
-	/**
-	 * 查询所以未处理反馈
-	 * @return
-	 */
-	public int getAllUnprocessed();
 
 }

@@ -107,16 +107,15 @@
                           <tr class="odd gradeX">
 <!-- 						          <td> -->
 <!-- 									<div class="checkbox check-transparent"> -->
-<!-- 									  <input type="checkbox" value="${data.uuid }" id="${data.uuid }"> -->
-<!-- 									  <label for="${data.uuid }"></label> -->
-<!-- 									  <input type="hidden" name="hiddenval" value="${data.max_creating }"> -->
+<%-- 									  <input type="checkbox" value="${data.uuid }" id="${data.uuid }"> --%>
+<%-- 									  <label for="${data.uuid }"></label> --%>
+<%-- 									  <input type="hidden" name="hiddenval" value="${data.max_creating }"> --%>
 <!-- 									</div> -->
 <!--                                  </td> -->
                                   <td class="cut">
                                   ${data.uuid }
                                   </td>
                                   <td class="cut">
-                                  <input type="hidden" name="hiddenval" value="${data.max_creating }">
                                   ${data.name }
                                   </td>
                                   <td class="cut">
@@ -267,7 +266,7 @@
 	  }
 	  //同步数据
 	  function synchronizedata(obj){
-		  var val = $(obj).parents("tr").find("td:eq(1)").find("input[type=hidden]").val();
+		  var val = $(obj).parents("tr").find("td:eq(0)").find("input[type=hidden]").val();
 		  $(obj).parents("td").prev().html(val);
 		  //$(obj).parents("td").prev().html("<input type=\"text\" class=\"form-control\" value=\""+val+"\" name=\"name\" id=\"warehouse_name\" style=\"min-height:25px;padding:2px;width:100px;\">");
 		  $(obj).parents("td").html("<button type=\"button\" class=\"btn btn-primary btn-xs\" onclick=\"edit(this)\">编辑</button>"+

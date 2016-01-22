@@ -1066,11 +1066,7 @@ public class CheckServerRoomsListener implements ServletContextListener {
             try {
                 // 获取该区域所有的资源池
                 JSONObject object = channel.computePoolQuery();
-                JSONArray pools = null;
-                if ("success".equals(object.getString("status"))) {
-                    pools = object.getJSONArray("compute_pools");
-
-                }
+                JSONArray pools = object.getJSONArray("compute_pools");
                 //System.out.println("区域:" + regionData.getName() + ",资源池数量:" + pools.size());
                 if (pools != null && pools.size() > 0) {
                     for (int i = 0; i < pools.size(); i++) {

@@ -756,7 +756,7 @@
 	<update id="updateImageIdById">
 		update cloud_host
 		<set>
-			sys_image_id = #{sysImageId},
+			sys_image_id = #{sysIamgeId},
 			sys_image_name = #{sysImageName}
 		</set>
 		where id = #{id}

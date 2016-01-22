@@ -458,7 +458,8 @@
 		if(isCommited){
      		return false;
 		 } 
-		     	
+		isCommited=true;     	
+    	
 		jQuery.ajax({
 	        url: path+'/main/checklogin',
 	        type: 'post', 
@@ -492,8 +493,7 @@
  		        			};
  		        			var form = jQuery("#basicvalidations");
  		        			form.parsley('validate');
- 		        			if(form.parsley('isValid')){ 
- 		        				isCommited=true;
+ 		        			if(form.parsley('isValid')){  		        				
 			        			jQuery("#basicvalidations").ajaxSubmit(options); 
  		        			}
 		        	} 
