@@ -85,12 +85,23 @@
               <div class="col-md-12">
 
 				  <section class="tile color transparent-black">
-
+                  <!-- tile widget -->
+                  <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs tabdrop">
+                      <li ><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkpool/ipresourcepool/all';">地址资源池管理 </a></li>
+                      <li class="active"><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkpool/portresourcepool/all';" data-toggle="tab">端口资源池管理</a></li>
+		                      <div id="space"></div>
+                      
+                     </ul>
+                    <!-- / Nav tabs -->
+                  </div>
+                  <!-- /tile widget -->
 
 
                   <!-- tile header -->
                   <div class="tile-header">
-                     <a href="<%=request.getContextPath()%>/portresourcepool/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>
+                     <a href="<%=request.getContextPath()%>/networkpool/portresourcepool/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>
                      <button type="button" class="btn btn-success delete" id="create_resource_node">
                               <i class="fa fa-plus"></i>
                               <span> 新增端口资源 </span>
@@ -231,7 +242,7 @@
 	    $(function(){
 	    	//添加资源节点(后台判断权限)
 	    	$("#create_resource_node").click(function(){
-	    		window.location.href ="<%=request.getContextPath()%>/portresourcepool/"+poolId+"/an";
+	    		window.location.href ="<%=request.getContextPath()%>/networkpool/portresourcepool/"+poolId+"/an";
 	    	});
 	    	//删除资源节点
 		    $(".delete_resource_node").click(function(){
@@ -245,7 +256,7 @@
 	    
 	    function deleteResourceNode(){
 		   	jQuery.ajax({
-		        url: '<%=request.getContextPath()%>/portresourcepool/dn',
+		        url: '<%=request.getContextPath()%>/networkpool/portresourcepool/dn',
 		        type: 'post', 
 		        dataType: 'json',
 		        data:{ip:cur_ip,poolId:poolId},
@@ -256,7 +267,7 @@
 		        success: function(result)	        
 		        {  
 		        	if(result.status=="success"){
-		        		location.href = "<%=request.getContextPath()%>/portresourcepool/"+poolId+"/qn";
+		        		location.href = "<%=request.getContextPath()%>/networkpool/portresourcepool/"+poolId+"/qn";
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -265,6 +276,24 @@
 		        }	        
 		     });  
 	    }
+	    $(function(){  
+		    $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+					 -1).height(
+					  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
+			$(window).resize(function(){
+				 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+						 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+						 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+						 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+						 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+						 -1);
+			});
+			});
+	      
     
     </script>
   </body>
