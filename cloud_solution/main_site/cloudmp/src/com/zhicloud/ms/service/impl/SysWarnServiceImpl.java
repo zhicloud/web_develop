@@ -307,7 +307,6 @@ public class SysWarnServiceImpl implements SysWarnService {
      * @param ruleid String
      * @return int
      */
-    @Transactional(readOnly=false)
     public int saveValueInfo(JSONArray array, String ruleid) {
         SysWarnValueMapper valueMapper = this.sqlSession.getMapper(SysWarnValueMapper.class);
         // 保存前，先删除原来的数据

@@ -397,14 +397,14 @@
       $("#ip_pool").hide();
       $("#input07").attr("disabled",true);
 	  $("#input007").attr("disabled",true);
-      $("#optionsRadios1,#optionsRadios4").click(function(){
+      $("#optionsRadios1").click(function(){
     	  $("#port_pool").hide();
      	  $("#ip_pool").hide();
      	  $("#no_pool").attr("disabled",false);
      	  $("#input07").attr("disabled",true);
   	      $("#input007").attr("disabled",true);
        });
-      $("#optionsRadios2").click(function(){
+      $("#optionsRadios2,#optionsRadios4").click(function(){
     	  $("#port_pool").hide();
      	  $("#ip_pool").show();
      	  $("#no_pool").attr("disabled",true);

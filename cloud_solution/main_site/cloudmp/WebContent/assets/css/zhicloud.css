@@ -4183,7 +4183,7 @@ body #content .tile-right-side {
   body #content .tile-right-side.transparent-white fieldset[disabled] .form-control {
     background-color: rgba(255, 255, 255, 0.3);
     border: 0;
-    color: #FFFFFF; }
+    color: #717171; }
     body #content .tile.transparent-black .form-control[disabled]:focus,
     body #content .tile.transparent-black .form-control[readonly]:focus,
     body #content .tile.transparent-black fieldset[disabled] .form-control:focus, body #content .tile.transparent-white .form-control[disabled]:focus,

@@ -93,14 +93,4 @@ public interface ICloudHostWarehouseService {
      * @return MethodResult
      */
     public int saveConcurrent(Map<String, Object> condition);
-    
-    /**
-     * 定时器专用主机添加方法
-     * @param id
-     * @param addAmount
-     * @param poolId
-     * @param forJob
-     * @return
-     */
-    public MethodResult addAmount(String id,String addAmount,String poolId,String forJob);
 }

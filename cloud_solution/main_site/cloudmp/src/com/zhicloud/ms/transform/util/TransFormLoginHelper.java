@@ -87,11 +87,11 @@ public class TransFormLoginHelper {
      * @param loginInfo
      * @throws
      */
-    public synchronized static void putSessionMap(String sessionid, TransFormLoginInfo loginInfo,
+    public synchronized static void putSessionMap(String userid, TransFormLoginInfo loginInfo,
             HttpServletRequest request) {
-        sessionMap.put(sessionid, loginInfo);
-        request.getSession().setAttribute(TransformConstant.transform_session_admin, sessionid);
-        session.put(sessionid, request.getSession().getId());
+        sessionMap.put(userid, loginInfo);
+        request.getSession().setAttribute(TransformConstant.transform_session_admin, userid);
+        session.put(userid, request.getSession().getId());
         // 将菜单html放入session
         String menuhtml = createMenuHtml(request, loginInfo).toString();
         request.getSession().setAttribute(TransformConstant.transform_session_menu, menuhtml);
@@ -116,11 +116,17 @@ public class TransFormLoginHelper {
      * @return boolean
      */
     public static boolean hasLogin(HttpServletRequest request) {
-        String sessionid = (String) request.getSession().getAttribute(TransformConstant.transform_session_admin);
-        if (sessionid == null || "".equals(sessionid)) {
+        String userid = (String) request.getSession().getAttribute(TransformConstant.transform_session_admin);
+        if (userid == null || "".equals(userid)) {
             return false;
         }
-        return sessionMap.containsKey(sessionid);
+        String sessionid = request.getSession().getId();
+        //System.out.println("当前会话ID===================="+sessionid+",当前requestID===="+request.getSession().getCreationTime());
+        // 代表是同一个会话
+        if (sessionMap.containsKey(userid) && sessionid.equals(session.get(userid))) {
+            return true;
+        }
+        return false;
     }
 
     /**

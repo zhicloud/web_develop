@@ -8,9 +8,6 @@
 	Integer userType = AppConstant.SYS_USER_TYPE_OPERATOR;
 	LoginInfo loginInfo = LoginHelper.getLoginInfo(request, userType);
 	OperatorVO operator = (OperatorVO)request.getAttribute("operator");
-	Integer suggestionCount = (Integer)request.getAttribute("suggestionCount");
-	Integer invoiceCount = (Integer)request.getAttribute("invoiceCount");
-	Integer eggPlanCount = (Integer)request.getAttribute("eggPlanCount");
 %>
 <!DOCTYPE html>
 <!-- operator_index.jsp -->
@@ -42,7 +39,7 @@
 		<div class="fb-row" style="margin-bottom: 1px;">
 			<div class="fb-item fb-item-sidebar">
 				<i class="icon-facebook icon-facebook-comptsug"></i>
-				<a class="comptsug" href="javascript:;" onclick="$('#content_frame',window.parent.document).attr('src', '<%=request.getContextPath()%>/bean/page.do?userType=<%=userType%>&bean=suggestionService&method=managePage');">投诉建议（<label><%=suggestionCount %></label>）</a>
+				<a class="comptsug" href="javascript:;">投诉建议（<label>0</label>）</a>
 			</div>
 			<div class="fb-item fb-item-sidebar">
 				<i class="icon-facebook icon-facebook-workorder"></i>
@@ -54,7 +51,7 @@
 			</div>
 			<div class="fb-item fb-item-sidebar">
 				<i class="icon-facebook icon-facebook-invorqust"></i>
-				<a class="invorqust" href="javascript:;" onclick="$('#content_frame',window.parent.document).attr('src', '<%=request.getContextPath()%>/bean/page.do?userType=<%=userType%>&bean=invoiceService&method=pendingPage');">发票申请（<label><%=invoiceCount %></label>）</a>
+				<a class="invorqust" href="javascript:;">发票申请（<label>24</label>）</a>
 			</div>
 			<div class="fb-item">
 				<i class="icon-facebook icon-facebook-filiappl"></i>
@@ -64,7 +61,7 @@
 		<div class="fb-row">
 			<div class="fb-item fb-item-sidebar">
 				<i class="icon-facebook icon-facebook-eggadd"></i>
-				<a class="eggadd" href="javascript:;" onclick="$('#content_frame',window.parent.document).attr('src', '<%=request.getContextPath()%>/bean/page.do?userType=<%=userType%>&bean=eggPlanService&method=eggPlanManagePage');">蛋壳+（<label><%=eggPlanCount %></label>）</a>
+				<a class="eggadd" href="javascript:;">蛋壳+（<label>4</label>）</a>
 			</div>
 			<div class="fb-item fb-item-sidebar">
 				<i class="icon-facebook icon-facebook-cudmirrappl"></i>
@@ -189,17 +186,13 @@
 <!-- JavaScript_start -->
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.js"></script>
 <script type="text/javascript">
-// 	window.onload=function(){
-// 		$(window.parent.document).find("#content_frame").load(function(){
-// 			var main = $(window.parent.document).find("#content_frame");
-// 			var thisheight = $('.ov-wrap').height();
-// 			main.height(thisheight);
-// 		});
-// 	}
-
-// function suggestionPage(){
-<%-- 	$("#content_frame",window.parent.document).attr("src", "<%=request.getContextPath()%>/bean/page.do?userType=<%=userType%>&bean=suggestionService&method=managePage"); --%>
-// }
+	window.onload=function(){
+		$(window.parent.document).find("#content_frame").load(function(){
+			var main = $(window.parent.document).find("#content_frame");
+			var thisheight = $('.ov-wrap').height();
+			main.height(thisheight);
+		});
+	}
 </script>
 <!-- JavaScript_end -->
 </body>

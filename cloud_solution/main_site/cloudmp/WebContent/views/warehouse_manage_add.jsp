@@ -263,7 +263,7 @@
         $(this).toggleClass('checked');
       });
 	  
-      $(".create_new_host_type").click(function(){
+      $("#create_new_host_type").click(function(){
     	  location.href = path+"/chcm/addpage";
       });
       

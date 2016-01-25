@@ -226,7 +226,9 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             //验证该用户ID，是否已经登录。当前用户比较已登录到系统的静态变量中的值，是否存在。  
             Boolean hasLogin = TransFormLoginHelper.isRepeatLogin(manSystemUserVO.getBillid(), request);
             if(hasLogin){
-                return toSuccessReply("用户已经登录", false);
+                //如果用户已经登录，挤掉原来的用户
+                TransFormLoginHelper.removeSessionMap(manSystemUserVO.getBillid());
+                //return toSuccessReply("用户已经登录", false);
             }
             operLog.setStatus(1);
             setTransFormUserInfo(request,manSystemUserVO);
@@ -985,22 +987,20 @@ public class ManSysUserServiceImpl implements ManSysUserService {
     public String manualPassword(String billid, String newpassword, String email) {
         logger.debug("SysUserServiceImpl.manualPassword()");
         try {
-            // 先更新数据库
-            ManSystemUserMapper systemUserMapper = this.sqlSession.getMapper(ManSystemUserMapper.class);
-            LinkedHashMap<String, Object> condition = new LinkedHashMap<String, Object>();
-            condition.put("password", TransFormLoginHelper.md5(AppConstant.PASSWORD_MD5_STR, newpassword));
-            condition.put("billid", billid);
-            systemUserMapper.updateSystemUser(condition);
+            try {
+                Map<String, Object> user = new LinkedHashMap<String, Object>();
+                user.put("password", newpassword);
+                EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
+                emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_RESET_PASSWORD_MANUAL, email, user);
+            } catch (Exception e) {
+                logger.error(e);
+                return TransformConstant.success;
+            }
 
-            // 发送邮件
-            Map<String, Object> user = new LinkedHashMap<String, Object>();
-            user.put("password", newpassword);
-            EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
-            emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_RESET_PASSWORD_MANUAL, email, user);
             return TransformConstant.success;
         } catch (Exception e) {
             logger.error(e);
-            return TransformConstant.fail;
+            throw new AppException("添加失败");
         }
     }
 }

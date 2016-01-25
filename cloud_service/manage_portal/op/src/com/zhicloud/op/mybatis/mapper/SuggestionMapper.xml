@@ -138,11 +138,6 @@ left join terminal_user d on a.id = d.id) x) u
 	   where id = #{id}
 	</update>
 	
-	<select id="getAllUnprocessed" resultType="int">
-		select count(1)
-		from suggestion
-		where status = 1
-	</select>
 	 
 
 </mapper>
