@@ -78,6 +78,18 @@
 							<!-- col 6 -->
 							<div class="col-md-12">
 								<section class="tile color transparent-black">
+								<!-- tile widget -->
+				                  <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
+				                    <!-- Nav tabs -->
+				                    <ul class="nav nav-tabs tabdrop">
+				                      <li ><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkpool/ipresourcepool/all';">地址资源池管理 </a></li>
+				                      <li class="active"><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkpool/portresourcepool/all';" data-toggle="tab">端口资源池管理</a></li>
+  				                      <div id="space"></div>
+				                      
+				                     </ul>
+				                    <!-- / Nav tabs -->
+				                  </div>
+				                  <!-- /tile widget -->
 									<!-- tile header -->
 									<div class="tile-header">
 										<button type="button" class="btn btn-success add"
@@ -226,25 +238,40 @@
 	    	$(".query_detail").click(function(){
 		    	var uuid = $(this).attr("cur_id");
 		    	var poolname = $(this).attr("cur_name"); 
-		    	window.location.href = "<%=request.getContextPath()%>/portresourcepool/"+uuid+"/qn?poolname="+poolname;
+		    	window.location.href = "<%=request.getContextPath()%>/networkpool/portresourcepool/"+uuid+"/qn?poolname="+poolname;
 		    });	
 		    
 		    $(".delete_ipPool").click(function(){
 		    	uuid = $(this).attr("cur_id");
 		    	$("#confirmcontent").html("确定要删除该资源节点吗？");
 		    	$("#con").click();
-		    });		    
+		    });		 
+		    $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+					 -1).height(
+					  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
+			$(window).resize(function(){
+				 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+						 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+						 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+						 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+						 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+						 -1);
+			});
    		});
 		
 		
 		//新增页面跳转
 		function loadAddPage(){
-			window.location.href ="<%=request.getContextPath()%>/portresourcepool/add";
+			window.location.href ="<%=request.getContextPath()%>/networkpool/portresourcepool/add";
 		}
 		
 	    function toDelete(){
 	    	jQuery.ajax({
-	        url: '<%=request.getContextPath()%>/portresourcepool/rm',
+	        url: '<%=request.getContextPath()%>/networkpool/portresourcepool/rm',
 	        type: 'post', 
 	        dataType: 'json',
 	        data:{uuid:uuid},
@@ -255,7 +282,7 @@
 	        success: function(result)	        
 	        {  
 	        	if(result.status=="success"){
-	        		location.href = "<%=request.getContextPath()%>/portresourcepool/all";
+	        		location.href = "<%=request.getContextPath()%>/networkpool/portresourcepool/all";
 	        	}
 	        	else{
 		        	$("#tipscontent").html(result.message);

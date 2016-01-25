@@ -2020,12 +2020,18 @@ public class CloudHostServiceImpl implements ICloudHostService {
     * @see com.zhicloud.ms.service.ICloudHostService#getDesktopCloudHostInTimerBackUpStop(java.lang.Integer, java.lang.String)
      */
     public List<CloudHostVO> getCloudHostInTimerBackUpStop(Integer limit,String now,String timerKey) {
-        CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
-        Map<String, Object> relateData = new LinkedHashMap<String, Object>();
-        relateData.put("limit", limit);
-        relateData.put("now", now);
-        relateData.put("timerKey", timerKey);
-        return cloudHostMapper.getCloudHostInTimerBackUpStop(relateData);
+        try{
+            CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
+            Map<String, Object> relateData = new LinkedHashMap<String, Object>();
+            relateData.put("limit", limit);
+            relateData.put("now", now);
+            relateData.put("timerKey", timerKey);
+            return cloudHostMapper.getCloudHostInTimerBackUpStop(relateData);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+        
     }
     /**
      * 更新参与定时任务的桌面云主机

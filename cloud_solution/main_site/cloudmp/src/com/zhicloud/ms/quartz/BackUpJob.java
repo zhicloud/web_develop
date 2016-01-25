@@ -65,7 +65,7 @@ public class BackUpJob implements Job {
         Integer mode = context.getJobDetail().getJobDataMap().getIntValue("mode");
         Integer disk = context.getJobDetail().getJobDataMap().getIntValue("disk");
         String timerKey = context.getJobDetail().getJobDataMap().getString("timerKey");
-
+        logger.info("begin to back up "+now+" / "+mode+" / "+disk+" / "+timerKey);
         AppInconstant.isTimerForBackUp = true;
         try{
           //获取所有开机状态的加入定时任务的主机，并进行强制关机
@@ -83,12 +83,15 @@ public class BackUpJob implements Job {
             {
                 //获取正在备份的主机总数
                 int backUpCount = AppInconstant.hostBackupProgress.size();
+                logger.info(" back_up_count : "+backUpCount);
                 //当前正在备份的主机数已经达到最大值，跳出循环
                 if(backUpCount >= MAX_BACK_UP_COUNT){
+                    logger.info(" back_up_count > MAX_BACK_UP_COUNT");
                     continue;
                 }else{
                     int limit = MAX_BACK_UP_COUNT - backUpCount;
                     List<CloudHostVO> hostList = cloudHostService.getCloudHostInTimerBackUpStop(limit, now,timerKey);
+                    logger.info(" back_up_list : "+hostList.size());
                     if(hostList == null || hostList.size() == 0){
                         AppInconstant.isTimerForBackUp = false;
                         continue;

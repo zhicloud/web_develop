@@ -55,6 +55,18 @@
               <div class="col-md-12">
                 <!-- tile -->
                 <section class="tile color transparent-black">
+                  <!-- tile widget -->
+                  <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs tabdrop">
+                      <li ><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkpool/ipresourcepool/all';">地址资源池管理 </a></li>
+                      <li class="active"><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkpool/portresourcepool/all';" data-toggle="tab">端口资源池管理</a></li>
+		                      <div id="space"></div>
+                      
+                     </ul>
+                    <!-- / Nav tabs -->
+                  </div>
+                  <!-- /tile widget -->
                   <!-- tile header -->
                   <div class="tile-header">
                     <h3>输入端口资源信息</h3>
@@ -67,7 +79,7 @@
                   <!-- tile body -->
                   <div class="tile-body" style="padding-bottom:0px;margin-bottom:-45px;">
                     
-                    <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/portresourcepool/${poolId}/an" method="post"   >
+                    <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/networkpool/portresourcepool/${poolId}/an" method="post"   >
                       <input name="prefixion" type="hidden" value="server_pool_"/>
                       <div class="form-group">
                         <label for="input01" class="col-sm-2 control-label">起始IP *</label>
@@ -137,7 +149,7 @@
 		var isCommited = false;
 	    //返回
 	    function backhome(){
-	    	window.location.href = "<%=request.getContextPath()%>/portresourcepool/"+poolId+"/qn";
+	    	window.location.href = "<%=request.getContextPath()%>/networkpool/portresourcepool/"+poolId+"/qn";
 	    }    
     	function saveForm(){
     		if(isCommited){
@@ -167,7 +179,7 @@
 					        			$("#tipscontent").html(data.message);
 					     		    	$("#dia").click();  		        							
 	        						}else{  		        							
-  		        						location.href = "<%=request.getContextPath()%>/portresourcepool/"+poolId+"/qn";
+  		        						location.href = "<%=request.getContextPath()%>/networkpool/portresourcepool/"+poolId+"/qn";
 	        						}
 	        					},
 	        					dataType:'json',
@@ -182,6 +194,24 @@
 		        	}
 		     }); 
 		}
+    	$(function(){  
+    	    $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+    				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+    				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+    				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+    				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+    				 -1).height(
+    				  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
+    		$(window).resize(function(){
+    			 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+    					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+    					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+    					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+    					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+    					 -1);
+    		});
+    		});
+          
     </script>
   </body>
 </html>

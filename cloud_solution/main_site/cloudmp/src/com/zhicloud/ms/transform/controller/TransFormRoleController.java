@@ -366,11 +366,11 @@ public class TransFormRoleController extends TransFormBaseAction {
     @RequestMapping("/transform/baseinfo/beforeupdateuser")
     public String beforUpdateUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
         logger.debug("TransFormRoleController.beforUpdateUser()");
-        boolean flag = false;
-        flag = isHasPrivilege(request, TransFormPrivilegeConstant.transform_admin_moduser);
-        if (!flag) {
-            return TransformConstant.transform_jsp_noaccsess;
-        }
+//        boolean flag = false;
+//        flag = isHasPrivilege(request, TransFormPrivilegeConstant.transform_admin_moduser);
+//        if (!flag) {
+//            return TransformConstant.transform_jsp_noaccsess;
+//        }
         
         TransFormLoginInfo login = TransFormLoginHelper.getLoginInfo(request);
         request.setAttribute("userbaseinfo", manSysUserService.getUserInfoByID(login.getBillid()));
@@ -389,8 +389,9 @@ public class TransFormRoleController extends TransFormBaseAction {
         String newpassword = request.getParameter("newpassword");
         String oldpassword = request.getParameter("oldpassword");
         try {
-            boolean flag = isHasPrivilege(request, TransFormPrivilegeConstant.transform_admin_changepass);
-            if (flag) {
+//            boolean flag = isHasPrivilege(request, TransFormPrivilegeConstant.transform_admin_changepass);
+            
+            if (true) {
                 if (TransformConstant.transform_billid_admin.equals(login.getBillid())) {
                     printWriter(response, JSONLibUtil.toJSONString(toSuccessReply("超级管理员密码不能修改", false)));
                 } else {
