@@ -226,7 +226,9 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             //验证该用户ID，是否已经登录。当前用户比较已登录到系统的静态变量中的值，是否存在。  
             Boolean hasLogin = TransFormLoginHelper.isRepeatLogin(manSystemUserVO.getBillid(), request);
             if(hasLogin){
-                return toSuccessReply("用户已经登录", false);
+                //如果用户已经登录，挤掉原来的用户
+                TransFormLoginHelper.removeSessionMap(manSystemUserVO.getBillid());
+                //return toSuccessReply("用户已经登录", false);
             }
             operLog.setStatus(1);
             setTransFormUserInfo(request,manSystemUserVO);
