@@ -397,13 +397,7 @@ public class SysDiskImageServiceImpl implements ISysDiskImageService {
  							sysDiskImageData.put("description",   description );
  							sysDiskImageData.put("userId",        "");
  							// 默认为通用镜像
- 							String uploadImageId = AppInconstant.uploadImage.get(uuid);
- 							if(StringUtil.isBlank(uploadImageId)){
- 							   sysDiskImageData.put("type",        0);
- 							}else{
- 							   sysDiskImageData.put("type",        2);
- 							}
-					
+							sysDiskImageData.put("type",        0);
 							sysDiskImageData.put("fileType",        fileType);
 							sysDiskImageData.put("imageType",        AppConstant.DISK_IMAGE_TYPE_COMMON);
 							sysDiskImageData.put("size",        size);

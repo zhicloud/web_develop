@@ -206,7 +206,7 @@ a.emer-buy:hover{background:#1994f4;}
 a.min-buy{width:120px;height:36px;line-height:36px;font-size:14px;}
 /* 我的云端-子栏目样式 */
 .mc-slider{width:980px;margin:0 auto;}
-.mc-tabsinfo{overflow:hidden;}
+.mc-tabsinfo{overflow:hidden;height:68px;width:976px;margin:0 auto;}
 .mc-tabsinfo a.m-tab{float:left;width:122px;padding-top:10px;border-bottom: 1px solid #b2b2b2;}
 .mc-tabsinfo a.m-tab.active {display:block;color: #007aff;border-bottom: 2px solid #007aff;}
 .mc-tabsinfo a.m-tab img{display:block;margin:0 auto;height:24px;width:24px;}

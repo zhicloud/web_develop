@@ -40,7 +40,7 @@ public class WarehouseJob implements Job{
 		}
 		if(minimumI - remainI > 0){
 			logger.info("check warehouse remain");
-			cloudHostWarehouseService.addAmount(id, String.valueOf((minimumI-remainI)), poolId,"yes");
+			cloudHostWarehouseService.addAmount(id, String.valueOf((minimumI-remainI)), poolId);
 		}
 	}
 

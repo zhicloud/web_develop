@@ -70,7 +70,7 @@ jQuery(function() {
 	        $percent.find(".green").html(progresswid  + '%');
     });
     uploader.on( 'uploadSuccess', function( file,response ) {
-    	updateMemoryData('iso',response['zc-uuid']);
+    	updateMemoryData('iso');
     	$('#closebtn').click();
     	$("#successconfirm").click();
     });
@@ -91,8 +91,6 @@ jQuery(function() {
 		 //headers['now_slice'] = obj.chunk;
     	 //headers['all_slice'] = obj.chunks;
     	 headers['zc-progress'] = "all_slice="+obj.chunks+",now_slice="+obj.chunk;
-    	 $("#chooseinfo").css("display","block");
-      	$("#chooseinfo").html("文件上传过程中，离开本页面，上传文件将中断");
     	 
      	});
      

@@ -1257,7 +1257,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
                         String pool_id = null;
                         // 设置的最大值
                         Integer max_creating = obj.getInt("max_creating");
-/*                        if (max_creating == 0) {
+                        if (max_creating == 0) {
                             pool_id = obj.getString("pool_id");
                         } else {
                             // 正在创建的数量
@@ -1267,13 +1267,6 @@ public class CloudHostServiceImpl implements ICloudHostService {
                                 logger.info("CloudHostServiceImpl.createOneCloudHost():资源池:【" + pool_id
                                         + "】未达到最大并发创建数,可以创建主机");
                             }
-                        }*/
-                        // 正在创建的数量
-                        Integer exists_creating = cloudHostMapper.countPoolCreatedHost(obj.getString("pool_id"));
-                        if (exists_creating < max_creating) {
-                            pool_id = obj.getString("pool_id");
-                            logger.info("CloudHostServiceImpl.createOneCloudHost():资源池:【" + pool_id
-                                    + "】未达到最大并发创建数,可以创建主机");
                         }
 
                         // 创建主机
@@ -1465,7 +1458,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             String[] uuids = new String[1];
             uuids[0] = host.getRealHostId();
             this.sqlSession.getMapper(QosMapper.class).deleteQosByHostUuids(uuids);
-            operLogService.addLog("云主机", "删除云主机"+host.getDisplayName()+"成功", "1", "1", request);
+            operLogService.addLog("云主机", "删除云主机"+host.getDisplayName()+"成功", "1", "2", request);
 
 			return new MethodResult(MethodResult.SUCCESS, "删除成功");
 		} catch (MalformedURLException e) {
@@ -2210,17 +2203,15 @@ public class CloudHostServiceImpl implements ICloudHostService {
 
             String password = JSONLibUtil.getString(hostInfo, "authentication");
             String account = JSONLibUtil.getString(hostInfo, "display");  
-            String[] ip = JSONLibUtil.getStringArray(hostInfo, "ip"); 
-            Integer[] displayPort = JSONLibUtil.getIntegerArray(hostInfo, "display_port");
             Map<String, Object> cloudHostData = new LinkedHashMap<String, Object>();
             cloudHostData.put("id", StringUtil.generateUUID());
             cloudHostData.put("realHostId", realHostId);
             cloudHostData.put("sysDisk", myCloudHostData.getSysDisk());
             cloudHostData.put("dataDisk", myCloudHostData.getDataDisk());
-            cloudHostData.put("innerIp", ip[0]);
-            cloudHostData.put("innerPort", displayPort[0]); 
-            cloudHostData.put("outerIp", ip[1]);
-            cloudHostData.put("outerPort", displayPort[1]); 
+            cloudHostData.put("innerIp", myCloudHostData.getInnerIp());
+            cloudHostData.put("innerPort", myCloudHostData.getInnerPort()); 
+            cloudHostData.put("outerIp", myCloudHostData.getOuterIp());
+            cloudHostData.put("outerPort", myCloudHostData.getOuterPort()); 
             cloudHostData.put("createTime", DateUtil.dateToString(new Date(),"yyyyMMddHHmmssSSS"));
             cloudHostData.put("runningStatus", myCloudHostData.getRunningStatus());
             cloudHostData.put("status", "2");
@@ -2664,11 +2655,10 @@ public class CloudHostServiceImpl implements ICloudHostService {
                             newCloudHostData.setMemoryUsage(memoryUsage);
                             newCloudHostData.setDataDisk(diskVolume[1]);
                             newCloudHostData.setDataDiskUsage(diskUsage);
-                            newCloudHostData.setInnerIp(ip[0]); 
+                            newCloudHostData.setInnerIp(ip[0]);
                             newCloudHostData.setOuterIp(ip[1]);
                             newCloudHostData.setRunningStatus(transforRunningStatus(runningStatus));
                             newCloudHostData.setLastOperStatus(0);
-                            newCloudHostData.setPoolId((String) computerObject.get("uuid"));
                             CloudHostPoolManager.getCloudHostPool().put(newCloudHostData);
                             // 如果running_status变了，则更新数据库
                             if (oldCloudHostData == null || (oldCloudHostData != null && NumberUtil.equals(newCloudHostData.getRunningStatus(), oldCloudHostData.getRunningStatus()) == false)) {
@@ -2746,16 +2736,16 @@ public class CloudHostServiceImpl implements ICloudHostService {
             JSONObject obj = new JSONObject();
             obj.put("pool_id", ext.getUuid());
             obj.put("pool_name", ext.getName());
-            obj.put("max_creating", AppInconstant.init_maxcreating); 
+            obj.put("max_creating", 0); 
             // 循环比对
             for (CloudHostWarehouse cloud : maxconcurrent_lists) {
                 if (ext.getUuid().equals(cloud.getPoolId())) {
                     obj.put("max_creating", cloud.getMax_creating()); 
                     break;
-                }/*else{
+                }else{
                     //如果数据库中没有设置，需要给一个默认值2
                     obj.put("max_creating", 2); 
-                }*/
+                }
             }
             pool_arrays.add(obj);
         }

@@ -94,10 +94,6 @@
 
                   <!-- tile header -->
                   <div class="tile-header" id="new_data_disk">
-                  	<button type="button" class="btn btn-success delete" onclick="window.location.href='javascript:history.back(-1);';">
-                              <i class="fa fa-step-backward"></i>
-                              <span> 返回上级</span>
-                    </button>
                      <button type="button" class="btn btn-success delete" id="add_data_disk">
                               <i class="fa fa-plus"></i>
                               <span> 新增数据磁盘 </span>

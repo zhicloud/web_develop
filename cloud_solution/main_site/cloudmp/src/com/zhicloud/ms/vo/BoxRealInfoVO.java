@@ -33,7 +33,7 @@ public class BoxRealInfoVO {
     private Date lastLogoutDate;
     private String serialNumber;        //盒子序列号
     
-    private long cumulativeOnlineTime;  //累计在线时间
+    private long cumulativeOnlineTime;
 
     public long getCumulativeOnlineTime() {
         return cumulativeOnlineTime;

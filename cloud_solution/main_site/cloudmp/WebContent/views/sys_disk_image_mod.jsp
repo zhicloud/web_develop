@@ -276,7 +276,7 @@
  		        			var options = {
  		        					success:function result(data){
  		        						if(data.status == "fail"){
-							        		  $("#tipscontent").html(data.message);
+							        		  $("#tipscontent").html("保存失败");
 							     		      $("#dia").click();  		        							
  		        						}else{  		        							
 	   		        						location.href = path + "/image/imagelist";

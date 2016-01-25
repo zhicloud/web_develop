@@ -311,7 +311,7 @@
    		        					success:function result(data){
    		        						if(data.status == "fail"){
    		        							isCommited = false;
-							        		  $("#tipscontent").html(data.message);
+							        		  $("#tipscontent").html("创建失败");
 							     		      $("#dia").click();  		        							
    		        						}else{  		        							
 	   		        						location.href = path + "/image/imagelist";
