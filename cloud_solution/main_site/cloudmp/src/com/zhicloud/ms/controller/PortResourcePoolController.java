@@ -33,7 +33,7 @@ import com.zhicloud.ms.vo.PortResourcePoolDetailVO;
 import com.zhicloud.ms.vo.PortResourcePoolVO;
 
 @Controller
-@RequestMapping("/portresourcepool")
+@RequestMapping("/networkpool/portresourcepool")
 public class PortResourcePoolController {
     @Resource
     private IOperLogService operLogService;

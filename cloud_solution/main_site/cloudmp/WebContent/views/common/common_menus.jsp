@@ -124,13 +124,13 @@ function checkIPAvailable(){
 	return returnval;
 }
 //更新镜像缓存数据
-function updateMemoryData(obj,uuid){
+function updateMemoryData(obj){
 	var returnval = false;
 	jQuery.ajax({
   	 	type: "GET",
   	 	async:false,
    		url: "<%=request.getContextPath()%>/image/update",
-  		data: {type:obj,imageId:uuid}, 
+  		data: {type:obj},
   		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
    		success: function(result){
      		if(result.success){
@@ -243,38 +243,38 @@ function getAvailableAdress(){
                 
                 <a class="dropdown-toggle button" data-toggle="dropdown" href="#">
                   <i class="fa fa-envelope"></i>
-                  <span class="label label-transparent-black">2</span>
+                  <span class="label label-transparent-black"></span>
                 </a>
 
                 <ul class="dropdown-menu wider arrow nopadding messages">
-                  <li><h1>您有 <strong>2</strong> 个新的短消息</h1></li>
-                  <li>
-                    <a class="cyan" href="#">
-                      <div class="profile-photo">
-                        <img src="<%=request.getContextPath()%>/assets/images/profile-photo.png" alt />
-                      </div>
-                      <div class="message-info">
-                        <span class="sender">董孔明</span>
-                        <span class="time">12 分钟前</span>
-                        <div class="message-content">172.168.1.2云服务器网络访问很慢，请看看时什么原因？谢谢</div>
-                      </div>
-                    </a>
-                  </li>
+                  <li><h1>您有 <strong>0</strong> 个新的短消息</h1></li>
+<!--                   <li> -->
+<!--                     <a class="cyan" href="#"> -->
+<!--                       <div class="profile-photo"> -->
+<%--                         <img src="<%=request.getContextPath()%>/assets/images/profile-photo.png" alt /> --%>
+<!--                       </div> -->
+<!--                       <div class="message-info"> -->
+<!--                         <span class="sender">董孔明</span> -->
+<!--                         <span class="time">12 分钟前</span> -->
+<!--                         <div class="message-content">172.168.1.2云服务器网络访问很慢，请看看时什么原因？谢谢</div> -->
+<!--                       </div> -->
+<!--                     </a> -->
+<!--                   </li> -->
 
-                  <li>
-                    <a class="green" href="#">
-                      <div class="profile-photo">
-                        <img src="<%=request.getContextPath()%>/assets/images/minimal-logo.png" alt />
-                      </div>
-                      <div class="message-info">
-                        <span class="sender">系统消息</span>
-                        <span class="time">1 小时前</span>
-                        <div class="message-content">自动检测并加入一台宿主机节点，自动分配IP 172.168.1.239</div>
-                      </div>
-                    </a>
-                  </li>
+<!--                   <li> -->
+<!--                     <a class="green" href="#"> -->
+<!--                       <div class="profile-photo"> -->
+<%--                         <img src="<%=request.getContextPath()%>/assets/images/minimal-logo.png" alt /> --%>
+<!--                       </div> -->
+<!--                       <div class="message-info"> -->
+<!--                         <span class="sender">系统消息</span> -->
+<!--                         <span class="time">1 小时前</span> -->
+<!--                         <div class="message-content">自动检测并加入一台宿主机节点，自动分配IP 172.168.1.239</div> -->
+<!--                       </div> -->
+<!--                     </a> -->
+<!--                   </li> -->
 
-                  <li class="topborder"><a href="#">查看全部短消息 <i class="fa fa-angle-right"></i></a></li>
+<!--                   <li class="topborder"><a href="#">查看全部短消息 <i class="fa fa-angle-right"></i></a></li> -->
                 </ul>
 
               </li>
@@ -283,31 +283,31 @@ function getAvailableAdress(){
                 
                 <a class="dropdown-toggle button" data-toggle="dropdown" href="#">
                   <i class="fa fa-bell"></i>
-                  <span class="label label-transparent-black">2</span>
+                  <span class="label label-transparent-black"></span>
                 </a>
 
                 <ul class="dropdown-menu wide arrow nopadding bordered">
-                  <li><h1>你有 <strong>2</strong> 个新告警消息</h1></li>
+                  <li><h1>你有 <strong>0</strong> 个新告警消息</h1></li>
                   
 
-                  <li>
-                    <a href="#">
-                      <span class="label label-red"><i class="fa fa-power-off"></i></span>
-                      NC节点：172.168.1.239停止服务.
-                      <span class="small">27 分钟前</span>
-                    </a>
-                  </li>
+<!--                   <li> -->
+<!--                     <a href="#"> -->
+<!--                       <span class="label label-red"><i class="fa fa-power-off"></i></span> -->
+<!--                       NC节点：172.168.1.239停止服务. -->
+<!--                       <span class="small">27 分钟前</span> -->
+<!--                     </a> -->
+<!--                   </li> -->
 
-                  <li>
-                    <a href="#">
-                      <span class="label label-orange"><i class="fa fa-power-off"></i></span>
-                      DS节点：172.168.1.219停止服务.
-                      <span class="small">1 小时前</span>
-                    </a>
-                  </li>
+<!--                   <li> -->
+<!--                     <a href="#"> -->
+<!--                       <span class="label label-orange"><i class="fa fa-power-off"></i></span> -->
+<!--                       DS节点：172.168.1.219停止服务. -->
+<!--                       <span class="small">1 小时前</span> -->
+<!--                     </a> -->
+<!--                   </li> -->
 
 
-                   <li><a href="#">查看全部告警消息 <i class="fa fa-angle-right"></i></a></li>
+<!--                    <li><a href="#">查看全部告警消息 <i class="fa fa-angle-right"></i></a></li> -->
                 </ul>
 
               </li>
@@ -338,12 +338,12 @@ function getAvailableAdress(){
                   <li class="divider"></li>
 
                   <li>
-                    <a href="#"><i class="fa fa-user"></i> 账号管理</a>
+                    <a href="<%=request.getContextPath()%>/transform/baseinfo/beforeupdateuser"><i class="fa fa-user"></i> 账号管理</a>
                   </li>
 
 
                   <li>
-                    <a href="#"><i class="fa fa-envelope"></i> 短消息 <span class="badge badge-red" id="user-inbox">2</span></a>
+                    <a href="<%=request.getContextPath()%>/transform/updatepass/beforeupdatepassword"><i class="fa fa-lock"></i> 修改密码  </a>
                   </li>
 
                   <li class="divider"></li>

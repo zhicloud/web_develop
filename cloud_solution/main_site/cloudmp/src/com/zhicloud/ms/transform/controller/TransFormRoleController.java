@@ -366,11 +366,11 @@ public class TransFormRoleController extends TransFormBaseAction {
     @RequestMapping("/transform/baseinfo/beforeupdateuser")
     public String beforUpdateUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
         logger.debug("TransFormRoleController.beforUpdateUser()");
-        boolean flag = false;
-        flag = isHasPrivilege(request, TransFormPrivilegeConstant.transform_admin_moduser);
-        if (!flag) {
-            return TransformConstant.transform_jsp_noaccsess;
-        }
+//        boolean flag = false;
+//        flag = isHasPrivilege(request, TransFormPrivilegeConstant.transform_admin_moduser);
+//        if (!flag) {
+//            return TransformConstant.transform_jsp_noaccsess;
+//        }
         
         TransFormLoginInfo login = TransFormLoginHelper.getLoginInfo(request);
         request.setAttribute("userbaseinfo", manSysUserService.getUserInfoByID(login.getBillid()));
@@ -389,8 +389,9 @@ public class TransFormRoleController extends TransFormBaseAction {
         String newpassword = request.getParameter("newpassword");
         String oldpassword = request.getParameter("oldpassword");
         try {
-            boolean flag = isHasPrivilege(request, TransFormPrivilegeConstant.transform_admin_changepass);
-            if (flag) {
+//            boolean flag = isHasPrivilege(request, TransFormPrivilegeConstant.transform_admin_changepass);
+            
+            if (true) {
                 if (TransformConstant.transform_billid_admin.equals(login.getBillid())) {
                     printWriter(response, JSONLibUtil.toJSONString(toSuccessReply("超级管理员密码不能修改", false)));
                 } else {
@@ -926,10 +927,10 @@ public class TransFormRoleController extends TransFormBaseAction {
             result = "您没有操作权限";
         }
         if (TransformConstant.success.equals(result)) {
-            operLogService.addLog("角色组", "删除角色组失败", "1", "1", request);
+            operLogService.addLog("角色组", "删除权限组失败", "1", "1", request);
             printWriter(response, JSONLibUtil.toJSONString(toSuccessReply("删除成功", true)));
         } else {
-            operLogService.addLog("角色组", "删除角色组失败", "1", "2", request);
+            operLogService.addLog("角色组", "删除权限组失败", "1", "2", request);
             printWriter(response, JSONLibUtil.toJSONString(toSuccessReply(result, false)));
         }
     }
@@ -950,7 +951,7 @@ public class TransFormRoleController extends TransFormBaseAction {
             if (flag) {
                 manSysRoleService.deleteUserRole(roleid);
                 manSysRoleService.saveUserRole(userids.split(","), roleid);
-                operLogService.addLog("角色", "更新角色关联用户成功", "1", "1", request);
+                operLogService.addLog("角色组", "删除权限组成功", "1", "1", request);
                 printWriter(response, JSONLibUtil.toJSONString(toSuccessReply("保存成功", true)));
             } else {
                 printWriter(response, JSONLibUtil.toJSONString(toSuccessReply("您没有操作权限", false)));
@@ -958,7 +959,7 @@ public class TransFormRoleController extends TransFormBaseAction {
 
         } catch (Exception e) {
             e.printStackTrace();
-            operLogService.addLog("角色", "更新角色关联用户失败", "1", "2", request);
+            operLogService.addLog("角色组", "删除权限组失败", "1", "2", request);
             printWriter(response, JSONLibUtil.toJSONString(toSuccessReply("保存失败,请联系管理员", false)));
         }
     }

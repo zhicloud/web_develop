@@ -85,11 +85,23 @@
                         <!-- tile -->
                         <section class="tile color transparent-black">
 
-
+                           <!-- tile widget -->
+			                <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
+			                  <!-- Nav tabs -->
+			                  <ul class="nav nav-tabs tabdrop">
+			                    <li><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/image/imagelist';">磁盘镜像管理</a></li>
+			                    <li ><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/image/isoimage/all';" data-toggle="tab">光盘镜像管理</a></li>
+			                    <li class="active"><a href="#messages-tab" onclick="window.location.href='<%=request.getContextPath() %>/image/image_upload_address/all';" data-toggle="tab">上传地址管理</a></li>
+			                     <div id="space"></div>
+			                    
+			                   </ul>
+			                  <!-- / Nav tabs -->
+			                </div>
+			                <!-- /tile widget -->
 
                             <!-- tile header -->
                             <div class="tile-header">
-                                <h3><a href="<%=request.getContextPath() %>/image_upload_address/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入上传地址信息</h3>
+                                <h3><a href="<%=request.getContextPath() %>/image/image_upload_address/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入上传地址信息</h3>
                                 <div class="controls">
                                     <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                                 </div>
@@ -99,7 +111,7 @@
                             <!-- tile body -->
                             <div class="tile-body">
 
-                                <form class="form-horizontal" id="image_upload_address_form" role="form" action="${pageContext.request.contextPath }/image_upload_address/add" method="POST">
+                                <form class="form-horizontal" id="image_upload_address_form" role="form" action="${pageContext.request.contextPath }/image/image_upload_address/add" method="POST">
                                     <div class="form-group">
                                         <label for="service_name" class="col-sm-2 control-label" >服务名*</label>
                                         <div class="col-sm-4">
@@ -241,7 +253,7 @@
             var options = {
                 success:function result(data){
                     if (data.status == "success") {
-                        location.href = "${pageContext.request.contextPath}/image_upload_address/all";
+                        location.href = "${pageContext.request.contextPath}/image/image_upload_address/all";
                     } else {
                         $("#tipscontent").html(data.message);
                         $("#dia").click();
@@ -288,6 +300,21 @@
         $('.check-toggler').on('click', function(){
             $(this).toggleClass('checked');
         });
+        $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+				 -1).height(
+				  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
+		$(window).resize(function(){
+			 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+					 -1);
+		});
 
     })
 

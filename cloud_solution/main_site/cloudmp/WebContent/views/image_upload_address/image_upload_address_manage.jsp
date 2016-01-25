@@ -91,7 +91,19 @@
 
                         <section class="tile color transparent-black">
 
-
+							<!-- tile widget -->
+			                 <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
+			                   <!-- Nav tabs -->
+			                   <ul class="nav nav-tabs tabdrop">
+			                     <li><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/image/imagelist';">磁盘镜像管理</a></li>
+			                     <li><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/image/isoimage/all';" data-toggle="tab">光盘镜像管理</a></li>
+			                     <li  class="active"><a href="#messages-tab" onclick="window.location.href='<%=request.getContextPath() %>/image/image_upload_address/all';" data-toggle="tab">上传地址管理</a></li>
+			                      <div id="space"></div>
+			                     
+			                    </ul>
+			                   <!-- / Nav tabs -->
+			                 </div>
+			                 <!-- /tile widget -->
 
                             <div class="tile-header">
                                 <button type="button" class="btn btn-red delete" id="addAddress">
@@ -237,7 +249,7 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content" style="width:60%;margin-left:20%;">
                                             <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="location.href = path + '/image_upload_address/all';">Close</button>
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="location.href = path + '/image/image_upload_address/all';">Close</button>
                                                 <h3 class="modal-title" id="modalDialogLabel"><strong>提示</strong></h3>
                                             </div>
                                             <div class="modal-body">
@@ -340,7 +352,7 @@
     $(function(){
 
         $("#addAddress").click(function(){
-            window.location.href = "${pageContext.request.contextPath}/image_upload_address/add";
+            window.location.href = "${pageContext.request.contextPath}/image/image_upload_address/add";
         });
 
 
@@ -383,11 +395,26 @@
         $('.check-toggler').on('click', function(){
             $(this).toggleClass('checked');
         });
+        $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+				 -1).height(
+				  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
+		$(window).resize(function(){
+			 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+					 -1);
+		});
 
     });
 
     function modAddress(id) {
-        window.location.href = "${pageContext.request.contextPath}/image_upload_address/"+id+"/mod";
+        window.location.href = "${pageContext.request.contextPath}/image/image_upload_address/"+id+"/mod";
     }
 
 
@@ -399,10 +426,10 @@
     }
 
     function removeAddress(){
-        jQuery.get("${pageContext.request.contextPath}/image_upload_address/"+curId+"/remove",
+        jQuery.get("${pageContext.request.contextPath}/image/image_upload_address/"+curId+"/remove",
                 function(data){
                     if(data.status=="success"){
-                        location.href = "${pageContext.request.contextPath}/image_upload_address/all";
+                        location.href = "${pageContext.request.contextPath}/image/image_upload_address/all";
                     }else{
                         jQuery("#tipscontent").html(data.message);
                         jQuery("#dia").click();
@@ -413,7 +440,7 @@
 
     function removeMultAddress(){
         jQuery.ajax({
-            url: '<%=request.getContextPath()%>/image_upload_address/remove',
+            url: '<%=request.getContextPath()%>/image/image_upload_address/remove',
             type: 'post',
             dataType: 'json',
             data:{ids:ids},
@@ -425,7 +452,7 @@
             success: function(result)
             {
                 if(result.status=="success"){
-                    location.href = path + "/image_upload_address/all";
+                    location.href = path + "/image/image_upload_address/all";
                 }else{
                     $("#tipscontent").html(result.message);
                     $("#dia").click();

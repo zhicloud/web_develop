@@ -132,11 +132,13 @@
                             <div class="col-sm-16" >
                             	<select name="cloudHostConfigModelId" class="chosen-select chosen-transparent form-control" id="cloudHostConfigModelId" style="width:216px;" parsley-required="true" parsley-error-container="#selectbox">
                                 <option value="" selected="selected">请选择</option>
-                                <c:forEach items="${cloudHostConfigModeList }" var="chcm">
-                                	<option value="${chcm.id }">${chcm.name }</option>
+                                <c:forEach items="${cloudHostConfigModeList }" var="chcm"> 
+                                	<c:if test="${chcm.fileType != 1}">
+                                      	<option value="${chcm.id }">${chcm.name }</option>                                  
+                                   </c:if>
                                 </c:forEach>
                                 </select> 
-                                <a href="#" class="btn btn-greensea create_new_host_type"><span>新增主机类型</span></a>
+                                <a href="#" id="create_new_host_type" class="btn btn-greensea"><span>新增主机类型</span></a>
                             </div> 
                           
                         </div>
@@ -154,7 +156,7 @@
                                    </c:if>
                                 </c:forEach>
                                 </select> 
-                                <a href="#" class="btn btn-greensea create_new_host_type"><span>新增主机类型</span></a>
+                                <a href="#" id="create_new_host_type" class="btn btn-greensea"><span>新增主机类型</span></a>
                             </div> 
                           
                         </div>

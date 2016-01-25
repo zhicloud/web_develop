@@ -104,6 +104,19 @@
 
 
  
+ 				<!-- tile widget -->
+                  <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs tabdrop">
+                      <li class="active"><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/image/imagelist';">磁盘镜像管理</a></li>
+                      <li><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/image/isoimage/all';" data-toggle="tab">光盘镜像管理</a></li>
+                      <li><a href="#messages-tab" onclick="window.location.href='<%=request.getContextPath() %>/image/image_upload_address/all';" data-toggle="tab">上传地址管理</a></li>
+                       <div id="space"></div>
+                      
+                     </ul>
+                    <!-- / Nav tabs -->
+                  </div>
+                  <!-- /tile widget -->
                   <!-- tile header -->
                   <div class="tile-header"> 
                     <button type="button" class="btn btn-red delete" onclick="addImage();">
@@ -181,7 +194,7 @@
                                          <option value="4">VPC专用镜像</option>
                                      </c:if>
                                  </select>
-                              <%-- <select id="status" class="chosen-select form-control" style="width: 150px;">
+                              <select id="status" class="chosen-select form-control" style="width: 150px;">
                                   <option value="">状态(全部)</option>
                                   <c:if test="${status == 1}">
                                       <option value="1" selected="selected">未验证</option>
@@ -195,7 +208,7 @@
                                   <c:if test="${status != 2}">
                                       <option value="2">已验证</option>
                                   </c:if>
-                              </select> --%>
+                              </select>
                               <%--</span>--%>
                               <%--<span class="input-group-btn">--%>
                                 <button id="search_btn" class="btn btn-default" type="button">查看</button>
@@ -246,16 +259,15 @@
                             &nbsp;                                                                        
                             </c:if>
                             ${image.typeName}</td> 
+                            <td  class="cut">${image.imageTypeName}</td>
                             <td  class="cut">
                             <c:if test="${image.fileType == 0}">
                              raw                                                                   
                             </c:if>
                             <c:if test="${image.fileType == 1}">
-                             qcow2                                                                   
+                             qcw2                                                                   
                             </c:if>
                             </td> 
-                            <td  class="cut">${image.imageTypeName}</td>
-
                             <td class="center">
                             <c:if test="${image.createTimeDate == null}">
                             &nbsp;                                                                        
@@ -653,9 +665,9 @@
              var name = $("#name").val();
              var image_type = $("#image_type").val();
              var type = $("#type").val();
-             //var status = $("#status").val();
+             var status = $("#status").val();
 
-             window.location.href = encodeURI(path + "/image/imagelist?name="+name+"&image_type="+image_type+"&type="+type/* +"&status="+status */);
+             window.location.href = encodeURI(path + "/image/imagelist?name="+name+"&image_type="+image_type+"&type="+type+"&status="+status);
 
          });
 
@@ -674,6 +686,22 @@
     		cursorborder:"0",  
     		cursorborderradius:"7px" ,
     	});
+     	
+     	 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+				 -1).height(
+				  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
+		$(window).resize(function(){
+			 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+					 -1);
+		});
       });
     function deleteImage(id){ 
     	operid = id;

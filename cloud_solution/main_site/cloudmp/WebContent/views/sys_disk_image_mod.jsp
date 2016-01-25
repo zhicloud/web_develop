@@ -88,7 +88,19 @@
                 <!-- tile -->
                 <section class="tile color transparent-black">
 
-
+                 <!-- tile widget -->
+                  <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs tabdrop">
+                      <li class="active"><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/image/imagelist';">磁盘镜像管理</a></li>
+                      <li><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/image/isoimage/all';" data-toggle="tab">光盘镜像管理</a></li>
+                      <li><a href="#messages-tab" onclick="window.location.href='<%=request.getContextPath() %>/image/image_upload_address/all';" data-toggle="tab">上传地址管理</a></li>
+                       <div id="space"></div>
+                      
+                     </ul>
+                    <!-- / Nav tabs -->
+                  </div>
+                  <!-- /tile widget -->
 
                   <!-- tile header -->
                   <div class="tile-header">
@@ -253,7 +265,21 @@
       //chosen select input
       $(".chosen-select").chosen({disable_search_threshold: 10});
       
-      
+      $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+				 -1).height(
+				  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
+		$(window).resize(function(){
+			 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+					 -1);
+		});
       
     });
     function saveForm(){
@@ -276,7 +302,7 @@
  		        			var options = {
  		        					success:function result(data){
  		        						if(data.status == "fail"){
-							        		  $("#tipscontent").html(data.message);
+							        		  $("#tipscontent").html("保存失败");
 							     		      $("#dia").click();  		        							
  		        						}else{  		        							
 	   		        						location.href = path + "/image/imagelist";

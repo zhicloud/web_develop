@@ -22,7 +22,7 @@ import java.util.*;
  * @description 上传镜像地址管理controller
  */
 @Controller
-@RequestMapping("/image_upload_address")
+@RequestMapping("/image/image_upload_address")
 public class ImageUploadAddressController {
 
     public static final Logger logger = Logger.getLogger(ImageUploadAddressController.class);
