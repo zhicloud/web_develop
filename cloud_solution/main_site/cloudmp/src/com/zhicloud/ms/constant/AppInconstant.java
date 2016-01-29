@@ -58,4 +58,6 @@ public class AppInconstant {
 	
 	public static BigInteger chunkSize = new BigInteger("524288000");
 
+    // 默认资源池最大并发创建数
+    public static final int init_maxcreating = 2;
 }
