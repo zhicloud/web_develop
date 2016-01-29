@@ -59,8 +59,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 
-@Controller
-@RequestMapping("/warehouse/cloudhost")
+@Controller 
 public class CloudHostController {
     
     
@@ -84,7 +83,7 @@ public class CloudHostController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/{id}/all",method=RequestMethod.GET)
+	@RequestMapping(value="/warehouse/cloudhost/{id}/all",method=RequestMethod.GET)
 	public String getAll(@PathVariable("id") String id,Model model,HttpServletRequest request)
       throws UnsupportedEncodingException {
 		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_detail)){
@@ -174,6 +173,92 @@ public class CloudHostController {
         }  
         return "host_manage";
     }
+	@RequestMapping(value="/cloudhost/all",method=RequestMethod.GET)
+    public String getAllHost(Model model,HttpServletRequest request)
+      throws UnsupportedEncodingException {
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage)){
+            return "not_have_access";
+        }
+
+
+      String param = request.getParameter("param");
+      String runningStatusStr = request.getParameter("running_status");
+      String flagStr = request.getParameter("flag");
+
+
+      model.addAttribute("running_status", runningStatusStr);
+      model.addAttribute("flag", flagStr);
+
+      Integer runningStatus, flag;
+
+      if(StringUtil.isBlank(param)){
+          param = null;
+      }else{
+          param = new String(request.getParameter("param").getBytes("ISO-8859-1"),"UTF-8");
+          model.addAttribute("parameter", param);
+          param = "%"+param+"%";
+      }
+
+      if(StringUtil.isBlank(runningStatusStr)){
+          runningStatus = null;
+      } else{
+          runningStatus = Integer.valueOf(runningStatusStr);
+      }
+      if(StringUtil.isBlank(flagStr)){
+          flag = null;
+      } else {
+          flag = Integer.valueOf(flagStr);
+      }
+
+      Map<String, Object> condition = new LinkedHashMap<String, Object>(); 
+      condition.put("param", param);
+      condition.put("running_status", runningStatus);
+      condition.put("flag", flag);
+
+      List<CloudHostVO> cloudHostList = cloudHostService.getAllHost();
+ 
+      List<CloudHostVO> newCloudServerList = new ArrayList<CloudHostVO>();
+      HostResetProgressPool resetpool = HostResetProgressPoolManager.singleton().getPool();
+
+        
+        for(CloudHostVO vo : cloudHostList){
+            HostBackupProgressPool pool = HostBackupProgressPoolManager.singleton().getPool();
+            HostBackupProgressData data = pool.get(vo.getRealHostId());
+            if(data!=null &&data.getBackupStatus()!=null&& data.getBackupStatus() ==9 ) {
+                vo.setStatus(9);            }
+            
+            if(data!=null &&data.getBackupStatus()!=null&& data.getBackupStatus() == 10) {
+                vo.setStatus(10);
+            } 
+
+            HostResetProgressData flush = resetpool.get(vo.getRealHostId());
+            if(flush != null && flush.getResetStatus() == 1){
+                vo.setStatus(11); 
+            } 
+            newCloudServerList.add(vo);
+        }
+        model.addAttribute("cloudHostList", newCloudServerList); 
+        try {
+            List<ComputeInfoExt> cList = new ArrayList<ComputeInfoExt>(); 
+            ComputeInfoPool  pool = ComputeInfoPoolManager.singleton().getPool();
+            Map<String, ComputeInfoExt>  poolMap = pool.getAllComputePool();
+            for(Map.Entry<String, ComputeInfoExt> entry:poolMap.entrySet()){ 
+                ComputeInfoExt poolDetail = entry.getValue();
+                if(poolDetail.getName().indexOf("desktop_pool") != -1){
+                    cList.add(entry.getValue());    
+                }
+            }   
+            model.addAttribute("computerPool", cList);
+            
+            IsoImagePool isopool = IsoImagePoolManager.getSingleton().getIsoImagePool();
+            List<IsoImageData> isoList = isopool.getAllIsoImageData();
+            
+            model.addAttribute("isoList", isoList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }  
+        return "desktop/host_manage";
+    }
     /**
      * 
      * toHostDetail:根据Id查询主机并跳转到主机详情
@@ -184,7 +269,7 @@ public class CloudHostController {
      * @return String
      * @since JDK 1.7
      */
-    @RequestMapping(value="/{id}/detail",method=RequestMethod.GET)
+    @RequestMapping(value="/warehouse/cloudhost/{id}/detail",method=RequestMethod.GET)
     public String toHostDetail(@PathVariable("id") String id,Model model,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_detail)){
             return "not_have_access";
@@ -200,15 +285,34 @@ public class CloudHostController {
     }
     
     /**
-     * 启动云主机
+     * 仓库启动云主机
      * 
      * @param id
      * @return
      */
-    @RequestMapping(value="/{id}/start",method=RequestMethod.GET)
+    @RequestMapping(value="/warehouse/cloudhost/{id}/start",method=RequestMethod.GET)
+    @ResponseBody
+    public MethodResult startCloudHost_warehouse(@PathVariable("id") String id,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_start)){
+            return new MethodResult(MethodResult.FAIL,"您没有启动主机的权限，请联系管理员");
+        }
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "1");
+        return mr;
+    }
+    /**
+     * 
+    * @Title: startCloudHost 
+    * @Description: 桌面列表启动主机 
+    * @param @param id
+    * @param @param request
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    @RequestMapping(value="/cloudhost/{id}/start",method=RequestMethod.GET)
     @ResponseBody
     public MethodResult startCloudHost(@PathVariable("id") String id,HttpServletRequest request){
-        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_start)){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_start)){
             return new MethodResult(MethodResult.FAIL,"您没有启动主机的权限，请联系管理员");
         }
         MethodResult mr = cloudHostService.operatorCloudHost(id, "1");
@@ -219,10 +323,29 @@ public class CloudHostController {
      * @param id
      * @return
      */
-    @RequestMapping(value="/{id}/shutdown",method=RequestMethod.GET)
+    @RequestMapping(value="/warehouse/cloudhost/{id}/shutdown",method=RequestMethod.GET)
+    @ResponseBody
+    public MethodResult shutdownCloudHost_warehouse(@PathVariable("id") String id,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_shut_down)){
+            return new MethodResult(MethodResult.FAIL,"您没有强制关闭主机的权限，请联系管理员");
+        }
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "2"); 
+        return mr;
+    }
+    /**
+     * 
+    * @Title: shutdownCloudHost 
+    * @Description: 桌面列表强制关闭主机
+    * @param @param id
+    * @param @param request
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    @RequestMapping(value="/cloudhost/{id}/shutdown",method=RequestMethod.GET)
     @ResponseBody
     public MethodResult shutdownCloudHost(@PathVariable("id") String id,HttpServletRequest request){
-        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_shut_down)){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_shut_down)){
             return new MethodResult(MethodResult.FAIL,"您没有强制关闭主机的权限，请联系管理员");
         }
         MethodResult mr = cloudHostService.operatorCloudHost(id, "2"); 
@@ -234,10 +357,29 @@ public class CloudHostController {
      * @param id
      * @return
      */
-    @RequestMapping(value="/{id}/restart",method=RequestMethod.GET)
+    @RequestMapping(value="/warehouse/cloudhost/{id}/restart",method=RequestMethod.GET)
+    @ResponseBody
+    public MethodResult restartCloudHost_warehouse(@PathVariable("id") String id,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_restart)){
+            return new MethodResult(MethodResult.FAIL,"您没有重启主机的权限，请联系管理员");
+        }
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "3");
+        return mr;
+    }
+    /**
+     * 
+    * @Title: restartCloudHost 
+    * @Description: 桌面列表重启主机 
+    * @param @param id
+    * @param @param request
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    @RequestMapping(value="/cloudhost/{id}/restart",method=RequestMethod.GET)
     @ResponseBody
     public MethodResult restartCloudHost(@PathVariable("id") String id,HttpServletRequest request){
-        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_restart)){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_restart)){
             return new MethodResult(MethodResult.FAIL,"您没有重启主机的权限，请联系管理员");
         }
         MethodResult mr = cloudHostService.operatorCloudHost(id, "3");
@@ -248,10 +390,29 @@ public class CloudHostController {
      * @param id
      * @return
      */
-    @RequestMapping(value="/{id}/reset",method=RequestMethod.GET)
+    @RequestMapping(value="/warehouse/cloudhost/{id}/reset",method=RequestMethod.GET)
+    @ResponseBody
+    public MethodResult resetCloudHost_warehouse(@PathVariable("id") String id,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_reset)){
+            return new MethodResult(MethodResult.FAIL,"您没有强制重启主机的权限，请联系管理员");
+        }
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "5");
+        return mr;
+    }
+    /**
+     * 
+    * @Title: resetCloudHost 
+    * @Description: 桌面列表强制重启主机
+    * @param @param id
+    * @param @param request
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    @RequestMapping(value="/cloudhost/{id}/reset",method=RequestMethod.GET)
     @ResponseBody
     public MethodResult resetCloudHost(@PathVariable("id") String id,HttpServletRequest request){
-        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_reset)){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_reset)){
             return new MethodResult(MethodResult.FAIL,"您没有强制重启主机的权限，请联系管理员");
         }
         MethodResult mr = cloudHostService.operatorCloudHost(id, "5");
@@ -262,10 +423,29 @@ public class CloudHostController {
      * @param id
      * @return
      */
-    @RequestMapping(value="/{id}/halt",method=RequestMethod.GET)
+    @RequestMapping(value="/warehouse/cloudhost/{id}/halt",method=RequestMethod.GET)
+    @ResponseBody
+    public MethodResult haltCloudHost_warehouse(@PathVariable("id") String id,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_shut_down)){
+            return new MethodResult(MethodResult.FAIL,"您没有强制关机的权限，请联系管理员");
+        }
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "4");
+        return mr;
+    }
+    /**
+     * 
+    * @Title: haltCloudHost 
+    * @Description: 桌面列表强制关闭主机 
+    * @param @param id
+    * @param @param request
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    @RequestMapping(value="/cloudhost/{id}/halt",method=RequestMethod.GET)
     @ResponseBody
     public MethodResult haltCloudHost(@PathVariable("id") String id,HttpServletRequest request){
-        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_shut_down)){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_shut_down)){
             return new MethodResult(MethodResult.FAIL,"您没有强制关机的权限，请联系管理员");
         }
         MethodResult mr = cloudHostService.operatorCloudHost(id, "4");
@@ -280,10 +460,29 @@ public class CloudHostController {
      * @return MethodResult
      * @since JDK 1.7
      */
-    @RequestMapping(value="/{id}/delete",method=RequestMethod.GET)
+    @RequestMapping(value="/warehouse/cloudhost/{id}/delete",method=RequestMethod.GET)
+    @ResponseBody
+    public MethodResult deleteCloudHost_warehouse(@PathVariable("id") String id,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_delete)){
+            return new MethodResult(MethodResult.FAIL,"您没有删除主机的权限，请联系管理员");
+        }
+        MethodResult result = cloudHostService.deleteById(id);
+        return result;
+    }
+    /**
+     * 
+    * @Title: deleteCloudHost 
+    * @Description: 桌面删除主机
+    * @param @param id
+    * @param @param request
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    @RequestMapping(value="/cloudhost/{id}/delete",method=RequestMethod.GET)
     @ResponseBody
     public MethodResult deleteCloudHost(@PathVariable("id") String id,HttpServletRequest request){
-        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_delete)){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_delete)){
             return new MethodResult(MethodResult.FAIL,"您没有删除主机的权限，请联系管理员");
         }
         MethodResult result = cloudHostService.deleteById(id);
@@ -298,7 +497,7 @@ public class CloudHostController {
      * @return MethodResult
      * @since JDK 1.7
      */
-    @RequestMapping(value="/{id}/disassociation",method=RequestMethod.GET)
+    @RequestMapping(value="/warehouse/cloudhost/{id}/disassociation",method=RequestMethod.GET)
     @ResponseBody
     public MethodResult disassociation(@PathVariable("id") String id,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_allocate)){
@@ -316,10 +515,31 @@ public class CloudHostController {
      * @return MethodResult
      * @since JDK 1.7
      */
-    @RequestMapping(value="/deletehosts",method=RequestMethod.POST)
+    @RequestMapping(value="/warehouse/cloudhost/deletehosts",method=RequestMethod.POST)
+    @ResponseBody
+    public MethodResult deleteHosts_warehouse(String ids,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_delete)){
+            return new MethodResult(MethodResult.FAIL,"您没有删除主机的权限，请联系管理员");
+        }
+        if(StringUtil.isBlank(ids)){
+            return new MethodResult(MethodResult.FAIL, "未选择主机");            
+        } 
+        return cloudHostService.deleteByIds(ids);
+    }
+    /**
+     * 
+    * @Title: deleteHosts 
+    * @Description: 桌面列表批量删除主机
+    * @param @param ids
+    * @param @param request
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    @RequestMapping(value="/cloudhost/deletehosts",method=RequestMethod.POST)
     @ResponseBody
     public MethodResult deleteHosts(String ids,HttpServletRequest request){
-        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_delete)){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_delete)){
             return new MethodResult(MethodResult.FAIL,"您没有删除主机的权限，请联系管理员");
         }
         if(StringUtil.isBlank(ids)){
@@ -339,8 +559,8 @@ public class CloudHostController {
      * @param id
      * @return
      */
-    @RequestMapping(value="/{id}/{warehouseId}/{status}/update",method=RequestMethod.GET) 
-    public String updataServerPage(@PathVariable("id") String id,@PathVariable("warehouseId") String warehouseId,@PathVariable("status") String status ,Model model,HttpServletRequest request){
+    @RequestMapping(value="/warehouse/cloudhost/{id}/{warehouseId}/{status}/update",method=RequestMethod.GET) 
+    public String updataServerPage_warehouse(@PathVariable("id") String id,@PathVariable("warehouseId") String warehouseId,@PathVariable("status") String status ,Model model,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_modify)){
             return "not_have_access";
         }
@@ -352,16 +572,41 @@ public class CloudHostController {
         model.addAttribute("runStatus",status);
         return "host_manage_update";
     }
+    /**
+     * 
+    * @Title: updataServerPage 
+    * @Description: 桌面列表修改配置
+    * @param @param id
+    * @param @param warehouseId
+    * @param @param status
+    * @param @param model
+    * @param @param request
+    * @param @return      
+    * @return String     
+    * @throws
+     */
+    @RequestMapping(value="/cloudhost/{id}/{status}/update",method=RequestMethod.GET) 
+    public String updataServerPage(@PathVariable("id") String id,@PathVariable("status") String status ,Model model,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_modify)){
+            return "not_have_access";
+        }
+        CloudHostVO cloudServer = cloudHostService.getById(id);
+        List<SysDiskImageVO> list = sysDiskImageService.querySysDiskImageByImageType(AppConstant.DISK_IMAGE_TYPE_SERVER);
+        model.addAttribute("cloudServer", cloudServer);
+        model.addAttribute("imageList",list); 
+        model.addAttribute("runStatus",status);
+        return "host_manage_update";
+    }
     
-    @RequestMapping(value="/update",method=RequestMethod.POST)
+    @RequestMapping(value="/warehouse/cloudhost/update",method=RequestMethod.POST)
     @ResponseBody
     public MethodResult updateServer(CloudHostVO server){
         MethodResult mr = cloudHostService.modifyAllocation(server);
         return mr;
     }
     
-    @RequestMapping(value="/{id}/diskManage",method=RequestMethod.GET)
-    public String diskManage(@PathVariable("id") String id,Model model,HttpServletRequest request){
+    @RequestMapping(value="/warehouse/cloudhost/{id}/diskManage",method=RequestMethod.GET)
+    public String diskManage_warehouse(@PathVariable("id") String id,Model model,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_disk_manage_query)){
             return "not_have_access";
         }
@@ -402,8 +647,61 @@ public class CloudHostController {
         }
         return "host_disk_manage";
     }
-    @RequestMapping(value="/{realId}/{diskType}/addDataDisk",method=RequestMethod.GET)
-    public String addDataDiskPage(@PathVariable("realId") String realId,@PathVariable("diskType") String diskType,Model model,HttpServletRequest request){
+    /**
+     * 
+    * @Title: diskManage 
+    * @Description: 桌面列表磁盘管理 
+    * @param @param id
+    * @param @param model
+    * @param @param request
+    * @param @return      
+    * @return String     
+    * @throws
+     */
+    @RequestMapping(value="/cloudhost/{id}/diskManage",method=RequestMethod.GET)
+    public String diskManage(@PathVariable("id") String id,Model model,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_disk_query)){
+            return "not_have_access";
+        }
+        CloudHostVO host = cloudHostService.getById(id);
+        ComputeInfoExt pool = ComputeInfoPoolManager.singleton().getPool().get(host.getPoolId());
+        Integer diskType = pool.getDiskType();
+        if(host!=null && host.getRealHostId()!=null){
+            try {
+                HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
+                BigInteger[] dList = null;
+                if(channel!=null){
+                    JSONObject result = channel.hostQueryInfo(host.getRealHostId());
+                    if("fail".equals(result.getString("status"))){
+              logger.error("CloudHostController.diskManage()>>>获取硬盘数据失败");
+              model.addAttribute("noDisk", "yes");
+              return "not_responsed";
+                    }
+                    JSONObject hostObject = result.getJSONObject("host");
+                    JSONArray diskList = hostObject.getJSONArray("disk_volume");
+                    BigInteger[] dcount = new BigInteger[diskList.size()];
+                    for(int j=0;j<diskList.size();j++){
+                        dcount[j] = new BigInteger(diskList.getString(j));
+                    }
+                    dList = dcount;
+                }
+                BigDecimal[] dListValue = new BigDecimal[dList.length];
+                for(int i=0;i<dListValue.length;i++){
+                    dListValue[i] = CapacityUtil.toGBValue(dList[i], 0);
+                }
+                model.addAttribute("realId", host.getRealHostId());
+                model.addAttribute("diskList", dListValue);
+                model.addAttribute("diskType", diskType);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return "desktop/host_disk_manage";
+    }
+    @RequestMapping(value="/warehouse/cloudhost/{realId}/{diskType}/addDataDisk",method=RequestMethod.GET)
+    public String addDataDiskPage_warehouse(@PathVariable("realId") String realId,@PathVariable("diskType") String diskType,Model model,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_disk_manage_add)){
             return "not_have_access";
         }
@@ -411,8 +709,17 @@ public class CloudHostController {
         model.addAttribute("diskType", diskType);
         return "host_disk_manage_add";
     }
+    @RequestMapping(value="/cloudhost/{realId}/{diskType}/addDataDisk",method=RequestMethod.GET)
+    public String addDataDiskPage(@PathVariable("realId") String realId,@PathVariable("diskType") String diskType,Model model,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_disk_add)){
+            return "not_have_access";
+        }
+        model.addAttribute("realId", realId);
+        model.addAttribute("diskType", diskType);
+        return "desktop/host_disk_manage_add";
+    }
     
-    @RequestMapping(value="/addDataDisk",method=RequestMethod.POST)
+    @RequestMapping(value="/warehouse/cloudhost/addDataDisk",method=RequestMethod.POST)
     @ResponseBody
     public MethodResult addDataDisk(@RequestParam("uuid") String uuid,
             @RequestParam("dataDisk") String dataDisk,
@@ -444,9 +751,9 @@ public class CloudHostController {
         return new MethodResult(MethodResult.FAIL,"添加失败");
     }
     
-    @RequestMapping(value="/ddd",method=RequestMethod.POST)
+    @RequestMapping(value="/warehouse/cloudhost/ddd",method=RequestMethod.POST)
     @ResponseBody
-    public MethodResult deleteDataDisk(@RequestParam("realId") String realId,
+    public MethodResult deleteDataDisk_warehouse(@RequestParam("realId") String realId,
             @RequestParam("curIndex") String curIndex,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_disk_manage_delete)){
             return new MethodResult(MethodResult.FAIL,"您没有删除服务器硬盘的权限，请联系管理员");
@@ -462,8 +769,37 @@ public class CloudHostController {
         }
         return new MethodResult(MethodResult.FAIL, "删除失败");
     }
+    /**
+     * 
+    * @Title: deleteDataDisk 
+    * @Description: 删除磁盘 
+    * @param @param realId
+    * @param @param curIndex
+    * @param @param request
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    @RequestMapping(value="/cloudhost/ddd",method=RequestMethod.POST)
+    @ResponseBody
+    public MethodResult deleteDataDisk(@RequestParam("realId") String realId,
+            @RequestParam("curIndex") String curIndex,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_disk_delete)){
+            return new MethodResult(MethodResult.FAIL,"您没有删除服务器硬盘的权限，请联系管理员");
+        }
+        try{
+            HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
+            JSONObject result = channel.hostDetachDisk(realId, new Integer(curIndex));
+            if("success".equals(result.getString("status"))){
+                return new MethodResult(MethodResult.SUCCESS,"删除成功");
+            }
+        }catch(Exception e){
+            
+        }
+        return new MethodResult(MethodResult.FAIL, "删除失败");
+    }
     
-    @RequestMapping(value="/{id}/backupManage",method=RequestMethod.GET)
+    @RequestMapping(value="/warehouse/cloudhost/{id}/backupManage",method=RequestMethod.GET)
     public String backupManage(@PathVariable("id") String id,Model model,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_back_up_manage_query)){
             return "not_have_access";
@@ -537,7 +873,7 @@ public class CloudHostController {
     * @return MethodResult     
     * @throws
      */
-    @RequestMapping(value="/addbackup",method=RequestMethod.POST)
+    @RequestMapping(value="/warehouse/cloudhost/addbackup",method=RequestMethod.POST)
     @ResponseBody
     public MethodResult backupHost(Integer mode,Integer disk,String hostId,HttpServletRequest request) {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_back_up_manage_add)){
@@ -594,7 +930,7 @@ public class CloudHostController {
 	* @return MethodResult     
 	* @throws
 	 */
-	@RequestMapping(value="/getbackupprogress",method=RequestMethod.GET)
+	@RequestMapping(value="/warehouse/cloudhost/getbackupprogress",method=RequestMethod.GET)
 	@ResponseBody
 	public MethodResult getBackupHostResult(String uuid) {
 		try{	
@@ -652,7 +988,7 @@ public class CloudHostController {
 	* @return MethodResult     
 	* @throws
 	 */
-	@RequestMapping(value="/resumhost",method=RequestMethod.POST)
+	@RequestMapping(value="/warehouse/cloudhost/resumhost",method=RequestMethod.POST)
 	@ResponseBody
 	public MethodResult resumeHostBackup(Integer mode,Integer disk,String hostId,HttpServletRequest request) {
 		
@@ -711,7 +1047,7 @@ public class CloudHostController {
 	* @return MethodResult     
 	* @throws
 	 */
-	@RequestMapping(value="/getresumprogress",method=RequestMethod.GET)
+	@RequestMapping(value="/warehouse/cloudhost/getresumprogress",method=RequestMethod.GET)
 	@ResponseBody
 	public MethodResult getResumeHostResult(String uuid) {
 		try{	
@@ -773,7 +1109,7 @@ public class CloudHostController {
    * @return MethodResult     
    * @throws
     */
-    @RequestMapping(value="/querybackinfo",method=RequestMethod.POST)
+    @RequestMapping(value="/warehouse/cloudhost/querybackinfo",method=RequestMethod.POST)
     @ResponseBody
     public MethodResult queryHostBackup(String id){ 
           BackUpDetailVO backup = backUpDetailService.getLastAvailableBackUp(id);
@@ -894,7 +1230,7 @@ public class CloudHostController {
     }
     
 
-    @RequestMapping(value="/{id}/flushdiskimage",method=RequestMethod.GET)
+    @RequestMapping(value="/warehouse/cloudhost/{id}/flushdiskimage",method=RequestMethod.GET)
     public String flushDiskImageManage(@PathVariable("id") String id,Model model,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_flush_disk_image)){
             return "not_have_access";
@@ -931,7 +1267,7 @@ public class CloudHostController {
         return "/desktop/flush_disk_manage";
     }
     
-    @RequestMapping(value="/flushdiskimage",method=RequestMethod.POST)
+    @RequestMapping(value="/warehouse/cloudhost/flushdiskimage",method=RequestMethod.POST)
     @ResponseBody
     public MethodResult flushdiskimage(String uuid,String imageId,HttpServletRequest request) {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_flush_disk_image)){
@@ -1027,7 +1363,7 @@ public class CloudHostController {
     * @return MethodResult     
     * @throws
      */
-    @RequestMapping(value="/getflushprogress",method=RequestMethod.GET)
+    @RequestMapping(value="/warehouse/cloudhost/getflushprogress",method=RequestMethod.GET)
     @ResponseBody
     public MethodResult getFlushHostResult(String uuid) {
         MethodResult result = new MethodResult(MethodResult.SUCCESS, "安装成功");
@@ -1101,7 +1437,7 @@ public class CloudHostController {
     * @return MethodResult     
     * @throws
      */
-    @RequestMapping(value="/{id}/{imageId}/start",method=RequestMethod.GET)
+    @RequestMapping(value="/warehouse/cloudhost/{id}/{imageId}/start",method=RequestMethod.GET)
     @ResponseBody
     public MethodResult startCloudHost(@PathVariable("id") String id,@PathVariable("imageId") String imageId,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_start_from_iso)){
@@ -1111,7 +1447,7 @@ public class CloudHostController {
         return mr;
     }
     
-    @RequestMapping(value="/{id}/diagram",method=RequestMethod.GET)
+    @RequestMapping(value="/warehouse/cloudhost/{id}/diagram",method=RequestMethod.GET)
 	public String serverDiagramPage(@PathVariable("id") String id,Model model,HttpServletRequest request){
 		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_diagram)){
 			return "not_have_access";
@@ -1122,7 +1458,7 @@ public class CloudHostController {
 		return "host_manage_diagram";
 	}
     
-    @RequestMapping(value="/refreshData",method=RequestMethod.POST)
+    @RequestMapping(value="/warehouse/cloudhost/refreshData",method=RequestMethod.POST)
 	@ResponseBody
 	public CloudHostData refreshData(@RequestParam("id") String id){
 		CloudHostData cloudHostData = cloudHostService.refreshData(id);
@@ -1134,7 +1470,7 @@ public class CloudHostController {
 	 * @param name
 	 * @return
 	 */
-	@RequestMapping(value="/checkHostDisplayName",method=RequestMethod.POST)
+	@RequestMapping(value="/warehouse/cloudhost/checkHostDisplayName",method=RequestMethod.POST)
 	@ResponseBody
 	public MethodResult getByDisplayName(@RequestParam("displayName") String displayName,HttpServletRequest request){
 		MethodResult mr = cloudHostService.getHostByDisplayName(displayName);
@@ -1145,9 +1481,9 @@ public class CloudHostController {
 	 * @param name
 	 * @return
 	 */
-	@RequestMapping(value="/updatename",method=RequestMethod.POST)
+	@RequestMapping(value="/warehouse/cloudhost/updatename",method=RequestMethod.POST)
 	@ResponseBody
-	public MethodResult updateDisplayName(@RequestParam("displayName") String displayName,
+	public MethodResult updateDisplayName_warehouse(@RequestParam("displayName") String displayName,
 			@RequestParam("id") String id,
 			HttpServletRequest request){
 		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_update_displayname)){
@@ -1159,4 +1495,29 @@ public class CloudHostController {
 		MethodResult mr = cloudHostService.updateDisplayNameById(condition);
 		return mr;
 	}
+	/**
+	 * 
+	* @Title: updateDisplayName 
+	* @Description: 桌面列表修改主机显示名称 
+	* @param @param displayName
+	* @param @param id
+	* @param @param request
+	* @param @return      
+	* @return MethodResult     
+	* @throws
+	 */
+	@RequestMapping(value="/cloudhost/updatename",method=RequestMethod.POST)
+    @ResponseBody
+    public MethodResult updateDisplayName(@RequestParam("displayName") String displayName,
+            @RequestParam("id") String id,
+            HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_update_displayname)){
+            return new MethodResult(MethodResult.FAIL, "您没有修改主机显示名的权限，请联系管理员");
+        }
+        Map<String,Object> condition = new HashMap<String, Object>();
+        condition.put("id", id);
+        condition.put("displayName", displayName);
+        MethodResult mr = cloudHostService.updateDisplayNameById(condition);
+        return mr;
+    }
 }

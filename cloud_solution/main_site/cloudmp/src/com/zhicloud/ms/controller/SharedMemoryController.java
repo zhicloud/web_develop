@@ -37,7 +37,7 @@ import java.util.Map;
  * @author 张本缘 于 2015年10月10日 上午10:45:48
  */
 @Controller
-@RequestMapping("/sharedmemory")
+@RequestMapping("/storageresourcepool/sharedmemory")
 public class SharedMemoryController extends TransFormBaseAction {
 
     public static final Logger logger = Logger.getLogger(SharedMemoryController.class);

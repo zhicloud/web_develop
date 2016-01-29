@@ -63,9 +63,39 @@ public class MD5 {
         return re_md5;
 
 	}
+	/**
+	 * 16位md5加密
+	 */
+	public static String md5_16(String plainText) {
+	    String result = null;
+	    try {
+	     MessageDigest md = MessageDigest.getInstance("MD5");
+	     md.update(plainText.getBytes());
+	     byte b[] = md.digest();
+	     int i;
+	     StringBuffer buf = new StringBuffer("");
+	     for (int offset = 0; offset < b.length; offset++) {
+	      i = b[offset];
+	      if (i < 0)
+	       i += 256;
+	      if (i < 16)
+	       buf.append("0");
+	      buf.append(Integer.toHexString(i));
+	     }
+	     // result = buf.toString();  //md5 32bit
+	     // result = buf.toString().substring(8, 24))); //md5 16bit
+	     result = buf.toString().substring(8, 24);
+	     System.out.println("mdt 16bit: " + buf.toString().substring(8, 24));
+	     System.out.println("md5 32bit: " + buf.toString() );
+	    } catch (NoSuchAlgorithmException e) {
+	     e.printStackTrace();
+	    }
+	    return result;
+	  }
 	
 	public static void main(String[] args) {
 		System.out.println(MD5.md5("username", "password"));
 		System.out.println(MD5.md5("usernamepassword"));
+		System.out.println(MD5.md5_16("usernamepassword"));
 	}
 }

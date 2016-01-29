@@ -373,6 +373,7 @@
 
     <script>
     var path = '<%=request.getContextPath()%>'; 
+    var uuid =  '${uuid}' ;
     $(function(){
 
       // Add custom class to pagination div
@@ -616,7 +617,7 @@
 		form.parsley('validate');
 		if(form.parsley('isValid')){  		        				
 			var wareHostId = $("#wareHostId").val();
-	    	jQuery.get(path + "/cdrpm/"+currentId+"/"+wareHostId+"/adddesktop",function(data){
+	    	jQuery.get(path + "/cdrpm/"+currentId+"/"+wareHostId+"/"+uuid+"/adddesktop",function(data){
 				if(data.status == "success"){   
 		    		window.location.reload();
 				}else{  

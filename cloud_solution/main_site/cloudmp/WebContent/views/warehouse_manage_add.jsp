@@ -151,7 +151,7 @@
                             	<select name="cloudHostConfigModelId" class="chosen-select chosen-transparent form-control" id="cloudHostConfigModelId" style="width:216px;" parsley-required="true" parsley-error-container="#selectbox">
                                 <option value="" selected="selected">请选择</option>
                                 <c:forEach items="${cloudHostConfigModeList }" var="chcm">
-                                   <c:if test="${chcm.fileType == 1}">
+                                   <c:if test="${chcm.fileType == 1 && chcm.sysImageId != null}">
                                       	<option value="${chcm.id }">${chcm.name }</option>                                  
                                    </c:if>
                                 </c:forEach>

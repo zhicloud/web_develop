@@ -2194,7 +2194,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
     * @return 
     * @see com.zhicloud.ms.service.ICloudHostService#addHostToDeskTopByRealHostId(java.lang.String, java.lang.String)
      */
-    public MethodResult addHostToDeskTopByRealHostId(String realHostId, String wareHouseId) {
+    public MethodResult addHostToDeskTopByRealHostId(String realHostId, String wareHouseId,String poolId) {
         HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 
 
@@ -2231,6 +2231,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             cloudHostData.put("password", password);
             cloudHostData.put("password", password);
             cloudHostData.put("warehouseId", wareHouseId);
+            cloudHostData.put("poolId", poolId);
             cloudHostMapper.insertCloudHost(cloudHostData);
             
             //更新仓库数据
@@ -2742,7 +2743,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             JSONObject obj = new JSONObject();
             obj.put("pool_id", ext.getUuid());
             obj.put("pool_name", ext.getName());
-            obj.put("max_creating", 0); 
+            obj.put("max_creating", AppInconstant.init_maxcreating); 
             // 循环比对
             for (CloudHostWarehouse cloud : maxconcurrent_lists) {
                 if (ext.getUuid().equals(cloud.getPoolId())) {
@@ -2750,7 +2751,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
                     break;
                 }else{
                     //如果数据库中没有设置，需要给一个默认值2
-                    obj.put("max_creating", 2); 
+                    obj.put("max_creating", AppInconstant.init_maxcreating); 
                 }
             }
             pool_arrays.add(obj);
