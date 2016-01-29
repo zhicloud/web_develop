@@ -97,7 +97,7 @@ public class ImageUploadAddressController {
     public MethodResult modify(ImageUploadAddressVO imageUploadAddressVO, HttpServletRequest request)
         throws IOException {
 
-        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.image_upload_address_add)){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.image_upload_address_mod)){
             return new MethodResult(MethodResult.FAIL,"您没有新增上传地址的权限，请联系管理员");
 
         }

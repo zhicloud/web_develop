@@ -497,7 +497,7 @@
                         <div id="pDiskUsage_p" class="progress-bar animate-progress-bar" data-percentage="0%"></div>
                       </div>
                     </div>  
-                    <p class="description"><strong id="pDiskRemain_1">已使用0GB</strong> 共 <strong class="white-text" id="pDisk">0GB</strong></p>
+                    <p class="description"><strong id="pDiskRemain_1" data-value="0">已使用0GB</strong> 共 <strong class="white-text" id="pDisk" data-value="0">0GB</strong></p>
                   </div>
                   <!-- /tile widget -->
 
