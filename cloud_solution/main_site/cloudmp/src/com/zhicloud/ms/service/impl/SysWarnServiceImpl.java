@@ -30,7 +30,7 @@ import com.zhicloud.ms.vo.SysWarnValueVO;
  * @author 张本缘 于 2015年7月14日 上午9:31:34
  */
 //@Service("sysWarnService")
-@Transactional(readOnly=true)
+@Transactional(readOnly=false)
 public class SysWarnServiceImpl implements SysWarnService {
 
     public static final Logger logger = Logger.getLogger(SysWarnServiceImpl.class);

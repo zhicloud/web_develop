@@ -837,8 +837,7 @@ public class CloudHostServiceImpl extends BeanDirectCallableDefaultImpl implemen
                     } else {
                         host.setInactivateTimeText(host.getSummarizedStatusText());
                     }
-                    host.setOuterandinnerip(innerip + ":" + outerport + "<br>" + outerip + ":"
-                            + innerport);
+                    host.setOuterandinnerip(innerip + ":" + innerport + "<br>" + outerip + ":" + outerport);
                     host.setBelong_accountandusername(host.getBelong_account() + "<br>" + temp_name);
                     host.setEverymonth(host.getMonthlyPrice() + "<br>" + host.getAccount_balance());
                 }
