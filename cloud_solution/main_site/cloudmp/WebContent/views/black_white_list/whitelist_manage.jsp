@@ -90,7 +90,20 @@
           <div class="col-md-12">
 
 				  <section class="tile color transparent-black">
-
+                  <!-- tile widget -->
+                  <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs tabdrop">
+                      <li ><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/blacklist/all';">黑名单</a></li>
+                      <li class="active" ><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/whitelist/all';" data-toggle="tab">白名单</a></li>
+                      <li><a href="#messages-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/desktopqos/all';" data-toggle="tab">QOS规则设置</a></li>
+                      <li><a href="#tasks-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/rule/all';">智能路由例外配置 </a></li>
+                      <div id="space"></div>
+                      
+                     </ul>
+                    <!-- / Nav tabs -->
+                  </div>
+                  <!-- /tile widget -->
 
                   <!-- /tile header -->
 
@@ -322,7 +335,7 @@
       };
 	    $("div[class='col-md-4 text-right sm-center']").attr("class","tile-footer text-right");
 	  $("#add_whitelist").click(function(){
-		  window.location.href = path+"/whitelist/add";
+		  window.location.href = path+"/networkrule/whitelist/add";
  	  });
 	  
 	  
@@ -363,7 +376,7 @@
     }
     //修改黑名单
     function updateBtn(id){
-    	window.location.href = path+"/whitelist/"+id+"/update";
+    	window.location.href = path+"/networkrule/whitelist/"+id+"/update";
     }
           
     //置空
@@ -371,9 +384,9 @@
     	 $("#cmount_input").val("");
     }
     function deleteWhitelist(){
-    	jQuery.get(path + "/whitelist/"+currentId+"/delete",function(data){
+    	jQuery.get(path + "/networkrule/whitelist/"+currentId+"/delete",function(data){
 			if(data.status == "success"){   
-	    		location.href = path + "/whitelist/all";
+	    		location.href = path + "/networkrule/whitelist/all";
 			}else{  
 				$("#tipscontent").html(data.message);
 				$("#dia").click();
@@ -383,7 +396,7 @@
     
     function deleteMultWhitelist(){
     	jQuery.ajax({
-	        url: '<%=request.getContextPath()%>/whitelist/deletemore',
+	        url: '<%=request.getContextPath()%>/networkrule/whitelist/deletemore',
 	        type: 'post', 
 	        dataType: 'json',
 	        data:{ids:curIds},
@@ -394,7 +407,7 @@
 	        success: function(result)	        
 	        {  
 	        	if(result.status=="success"){
-	    			location.href = path + "/whitelist/all";
+	    			location.href = path + "/networkrule/whitelist/all";
 	        	}
 	        	else{
 		        	$("#tipscontent").html(result.message);
@@ -425,7 +438,22 @@
         //check toggling
         $('.check-toggler').on('click', function(){
           $(this).toggleClass('checked');
-        })
+        });
+        $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+      			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+      			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+      			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+      			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+      			 -1).height(
+      			  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
+      	    $(window).resize(function(){
+      		 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+      				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+      				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+      				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+      				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+      				 -1);
+      	    });
         
       });
     </script>

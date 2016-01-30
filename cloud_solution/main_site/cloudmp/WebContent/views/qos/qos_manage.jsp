@@ -90,7 +90,20 @@
                     <div class="col-md-12">
 
                         <section class="tile color transparent-black">
-
+                           <!-- tile widget -->
+		                  <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
+		                    <!-- Nav tabs -->
+		                    <ul class="nav nav-tabs tabdrop">
+		                      <li ><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/blacklist/all';">黑名单</a></li>
+		                      <li><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/whitelist/all';" data-toggle="tab">白名单</a></li>
+		                      <li class="active" ><a href="#messages-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/desktopqos/all';" data-toggle="tab">QOS规则设置</a></li>
+		                      <li><a href="#tasks-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/rule/all';">智能路由例外配置 </a></li>
+		                      <div id="space"></div>
+		                      
+		                     </ul>
+		                    <!-- / Nav tabs -->
+		                  </div>
+		                  <!-- /tile widget -->
 
 
                             <!-- tile header -->
@@ -327,8 +340,8 @@
     var list_url;
 
     if (type == 1) {
-        add_url="desktopqos/add";
-        list_url="desktopqos/all";
+        add_url="networkrule/desktopqos/add";
+        list_url="networkrule/desktopqos/all";
     }
     if (type == 2) {
         add_url="serverqos/add";
@@ -448,6 +461,21 @@
 //                 $("#search_btn").click();
 //             }
 //         });
+        $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+   			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+   			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+   			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+   			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+   			 -1).height(
+   			  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
+   	    $(window).resize(function(){
+   		 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+   				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+   				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+   				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+   				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+   				 -1);
+   	    });
 
     });
 
@@ -501,7 +529,7 @@
     //通用导出数据方法
     function exportData(url){
         if (type == 1) {
-            url = "/export/desktopqosdata";
+            url = "/networkrule/export/desktopqosdata";
         }
         if (type == 2) {
             url = "/export/serverqosdata";

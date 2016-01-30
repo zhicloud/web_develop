@@ -89,10 +89,23 @@
                 <section class="tile color transparent-black">
 
 
-
+                  <!-- tile widget -->
+                  <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs tabdrop">
+                      <li class="active" ><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/blacklist/all';">黑名单</a></li>
+                      <li><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/whitelist/all';" data-toggle="tab">白名单</a></li>
+                      <li><a href="#messages-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/desktopqos/all';" data-toggle="tab">QOS规则设置</a></li>
+                      <li><a href="#tasks-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/rule/all';">智能路由例外配置 </a></li>
+                      <div id="space"></div>
+                      
+                     </ul>
+                    <!-- / Nav tabs -->
+                  </div>
+                  <!-- /tile widget -->
                   <!-- tile header -->
                   <div class="tile-header">
-                    <h3><a href="<%=request.getContextPath() %>/blacklist/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入黑名单信息</h3>
+                    <h3><a href="<%=request.getContextPath() %>/networkrule/blacklist/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入黑名单信息</h3>
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                     </div>
@@ -102,7 +115,7 @@
                   <!-- tile body -->
                   <div class="tile-body">
                     
-                    <form class="form-horizontal" role="form"  parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/blacklist/update" method="post"   >
+                    <form class="form-horizontal" role="form"  parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/networkrule/blacklist/update" method="post"   >
                       <input type="hidden" name="ruleId" value="${blacklist.ruleId }">
                       <div class="form-group">
                         <label for="input01" class="col-sm-2 control-label">规则名 *</label>
@@ -253,7 +266,21 @@
       //chosen select input
       $(".chosen-select").chosen({disable_search_threshold: 10});
       
-      
+      $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+    			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+    			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+    			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+    			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+    			 -1).height(
+    			  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
+  	    $(window).resize(function(){
+  		 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+  				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+  				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+  				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+  				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+  				 -1);
+  	    });
       
     });
     function saveForm(){
@@ -279,7 +306,7 @@
 							        		  $("#tipscontent").html("保存失败");
 							     		      $("#dia").click();  		        							
  		        						}else{  		        							
-	   		        						location.href = path + "/blacklist/all";
+	   		        						location.href = path + "/networkrule/blacklist/all";
  		        						}
  		        					},
  		        					dataType:'json',

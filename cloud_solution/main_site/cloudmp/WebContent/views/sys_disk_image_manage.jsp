@@ -78,7 +78,7 @@
           <div class="pageheader">
             
 
-            <h2><i class="fa fa-hdd-o"></i> 云桌面镜像管理</h2>
+            <h2><i class="fa fa-hdd-o"></i> 磁盘镜像管理</h2>
             
 
           </div>

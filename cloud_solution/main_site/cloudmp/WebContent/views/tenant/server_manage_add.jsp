@@ -142,7 +142,7 @@
 							<select class="chosen-select chosen-transparent form-control" style="width:230px;" name="chcmId" id="chcmId2" parsley-trigger="change" parsley-required="true" parsley-error-container="#optiontype2en">
 	                            <option value="">请选择配置类型</option>  
 	                            <c:forEach items="${optionType }" var="ot">
-	                                 <c:if test="${ot.fileType == 1 }">
+	                                 <c:if test="${ot.fileType == 1  && ot.sysImageId != null}">
  	                                 <option value="${ot.id }">${ot.name }</option>
  	                                 </c:if>
  	                             </c:forEach>  

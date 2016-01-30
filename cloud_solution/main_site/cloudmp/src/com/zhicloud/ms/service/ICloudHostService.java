@@ -346,7 +346,7 @@ public interface ICloudHostService {
     * @return MethodResult     
     * @throws
      */
-    public MethodResult addHostToDeskTopByRealHostId(String realHostId,String wareHouseId);
+    public MethodResult addHostToDeskTopByRealHostId(String realHostId,String wareHouseId,String poolId);
     
     /**
      * 查询vpc中的所有主机

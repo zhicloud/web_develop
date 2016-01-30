@@ -233,14 +233,28 @@ public class TransFormLoginHelper {
                             } else {
                                 htmlsb.append("<li>");
                             }
-                        } else if (URI.contains("/networkpool/")) { // 网络资源池合并,暂时特殊处理下
+                        } else if (URI.contains("/networkpool/") ) { // 网络资源池合并,暂时特殊处理下
                             if (menu.getLinkname().indexOf("/networkpool/") > -1) {
                                 flag = true;
                                 htmlsb.append("<li class=\"active\">");
                             } else {
                                 htmlsb.append("<li>");
                             }
-                        } else { // 其他URI取第3次出现/截止的字符串
+                        } else if (URI.contains("/storageresourcepool/") ) { // 存储资源池合并,暂时特殊处理下
+                            if (menu.getLinkname().indexOf("/storageresourcepool/") > -1) {
+                                flag = true;
+                                htmlsb.append("<li class=\"active\">");
+                            } else {
+                                htmlsb.append("<li>");
+                            }
+                        }else if (URI.contains("/networkrule/") ) { // 网络规则合并,暂时特殊处理下
+                            if (menu.getLinkname().indexOf("/networkrule/") > -1) {
+                                flag = true;
+                                htmlsb.append("<li class=\"active\">");
+                            } else {
+                                htmlsb.append("<li>");
+                            }
+                        }else { // 其他URI取第3次出现/截止的字符串
                             if (getStr(URI, "/", 3)
                                     .indexOf(
                                             menu.getLinkname().substring(0, menu.getLinkname().lastIndexOf("/") + 1)

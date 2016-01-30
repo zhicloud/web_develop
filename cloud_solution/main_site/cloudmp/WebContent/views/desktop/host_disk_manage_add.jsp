@@ -52,7 +52,6 @@
 
 
         <%@include file="/views/common/common_menus.jsp" %>
-
         
         <!-- Page content -->
         <div id="content" class="col-md-12">
@@ -63,7 +62,7 @@
           <div class="pageheader">
             
 
-            <h2><i class="fa fa-file-text-o"></i>  修改白名单</h2>
+            <h2><i class="fa fa-database"></i>云桌面主机数据磁盘添加</h2>
             
 
           </div>
@@ -88,24 +87,11 @@
                 <!-- tile -->
                 <section class="tile color transparent-black">
 
-                 <!-- tile widget -->
-                  <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
-                    <!-- Nav tabs -->
-                    <ul class="nav nav-tabs tabdrop">
-                      <li ><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/blacklist/all';">黑名单</a></li>
-                      <li class="active" ><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/whitelist/all';" data-toggle="tab">白名单</a></li>
-                      <li><a href="#messages-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/desktopqos/all';" data-toggle="tab">QOS规则设置</a></li>
-                      <li><a href="#tasks-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/rule/all';">智能路由例外配置 </a></li>
-                      <div id="space"></div>
-                      
-                     </ul>
-                    <!-- / Nav tabs -->
-                  </div>
-                  <!-- /tile widget -->
+
 
                   <!-- tile header -->
                   <div class="tile-header">
-                    <h3><a href="<%=request.getContextPath() %>/networkrule/whitelist/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入白名单信息</h3>
+                    <h3>输入数据磁盘信息</h3>
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                     </div>
@@ -115,39 +101,61 @@
                   <!-- tile body -->
                   <div class="tile-body">
                     
-                    <form class="form-horizontal" role="form"  parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/networkrule/whitelist/update" method="post"   >
-                      <input type="hidden" name="ruleId" value="${whitelist.ruleId }">
+                    <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/warehouse/cloudhost/addDataDisk" method="post"   >
+                      <input name="uuid" type="hidden" value="${realId }"/>
+                      <input name="diskType" type="hidden" value="${diskType }"/>
                       <div class="form-group">
-                        <label for="input01" class="col-sm-2 control-label">规则名 *</label>
+                        <label for="input01" class="col-sm-2 control-label">磁盘大小(G) *</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="ruleName"  name="ruleName" oldName="${whitelist.ruleName}" parsley-checkwhitelistname="true" value="${whitelist.ruleName}"  parsley-trigger="change" parsley-required="true"   parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
+                          <input type="text" class="form-control" id="dataDisk" name="dataDisk"  parsley-trigger="change" parsley-required="true" parsley-checkdesktoprecomputersourcepoolname="true" parsley-type="integer" parsley-max="1000" parsley-validation-minlength="1">
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="input01" class="col-sm-2 control-label">IP *</label>
-                        <div class="col-sm-4">
-                          <input type="text" class="form-control" id="ruleIp" name="ruleIp" oldName="${whitelist.ruleIp}" value="${whitelist.ruleIp}" parsley-trigger="change" parsley-required="true" parsley-checkip="true" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
-                        </div>
-                      </div>  
-                     <div class="form-group">
-                        <label for="input05" class="col-sm-2 control-label">描述</label>
-                        <div class="col-sm-4">
-                          <textarea class="form-control" name="description" id="description" rows="6" parsley-maxlength="100">${whitelist.description}</textarea>
+                        <label for="input07" class="col-sm-2 control-label">磁盘格式*</label>
+                        <div class="col-sm-4" id="selectbox">
+                          <select class="chosen-select chosen-transparent form-control" name="mode" id="input07" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
+                            <option value="">请选择磁盘格式</option> 
+                             	<option value="0">raw</option>
+                             	<option value="1">ext3</option>
+                             	<option value="2">ntfs</option>
+                             	<option value="3">ext4</option>
+                          </select>
                         </div>
                       </div>
-                      
-                     
-                      
-                       
-                      
-
+<!--                       <div class="form-group"> -->
+<!--                         <label for="input01" class="col-sm-2 control-label">磁盘模式*</label> -->
+<!--                         <div class="col-sm-8">  -->
+<!--                           <div class="radio radio-transparent col-md-2"> -->
+<!--                             <input type="radio" name="diskType" id="optionsRadios12" value="0" checked> -->
+<!--                             <label for="optionsRadios12">本地</label> -->
+<!--                           </div> -->
+<!--                           <div class="radio radio-transparent col-md-2"> -->
+<!--                             <input type="radio" name="diskType" id="optionsRadios13" value="2"> -->
+<!--                             <label for="optionsRadios13">nas磁盘</label> -->
+<!--                           </div> -->
+<!--                         </div> -->
+<!--                       </div> -->
+<!--                       <input type="hidden" name="diskId" value=""> -->
+<!--                        <div class="form-group"> -->
+<!--                         <label for="input07" class="col-sm-2 control-label">存储资源池*</label> -->
+<!--                         <div class="col-sm-4" id="selectbox"> -->
+<!--                           <select class="chosen-select chosen-transparent form-control" name="sysImageId"id="input07" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox"> -->
+<!--                             <option value="">请选择资源池</option>  -->
+<%--                             <c:forEach items="${imageList }" var="sdi"> --%>
+<%--                                  	<c:if test="${sdi.realImageId!=null }"> --%>
+<%--                                  		<option value="${sdi.id }">${sdi.displayName }</option> --%>
+<%--                                  	</c:if> --%>
+<%--                              </c:forEach>   --%>
+<!--                           </select> -->
+<!--                         </div> -->
+<!--                       </div> -->
                        
 
                      <div class="form-group form-footer footer-white">
                         <div class="col-sm-offset-4 col-sm-8">
                           <button type="button" class="btn btn-greensea" onclick="saveForm();"><i class="fa fa-plus"></i>
-                              <span> 保存</span></button>
-                          <button type="reset" class="btn btn-red"><i class="fa fa-refresh"></i>
+                              <span> 添 加 </span></button>
+                          <button type="reset" class="btn btn-red" onclick="window.location.reload();"><i class="fa fa-refresh"></i>
                               <span> 重 置 </span></button>
                         </div>
                       </div>
@@ -155,7 +163,10 @@
                     </form>
 
                   </div>
-                  <!-- /tile body --> 
+                  <!-- /tile body -->
+                  
+                  
+                  
                 
 
 
@@ -255,35 +266,24 @@
 
     <section class="videocontent" id="video"></section>
 
-   <script type="text/javascript" src="<%=request.getContextPath()%>/js/plugins/jquery.form.js"></script>
+
+      <script type="text/javascript" src="<%=request.getContextPath()%>/js/plugins/jquery.form.js"></script>
 
     <script>
     
     var path = '<%=request.getContextPath()%>'; 
-
+    var isCommited = false;
     $(function(){
-
-      //chosen select input
       $(".chosen-select").chosen({disable_search_threshold: 10});
-      
-      $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
-    			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
-    			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
-    			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
-    			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
-    			 -1).height(
-    			  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
-    	    $(window).resize(function(){
-    		 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
-    				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
-    				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
-    				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
-    				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
-    				 -1);
-    	    });
-      
+      //chosen select input
     });
     function saveForm(){
+    	
+		if(isCommited){
+     		return false;
+		} 
+		isCommited = true;
+    	
 		jQuery.ajax({
 	        url: path+'/main/checklogin',
 	        type: 'post', 
@@ -291,22 +291,28 @@
 	        timeout: 10000,
 	        async: true,
 	        error: function()
-	        {
+	        {   
+	        	isCommited = false;
 	            alert('Error!');
 	        },
 	        success: function(result)
 	        {
-	        	if(result.status == "fail"){ 
+	        	if(result.status == "fail"){
+	        		isCommited = false;
 	        		  $("#tipscontent").html("登录超时，请重新登录");
 	     		      $("#dia").click();
 		        	}else{ 
  		        			var options = {
  		        					success:function result(data){
  		        						if(data.status == "fail"){
-							        		  $("#tipscontent").html("保存失败");
+ 		        							isCommited = false;
+							        		  $("#tipscontent").html("添加失败");
 							     		      $("#dia").click();  		        							
- 		        						}else{  		        							
-	   		        						location.href = path + "/networkrule/whitelist/all";
+ 		        						}else{  
+ 		        							 
+ 		        							$("#tipscontent").html("添加成功，将在5秒后刷新结果，请稍等...");
+							     		    $("#dia").click();
+							     		    window.setTimeout("window.history.go(-1);", 5000);
  		        						}
  		        					},
  		        					dataType:'json',

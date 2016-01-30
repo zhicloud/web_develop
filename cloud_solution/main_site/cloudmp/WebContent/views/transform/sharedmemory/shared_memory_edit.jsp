@@ -37,7 +37,7 @@ function saveForm(){
 		data["secretkey"] = secretkey;
 		data["type"] = temptype;
 		data["id"] = "${sharedmeomory.id}";
-		var url = "<%=request.getContextPath()%>/sharedmemory/save"
+		var url = "<%=request.getContextPath()%>/storageresourcepool/sharedmemory/save"
 		jQuery.ajax({
 	  	 	type: "POST",
 	  	 	async:false,
@@ -62,7 +62,7 @@ function saveForm(){
 }
 //返回
 function backhome(){
-	window.location.href = "<%=request.getContextPath() %>/sharedmemory/manage";
+	window.location.href = "<%=request.getContextPath() %>/storageresourcepool/sharedmemory/manage";
 }
 </script>
 <%@include file="/views/common/common_menus.jsp" %>
@@ -75,8 +75,8 @@ function backhome(){
           <div class="pageheader">
             
             <h2><i class="fa fa-group"></i> 
-            <c:if test="${empty sharedmeomory}">新增共享存储信息</c:if>
-            <c:if test="${!empty sharedmeomory}">修改共享存储信息</c:if>
+            <c:if test="${empty sharedmeomory}">新增外部存储信息</c:if>
+            <c:if test="${!empty sharedmeomory}">修改外部存储信息</c:if>
             </h2>
 
           </div>
@@ -95,12 +95,23 @@ function backhome(){
                 <!-- tile -->
                 <section class="tile color transparent-black">
 
-
+                  <!-- tile widget -->
+                  <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs tabdrop">
+                      <li class="active"><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/storageresourcepool/sharedmemory/manage';">外部存储管理</a></li>
+                      <li><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/storageresourcepool/all';" data-toggle="tab">本地存储管理</a></li>
+ 	                      <div id="space"></div>
+                      
+                     </ul>
+                    <!-- / Nav tabs -->
+                  </div>
+                  <!-- /tile widget -->
                   <!-- tile header -->
                   <div class="tile-header">
-                    <h3><a href="<%=request.getContextPath() %>/sharedmemory/manage"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>
-                        <c:if test="${empty sharedmeomory}">输入共享存储信息</c:if>
-                        <c:if test="${!empty sharedmeomory}">修改共享存储信息</c:if></h3>
+                    <h3><a href="<%=request.getContextPath() %>/storageresourcepool/sharedmemory/manage"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>
+                        <c:if test="${empty sharedmeomory}">输入外部存储信息</c:if>
+                        <c:if test="${!empty sharedmeomory}">修改外部存储信息</c:if></h3>
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                     </div>
@@ -236,6 +247,21 @@ function backhome(){
     $(function(){
       //chosen select input
       $(".chosen-select").chosen({disable_search_threshold: 10});
+      $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+ 			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+ 			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+ 			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+ 			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+ 			 -1).height(
+ 			  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
+ 	$(window).resize(function(){
+ 		 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+ 				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+ 				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+ 				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+ 				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+ 				 -1);
+ 	});
       
     })
       

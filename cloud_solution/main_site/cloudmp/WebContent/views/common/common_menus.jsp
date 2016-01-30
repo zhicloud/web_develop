@@ -230,24 +230,24 @@ function getAvailableAdress(){
             <!-- /Page refresh -->
 
             <!-- Search -->
-            <div class="search" id="main-search">
-              <i class="fa fa-search"></i> <input type="text" placeholder="关键字">
-            </div>
+<!--             <div class="search" id="main-search"> -->
+<!--               <i class="fa fa-search"></i> <input type="text" placeholder="关键字"> -->
+<!--             </div> -->
             <!-- Search end -->
 
             <!-- Quick Actions -->
             <ul class="nav navbar-nav quick-actions">
               
 
-              <li class="dropdown divided">
+<!--               <li class="dropdown divided"> -->
                 
-                <a class="dropdown-toggle button" data-toggle="dropdown" href="#">
-                  <i class="fa fa-envelope"></i>
-                  <span class="label label-transparent-black"></span>
-                </a>
+<!--                 <a class="dropdown-toggle button" data-toggle="dropdown" href="#"> -->
+<!--                   <i class="fa fa-envelope"></i> -->
+<!--                   <span class="label label-transparent-black"></span> -->
+<!--                 </a> -->
 
-                <ul class="dropdown-menu wider arrow nopadding messages">
-                  <li><h1>您有 <strong>0</strong> 个新的短消息</h1></li>
+<!--                 <ul class="dropdown-menu wider arrow nopadding messages"> -->
+<!--                   <li><h1>您有 <strong>0</strong> 个新的短消息</h1></li> -->
 <!--                   <li> -->
 <!--                     <a class="cyan" href="#"> -->
 <!--                       <div class="profile-photo"> -->
@@ -275,19 +275,19 @@ function getAvailableAdress(){
 <!--                   </li> -->
 
 <!--                   <li class="topborder"><a href="#">查看全部短消息 <i class="fa fa-angle-right"></i></a></li> -->
-                </ul>
+<!--                 </ul> -->
 
-              </li>
+<!--               </li> -->
 
-              <li class="dropdown divided">
+<!--               <li class="dropdown divided"> -->
                 
-                <a class="dropdown-toggle button" data-toggle="dropdown" href="#">
-                  <i class="fa fa-bell"></i>
-                  <span class="label label-transparent-black"></span>
-                </a>
+<!--                 <a class="dropdown-toggle button" data-toggle="dropdown" href="#"> -->
+<!--                   <i class="fa fa-bell"></i> -->
+<!--                   <span class="label label-transparent-black"></span> -->
+<!--                 </a> -->
 
-                <ul class="dropdown-menu wide arrow nopadding bordered">
-                  <li><h1>你有 <strong>0</strong> 个新告警消息</h1></li>
+<!--                 <ul class="dropdown-menu wide arrow nopadding bordered"> -->
+<!--                   <li><h1>你有 <strong>0</strong> 个新告警消息</h1></li> -->
                   
 
 <!--                   <li> -->
@@ -308,9 +308,9 @@ function getAvailableAdress(){
 
 
 <!--                    <li><a href="#">查看全部告警消息 <i class="fa fa-angle-right"></i></a></li> -->
-                </ul>
+<!--                 </ul> -->
 
-              </li>
+<!--               </li> -->
 
               <li class="dropdown divided user" id="current-user">
                 <div class="profile-photo">

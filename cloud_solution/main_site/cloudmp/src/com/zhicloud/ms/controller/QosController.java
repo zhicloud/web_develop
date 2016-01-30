@@ -40,7 +40,7 @@ public class QosController {
     @Resource
     private IOperLogService operLogService;
 
-    @RequestMapping(value="/desktopqos/all",method= RequestMethod.GET)
+    @RequestMapping(value="/networkrule/desktopqos/all",method= RequestMethod.GET)
     public String desktopList(Model model,HttpServletRequest request) throws UnsupportedEncodingException {
 
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_qos_query)){
@@ -72,7 +72,7 @@ public class QosController {
         return "qos/qos_manage";
     }
 
-    @RequestMapping(value="/desktopqos/add",method= RequestMethod.GET)
+    @RequestMapping(value="/networkrule/desktopqos/add",method= RequestMethod.GET)
     public String desktopAddPage(Model model, HttpServletRequest request){
 
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_qos_add)){
@@ -140,7 +140,7 @@ public class QosController {
 
     }
 
-    @RequestMapping(value="/qos/add",method= RequestMethod.POST)
+    @RequestMapping(value="/networkrule/qos/add",method= RequestMethod.POST)
     @ResponseBody
     public MethodResult add(QosVO qosVO, HttpServletRequest request){
 
@@ -195,7 +195,7 @@ public class QosController {
         return new MethodResult(result.status,result.message);
     }
 
-    @RequestMapping(value="/qos/delete",method= RequestMethod.POST)
+    @RequestMapping(value="/networkrule/qos/delete",method= RequestMethod.POST)
     @ResponseBody
     public MethodResult deleteBoxes(@RequestParam("ids[]") String[] ids, @RequestParam("type")int type, HttpServletRequest request){
 
@@ -238,7 +238,7 @@ public class QosController {
         return new MethodResult(result.status,result.message);
     }
 
-    @RequestMapping(value="/qos/check",method= RequestMethod.GET)
+    @RequestMapping(value="/networkrule/qos/check",method= RequestMethod.GET)
     @ResponseBody
     public MethodResult checkName(HttpServletRequest request) throws UnsupportedEncodingException {
 

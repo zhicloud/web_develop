@@ -21,7 +21,7 @@ public class Test {
         SmsSendService smsSendService = MessageServiceManager.singleton().getSmsService();
         Map<String, Object> parameter = new LinkedHashMap<>();
         parameter.put("region", "广州");
-        smsSendService.sendSms("DB_WARN", parameter);
+        smsSendService.sendSms_new("DB_WARN", parameter);
 
     }
 }

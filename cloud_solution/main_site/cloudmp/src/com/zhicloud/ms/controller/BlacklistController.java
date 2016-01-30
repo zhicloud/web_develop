@@ -27,7 +27,7 @@ import com.zhicloud.ms.vo.BlacklistVO;
 import com.zhicloud.ms.vo.WhitelistVO;
 
 @Controller
-@RequestMapping(value="/blacklist")
+@RequestMapping(value="/networkrule/blacklist")
 public class BlacklistController {
     
     public static final Logger logger = Logger.getLogger(BlacklistController.class);
