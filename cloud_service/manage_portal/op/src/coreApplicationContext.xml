@@ -21,7 +21,7 @@
 	<!-- TODO:TEST --> 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://172.18.10.18:3306/zcop?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;autoReconnectForPools=true" />
+		<property name="url" value="jdbc:mysql://172.18.10.18:3306/zcop_gz?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;autoReconnectForPools=true" />
  		<property name="username" value="cdms" />
 		<property name="password" value="cdms$250" /> 
 	</bean>
