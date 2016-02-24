@@ -223,8 +223,7 @@
 	
 	<insert id="updateSysDiskImageById">
 		update sys_disk_image set 
-			name          = #{name}, 
-			real_image_id = #{realImageId},
+			name          = #{name},  
 			from_host_id  = #{fromHostId},
 			tag           = #{tag},
 			description   = #{description},
