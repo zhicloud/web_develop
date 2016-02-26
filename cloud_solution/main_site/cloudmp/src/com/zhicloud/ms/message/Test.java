@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class Test {
 
-    public static void main(String[] args) {
+    public static void main (String[] args) {
 //        EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
 //        Map<String, Object> parameter = new LinkedHashMap<>();
 //        parameter.put("name", "广州");
@@ -21,7 +21,7 @@ public class Test {
         SmsSendService smsSendService = MessageServiceManager.singleton().getSmsService();
         Map<String, Object> parameter = new LinkedHashMap<>();
         parameter.put("region", "广州");
-        smsSendService.sendSms_new("DB_WARN", parameter);
+        smsSendService.sendSms_new("DB_WARN", parameter); 
 
     }
 }

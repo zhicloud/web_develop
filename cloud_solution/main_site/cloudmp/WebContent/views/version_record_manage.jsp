@@ -125,6 +125,7 @@
                             </div>
                           </th>
                             <th class="sortable sort-alpha">版本号</th>
+                            <th class="sortable sort-alpha">平台类型</th>
                             <th class="sortable sort-alpha">更新内容</th>
                             <th class="sortable sort-alpha">文件大小</th>
                              <th class="sortable sort-alpha">创建时间</th>  
@@ -141,6 +142,7 @@
 								</div>
                                 </td>
                             <td>${version.versionNumber}</td> 
+                            <td>${version.platformType}</td> 
                             <td class="cut">${version.updateInfo}</td> 
                             <td><fmt:formatNumber value="${version.fsize/1024/1024}" pattern="#,##0.0#"/>MB</td> 
                             <td class="center">

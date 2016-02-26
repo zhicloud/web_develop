@@ -32,6 +32,7 @@ public class VersionRecordVO {
 	private String updateInfo;
 	private String createTime;
 	private long fsize;
+	private String platformType;
 	public long getFsize() {
 		return fsize;
 	}
@@ -103,5 +104,12 @@ public class VersionRecordVO {
     public String getInsert_date() {
         return DateUtil.dateToString(createTimeDate, "yyyy-MM-dd HH:mm:ss");
     }
+    public String getPlatformType() {
+        return platformType;
+    }
+    public void setPlatformType(String platformType) {
+        this.platformType = platformType;
+    }
+    
 }
 

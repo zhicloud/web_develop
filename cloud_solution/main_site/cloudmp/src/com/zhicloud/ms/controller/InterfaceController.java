@@ -335,11 +335,22 @@ public class InterfaceController {
 		Map<Object, Object> result = ServiceUtil.toSuccessObject("");
 		//获取版本号
 		String versionNumber = StringUtil.trim(request.getParameter("version_number"));	
+		//平台类型
+		String platformType = StringUtil.trim(request.getParameter("platform_type")); 
+		//操作系统类型
+		String osType = StringUtil.trim(request.getParameter("os_type"));   
 		if(StringUtil.isBlank(versionNumber)){
 			//参数有误
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "version_number is required"); 
 		}
-		VersionRecordVO version = versionRecordService.getLatestVersion();
+		//设置默认值
+		if(StringUtil.isBlank(platformType)){
+		    platformType = "arm";
+		}
+		if(StringUtil.isBlank(osType)){
+		    osType = "ubuntu";
+        }
+		VersionRecordVO version = versionRecordService.getLatestVersion(platformType);
 		if(version == null || version.getVersionNumber().equals(versionNumber)){
  			result.put("need_update", false);	
 			ServiceUtil.writeJsonTo(response.getOutputStream(), result);

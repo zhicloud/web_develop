@@ -2,6 +2,10 @@
 package com.zhicloud.ms.service.impl;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -16,6 +20,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.mapper.SharedMemoryMapper;
@@ -184,4 +189,34 @@ public class SharedMemoryServiceImpl implements SharedMemoryService {
         }  
         return 1;
      } 
+	
+	private void updateFstab(){
+        // 文件目录
+        String filePath = "/etc/fstab"; 
+        //配置文件
+        File confFile = new File(filePath);
+        String line = "";
+        //存储读取的每行数据
+        StringBuilder sb = new StringBuilder();
+        try {
+            FileReader fr = new FileReader(confFile);
+            BufferedReader br = new BufferedReader(fr);
+            while((line = br.readLine())!=null){
+                //判断是否为DHCP，如果是则改为手动配置
+                if(line.contains("/images nfs defaults 0 0")){
+                    br.close(); 
+                }else{//如果不是则直接修改配置信息 
+                    sb.append(line+"\n"); 
+                }
+            }
+            br.close();
+            FileWriter fw = new FileWriter(confFile,true);
+            fw.write(sb.toString());
+            fw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace(); 
+        } catch (IOException e) {
+            e.printStackTrace(); 
+        } 
+    }
 }
