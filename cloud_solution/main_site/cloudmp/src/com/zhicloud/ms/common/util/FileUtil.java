@@ -1,10 +1,10 @@
 package com.zhicloud.ms.common.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import com.zhicloud.ms.app.cache.address.AddressCache;
+import com.zhicloud.ms.app.cache.address.AddressCacheManager;
+import com.zhicloud.ms.app.cache.address.AddressVO;
+
+import java.io.*;
 
 /**
  * 跟文件操作有关
@@ -232,7 +232,39 @@ public class FileUtil
         } else {     
             return 0.0;     
         }     
-    }     
+    }
+
+    /**
+     * @function 从配置文件读取到缓存
+     * @param fis
+     * @throws IOException
+     */
+    public static void readFromFileToCache(FileInputStream fis) throws IOException {
+
+        InputStreamReader isr=new InputStreamReader(fis, "UTF-8");
+        BufferedReader br = new BufferedReader(isr);
+        String line = "";
+        String[] arrs = null;
+        while ((line=br.readLine())!=null) {
+            if (line.startsWith("#") || line.startsWith("\t") || line.startsWith("\n") || line.trim().length() == 0) {
+                continue;
+            }
+            arrs=line.split(" +");
+            String fileSystem = arrs[0];
+            String dir = arrs[1];
+            String type = arrs[2];
+            String option = arrs[3];
+            int dump = Integer.parseInt(arrs[4]);
+            int pass = Integer.parseInt(arrs[5]);
+
+            // 写入缓存
+            AddressCache cache = AddressCacheManager.singleton().getCache();
+            cache.put(new AddressVO(fileSystem, dir, type, option, dump, pass));
+        }
+        br.close();
+        isr.close();
+        fis.close();
+    }
 
 	public static void main(String[] args)
 	{

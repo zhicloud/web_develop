@@ -1,6 +1,8 @@
-
 package com.zhicloud.ms.controller;
 
+import com.zhicloud.ms.app.cache.address.AddressCache;
+import com.zhicloud.ms.app.cache.address.AddressCacheManager;
+import com.zhicloud.ms.app.cache.address.AddressVO;
 import com.zhicloud.ms.common.util.StringUtil;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.IOperLogService;
@@ -12,24 +14,14 @@ import com.zhicloud.ms.transform.util.TransFormLoginHelper;
 import com.zhicloud.ms.transform.util.TransFormLoginInfo;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.vo.SharedMemoryVO;
-
 import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName: SharedMemoryController
@@ -60,15 +52,19 @@ public class SharedMemoryController extends TransFormBaseAction {
         if (!flag) {
             return TransformConstant.transform_jsp_noaccsess;
         }
+
         List<SharedMemoryVO> lists = sharedMemoryService.queryInfo(null);
         request.setAttribute("datas", lists);
+
+        // 初始化配置数据
+        sharedMemoryService.readFromFile();
         return "/transform/sharedmemory/shared_memory_manage";
     }
-    
+
     /**
      * @Description:编辑共享存储信息界面跳转
      * @param request
-     * @param response
+     * @param id
      * @throws Exception
      */
     @RequestMapping(value = "/{type}/{id}", method = RequestMethod.GET)
@@ -84,16 +80,18 @@ public class SharedMemoryController extends TransFormBaseAction {
         if (!flag) {
             return TransformConstant.transform_jsp_noaccsess;
         }
+
+
         SharedMemoryVO sharedmeomory = sharedMemoryService.getVO(id);
         request.setAttribute("sharedmeomory", sharedmeomory);
         request.setAttribute("type", type);
         return "/transform/sharedmemory/shared_memory_edit";
     }
-    
+
     /**
      * @Description:保存共享存储信息界面跳转
      * @param request
-     * @param response
+     * @param data
      * @throws Exception
      */
     @RequestMapping(value = "/save", method = RequestMethod.POST)
@@ -104,10 +102,12 @@ public class SharedMemoryController extends TransFormBaseAction {
         if (json != null && !json.isEmpty()) {
             try {
                 String type = json.getString("type");
+                String name = json.getString("name");
+                String url = json.getString("url");
                 TransFormLoginInfo login = TransFormLoginHelper.getLoginInfo(request);
                 Map<String, Object> map = new LinkedHashMap<String, Object>();
-                map.put("name", json.getString("name"));
-                map.put("url", json.getString("url"));
+                map.put("name", name);
+                map.put("url", url);
                 map.put("username", json.getString("username"));
                 map.put("password", json.getString("password"));
                 map.put("secretkey", json.getString("secretkey"));
@@ -126,11 +126,19 @@ public class SharedMemoryController extends TransFormBaseAction {
                     map.put("id", json.getString("id"));
                     if (!sharedMemoryService.validateName(map)) {
                         sharedMemoryService.updateInfo(map);
+
+                        // 写入配置文件
+                        AddressCache addressCache = AddressCacheManager.singleton().getCache();
+                        addressCache.put(new AddressVO(name, url, "ntfs", "defaults", 0, 0));
+                        List<AddressVO> addressVOs = Arrays.asList(addressCache.getAll());
+                        sharedMemoryService.writeToFile(addressVOs);
+
                         operLogService.addLog("共享存储信息", "修改共享存储信息成功", "1", "1", request);
                     } else {
                         return new MethodResult(MethodResult.FAIL, "路径名称重复");
                     }
                 }
+
                 return new MethodResult(MethodResult.SUCCESS, "保存成功");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -144,7 +152,7 @@ public class SharedMemoryController extends TransFormBaseAction {
     /**
      * @Description:删除共享存储信息
      * @param request
-     * @param response
+     * @param data
      * @throws Exception
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
@@ -154,9 +162,22 @@ public class SharedMemoryController extends TransFormBaseAction {
         JSONObject json = JSONObject.fromObject(data);
         if (json != null && !json.isEmpty()) {
             try {
-                String ids = json.getString("ids");
-                sharedMemoryService.deleteInfo(ids.split(","));
+
+                sharedMemoryService.deleteInfo(json.getString("ids").split(","));
                 operLogService.addLog("共享存储信息", "删除共享存储信息成功", "1", "1", request);
+
+                // 写入配置文件
+                String names = json.getString("names");
+                String[] namesArr = names.split(",");
+                AddressCache addressCache = AddressCacheManager.singleton().getCache();
+                int length = namesArr.length;
+                for (int i = 0; i < length; i++) {
+
+                    addressCache.remove(namesArr[i]);
+                }
+                List<AddressVO> addressVOs = Arrays.asList(addressCache.getAll());
+                sharedMemoryService.writeToFile(addressVOs);
+
                 return new MethodResult(MethodResult.SUCCESS, "删除成功");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -166,14 +187,14 @@ public class SharedMemoryController extends TransFormBaseAction {
         }
         return new MethodResult(MethodResult.FAIL, "参数不能为空");
     }
-    
+
     @RequestMapping(value="/{id}/available",method=RequestMethod.GET)
     @ResponseBody
     public MethodResult setAvailable(@PathVariable("id") String id,HttpServletRequest request){
-    	if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.shared_memory_available)){
-    		return new MethodResult(MethodResult.FAIL,"您没有设置为可用的权限，请联系管理员");
-		}
-    	MethodResult mr = sharedMemoryService.setAvailable(id);
-    	return mr;
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.shared_memory_available)){
+            return new MethodResult(MethodResult.FAIL,"您没有设置为可用的权限，请联系管理员");
+        }
+        MethodResult mr = sharedMemoryService.setAvailable(id);
+        return mr;
     }
 }
