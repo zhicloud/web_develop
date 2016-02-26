@@ -29,11 +29,11 @@ body #content .inside-block .l-box{
 	position:absolute;
 	top:50%;
 	left:50%;
-	min-width: 584px;
-	min-height: 703px;
-	margin-top:-351.5px;
-	margin-left:-292px;
-	padding:90px 82px;
+	min-width: 560px;
+	min-height: 663px;
+	margin-top:-331.5px;
+	margin-left:-280px;
+	padding:47px 70px 93px;
 }
 body #content .inside-block .l-box .m-logo{
 	margin-top:40px;
@@ -89,6 +89,9 @@ body #content.full-page .inside-block .logindiv section.controls a.psw-forget:ho
 }
 body #content.full-page .inside-block .logindiv section.controls a:hover {
 	color: white;
+	text-decoration: none;
+}
+body #content.full-page .inside-block .logindiv section.controls a:focus {
 	text-decoration: none;
 }
 body #content.full-page .inside-block .logindiv section.log-in{padding-top:6px;}
