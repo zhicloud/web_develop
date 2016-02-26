@@ -123,7 +123,7 @@
                     		<tr class="odd gradeX">
 						    <td>
 									<div class="checkbox check-transparent">
-									  <input type="checkbox" value="${data.id }" id="${data.id }">
+									  <input type="checkbox" value="${data.id }" id="${data.id }" name="${data.name}">
 									  <label for="${data.id }"></label>
 									</div>
                              </td>
@@ -324,7 +324,7 @@
 		}
 	}
   	//修改信息页面跳转
-	function edit(type,id){
+        function edit(type,id){
 		if(type=="add"){
 			id = "32f7876413a74afb840814a7976c1xxx";
 		}
@@ -334,11 +334,14 @@
 	function confirmreturn(){
 		var datatable = $("#basicDataTable").find("tbody tr input[type=checkbox]:checked");
 		var billids = new Array();
+        var names = new Array();
 		$(datatable).each(function(){
 				billids.push($(this).attr("value"));
+                names.push($(this).attr("name"));
 		});
 		var data = new Object();
 			data.ids = billids.join(",");
+            data.names = names.join(",");
 			jQuery.ajax({
 		  	 	type: "POST",
 		  	 	async:false,

@@ -494,7 +494,7 @@ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/CloudHostMapper.xml
 cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostConfigModelServiceImpl.java
 cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostServiceImpl.java
 cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/ComputePoolServiceImpl.java
-cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/test/Test.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/test/com.zhicloud.ms.util.Test.java
 cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/CloudHostConfigModel.java
 cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/CloudHostVO.java
 
@@ -542,7 +542,7 @@ cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/mapper/CloudHostMapper.xml
 cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostConfigModelServiceImpl.java
 cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/CloudHostServiceImpl.java
 cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/service/impl/ComputePoolServiceImpl.java
-cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/test/Test.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/test/com.zhicloud.ms.util.Test.java
 cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/CloudHostConfigModel.java
 cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/vo/CloudHostVO.java
 

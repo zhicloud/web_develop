@@ -1,27 +1,24 @@
 
 package com.zhicloud.ms.service.impl;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
+import com.zhicloud.ms.app.cache.address.AddressCache;
+import com.zhicloud.ms.app.cache.address.AddressCacheManager;
+import com.zhicloud.ms.app.cache.address.AddressVO;
+import com.zhicloud.ms.common.util.FileUtil;
+import com.zhicloud.ms.common.util.StringUtil;
+import com.zhicloud.ms.mapper.SharedMemoryMapper;
+import com.zhicloud.ms.remote.MethodResult;
+import com.zhicloud.ms.service.SharedMemoryService;
+import com.zhicloud.ms.vo.SharedMemoryVO;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.zhicloud.ms.common.util.StringUtil;
-import com.zhicloud.ms.mapper.SharedMemoryMapper;
-import com.zhicloud.ms.remote.MethodResult;
-import com.zhicloud.ms.service.SharedMemoryService;
-import com.zhicloud.ms.vo.SharedMemoryVO;
+import javax.annotation.Resource;
+import java.io.*;
+import java.util.*;
 
 @Service("sharedMemoryService")
 @Transactional(readOnly = false)
@@ -32,6 +29,11 @@ public class SharedMemoryServiceImpl implements SharedMemoryService {
 
     @Resource
     private SqlSession sqlSession;
+
+    private String path = File.separator + "etc" + File.separator + "fstab";
+//    private String path = File.separator + "Users" + File.separator + "sean" +File.separator + "test.txt";
+
+
 
     /**
      * Description:查询列表信息
@@ -65,7 +67,7 @@ public class SharedMemoryServiceImpl implements SharedMemoryService {
 
     /**
      * Description:删除信息
-     * @param data 数据
+     * @param ids ids
      * @return int
      */
     public int deleteInfo(String[] ids) {
@@ -147,7 +149,14 @@ public class SharedMemoryServiceImpl implements SharedMemoryService {
             e.printStackTrace();
         }
 		 if(n>0){
-			 return new MethodResult(MethodResult.SUCCESS,"设置成功");
+
+         // 写入配置文件
+         AddressCache addressCache = AddressCacheManager.singleton().getCache();
+         addressCache.put(new AddressVO(vo.getName(), vo.getUrl(), "ntfs", "defaults", 0, 0));
+         List<AddressVO> addressVOs = Arrays.asList(addressCache.getAll());
+         this.writeToFile(addressVOs);
+
+         return new MethodResult(MethodResult.SUCCESS,"设置成功");
 		 }
 		 return new MethodResult(MethodResult.FAIL,"设置失败");
 	}
@@ -157,8 +166,38 @@ public class SharedMemoryServiceImpl implements SharedMemoryService {
 		 SharedMemoryMapper mapper = sqlSession.getMapper(SharedMemoryMapper.class);
 		 return mapper.queryAvailable();
 	}
-	
-	private int executeShellOfMount(String url) throws IOException { 
+
+    @Override public void readFromFile() {
+
+        File file = new File(path);
+
+        if (file.exists()) {
+            // 从配置文件读取配置到缓存
+            try {
+                FileUtil.readFromFileToCache(new FileInputStream(path));
+            } catch (IOException e) {
+                logger.debug(e);
+            }
+        }
+    }
+
+    @Override public void writeToFile(List<AddressVO> addressVOs) {
+
+        String content = "";
+
+        for(AddressVO address : addressVOs) {
+
+            content = content + "\n" + address.getFileSystem() + "  " + address.getDir() + "  " + address.getType() + "  " + address.getOption() + "  " + address.getDump() + "  " + address.getPass();
+
+        }
+        try {
+            FileUtil.writeBytesToFile(new File(path), content.getBytes("UTF-8"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private int executeShellOfMount(String url) throws IOException {
         Map<String,String> temp = new HashMap<String,String>();
         try {
             Process pro = Runtime.getRuntime().exec("mkdir  /image");

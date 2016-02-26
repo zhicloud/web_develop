@@ -89,7 +89,7 @@
 			<input type="button" name="error" value="Error" onclick="windowLog.error('I was errored!');return false;" />
 			<input type="button" name="fatal" value="Fatal" onclick="windowLog.fatal('I was fataled!');return false;" />
 			&nbsp;&nbsp;
-			<input type="button" name="test" value="Test window.error" onclick="badObject.badMethod;" />
+			<input type="button" name="test" value="com.zhicloud.ms.util.Test window.error" onclick="badObject.badMethod;" />
 		</fieldset>
 		
 		<fieldset><legend>Inline Console Logging (toggle on with ALT-D; on FireFox 2.0 use: SHIFT+ALT+D)</legend>

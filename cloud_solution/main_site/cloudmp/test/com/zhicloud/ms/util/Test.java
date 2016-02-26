@@ -1,26 +1,23 @@
-/**
+package com.zhicloud.ms.util; /**
  * Project Name:ms
- * File Name:Test.java
+ * File Name:com.zhicloud.ms.util.Test.java
  * Package Name:com.zhicloud.ms.test
  * Date:Mar 22, 20155:59:04 AM
  * 
  *
  */
 
-package com.zhicloud.ms.test;
- 
+import com.zhicloud.ms.balancer.BalancerHelper;
+import net.sf.json.JSONObject;
+
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method; 
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.zhicloud.ms.balancer.BalancerHelper;
-
-import net.sf.json.JSONObject;
-
 /**
- * ClassName: Test 
+ * ClassName: com.zhicloud.ms.util.Test
  * date: Mar 22, 2015 5:59:04 AM 
  *
  * @author sean
@@ -37,16 +34,16 @@ public class Test {
 	 * @since JDK 1.7
 	 */
 	public static void main(String[] args) {
-//      ArrayList<Student> list= new ArrayList<Student>();
-//      list.add(new Student(1,"张三",5));
-//      list.add(new Student(2,"李四",4));
-//      list.add(new Student(4,"小明",2));
-//      list.add(new Student(5,"小黑",1));
-//      list.add(new Student(3,"王五",3));
+//      ArrayList<com.zhicloud.ms.util.Student> list= new ArrayList<com.zhicloud.ms.util.Student>();
+//      list.add(new com.zhicloud.ms.util.Student(1,"张三",5));
+//      list.add(new com.zhicloud.ms.util.Student(2,"李四",4));
+//      list.add(new com.zhicloud.ms.util.Student(4,"小明",2));
+//      list.add(new com.zhicloud.ms.util.Student(5,"小黑",1));
+//      list.add(new com.zhicloud.ms.util.Student(3,"王五",3));
 //
-//      ListSort<Student> listSort= new ListSort<Student>();
+//      com.zhicloud.ms.util.ListSort<com.zhicloud.ms.util.Student> listSort= new com.zhicloud.ms.util.ListSort<com.zhicloud.ms.util.Student>();
 //      listSort.Sort(list, "getAge", "desc");
-//      for(Student s:list){
+//      for(com.zhicloud.ms.util.Student s:list){
 //          System.out.println(s.getId()+s.getName()+s.getAge());
 //      }
 		int timeOutTimes = 0;
