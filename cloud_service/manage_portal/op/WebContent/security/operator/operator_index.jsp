@@ -186,13 +186,10 @@
 <!-- JavaScript_start -->
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery.js"></script>
 <script type="text/javascript">
-	window.onload=function(){
-		$(window.parent.document).find("#content_frame").load(function(){
-			var main = $(window.parent.document).find("#content_frame");
-			var thisheight = $('.ov-wrap').height();
-			main.height(thisheight);
-		});
-	}
+	$(function(){
+		var thisheight = $('.ov-wrap').height();
+		$("#content_frame",parent.document).height(thisheight);
+	})
 </script>
 <!-- JavaScript_end -->
 </body>
