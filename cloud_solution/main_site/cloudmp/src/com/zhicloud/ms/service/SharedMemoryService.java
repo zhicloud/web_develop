@@ -1,11 +1,9 @@
 
 package com.zhicloud.ms.service;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
-import com.zhicloud.ms.app.cache.address.AddressVO;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.vo.SharedMemoryVO;
 
@@ -70,14 +68,4 @@ public interface SharedMemoryService {
      * @return
      */
     public SharedMemoryVO queryAvailable();
-
-    /**
-     * @function
-     */
-    public void readFromFile();
-    /**
-     * @function 将配置写入配置文件
-     * @param addressVOs
-     */
-    public void writeToFile(List<AddressVO> addressVOs);
 }

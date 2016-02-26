@@ -33,7 +33,7 @@ public class ImageUploadAddressController {
 
 
     @RequestMapping(value="/all",method= RequestMethod.GET)
-    public String getAll(Model model,HttpServletRequest request) throws IOException {
+    public String getAll(Model model,HttpServletRequest request) throws UnsupportedEncodingException {
 
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.image_upload_address_query)){
             return "not_have_access";
