@@ -113,6 +113,18 @@
                       </div>
                       
                       <div class="form-group">
+                        <label for="input07" class="col-sm-2 control-label">平台类型*</label>
+                        <div class="col-sm-4" id="selectbox">
+                          <select class="chosen-select chosen-transparent form-control" name="platformType" id="platformType" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
+                            <option value="">请选择镜像</option>  
+                            <option value="x86">x86</option>
+                            <option value="arm">arm</option>
+                               
+                          </select>
+                        </div>
+                      </div>
+                      
+                      <div class="form-group">
                         <label for="colorpicker-rgb" class="col-sm-2 control-label">版本上传*</label>
                         <div class="col-sm-4">
                           <div class="input-group">
@@ -357,13 +369,13 @@
 		      $("#dia").click();
     		return false;
     	}
-     	if(filetype != ".tgz"){
-     		isCommited = false;
-    		$("#tipscontent").html("文件格式不正确");
-		      $("#dia").click();
-    		return false;
+//      	if(filetype != ".tgz"){
+//      		isCommited = false;
+//     		$("#tipscontent").html("文件格式不正确");
+// 		      $("#dia").click();
+//     		return false;
     		
-    	}
+//     	}
     	
     	return true;
     }

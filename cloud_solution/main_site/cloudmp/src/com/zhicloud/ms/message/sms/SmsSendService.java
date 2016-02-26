@@ -10,6 +10,8 @@ import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.SmsConfigVO;
 import com.zhicloud.ms.vo.SmsTemplateVO;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -276,7 +278,7 @@ public class SmsSendService {
         String password = smsConfigVO.getPassword();
         String recipient = smsTemplateVO.getRecipient();
         String content = generateSmsContent(smsTemplateVO.getContent(), parameter);
-        String timeStamp = AppConstant.SMS_TIME_STAMP;
+        String timeStamp = StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS");
 
         HttpClient client = new HttpClient();
         PostMethod method = new PostMethod(serviceUrl);
@@ -292,20 +294,20 @@ public class SmsSendService {
             new NameValuePair("timestamp",timeStamp),
             new NameValuePair("digest",MD5.md5(name+MD5.md5_16(password)+recipient+content+timeStamp)),
         };
-
-        method.setRequestBody(data);
+         method.setRequestBody(data);
 
         try {
             //处理返回值
-            String state = client.executeMethod(method)+"";
-            
-            // 检测账户短信余额
-            SmsInterfaceQuery.checkBalanceNum();
-            
-            String SendState =method.getResponseBodyAsString(); 
-
-            // 检测短信发送状态
-            SmsInterfaceQuery.checkReturnState(state);
+            client.executeMethod(method);   
+            String SendState =method.getResponseBodyAsString();
+             
+            JSONObject obj = JSONObject.fromObject(SendState);  
+            String state = null;
+            /*转换为json对象后，取出值**/  
+            if(SendState.indexOf("state")>0){  
+                state = obj.getString("state");  
+              
+            }  
             
             //写入发送纪录
             Map<String, Object> record = new LinkedHashMap<>();
@@ -313,24 +315,11 @@ public class SmsSendService {
             record.put("sender_address", configName);
             record.put("recipient_address", recipient);
             record.put("content", content);
-            record.put("type", AppConstant.MESSAGE_TYPE_SMS);
+            record.put("type", 1);
             record.put("create_time", StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
             messageRecordService.addRecord(record);
-
-            if(state.equals("1"))
-            {
-                return state;
-            }
-            if(state.equals("-1"))
-            {
-                return state;
-            }
-            if (state.equals("-10"))
-            {
-                return state;
-            }else {
-                return state;
-            }
+ 
+            return state; 
 
         } catch(Exception e){
             e.printStackTrace();
@@ -338,6 +327,9 @@ public class SmsSendService {
         }
 
     }
+    
+    
+    
 
 
 

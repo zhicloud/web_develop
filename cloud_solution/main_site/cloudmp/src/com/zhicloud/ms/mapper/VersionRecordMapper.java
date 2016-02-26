@@ -12,6 +12,7 @@ package com.zhicloud.ms.mapper;
 import java.util.List;
 import java.util.Map;
  
+
 import com.zhicloud.ms.vo.VersionRecordVO;
 
 /**
@@ -42,7 +43,7 @@ public interface VersionRecordMapper {
 	 * @return VersionRecordVO
 	 * @since JDK 1.7
 	 */
-	public VersionRecordVO getLatestVersion();
+	public VersionRecordVO getLatestVersion(String platformType);
 	/**
 	 * 
 	 * getVersionById:根据id查询版本 
