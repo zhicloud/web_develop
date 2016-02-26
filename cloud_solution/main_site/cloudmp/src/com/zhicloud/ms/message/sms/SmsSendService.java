@@ -5,6 +5,7 @@ import com.zhicloud.ms.exception.AppException;
 import com.zhicloud.ms.service.IMessageRecordService;
 import com.zhicloud.ms.service.ISmsConfigService;
 import com.zhicloud.ms.service.ISmsTemplateService;
+import com.zhicloud.ms.util.MD5;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.SmsConfigVO;
 import com.zhicloud.ms.vo.SmsTemplateVO;
@@ -244,6 +245,95 @@ public class SmsSendService {
             }
 
         } catch(Exception e){
+            e.printStackTrace();
+            throw new AppException("失败");
+        }
+
+    }
+    /**
+     * 
+    * @Title: sendSms_new 
+    * @Description: 新运营商的短信发送 
+    * @param @param code
+    * @param @param parameter
+    * @param @return      
+    * @return String     
+    * @throws
+     */
+    public String sendSms_new(String code, Map<String, Object> parameter) {
+
+        if (parameter == null) {
+            parameter = new LinkedHashMap<>();
+        }
+
+        SmsTemplateVO smsTemplateVO = smsTemplateService.getTemplateByCode(code);
+        SmsConfigVO smsConfigVO = smsConfigService.getConfigById(smsTemplateVO.getConfigId());
+
+        String serviceUrl = smsConfigVO.getServiceUrl();
+        String configName = smsConfigVO.getConfigName();
+        String smsId = smsConfigVO.getSmsId();
+        String name = smsConfigVO.getName();
+        String password = smsConfigVO.getPassword();
+        String recipient = smsTemplateVO.getRecipient();
+        String content = generateSmsContent(smsTemplateVO.getContent(), parameter);
+        String timeStamp = AppConstant.SMS_TIME_STAMP;
+
+        HttpClient client = new HttpClient();
+        PostMethod method = new PostMethod(serviceUrl);
+        client.getParams().setContentCharset("UTF-8");
+
+        method.setRequestHeader("ContentType","application/x-www-form-urlencoded;charset=UTF-8");
+
+        NameValuePair[] data = {//提交短信
+            new NameValuePair("batchno",       smsId),
+            new NameValuePair("account",     name), 
+            new NameValuePair("content",  content),
+            new NameValuePair("mobiles",    recipient),
+            new NameValuePair("timestamp",timeStamp),
+            new NameValuePair("digest",MD5.md5(name+MD5.md5_16(password)+recipient+content+timeStamp)),
+        };
+
+        method.setRequestBody(data);
+
+        try {
+            //处理返回值
+            String state = client.executeMethod(method)+"";
+            
+            // 检测账户短信余额
+            SmsInterfaceQuery.checkBalanceNum();
+            
+            String SendState =method.getResponseBodyAsString(); 
+
+            // 检测短信发送状态
+            SmsInterfaceQuery.checkReturnState(state);
+            
+            //写入发送纪录
+            Map<String, Object> record = new LinkedHashMap<>();
+            record.put("id", StringUtil.generateUUID());
+            record.put("sender_address", configName);
+            record.put("recipient_address", recipient);
+            record.put("content", content);
+            record.put("type", AppConstant.MESSAGE_TYPE_SMS);
+            record.put("create_time", StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+            messageRecordService.addRecord(record);
+
+            if(state.equals("1"))
+            {
+                return state;
+            }
+            if(state.equals("-1"))
+            {
+                return state;
+            }
+            if (state.equals("-10"))
+            {
+                return state;
+            }else {
+                return state;
+            }
+
+        } catch(Exception e){
+            e.printStackTrace();
             throw new AppException("失败");
         }
 

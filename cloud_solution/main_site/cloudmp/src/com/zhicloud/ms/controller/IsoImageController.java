@@ -50,6 +50,7 @@ import com.zhicloud.ms.transform.util.TransFormLoginHelper;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.vo.SharedMemoryVO;
 @Controller
+@RequestMapping("/image")
 public class IsoImageController {
     
     public static final Logger logger = Logger.getLogger(EmailTemplateServiceImpl.class);

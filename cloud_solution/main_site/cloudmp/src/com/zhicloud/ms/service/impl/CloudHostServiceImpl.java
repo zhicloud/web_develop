@@ -1458,7 +1458,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             String[] uuids = new String[1];
             uuids[0] = host.getRealHostId();
             this.sqlSession.getMapper(QosMapper.class).deleteQosByHostUuids(uuids);
-            operLogService.addLog("云主机", "删除云主机"+host.getDisplayName()+"成功", "1", "2", request);
+            operLogService.addLog("云主机", "删除云主机"+host.getDisplayName()+"成功", "1", "1", request);
 
 			return new MethodResult(MethodResult.SUCCESS, "删除成功");
 		} catch (MalformedURLException e) {
@@ -2020,12 +2020,18 @@ public class CloudHostServiceImpl implements ICloudHostService {
     * @see com.zhicloud.ms.service.ICloudHostService#getDesktopCloudHostInTimerBackUpStop(java.lang.Integer, java.lang.String)
      */
     public List<CloudHostVO> getCloudHostInTimerBackUpStop(Integer limit,String now,String timerKey) {
-        CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
-        Map<String, Object> relateData = new LinkedHashMap<String, Object>();
-        relateData.put("limit", limit);
-        relateData.put("now", now);
-        relateData.put("timerKey", timerKey);
-        return cloudHostMapper.getCloudHostInTimerBackUpStop(relateData);
+        try{
+            CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
+            Map<String, Object> relateData = new LinkedHashMap<String, Object>();
+            relateData.put("limit", limit);
+            relateData.put("now", now);
+            relateData.put("timerKey", timerKey);
+            return cloudHostMapper.getCloudHostInTimerBackUpStop(relateData);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+        
     }
     /**
      * 更新参与定时任务的桌面云主机
@@ -2188,7 +2194,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
     * @return 
     * @see com.zhicloud.ms.service.ICloudHostService#addHostToDeskTopByRealHostId(java.lang.String, java.lang.String)
      */
-    public MethodResult addHostToDeskTopByRealHostId(String realHostId, String wareHouseId) {
+    public MethodResult addHostToDeskTopByRealHostId(String realHostId, String wareHouseId,String poolId) {
         HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 
 
@@ -2203,15 +2209,17 @@ public class CloudHostServiceImpl implements ICloudHostService {
 
             String password = JSONLibUtil.getString(hostInfo, "authentication");
             String account = JSONLibUtil.getString(hostInfo, "display");  
+            String[] ip = JSONLibUtil.getStringArray(hostInfo, "ip"); 
+            Integer[] displayPort = JSONLibUtil.getIntegerArray(hostInfo, "display_port");
             Map<String, Object> cloudHostData = new LinkedHashMap<String, Object>();
             cloudHostData.put("id", StringUtil.generateUUID());
             cloudHostData.put("realHostId", realHostId);
             cloudHostData.put("sysDisk", myCloudHostData.getSysDisk());
             cloudHostData.put("dataDisk", myCloudHostData.getDataDisk());
-            cloudHostData.put("innerIp", myCloudHostData.getInnerIp());
-            cloudHostData.put("innerPort", myCloudHostData.getInnerPort()); 
-            cloudHostData.put("outerIp", myCloudHostData.getOuterIp());
-            cloudHostData.put("outerPort", myCloudHostData.getOuterPort()); 
+            cloudHostData.put("innerIp", ip[0]);
+            cloudHostData.put("innerPort", displayPort[0]); 
+            cloudHostData.put("outerIp", ip[1]);
+            cloudHostData.put("outerPort", displayPort[1]); 
             cloudHostData.put("createTime", DateUtil.dateToString(new Date(),"yyyyMMddHHmmssSSS"));
             cloudHostData.put("runningStatus", myCloudHostData.getRunningStatus());
             cloudHostData.put("status", "2");
@@ -2225,6 +2233,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             cloudHostData.put("password", password);
             cloudHostData.put("password", password);
             cloudHostData.put("warehouseId", wareHouseId);
+            cloudHostData.put("poolId", poolId);
             cloudHostMapper.insertCloudHost(cloudHostData);
             
             //更新仓库数据
@@ -2659,6 +2668,8 @@ public class CloudHostServiceImpl implements ICloudHostService {
                             newCloudHostData.setOuterIp(ip[1]);
                             newCloudHostData.setRunningStatus(transforRunningStatus(runningStatus));
                             newCloudHostData.setLastOperStatus(0);
+                            newCloudHostData.setPoolId((String) computerObject.get("uuid"));
+
                             CloudHostPoolManager.getCloudHostPool().put(newCloudHostData);
                             // 如果running_status变了，则更新数据库
                             if (oldCloudHostData == null || (oldCloudHostData != null && NumberUtil.equals(newCloudHostData.getRunningStatus(), oldCloudHostData.getRunningStatus()) == false)) {
@@ -2736,7 +2747,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
             JSONObject obj = new JSONObject();
             obj.put("pool_id", ext.getUuid());
             obj.put("pool_name", ext.getName());
-            obj.put("max_creating", 0); 
+            obj.put("max_creating", AppInconstant.init_maxcreating); 
             // 循环比对
             for (CloudHostWarehouse cloud : maxconcurrent_lists) {
                 if (ext.getUuid().equals(cloud.getPoolId())) {
@@ -2744,7 +2755,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
                     break;
                 }else{
                     //如果数据库中没有设置，需要给一个默认值2
-                    obj.put("max_creating", 2); 
+                    obj.put("max_creating", AppInconstant.init_maxcreating); 
                 }
             }
             pool_arrays.add(obj);

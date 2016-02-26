@@ -83,6 +83,25 @@ public class TransFormPrivilegeConstant {
     public static final String desktop_back_up_manage_query = "desktop_back_up_manage_query";   //备份与恢复页面
     public static final String desktop_back_up_manage_add = "desktop_back_up_manage_add";   //新增备份
     public static final String desktop_back_up_manage_resume = "desktop_back_up_manage_resume";   //恢复
+    
+    public static final String desktop_host_manage = "desktop_host_manage";     //主机管理
+    public static final String desktop_host_manage_allocate = "desktop_host_manage_allocate";     //主机分配
+    public static final String desktop_host_manage_start = "desktop_host_manage_start";     //主机开机
+    public static final String desktop_host_manage_start_from_iso = "desktop_host_manage_start_from_iso";     //云服务器从光盘启动
+    public static final String desktop_host_manage_stop = "desktop_host_manage_stop";     //主机关机
+    public static final String desktop_host_manage_shut_down = "desktop_host_manage_shut_down";     //主机强制关机
+    public static final String desktop_host_manage_restart = "desktop_host_manage_restart";     //主机重启
+    public static final String desktop_host_manage_reset = "desktop_host_manage_reset";     //主机重启
+    public static final String desktop_host_manage_delete = "desktop_host_manage_delete";     //主机删除    
+    public static final String desktop_host_manage_detail = "desktop_host_manage_detail";     //主机详情  
+    public static final String desktop_host_manage_diagram = "desktop_host_manage_diagram";     //资源监控
+    public static final String desktop_host_manage_update_displayname = "desktop_host_manage_update_displayname";     //修改主机显示名
+    public static final String desktop_host_manage_modify = "desktop_host_manage_modify";     //主机配置修改
+    public static final String desktop_host_manage_disk_query = "desktop_host_manage_disk_query";// 磁盘管理
+    public static final String desktop_host_manage_disk_add = "desktop_host_manage_disk_add";// 磁盘管理新增
+    public static final String desktop_host_manage_disk_delete = "desktop_host_manage_disk_delete";// 磁盘管理删除
+
+    
     //群组管理
     public static final String desktop_group_query = "desktop_group_query";     //群组查询 
     public static final String desktop_group_add = "desktop_group_add";     //群组新增

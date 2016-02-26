@@ -986,7 +986,11 @@ public class PaymentServiceImpl extends BeanDirectCallableDefaultImpl implements
 //				return result;
 			}else{
 				// 从仓库获取云主机失败，正常创建
-				return getCloudHostForNormal(parameter);
+			    MethodResult result_normalcreate = getCloudHostForNormal(parameter);
+			    if(result_normalcreate.isSuccess()){
+			        logStatus =  AppConstant.OPER_LOG_SUCCESS;
+			    }
+			    return result_normalcreate;
 			}
 			
 			 

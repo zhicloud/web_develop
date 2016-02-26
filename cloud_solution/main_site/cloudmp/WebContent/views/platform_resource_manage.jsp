@@ -118,201 +118,194 @@
             <!-- cards -->
             <div class="row cards">
               
-              <div class="card-container col-lg-3 col-sm-6 col-sm-12">
-                <div class="card card-redbrown hover">
-                  <div class="front"> 
+<!--               <div class="card-container col-lg-3 col-sm-6 col-sm-12"> -->
+<!--                 <div class="card card-redbrown hover"> -->
+<!--                   <div class="front">  -->
 
-                    <div class="media">        
-                      <span class="pull-left">
-                        <i class="fa fa-server media-object"></i>
-                      </span>
+<!--                     <div class="media">         -->
+<!--                       <span class="pull-left"> -->
+<!--                         <i class="fa fa-server media-object"></i> -->
+<!--                       </span> -->
 
-                      <div class="media-body">
-                        <big>云服务器</big>
-                        <h2 id="totalServer" class="media-heading animate-number" data-value="0" data-animation-duration="1500">0</h2>
-                      </div>
-                    </div> 
+<!--                       <div class="media-body"> -->
+<!--                         <big>云服务器</big> -->
+<!--                         <h2 id="totalServer" class="media-heading animate-number" data-value="0" data-animation-duration="1500">0</h2> -->
+<!--                       </div> -->
+<!--                     </div>  -->
 
-                    <div class="progress-list">
-                      <div class="details">
-                        <div class="title">CPU利用率</div>
-                      </div>
-                      <div class="status pull-right bg-transparent-black-1">
-                        <span id="sCpuUsage" class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
-                      </div>
-                      <div class="clearfix"></div>
-                      <div class="progress progress-little progress-transparent-black">
-                        <div id="sCpuUsage_p" class="progress-bar animate-progress-bar" data-percentage="0%"></div>
-                      </div>
-                    </div>
-                    <div class="progress-list">
-                      <div class="details">
-                        <div class="title">内存利用率</div>
-                      </div>
-                      <div class="status pull-right bg-transparent-black-1">
-                        <span id="sMemoryUsage" class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
-                      </div>
-                      <div class="clearfix"></div>
-                      <div class="progress progress-little progress-transparent-black">
-                        <div id="sMemoryUsage_p" class="progress-bar animate-progress-bar" data-percentage="0%"></div>
-                      </div>
-                    </div>
-                    <div class="progress-list">
-                      <div class="details">
-                        <div class="title">硬盘利用率</div>
-                      </div>
-                      <div class="status pull-right bg-transparent-black-1">
-                        <span id="sDiskUsage" class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
-                      </div>
-                      <div class="clearfix"></div>
-                      <div class="progress progress-little progress-transparent-black">
-                        <div id="sDiskUsage_p" class="progress-bar animate-progress-bar" data-percentage="0%"></div>
-                      </div>
-                    </div>
+<!--                     <div class="progress-list"> -->
+<!--                       <div class="details"> -->
+<!--                         <div class="title">CPU利用率</div> -->
+<!--                       </div> -->
+<!--                       <div class="status pull-right bg-transparent-black-1"> -->
+<!--                         <span id="sCpuUsage" class="animate-number" data-value="0" data-animation-duration="1500">0</span>% -->
+<!--                       </div> -->
+<!--                       <div class="clearfix"></div> -->
+<!--                       <div class="progress progress-little progress-transparent-black"> -->
+<!--                         <div id="sCpuUsage_p" class="progress-bar animate-progress-bar" data-percentage="0%"></div> -->
+<!--                       </div> -->
+<!--                     </div> -->
+<!--                     <div class="progress-list"> -->
+<!--                       <div class="details"> -->
+<!--                         <div class="title">内存利用率</div> -->
+<!--                       </div> -->
+<!--                       <div class="status pull-right bg-transparent-black-1"> -->
+<!--                         <span id="sMemoryUsage" class="animate-number" data-value="0" data-animation-duration="1500">0</span>% -->
+<!--                       </div> -->
+<!--                       <div class="clearfix"></div> -->
+<!--                       <div class="progress progress-little progress-transparent-black"> -->
+<!--                         <div id="sMemoryUsage_p" class="progress-bar animate-progress-bar" data-percentage="0%"></div> -->
+<!--                       </div> -->
+<!--                     </div> -->
+<!--                     <div class="progress-list"> -->
+<!--                       <div class="details"> -->
+<!--                         <div class="title">硬盘利用率</div> -->
+<!--                       </div> -->
+<!--                       <div class="status pull-right bg-transparent-black-1"> -->
+<!--                         <span id="sDiskUsage" class="animate-number" data-value="0" data-animation-duration="1500">0</span>% -->
+<!--                       </div> -->
+<!--                       <div class="clearfix"></div> -->
+<!--                       <div class="progress progress-little progress-transparent-black"> -->
+<!--                         <div id="sDiskUsage_p" class="progress-bar animate-progress-bar" data-percentage="0%"></div> -->
+<!--                       </div> -->
+<!--                     </div> -->
 
-                  </div>
-                  <div class="back" style="height:177px;">
-                    <a href="<%=request.getContextPath() %>/cloudserver/all" style="padding-top:25px;">
-                      <i class="fa fa-bar-chart-o fa-4x"></i>
-                      <span>查看云服务器详情</span>
-                    </a>  
-                  </div>
-                </div>
-              </div>
+<!--                   </div> -->
+<!--                   <div class="back" style="height:177px;"> -->
+<%--                     <a href="<%=request.getContextPath() %>/cloudserver/all" style="padding-top:25px;"> --%>
+<!--                       <i class="fa fa-bar-chart-o fa-4x"></i> -->
+<!--                       <span>查看云服务器详情</span> -->
+<!--                     </a>   -->
+<!--                   </div> -->
+<!--                 </div> -->
+<!--               </div> -->
 
 
-              <div class="card-container col-lg-3 col-sm-6 col-sm-12">
-                <div class="card card-blue hover">
-                  <div class="front">        
+<!--               <div class="card-container col-lg-3 col-sm-6 col-sm-12"> -->
+<!--                 <div class="card card-blue hover"> -->
+<!--                   <div class="front">         -->
                     
-                    <div class="media">                  
-                      <span class="pull-left">
-                        <i class="fa fa-database media-object"></i>
-                      </span>
+<!--                     <div class="media">                   -->
+<!--                       <span class="pull-left"> -->
+<!--                         <i class="fa fa-database media-object"></i> -->
+<!--                       </span> -->
 
-                      <div class="media-body">
-                        <big>云磁盘</big>
-                        <h2 class="media-heading animate-number" data-value="0" data-animation-duration="1500">0</h2>
-<%--                         <h2 class="media-heading animate-number" data-value="${totalDisk }" data-animation-duration="1500">0</h2> --%>
-                      </div>
-                    </div> 
+<!--                       <div class="media-body"> -->
+<!--                         <big>云磁盘</big> -->
+<!--                         <h2 class="media-heading animate-number" data-value="0" data-animation-duration="1500">0</h2> -->
+<!--                        </div> -->
+<!--                     </div>  -->
 
-                    <div class="progress-list">
-                      <div class="details">
-                        <div class="title">CPU利用率</div>
-                      </div>
-                      <div class="status pull-right bg-transparent-black-1">
-                        <span class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
-<%--                         <span class="animate-number" data-value="${dCpuUsage }" data-animation-duration="1500">0</span>% --%>
-                      </div>
-                      <div class="clearfix"></div>
-                      <div class="progress progress-little progress-transparent-black">
-                        <div class="progress-bar animate-progress-bar" data-percentage="0%"></div>
-<%--                         <div class="progress-bar animate-progress-bar" data-percentage="${dCpuUsage }%"></div> --%>
-                      </div>
-                    </div>
-                    <div class="progress-list">
-                      <div class="details">
-                        <div class="title">内存利用率</div>
-                      </div>
-                      <div class="status pull-right bg-transparent-black-1">
-                        <span class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
-<%--                         <span class="animate-number" data-value="${dMemoryUsage }" data-animation-duration="1500">0</span>% --%>
-                      </div>
-                      <div class="clearfix"></div>
-                      <div class="progress progress-little progress-transparent-black">
-<%--                         <div class="progress-bar animate-progress-bar" data-percentage="${dMemoryUsage }%"></div> --%>
-                        <div class="progress-bar animate-progress-bar" data-percentage="0%"></div>
-                      </div>
-                    </div>
-                    <div class="progress-list">
-                      <div class="details">
-                        <div class="title">硬盘利用率</div>
-                      </div>
-                      <div class="status pull-right bg-transparent-black-1">
-                        <span class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
-<%--                         <span class="animate-number" data-value="${dDiskUsage }" data-animation-duration="1500">0</span>% --%>
-                      </div>
-                      <div class="clearfix"></div>
-                      <div class="progress progress-little progress-transparent-black">
-                        <div class="progress-bar animate-progress-bar" data-percentage="0%"></div>
-<%--                         <div class="progress-bar animate-progress-bar" data-percentage="${dDiskUsage }%"></div> --%>
-                      </div>
-                    </div>
+<!--                     <div class="progress-list"> -->
+<!--                       <div class="details"> -->
+<!--                         <div class="title">CPU利用率</div> -->
+<!--                       </div> -->
+<!--                       <div class="status pull-right bg-transparent-black-1"> -->
+<!--                         <span class="animate-number" data-value="0" data-animation-duration="1500">0</span>% -->
+<!--                        </div> -->
+<!--                       <div class="clearfix"></div> -->
+<!--                       <div class="progress progress-little progress-transparent-black"> -->
+<!--                         <div class="progress-bar animate-progress-bar" data-percentage="0%"></div> -->
+<!--                        </div> -->
+<!--                     </div> -->
+<!--                     <div class="progress-list"> -->
+<!--                       <div class="details"> -->
+<!--                         <div class="title">内存利用率</div> -->
+<!--                       </div> -->
+<!--                       <div class="status pull-right bg-transparent-black-1"> -->
+<!--                         <span class="animate-number" data-value="0" data-animation-duration="1500">0</span>% -->
+<!--                        </div> -->
+<!--                       <div class="clearfix"></div> -->
+<!--                       <div class="progress progress-little progress-transparent-black"> -->
+<!--                          <div class="progress-bar animate-progress-bar" data-percentage="0%"></div> -->
+<!--                       </div> -->
+<!--                     </div> -->
+<!--                     <div class="progress-list"> -->
+<!--                       <div class="details"> -->
+<!--                         <div class="title">硬盘利用率</div> -->
+<!--                       </div> -->
+<!--                       <div class="status pull-right bg-transparent-black-1"> -->
+<!--                         <span class="animate-number" data-value="0" data-animation-duration="1500">0</span>% -->
+<!--                        </div> -->
+<!--                       <div class="clearfix"></div> -->
+<!--                       <div class="progress progress-little progress-transparent-black"> -->
+<!--                         <div class="progress-bar animate-progress-bar" data-percentage="0%"></div> -->
+<!--                        </div> -->
+<!--                     </div> -->
 
-                  </div>
-                  <div class="back" style="height:177px;">
-                    <a href="#" style="padding-top:25px;">
-                      <i class="fa fa-bar-chart-o fa-4x"></i>
-                      <span>查看云磁盘详情</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
+<!--                   </div> -->
+<!--                   <div class="back" style="height:177px;"> -->
+<!--                     <a href="#" style="padding-top:25px;"> -->
+<!--                       <i class="fa fa-bar-chart-o fa-4x"></i> -->
+<!--                       <span>查看云磁盘详情</span> -->
+<!--                     </a> -->
+<!--                   </div> -->
+<!--                 </div> -->
+<!--               </div> -->
 
 
 
-              <div class="card-container col-lg-3 col-sm-6 col-sm-12">
-                <div class="card card-greensea hover">
-                  <div class="front">        
+<!--               <div class="card-container col-lg-3 col-sm-6 col-sm-12"> -->
+<!--                 <div class="card card-greensea hover"> -->
+<!--                   <div class="front">         -->
                     
-                    <div class="media">
-                      <span class="pull-left">
-                        <i class="fa fa-cloud media-object"></i>
-                      </span>
+<!--                     <div class="media"> -->
+<!--                       <span class="pull-left"> -->
+<!--                         <i class="fa fa-cloud media-object"></i> -->
+<!--                       </span> -->
 
-                      <div class="media-body">
-                        <big>专属云</big>
-                        <h2 class="media-heading animate-number" data-value="0" data-animation-duration="1500">0</h2>
-                      </div>
-                    </div>
+<!--                       <div class="media-body"> -->
+<!--                         <big>专属云</big> -->
+<!--                         <h2 class="media-heading animate-number" data-value="0" data-animation-duration="1500">0</h2> -->
+<!--                       </div> -->
+<!--                     </div> -->
 
-                    <div class="progress-list">
-                      <div class="details">
-                        <div class="title">CPU利用率</div>
-                      </div>
-                      <div class="status pull-right bg-transparent-black-1">
-                        <span class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
-                      </div>
-                      <div class="clearfix"></div>
-                      <div class="progress progress-little progress-transparent-black">
-                        <div class="progress-bar animate-progress-bar" data-percentage="0%"></div>
-                      </div>
-                    </div>
-                    <div class="progress-list">
-                      <div class="details">
-                        <div class="title">内存利用率</div>
-                      </div>
-                      <div class="status pull-right bg-transparent-black-1">
-                        <span class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
-                      </div>
-                      <div class="clearfix"></div>
-                      <div class="progress progress-little progress-transparent-black">
-                        <div class="progress-bar animate-progress-bar" data-percentage="0%"></div>
-                      </div>
-                    </div>
-                    <div class="progress-list">
-                      <div class="details">
-                        <div class="title">硬盘利用率</div>
-                      </div>
-                      <div class="status pull-right bg-transparent-black-1">
-                        <span class="animate-number" data-value="0" data-animation-duration="1500">0</span>%
-                      </div>
-                      <div class="clearfix"></div>
-                      <div class="progress progress-little progress-transparent-black">
-                        <div class="progress-bar animate-progress-bar" data-percentage="0%"></div>
-                      </div>
-                    </div>
+<!--                     <div class="progress-list"> -->
+<!--                       <div class="details"> -->
+<!--                         <div class="title">CPU利用率</div> -->
+<!--                       </div> -->
+<!--                       <div class="status pull-right bg-transparent-black-1"> -->
+<!--                         <span class="animate-number" data-value="0" data-animation-duration="1500">0</span>% -->
+<!--                       </div> -->
+<!--                       <div class="clearfix"></div> -->
+<!--                       <div class="progress progress-little progress-transparent-black"> -->
+<!--                         <div class="progress-bar animate-progress-bar" data-percentage="0%"></div> -->
+<!--                       </div> -->
+<!--                     </div> -->
+<!--                     <div class="progress-list"> -->
+<!--                       <div class="details"> -->
+<!--                         <div class="title">内存利用率</div> -->
+<!--                       </div> -->
+<!--                       <div class="status pull-right bg-transparent-black-1"> -->
+<!--                         <span class="animate-number" data-value="0" data-animation-duration="1500">0</span>% -->
+<!--                       </div> -->
+<!--                       <div class="clearfix"></div> -->
+<!--                       <div class="progress progress-little progress-transparent-black"> -->
+<!--                         <div class="progress-bar animate-progress-bar" data-percentage="0%"></div> -->
+<!--                       </div> -->
+<!--                     </div> -->
+<!--                     <div class="progress-list"> -->
+<!--                       <div class="details"> -->
+<!--                         <div class="title">硬盘利用率</div> -->
+<!--                       </div> -->
+<!--                       <div class="status pull-right bg-transparent-black-1"> -->
+<!--                         <span class="animate-number" data-value="0" data-animation-duration="1500">0</span>% -->
+<!--                       </div> -->
+<!--                       <div class="clearfix"></div> -->
+<!--                       <div class="progress progress-little progress-transparent-black"> -->
+<!--                         <div class="progress-bar animate-progress-bar" data-percentage="0%"></div> -->
+<!--                       </div> -->
+<!--                     </div> -->
 
-                  </div>
-                  <div class="back" style="height:177px;">
-                    <a href="#" style="padding-top:25px;">
-                      <i class="fa fa-bar-chart-o fa-4x"></i>
-                      <span>查看专属云详情</span>
-                    </a>
-                  </div>
-                </div>
-              </div> 
+<!--                   </div> -->
+<!--                   <div class="back" style="height:177px;"> -->
+<!--                     <a href="#" style="padding-top:25px;"> -->
+<!--                       <i class="fa fa-bar-chart-o fa-4x"></i> -->
+<!--                       <span>查看专属云详情</span> -->
+<!--                     </a> -->
+<!--                   </div> -->
+<!--                 </div> -->
+<!--               </div>  -->
 
 
               <div class="card-container col-lg-3 col-sm-6 col-xs-12">
@@ -497,7 +490,7 @@
                         <div id="pDiskUsage_p" class="progress-bar animate-progress-bar" data-percentage="0%"></div>
                       </div>
                     </div>  
-                    <p class="description"><strong id="pDiskRemain_1">已使用0GB</strong> 共 <strong class="white-text" id="pDisk">0GB</strong></p>
+                    <p class="description"><strong id="pDiskRemain_1" data-value="0">已使用0GB</strong> 共 <strong class="white-text" id="pDisk" data-value="0">0GB</strong></p>
                   </div>
                   <!-- /tile widget -->
 

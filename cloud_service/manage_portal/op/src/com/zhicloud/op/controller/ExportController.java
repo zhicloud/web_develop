@@ -261,7 +261,7 @@ public class ExportController {
                 if (host.getDescription() == null || host.getDescription().isEmpty()) {
                     host.setDescription("无");
                 }
-                host.setOuterandinnerip(innerip + ":" + outerport + "\r\n" + outerip + ":" + innerport);
+                host.setOuterandinnerip(innerip + ":" + innerport + "\r\n" + outerip + ":" + outerport);
                 host.setBelong_accountandusername(host.getBelong_account() + "\r\n" + temp_name);
                 host.setEverymonth(host.getMonthlyPrice() + "\r\n" + host.getAccount_balance());
 

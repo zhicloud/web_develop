@@ -48,7 +48,7 @@ public class IntelligentRouterRuleController {
     * @return String     
     * @throws
      */
-    @RequestMapping(value="/rule/all",method=RequestMethod.GET)
+    @RequestMapping(value="/networkrule/rule/all",method=RequestMethod.GET)
     public String getAll(Model model,HttpServletRequest request){
         //检查是否有权限
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.intelligent_router_query)){
@@ -59,7 +59,7 @@ public class IntelligentRouterRuleController {
         return "/intelligent_router_rule/intelligent_router_rule_manage";
     }
     
-    @RequestMapping(value="/rule/add",method=RequestMethod.GET)
+    @RequestMapping(value="/networkrule/rule/add",method=RequestMethod.GET)
     public String toAddRulePage(Model model,HttpServletRequest request){
         //检查是否有权限
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.intelligent_router_add)){
@@ -69,7 +69,7 @@ public class IntelligentRouterRuleController {
         intelligentRouterService.addRulePage(request);
         return "/intelligent_router_rule/intelligent_router_rule_add";
     }
-    @RequestMapping(value="/rule/add",method=RequestMethod.POST)
+    @RequestMapping(value="/networkrule/rule/add",method=RequestMethod.POST)
     @ResponseBody
     public MethodResult addRule(String markId,String mode,String ip1,String ip2,String port1,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.intelligent_router_add)){
@@ -90,7 +90,7 @@ public class IntelligentRouterRuleController {
         return mr;
      }
     
-    @RequestMapping(value="/rule/delete",method=RequestMethod.GET)
+    @RequestMapping(value="/networkrule/rule/delete",method=RequestMethod.GET)
     @ResponseBody
     public MethodResult deleteRule(String   target,String  mode, String   ip0, String   ip1, String   port,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.intelligent_router_remove)){

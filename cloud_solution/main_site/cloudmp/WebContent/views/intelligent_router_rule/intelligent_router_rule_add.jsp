@@ -92,10 +92,23 @@
 				  <section class="tile color transparent-black">
 
 
-
+                  <!-- tile widget -->
+                  <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs tabdrop">
+                      <li ><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/blacklist/all';">黑名单</a></li>
+                      <li><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/whitelist/all';" data-toggle="tab">白名单</a></li>
+                      <li><a href="#messages-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/desktopqos/all';" data-toggle="tab">QOS规则设置</a></li>
+                      <li  class="active" ><a href="#tasks-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/rule/all';">智能路由例外配置 </a></li>
+                      <div id="space"></div>
+                      
+                     </ul>
+                    <!-- / Nav tabs -->
+                  </div>
+                  <!-- /tile widget -->
                   <!-- tile header -->
                   <div class="tile-header">
-                    <h3><a href="<%=request.getContextPath() %>/rule/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入规则信息</h3>
+                    <h3><a href="<%=request.getContextPath() %>/networkrule/rule/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入规则信息</h3>
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                     </div>
@@ -105,7 +118,7 @@
                   <!-- tile body -->
                   <div class="tile-body">
                     
-                    <form class="form-horizontal" id="rule" role="form" action="${pageContext.request.contextPath }/rule/add" method="post"> 
+                    <form class="form-horizontal" id="rule" role="form" action="${pageContext.request.contextPath }/networkrule/rule/add" method="post"> 
                       <div class="form-group">
                         <label for="input01" class="col-sm-2 control-label">智能路由*</label>
                         <div class="col-sm-4" id="selectmark">
@@ -264,6 +277,21 @@
       $('.check-toggler').on('click', function(){
         $(this).toggleClass('checked');
       }); 
+      $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+    			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+    			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+    			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+    			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+    			 -1).height(
+    			  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
+   	    $(window).resize(function(){
+   		 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+   				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+   				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+   				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+   				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+   				 -1);
+   	    });
     })
     
     function saveRuleForm(){
@@ -275,7 +303,7 @@
 		var options = {
 				success:function result(data){ 
 					if(data.status=="success"){
-						location.href = path+"/rule/all";
+						location.href = path+"/networkrule/rule/all";
 					}else{
 						isCommited= false;
 						$("#create_btn").attr("disabled",false);

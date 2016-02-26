@@ -32,7 +32,7 @@ import com.zhicloud.ms.vo.IpResourcePoolDetailVO;
 import com.zhicloud.ms.vo.IpResourcePoolVO;
 
 @Controller
-@RequestMapping("/ipresourcepool")
+@RequestMapping("/networkpool/ipresourcepool")
 public class IpResourcePoolController {
     
     @Resource

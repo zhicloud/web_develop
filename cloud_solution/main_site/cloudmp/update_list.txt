@@ -1,4 +1,17 @@
 ******************************************************
+版本号：版本号：【云平台web】verion(2.1)(build 20160125-1)
+修改时间：2016/01/25
+修改人：张本缘
+修改文件：
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/transform/serviceimpl/ManSysUserServiceImpl.java
+cloud_solution/main_site/cloudmp/src/com/zhicloud/ms/transform/util/TransFormLoginHelper.java
+
+主要变更：
+1、用户重复登录覆盖原来已经登录的用户;
+
+兼容性说明：
+	无
+******************************************************
 版本号：版本号：【云平台web】verion(2.1)(build 20160104-1)
 修改时间：2016/01/04
 修改人：张本缘

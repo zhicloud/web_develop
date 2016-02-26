@@ -40,7 +40,7 @@
           <div class="pageheader">
             
 
-            <h2><i class="fa fa-jsfiddle"></i> 共享存储管理</h2>
+            <h2><i class="fa fa-jsfiddle"></i> 存储资源池管理</h2>
             
 
           </div>
@@ -64,13 +64,24 @@
 
 				  <section class="tile color transparent-black">
 
-
+                  <!-- tile widget -->
+	                  <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
+	                    <!-- Nav tabs -->
+	                    <ul class="nav nav-tabs tabdrop">
+	                      <li class="active"><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/storageresourcepool/sharedmemory/manage';">外部存储管理</a></li>
+	                      <li><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/storageresourcepool/all';" data-toggle="tab">本地存储管理</a></li>
+  	                      <div id="space"></div>
+	                      
+	                     </ul>
+	                    <!-- / Nav tabs -->
+	                  </div>
+	                  <!-- /tile widget -->
  
                   <!-- tile header -->
                   <div class="tile-header"> 
                      <button type="button" class="btn btn-red add" onclick="edit('add',null)">
                               <i class="fa fa-plus"></i>
-                              <span>新增共享存储</span>
+                              <span>新建外部存储管理</span>
                     </button>  
 <!--                     <button type="button" class="btn btn-green file-excel-o" onclick="exportData('/export/rolegroupdata')">
                               <i class="fa fa-file-excel-o"></i>
@@ -289,6 +300,21 @@
 	  $("div[class='col-md-4 text-right sm-center']").prepend(oper);
 	    $("div[class='col-md-4 text-right sm-center']").attr("class","tile-footer text-right");
 	  $(".chosen-select").chosen({disable_search_threshold: 10});
+	  $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+				 -1).height(
+				  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
+		$(window).resize(function(){
+			 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+					 -1);
+		});
     })
     //批量操作
 	function multyopp(){
@@ -302,7 +328,7 @@
 		if(type=="add"){
 			id = "32f7876413a74afb840814a7976c1xxx";
 		}
-		window.location.href = "<%=request.getContextPath()%>/sharedmemory/"+type+"/"+id;
+		window.location.href = "<%=request.getContextPath()%>/storageresourcepool/sharedmemory/"+type+"/"+id;
 	}
 	//删除数据
 	function confirmreturn(){
@@ -316,7 +342,7 @@
 			jQuery.ajax({
 		  	 	type: "POST",
 		  	 	async:false,
-		   		url: "<%=request.getContextPath() %>/sharedmemory/delete",
+		   		url: "<%=request.getContextPath() %>/storageresourcepool/sharedmemory/delete",
 		  		data: {data:JSON.stringify(data)},
 		  		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
 		   		success: function(result){
@@ -341,7 +367,7 @@
 		
 	}
 	function setAvailable(id){
-		jQuery.get(path + "/sharedmemory/"+id+"/available",function(data){
+		jQuery.get(path + "/storageresourcepool/sharedmemory/"+id+"/available",function(data){
 			if(data.status=="success"){
 				window.location.reload();
 			}else{

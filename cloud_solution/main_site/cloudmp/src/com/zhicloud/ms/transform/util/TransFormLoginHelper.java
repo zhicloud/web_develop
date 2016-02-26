@@ -87,11 +87,11 @@ public class TransFormLoginHelper {
      * @param loginInfo
      * @throws
      */
-    public synchronized static void putSessionMap(String sessionid, TransFormLoginInfo loginInfo,
+    public synchronized static void putSessionMap(String userid, TransFormLoginInfo loginInfo,
             HttpServletRequest request) {
-        sessionMap.put(sessionid, loginInfo);
-        request.getSession().setAttribute(TransformConstant.transform_session_admin, sessionid);
-        session.put(sessionid, request.getSession().getId());
+        sessionMap.put(userid, loginInfo);
+        request.getSession().setAttribute(TransformConstant.transform_session_admin, userid);
+        session.put(userid, request.getSession().getId());
         // 将菜单html放入session
         String menuhtml = createMenuHtml(request, loginInfo).toString();
         request.getSession().setAttribute(TransformConstant.transform_session_menu, menuhtml);
@@ -116,11 +116,17 @@ public class TransFormLoginHelper {
      * @return boolean
      */
     public static boolean hasLogin(HttpServletRequest request) {
-        String sessionid = (String) request.getSession().getAttribute(TransformConstant.transform_session_admin);
-        if (sessionid == null || "".equals(sessionid)) {
+        String userid = (String) request.getSession().getAttribute(TransformConstant.transform_session_admin);
+        if (userid == null || "".equals(userid)) {
             return false;
         }
-        return sessionMap.containsKey(sessionid);
+        String sessionid = request.getSession().getId();
+        //System.out.println("当前会话ID===================="+sessionid+",当前requestID===="+request.getSession().getCreationTime());
+        // 代表是同一个会话
+        if (sessionMap.containsKey(userid) && sessionid.equals(session.get(userid))) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -227,7 +233,28 @@ public class TransFormLoginHelper {
                             } else {
                                 htmlsb.append("<li>");
                             }
-                        } else { // 其他URI取第3次出现/截止的字符串
+                        } else if (URI.contains("/networkpool/") ) { // 网络资源池合并,暂时特殊处理下
+                            if (menu.getLinkname().indexOf("/networkpool/") > -1) {
+                                flag = true;
+                                htmlsb.append("<li class=\"active\">");
+                            } else {
+                                htmlsb.append("<li>");
+                            }
+                        } else if (URI.contains("/storageresourcepool/") ) { // 存储资源池合并,暂时特殊处理下
+                            if (menu.getLinkname().indexOf("/storageresourcepool/") > -1) {
+                                flag = true;
+                                htmlsb.append("<li class=\"active\">");
+                            } else {
+                                htmlsb.append("<li>");
+                            }
+                        }else if (URI.contains("/networkrule/") ) { // 网络规则合并,暂时特殊处理下
+                            if (menu.getLinkname().indexOf("/networkrule/") > -1) {
+                                flag = true;
+                                htmlsb.append("<li class=\"active\">");
+                            } else {
+                                htmlsb.append("<li>");
+                            }
+                        }else { // 其他URI取第3次出现/截止的字符串
                             if (getStr(URI, "/", 3)
                                     .indexOf(
                                             menu.getLinkname().substring(0, menu.getLinkname().lastIndexOf("/") + 1)

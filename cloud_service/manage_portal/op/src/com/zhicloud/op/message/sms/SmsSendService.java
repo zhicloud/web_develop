@@ -1,5 +1,6 @@
 package com.zhicloud.op.message.sms;
 
+import com.zhicloud.op.common.util.MD5Util;
 import com.zhicloud.op.common.util.StringUtil;
 import com.zhicloud.op.core.CoreSpringContextManager;
 import com.zhicloud.op.exception.AppException;
@@ -9,6 +10,7 @@ import com.zhicloud.op.service.SmsTemplateService;
 import com.zhicloud.op.service.constant.AppConstant;
 import com.zhicloud.op.vo.SmsConfigVO;
 import com.zhicloud.op.vo.SmsTemplateVO;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -18,6 +20,8 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -79,7 +83,7 @@ public class SmsSendService {
      * @param phone
      * @return
      */
-    public String sendSms(String code, Map<String, Object> parameter, String phone) {
+    public String sendSms_old(String code, Map<String, Object> parameter, String phone) {
 
         if (parameter == null) {
             parameter = new LinkedHashMap<>();
@@ -169,7 +173,7 @@ public class SmsSendService {
      * @param parameter
      * @return
      */
-    public String sendSms(String code, Map<String, Object> parameter) {
+    public String sendSms_old(String code, Map<String, Object> parameter) {
 
         if (parameter == null) {
             parameter = new LinkedHashMap<>();
@@ -251,6 +255,142 @@ public class SmsSendService {
         }
 
     }
+    
+    /**
+     * 
+    * @Title: sendSms 
+    * @Description: 新运营商的短信发送 
+    * @param @param code
+    * @param @param parameter
+    * @param @return      
+    * @return String     
+    * @throws
+     */
+    public String sendSms(String code, Map<String, Object> parameter) {
+
+        if (parameter == null) {
+            parameter = new LinkedHashMap<>();
+        }
+
+        SmsTemplateVO smsTemplateVO = smsTemplateService.getTemplateByCode(code);
+        SmsConfigVO smsConfigVO = smsConfigService.getConfigById(smsTemplateVO.getConfigId());
+
+        String serviceUrl = smsConfigVO.getServiceUrl();
+        String configName = smsConfigVO.getConfigName();
+        String smsId = smsConfigVO.getSmsId();
+        String name = smsConfigVO.getName();
+        String password = smsConfigVO.getPassword();
+        String recipient = smsTemplateVO.getRecipient();
+        String content = generateSmsContent(smsTemplateVO.getContent(), parameter);
+        String timeStamp = StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS");
+
+        HttpClient client = new HttpClient();
+        PostMethod method = new PostMethod(serviceUrl);
+        client.getParams().setContentCharset("UTF-8");
+
+        method.setRequestHeader("ContentType","application/x-www-form-urlencoded;charset=UTF-8");
+
+        NameValuePair[] data = {//提交短信
+            new NameValuePair("batchno",       smsId),
+            new NameValuePair("account",     name), 
+            new NameValuePair("content",  content),
+            new NameValuePair("mobiles",    recipient),
+            new NameValuePair("timestamp",timeStamp),
+            new NameValuePair("digest",MD5Util.md5(name+MD5Util.md5_16(password)+recipient+content+timeStamp)),
+        };
+
+        method.setRequestBody(data);
+
+        try {
+            //处理返回值
+            String state = client.executeMethod(method)+"";           
+            //写入发送纪录
+            Map<String, Object> record = new LinkedHashMap<>();
+            record.put("id", StringUtil.generateUUID());
+            record.put("sender_address", configName);
+            record.put("recipient_address", recipient);
+            record.put("content", content);
+            record.put("type", 1);
+            record.put("create_time", StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+            messageRecordService.addRecord(record);
+ 
+            if(state.equals("200"))
+            {
+                return "1";
+            }else {
+                return state;
+            }
+
+        } catch(Exception e){
+            e.printStackTrace();
+            throw new AppException("失败");
+        }
+
+    }
+    
+    public String sendSms(String code, Map<String, Object> parameter, String phone) {
+
+        if (parameter == null) {
+            parameter = new LinkedHashMap<>();
+        }
+
+        SmsTemplateVO smsTemplateVO = smsTemplateService.getTemplateByCode(code);
+        SmsConfigVO smsConfigVO = smsConfigService.getConfigById(smsTemplateVO.getConfigId());
+
+        String serviceUrl = smsConfigVO.getServiceUrl();
+        String configName = smsConfigVO.getConfigName();
+        String smsId = smsConfigVO.getSmsId();
+        String name = smsConfigVO.getName();
+        String password = smsConfigVO.getPassword();
+        String recipient = phone;
+        String content = generateSmsContent(smsTemplateVO.getContent(), parameter);
+        String timeStamp = StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS");
+
+        HttpClient client = new HttpClient();
+        PostMethod method = new PostMethod(serviceUrl);
+        client.getParams().setContentCharset("UTF-8");
+
+        method.setRequestHeader("ContentType","application/x-www-form-urlencoded;charset=UTF-8");
+//        String digestStr = name+MD5Util.md5_16(password)+recipient+content+timeStamp;
+        NameValuePair[] data = {//提交短信
+            new NameValuePair("batchno",       smsId),
+            new NameValuePair("account",     name), 
+            new NameValuePair("content",  content),
+            new NameValuePair("mobiles",    recipient),
+            new NameValuePair("timestamp",timeStamp),
+            new NameValuePair("digest",MD5Util.md5(name+MD5Util.md5_16(password)+recipient+content+timeStamp)),
+        };  
+        return "1";
+
+//        method.setRequestBody(data);
+//        try {
+//            //处理返回值
+//            String state = client.executeMethod(method)+"";
+//            if("200".equals(state)){
+//                state = "1";
+//            }
+//            
+//            //写入发送纪录
+//            Map<String, Object> record = new LinkedHashMap<>();
+//            record.put("id", StringUtil.generateUUID());
+//            record.put("sender_address", configName);
+//            record.put("recipient_address", recipient);
+//            record.put("content", content);
+//            record.put("type", AppConstant.MESSAGE_TYPE_SMS);
+//            record.put("sms_state", state);
+//            record.put("create_time", StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+//            messageRecordService.addRecord(record);
+//
+//             
+//            return state; 
+//
+//        } catch(Exception e){
+//            throw new AppException("失败");
+//        }
+
+    } 
+    
+     
 
 
 

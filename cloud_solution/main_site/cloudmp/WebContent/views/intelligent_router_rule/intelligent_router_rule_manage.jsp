@@ -67,7 +67,7 @@
           <div class="pageheader">
             
 
-            <h2><i class="fa fa-compress"></i> 智能路由例外规则管理</h2>
+            <h2><i class="fa fa-compress"></i> 智能路由例外配置</h2>
             
 
           </div>
@@ -90,7 +90,20 @@
           <div class="col-md-12">
 
 				  <section class="tile color transparent-black">
-
+                 <!-- tile widget -->
+                  <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs tabdrop">
+                      <li ><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/blacklist/all';">黑名单</a></li>
+                      <li><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/whitelist/all';" data-toggle="tab">白名单</a></li>
+                      <li><a href="#messages-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/desktopqos/all';" data-toggle="tab">QOS规则设置</a></li>
+                      <li  class="active" ><a href="#tasks-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/rule/all';">智能路由例外配置 </a></li>
+                      <div id="space"></div>
+                      
+                     </ul>
+                    <!-- / Nav tabs -->
+                  </div>
+                  <!-- /tile widget -->
 
  
                   <!-- tile header -->
@@ -338,14 +351,28 @@
       };
  	  $("div[class='col-md-4 text-right sm-center']").attr("class","tile-footer text-right"); 
 
-       
+ 	 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+   			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+   			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+   			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+   			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+   			 -1).height(
+   			  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
+   	    $(window).resize(function(){
+   		 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
+   				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
+   				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
+   				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
+   				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
+   				 -1);
+   	    });
       
     })
     
      $(function(){
 
          $("#ruleAdd").click(function(){
-             window.location.href = "${pageContext.request.contextPath}/rule/add";
+             window.location.href = "${pageContext.request.contextPath}/networkrule/rule/add";
          }); 
          $(".del_box").click(function(){
              var id = $(this).attr("curId");
@@ -386,7 +413,7 @@
 
         function deleteRule(){
         	 jQuery.ajax({
-                 url: '<%=request.getContextPath()%>/rule/delete',
+                 url: '<%=request.getContextPath()%>/networkrule/rule/delete',
                  type: 'get',
                  dataType: 'json',
                  data:{target:curtarget,port:curport,ip0:curip0,ip1:curip1,mode:curmode},
@@ -398,7 +425,7 @@
                  success: function(result)
                  {
                      if(result.status=="success"){
-                         location.href = path + "/rule/all";
+                         location.href = path + "/networkrule/rule/all";
                      }else{
                          $("#tipscontent").html(result.message);
                          $("#dia").click();

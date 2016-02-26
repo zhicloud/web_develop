@@ -320,6 +320,7 @@ public class ResourcePoolController {
                     }
                 }
             model.addAttribute("hostPoolDetail", cList);
+            model.addAttribute("uuid", uuid);
             int poolType = 0;// 0表示默认
             if(name.contains("server_pool")){
                 poolType = 1; //1表示云服务器的资源池
@@ -984,13 +985,13 @@ public class ResourcePoolController {
     * @return MethodResult     
     * @throws
      */
-    @RequestMapping(value="/{hostId}/{wareHouseId}/adddesktop",method=RequestMethod.GET)
+    @RequestMapping(value="/{hostId}/{wareHouseId}/{uuid}/adddesktop",method=RequestMethod.GET)
     @ResponseBody
-    public MethodResult addDesktop(@PathVariable("hostId") String hostId,@PathVariable("wareHouseId") String wareHouseId,HttpServletRequest request){
+    public MethodResult addDesktop(@PathVariable("hostId") String hostId,@PathVariable("wareHouseId") String wareHouseId,@PathVariable("uuid") String uuid,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_pool_host_changetodesktop)){
             return new MethodResult(MethodResult.FAIL,"您没有添加云服务器的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.addHostToDeskTopByRealHostId(hostId, wareHouseId);
+        MethodResult mr = cloudHostService.addHostToDeskTopByRealHostId(hostId, wareHouseId,uuid);
         return mr;
     }
     

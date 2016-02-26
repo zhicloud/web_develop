@@ -857,13 +857,13 @@ public class ComputeResourcePoolController {
         MethodResult mr = cloudHostService.addHostToServerByRealHostId(id);
         return mr;
     }
-    @RequestMapping(value="/{hostId}/{wareHouseId}/adddesktop",method=RequestMethod.GET)
+    @RequestMapping(value="/{hostId}/{wareHouseId}/{uuid}/adddesktop",method=RequestMethod.GET)
     @ResponseBody
-    public MethodResult addDesktop(@PathVariable("hostId") String hostId,@PathVariable("wareHouseId") String wareHouseId,HttpServletRequest request){
+    public MethodResult addDesktop(@PathVariable("hostId") String hostId,@PathVariable("wareHouseId") String wareHouseId,@PathVariable("uuid") String uuid,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.compute_resource_pool_host_changetodesktop)){
             return new MethodResult(MethodResult.FAIL,"您没有添加云服务器的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.addHostToDeskTopByRealHostId(hostId, wareHouseId);
+        MethodResult mr = cloudHostService.addHostToDeskTopByRealHostId(hostId, wareHouseId,uuid);
         return mr;
     }
 

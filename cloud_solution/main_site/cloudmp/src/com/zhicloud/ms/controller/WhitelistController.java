@@ -23,7 +23,7 @@ import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.vo.WhitelistVO;
 
 @Controller
-@RequestMapping(value="/whitelist")
+@RequestMapping(value="/networkrule/whitelist")
 public class WhitelistController {
     
     public static final Logger logger = Logger.getLogger(WhitelistController.class);
