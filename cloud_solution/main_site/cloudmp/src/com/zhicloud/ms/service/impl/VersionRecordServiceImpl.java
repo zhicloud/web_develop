@@ -70,6 +70,7 @@ public class VersionRecordServiceImpl implements IVersionRecordService {
 		data.put("name", version.getName()); 
 		data.put("fsize", version.getFsize()); 
 		data.put("createTime",StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS")); 
+		data.put("platformType", version.getPlatformType()); 
 		Integer result = versionRecordMapper.addVersion(data);
  
 		if (result > 0) {
@@ -100,9 +101,9 @@ public class VersionRecordServiceImpl implements IVersionRecordService {
 	 * @see com.zhicloud.ms.service.IVersionRecordService#getLatestVersion()
 	 */
 	@Override
-	public VersionRecordVO getLatestVersion() {
+	public VersionRecordVO getLatestVersion(String platformType) {
 		VersionRecordMapper versionRecordMapper = this.sqlSession.getMapper(VersionRecordMapper.class);
-		return versionRecordMapper.getLatestVersion();
+		return versionRecordMapper.getLatestVersion(platformType);
 	}
 
 	/**

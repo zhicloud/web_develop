@@ -10,6 +10,7 @@
 		<result column="create_time"  property="createTime" />
  		<result column="status"  property="status" /> 
  	    <result column="fsize"  property="fsize" />
+ 	    <result column="platform_type"  property="platformType" />
 	</resultMap>
 	
 	<!-- ********************* -->
@@ -21,6 +22,7 @@
 		      update_info,
 		      name,
 		      fsize,
+		      platform_type,
 		      create_time 
 		from version_record	
 		order by create_time desc 
@@ -34,7 +36,8 @@
 		      fsize,
 		      create_time
 		from version_record	
-		order by create_time desc 
+		where platform_type = #{platformType}
+		order by create_time desc 		
 		limit 1
 	</select>
 	<select id="getVersionById" resultMap="VersionRecordVO">
@@ -54,8 +57,8 @@
 	<!-- ********************* -->
 	
 	<insert id="addVersion">
-		insert into version_record (id, version_number,name, update_info, fsize, create_time) 
-		values (#{id}, #{versionNumber},#{name}, #{updateInfo}, #{fsize}, #{createTime})
+		insert into version_record (id, version_number,name, update_info, fsize, create_time,platform_type) 
+		values (#{id}, #{versionNumber},#{name}, #{updateInfo}, #{fsize}, #{createTime},#{platformType})
 	</insert>
 	
 	<update id="updateTerminalUserById">

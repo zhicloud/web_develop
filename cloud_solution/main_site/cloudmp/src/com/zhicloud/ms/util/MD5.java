@@ -16,18 +16,29 @@ public class MD5 {
 	 * @param str
 	 * @return
 	 */
-	public static String md5(String str) {
-		BigInteger rel = null;
-		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			md.update(str.getBytes());
-			rel = new BigInteger(md.digest());
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-			throw new MyException("加密失败"+e.getMessage());
-		}
-		return rel.toString(16);
-	}
+    public static  String md5(String plainText) {
+         String result = null;
+        try {
+         MessageDigest md = MessageDigest.getInstance("MD5");
+         md.update(plainText.getBytes());
+         byte b[] = md.digest();
+         int i;
+         StringBuffer buf = new StringBuffer("");
+         for (int offset = 0; offset < b.length; offset++) {
+          i = b[offset];
+          if (i < 0)
+           i += 256;
+          if (i < 16)
+           buf.append("0");
+          buf.append(Integer.toHexString(i));
+         }  
+         result =  buf.toString();
+         System.out.println(result);
+        } catch (NoSuchAlgorithmException e) {
+         e.printStackTrace();
+        }
+        return result;
+    }
 	
 	
 	/**
