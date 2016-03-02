@@ -1,45 +1,8 @@
 package com.zhicloud.ms.transform.controller;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.exception.AppException;
-import com.zhicloud.ms.service.CloudHostConfigModelService;
-import com.zhicloud.ms.service.IBackUpDetailService;
-import com.zhicloud.ms.service.IBoxRealInfoService;
-import com.zhicloud.ms.service.IClientMessageService;
-import com.zhicloud.ms.service.ICloudDiskService;
-import com.zhicloud.ms.service.ICloudHostService;
-import com.zhicloud.ms.service.ICloudHostWarehouseService;
-import com.zhicloud.ms.service.IEmailConfigService;
-import com.zhicloud.ms.service.IEmailTemplateService;
-import com.zhicloud.ms.service.IMessageRecordService;
-import com.zhicloud.ms.service.IOperLogService;
-import com.zhicloud.ms.service.IQosService;
-import com.zhicloud.ms.service.ISetTimeOperationDetailService;
-import com.zhicloud.ms.service.ISmsConfigService;
-import com.zhicloud.ms.service.ISmsTemplateService;
-import com.zhicloud.ms.service.ISysDiskImageService;
-import com.zhicloud.ms.service.ISysGroupService;
-import com.zhicloud.ms.service.ITerminalBoxService;
-import com.zhicloud.ms.service.ITerminalInformationPushService;
-import com.zhicloud.ms.service.ITerminalUserService;
-import com.zhicloud.ms.service.IVersionRecordService;
-import com.zhicloud.ms.service.IVpcService;
-import com.zhicloud.ms.service.ItenantService;
+import com.zhicloud.ms.service.*;
 import com.zhicloud.ms.transform.service.ManSysMenuService;
 import com.zhicloud.ms.transform.service.ManSysRightService;
 import com.zhicloud.ms.transform.service.ManSysRoleService;
@@ -51,28 +14,20 @@ import com.zhicloud.ms.transform.vo.ManSystemMenuVO;
 import com.zhicloud.ms.transform.vo.ManSystemRightVO;
 import com.zhicloud.ms.transform.vo.ManSystemRoleVO;
 import com.zhicloud.ms.transform.vo.ManSystemUserVO;
-import com.zhicloud.ms.vo.BackUpDetailVO;
-import com.zhicloud.ms.vo.BoxRealInfoVO;
-import com.zhicloud.ms.vo.ClientMessageVO;
-import com.zhicloud.ms.vo.CloudDisk;
-import com.zhicloud.ms.vo.CloudHostConfigModel;
-import com.zhicloud.ms.vo.CloudHostVO;
-import com.zhicloud.ms.vo.CloudHostWarehouse;
-import com.zhicloud.ms.vo.EmailConfigVO;
-import com.zhicloud.ms.vo.EmailTemplateVO;
-import com.zhicloud.ms.vo.MessageRecordVO;
-import com.zhicloud.ms.vo.QosVO;
-import com.zhicloud.ms.vo.SetTimeOperationDetailVO;
-import com.zhicloud.ms.vo.SmsConfigVO;
-import com.zhicloud.ms.vo.SmsTemplateVO;
-import com.zhicloud.ms.vo.SysDiskImageVO;
-import com.zhicloud.ms.vo.SysGroupVO;
-import com.zhicloud.ms.vo.SysTenant;
-import com.zhicloud.ms.vo.TerminalBoxVO;
-import com.zhicloud.ms.vo.TerminalInformationPushVO;
-import com.zhicloud.ms.vo.TerminalUserVO;
-import com.zhicloud.ms.vo.VersionRecordVO;
-import com.zhicloud.ms.vo.VpcBaseInfoVO;
+import com.zhicloud.ms.vo.*;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName: ExportController
@@ -543,7 +498,7 @@ public class ExportController {
         try {
             response.setCharacterEncoding("utf-8");
             response.setContentType("text/json; charset=utf-8");
-            String[][] columns = new String[][] { {"用户名", "Username" }, {"别名", "Alias" }, {"显示名", "Name" },
+            String[][] columns = new String[][] { {"用户名", "Username" },  {"显示名", "Name" },
                     {"所属分组", "GroupName" }, {"邮箱", "Email" }, {"电话", "Phone" }, {"用户状态", "Status_name" },
                     {"USB权限", "Usbstatus_name" }, {"已分配云主机", "CloudHostAmount" } };
             ExportExcelUtils.export(request, response, terminalUserService.queryAll(), "终端用户", columns,
