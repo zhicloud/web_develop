@@ -99,7 +99,7 @@
                             <!-- tile body -->
                             <div class="tile-body">
 
-                                <form class="form-horizontal" id="image_upload_address_form" role="form" action="${pageContext.request.contextPath }/image_upload_address/mod" method="POST">
+                                <form class="form-horizontal" id="image_upload_address_form" role="form" action="${pageContext.request.contextPath }/image/image_upload_address/mod" method="POST">
                                     <div class="form-group">
                                         <label for="service_name" class="col-sm-2 control-label" >服务名*</label>
                                         <div class="col-sm-4">
@@ -260,7 +260,7 @@
             var options = {
                 success:function result(data){
                     if (data.status == "success") {
-                        location.href = "${pageContext.request.contextPath}/image_upload_address/all";
+                        location.href = "${pageContext.request.contextPath}/image/image_upload_address/all";
                     } else {
                         $("#tipscontent").html(data.message);
                         $("#dia").click();
