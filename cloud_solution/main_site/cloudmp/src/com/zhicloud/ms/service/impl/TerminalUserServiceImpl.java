@@ -230,7 +230,7 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
 			}
 			message = "导入完成\n导入：" + successResult + "条纪录 失败：" + (failResult + duplicateResult)+"条纪录</br>用户名重名："+duplicateResult+"条纪录</br>默认密码："+AppConstant.DEFAULT_USER_PASSWORD;
 
-        if(failResult > 0){
+        if(duplicateResult > 0){
             message = message+"\n 请检查用户名是否重名";
         }
 			return new MethodResult(MethodResult.SUCCESS, message);
