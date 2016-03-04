@@ -108,9 +108,10 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
         condition.put("email", userName); 
         // 验证该账号和邮箱是否已经存在
         ManSystemUserVO systemUserVO = systemUserMapper.validateUserIsExists(condition);
-        if(systemUserVO != null){
+        if(systemUserVO != null || !userService.checkAvailable(userName)){
         	return new MethodResult(MethodResult.FAIL, "用户名已经存在");
         }
+
 
 		SysUserMapper sysUserMapper = this.sqlSession.getMapper(SysUserMapper.class);
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
@@ -172,6 +173,7 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
 
 
         return new MethodResult(MethodResult.SUCCESS, "添加成功");
+
 		}
 
 		return new MethodResult(MethodResult.FAIL, "添加失败");
