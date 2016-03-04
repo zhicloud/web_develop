@@ -11,16 +11,16 @@
 package com.zhicloud.ms.vo; 
 
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.text.ParseException;
-import java.util.Date;
-
 import com.zhicloud.ms.common.util.DateUtil;
 import com.zhicloud.ms.util.CapacityUtil;
 import com.zhicloud.ms.util.FlowUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.util.json.JSONBean;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.ParseException;
+import java.util.Date;
 /**
  * ClassName: CloudHost 
  * Function: 主机信息.  
@@ -43,7 +43,8 @@ public class CloudHostVO implements JSONBean
 	private String account; 
 	private String password; 
 	private Integer cpuCore;
-	private BigInteger memory = BigInteger.ZERO; 
+	private BigInteger memory = BigInteger.ZERO;
+  private Integer[] options;
 	private String sysImageId; 
 	private BigInteger sysDisk = BigInteger.ZERO; 
 	private BigInteger dataDisk = BigInteger.ZERO;
@@ -98,8 +99,16 @@ public class CloudHostVO implements JSONBean
     private String cpucore_name;
     
     private Integer supportH264;
- 	
-	public String getId()
+
+    public Integer[] getOptions() {
+        return options;
+    }
+
+    public void setOptions(Integer[] options) {
+        this.options = options;
+    }
+
+    public String getId()
 	{
 		return id;
 	}

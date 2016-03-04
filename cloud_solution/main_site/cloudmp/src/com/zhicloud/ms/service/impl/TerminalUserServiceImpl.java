@@ -307,12 +307,16 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
 		userData.put("id", id);
 		userData.put("usb_status", usbStatus);
 		userData.put("modified_time",
-				StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+        StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
 
 		Integer terminalUserResult = terminalUserMapper
 				.updateUSBStatusById(userData);
 
 		if (terminalUserResult > 0) {
+
+        // 修改关联主机usb配置
+
+
 			return new MethodResult(MethodResult.SUCCESS, "修改成功");
 		}
 		return new MethodResult(MethodResult.FAIL, "修改失败");
