@@ -108,7 +108,11 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
         condition.put("email", userName); 
         // 验证该账号和邮箱是否已经存在
         ManSystemUserVO systemUserVO = systemUserMapper.validateUserIsExists(condition);
-        if(systemUserVO != null || !userService.checkAvailable(userName)){
+        if (systemUserVO != null) {
+            return new MethodResult(MethodResult.FAIL, "用户名已被用户注册");
+        }
+
+        if(!userService.checkAvailable(userName)){
         	return new MethodResult(MethodResult.FAIL, "用户名已经存在");
         }
 
