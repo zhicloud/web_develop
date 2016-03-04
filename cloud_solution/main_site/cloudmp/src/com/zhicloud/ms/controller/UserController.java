@@ -231,6 +231,7 @@ public class UserController {
 		String[] idsArr = ids.split(",");
 		int usbStatusInt = Integer.parseInt(usbStatus);
 		int result = 0;
+      Integer[] options = new Integer[4];
 		
 		
 		for(int i = 0; i < idsArr.length; i++){
@@ -238,7 +239,27 @@ public class UserController {
 			data.put("id", idsArr[i]);
 			data.put("usb_status", usbStatusInt);
 			if(MethodResult.SUCCESS.equals(terminalUserService.updateUSBStatusById(data).status)) {
-				result ++;
+
+          // 修改已分配主机option的usb开启参数
+          List<CloudHostVO> cloudHosts = cloudHostService.getCloudHostByUserId(idsArr[i]);
+          // 该用户有分配的主机
+          if (cloudHosts != null) {
+              for (CloudHostVO cloudHost: cloudHosts
+                  ) {
+                  options[2] = usbStatusInt;
+                  if (cloudHost.getSupportH264() != null) {
+                      options[3] = cloudHost.getSupportH264();
+                  }
+
+                  cloudHost.setOptions(options);
+                  if (MethodResult.SUCCESS.equals(cloudHostService.updateOptions(cloudHost).status)) {
+                      result ++;
+                  }
+              }
+          }
+
+          result ++;
+
 			}
 		}
 		
