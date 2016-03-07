@@ -315,7 +315,7 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             SysUserMapper userMapper = this.sqlSession.getMapper(SysUserMapper.class);
             SysUser terminalUser = userMapper.queryUserByUsername(usercount);
             if(terminalUser != null){
-                return "用户名或邮箱已经被终端用户注册 ";
+                return "用户名或邮箱已经被终端用户注册";
             }
             String billid = StringUtil.generateUUID();
             condition.put("billid", billid);
