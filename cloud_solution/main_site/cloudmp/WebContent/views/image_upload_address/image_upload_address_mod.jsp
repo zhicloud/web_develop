@@ -89,7 +89,7 @@
 
                             <!-- tile header -->
                             <div class="tile-header">
-                                <h3><a href="<%=request.getContextPath() %>/image_upload_address/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入上传地址信息</h3>
+                                <h3><a href="<%=request.getContextPath() %>/image/image_upload_address/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入上传地址信息</h3>
                                 <div class="controls">
                                     <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                                 </div>
