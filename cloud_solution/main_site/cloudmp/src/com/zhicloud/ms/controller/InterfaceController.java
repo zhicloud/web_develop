@@ -151,7 +151,7 @@ public class InterfaceController {
 			}
             result.put("hosts", hostList);	
             result.put("messages", infoDatas);
-            result.put("name", terminalUser.getName());	
+            result.put("name", terminalUser.getUsername());
             //默认不开通usb 
         	result.put("user_status", terminalUser.getStatus());	
         	result.put("usb", terminalUser.getUsbStatus());		 
