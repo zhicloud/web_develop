@@ -947,7 +947,7 @@ public class AgentServiceImpl extends BeanDirectCallableDefaultImpl implements A
 					if(balance.compareTo(totalPrice.multiply(new BigDecimal(8)))<0 && balance.compareTo(totalPrice.multiply(new BigDecimal(7))) >= 0){
 						SendMail sm = new SendMail();
 						sm.sendHintEmail(agent, "7","【余额不足】通知-致云Zhicloud");
-						String message = new String("【致云科技】尊敬的用户，您好！您的账户余额还可供您当前所有产品使用7天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
+						String message = new String("尊敬的用户，您好！您的账户余额还可供您当前所有产品使用7天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
 						String state  = new SendSms().zhicloudSendSms(agent.getPhone(),message);
 						if("1".equals(state)){
 //							System.out.println("-----success-----");
@@ -964,7 +964,7 @@ public class AgentServiceImpl extends BeanDirectCallableDefaultImpl implements A
 					if(balance.compareTo(totalPrice.multiply(new BigDecimal(4)))<0 && balance.compareTo(totalPrice.multiply(new BigDecimal(3))) >= 0){
 						SendMail sm = new SendMail();
 						sm.sendHintEmail(agent, "3","【余额不足】通知-致云Zhicloud");
-						String message = new String("【致云科技】尊敬的用户，您好！您的账户余额还可供您当前所有产品使用3天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
+						String message = new String("尊敬的用户，您好！您的账户余额还可供您当前所有产品使用3天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
 						String state  = new SendSms().zhicloudSendSms(agent.getPhone(),message);
 						if("1".equals(state)){
 //							System.out.println("-----success-----");
@@ -981,7 +981,7 @@ public class AgentServiceImpl extends BeanDirectCallableDefaultImpl implements A
 					if(balance.compareTo(totalPrice.multiply(new BigDecimal(3)))<0 && balance.compareTo(totalPrice.multiply(new BigDecimal(2))) >= 0){
 						SendMail sm = new SendMail();
 						sm.sendHintEmail(agent, "2","【余额不足】通知-致云Zhicloud");
-						String message = new String("【致云科技】尊敬的用户，您好！您的账户余额还可供您当前所有产品使用2天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
+						String message = new String("尊敬的用户，您好！您的账户余额还可供您当前所有产品使用2天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
 						String state  = new SendSms().zhicloudSendSms(agent.getPhone(),message);
 						if("1".equals(state)){
 //							System.out.println("-----success-----");
@@ -998,7 +998,7 @@ public class AgentServiceImpl extends BeanDirectCallableDefaultImpl implements A
 					if(balance.compareTo(totalPrice.multiply(new BigDecimal(2)))<0 && balance.compareTo(new BigDecimal(1)) >= 0){
 						SendMail sm = new SendMail();
 						sm.sendHintEmail(agent, "1","【余额不足】通知-致云Zhicloud");
-						String message = new String("【致云科技】尊敬的用户，您好！您的账户余额还可供您当前所有产品使用1天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
+						String message = new String("尊敬的用户，您好！您的账户余额还可供您当前所有产品使用1天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
 						String state  = new SendSms().zhicloudSendSms(agent.getPhone(),message);
 						if("1".equals(state)){
 //							System.out.println("-----success-----");
@@ -1021,7 +1021,7 @@ public class AgentServiceImpl extends BeanDirectCallableDefaultImpl implements A
 					if(newBalance.compareTo(BigDecimal.ZERO) <= 0){
 						SendMail sm = new SendMail();
 						sm.sendHintEmail(agent, "0","【余额为零】通知-致云Zhicloud");
-						String message = new String("【致云科技】尊敬的用户，您好！您的账户余额已为零，目前已暂停您所有产品的服务，为了不影响您的业务情况，请您尽快充值开通服务，谢谢。"); 
+						String message = new String("尊敬的用户，您好！您的账户余额已为零，目前已暂停您所有产品的服务，为了不影响您的业务情况，请您尽快充值开通服务，谢谢。"); 
 						String state  = new SendSms().zhicloudSendSms(agent.getPhone(),message);
 						if("1".equals(state)){
 							System.out.println("-----success-----");
@@ -1166,7 +1166,7 @@ public class AgentServiceImpl extends BeanDirectCallableDefaultImpl implements A
 			}
 			//发送短信
 			Integer code = (Integer)((int)((Math.random()*9+1)*100000));
-		    String message = new String("【致云科技】致云Zhicloud欢迎您，您的手机验证码是：" + code + "，请及时完成验证。"); 
+		    String message = new String("致云Zhicloud欢迎您，您的手机验证码是：" + code + "，请及时完成验证。"); 
 			String state  =new SendSms().zhicloudSendSms(agentVO.getPhone(),message);
 			if (("1").equals(state)) 
 			{
@@ -1240,7 +1240,7 @@ public class AgentServiceImpl extends BeanDirectCallableDefaultImpl implements A
 					if (n<=0) {
 						throw new AppException("重置失败");
 					}
-					String message = new String("【致云科技】由于您忘记了密码，申请重置，以下是系统为您提供的初始化密码：" + password + "，为了您账号的安全，请登录后及时修改。"); 
+					String message = new String("由于您忘记了密码，申请重置，以下是系统为您提供的初始化密码：" + password + "，为了您账号的安全，请登录后及时修改。"); 
 					String state  =new SendSms().zhicloudSendSms(agentVO.getPhone(),message);
 					if (("1").equals(state)) 
 					{
@@ -1389,7 +1389,7 @@ public class AgentServiceImpl extends BeanDirectCallableDefaultImpl implements A
 			}
 			//发送短信
 			Integer code = (Integer)((int)((Math.random()*9+1)*100000));
-		    String message = new String("【致云科技】致云Zhicloud欢迎您，您的手机验证码是：" + code + "，请及时完成验证。"); 
+		    String message = new String("致云Zhicloud欢迎您，您的手机验证码是：" + code + "，请及时完成验证。"); 
 			String state  = new SendSms().zhicloudSendSms(phone,message);
 			if (("1").equals(state)) 
 			{
@@ -1589,7 +1589,7 @@ public class AgentServiceImpl extends BeanDirectCallableDefaultImpl implements A
 			}
 			//发送短信
 			Integer code = (Integer)((int)((Math.random()*9+1)*100000));
-		    String message = new String("【致云科技】致云Zhicloud欢迎您，您的手机验证码是：" + code + "，请及时完成验证。"); 
+		    String message = new String("致云Zhicloud欢迎您，您的手机验证码是：" + code + "，请及时完成验证。"); 
 			String state  = new SendSms().zhicloudSendSms(phone,message);
 			if (("1").equals(state)) 
 			{

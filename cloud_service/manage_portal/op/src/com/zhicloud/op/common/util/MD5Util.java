@@ -57,9 +57,7 @@ public class MD5Util
          // result = buf.toString();  //md5 32bit
          // result = buf.toString().substring(8, 24))); //md5 16bit
          result = buf.toString().substring(8, 24);
-         System.out.println("mdt 16bit: " + buf.toString().substring(8, 24));
-         System.out.println("md5 32bit: " + buf.toString() );
-        } catch (NoSuchAlgorithmException e) {
+          } catch (NoSuchAlgorithmException e) {
          e.printStackTrace();
         }
         return result;
@@ -67,11 +65,10 @@ public class MD5Util
     
     
     public static  String md5(String plainText) {
-        System.out.println("++++++"+plainText+"++++++++");
         String result = null;
         try {
          MessageDigest md = MessageDigest.getInstance("MD5");
-         md.update(plainText.getBytes());
+         md.update(plainText.getBytes("utf-8"));
          byte b[] = md.digest();
          int i;
          StringBuffer buf = new StringBuffer("");
@@ -85,7 +82,7 @@ public class MD5Util
          }  
          result =  buf.toString();
          System.out.println(result);
-        } catch (NoSuchAlgorithmException e) {
+        } catch (Exception e) {
          e.printStackTrace();
         }
         return result;
@@ -94,7 +91,6 @@ public class MD5Util
 	
 	public static void main(String[] args)
 	{ 
-		System.out.println(md5("zykj@zykjca7ed9e6576317c715108288184【致云科技】致云Zhicloud欢迎您，您的手机验证码是：981118，请及时完成验证。20160224125549165"));
-		"zykj@zykjca7ed9e6576317c715108288184【致云科技】致云Zhicloud欢迎您，您的手机验证码是：981118，请及时完成验证。20160224125549165".getBytes();
-	}
+		System.out.println(md5("zykj@zykjca7ed9e6576317c715108288184【致云科技】致云Zhicloud欢迎您，您的手机验证码是：844879，请及时完成验证。20160224152916910"));
+ 	}
 }

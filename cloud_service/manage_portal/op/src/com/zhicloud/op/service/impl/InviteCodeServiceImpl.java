@@ -538,7 +538,7 @@ public class InviteCodeServiceImpl extends BeanDirectCallableDefaultImpl impleme
 			}
 			
 			//发送短信
-		    String message = new String("【致云科技】亲爱的用户，您好。云端在线公有云邀请码："+inviteCode+"，本邀请码7天有效，请尽快注册使用，谢谢。"); 
+		    String message = new String("亲爱的用户，您好。云端在线公有云邀请码："+inviteCode+"，本邀请码7天有效，请尽快注册使用，谢谢。"); 
 			String state  = new SendSms().zhicloudSendSms(phone,message);
 			
 			if (state.equals("1")) 

@@ -94,10 +94,7 @@ public class CloudHostController {
       String param = request.getParameter("param");
       String runningStatusStr = request.getParameter("running_status");
       String flagStr = request.getParameter("flag");
-
-
-      model.addAttribute("running_status", runningStatusStr);
-      model.addAttribute("flag", flagStr);
+      
 
       Integer runningStatus, flag;
 
@@ -171,6 +168,12 @@ public class CloudHostController {
         } catch (Exception e) {
             e.printStackTrace();
         }  
+		if(StringUtil.isBlank(flagStr)){
+	          flagStr = "4";
+	      }
+
+	      model.addAttribute("running_status", runningStatusStr);
+	      model.addAttribute("flag", flagStr);
         return "host_manage";
     }
 	@RequestMapping(value="/cloudhost/all",method=RequestMethod.GET)
@@ -215,7 +218,7 @@ public class CloudHostController {
       condition.put("running_status", runningStatus);
       condition.put("flag", flag);
 
-      List<CloudHostVO> cloudHostList = cloudHostService.getAllHost();
+      List<CloudHostVO> cloudHostList = cloudHostService.getByWarehouseIdAndParams(condition);;
  
       List<CloudHostVO> newCloudServerList = new ArrayList<CloudHostVO>();
       HostResetProgressPool resetpool = HostResetProgressPoolManager.singleton().getPool();
@@ -257,6 +260,12 @@ public class CloudHostController {
         } catch (Exception e) {
             e.printStackTrace();
         }  
+        if(StringUtil.isBlank(flagStr)){
+            flagStr = "4";
+        }
+
+        model.addAttribute("running_status", runningStatusStr);
+        model.addAttribute("flag", flagStr);
         return "desktop/host_manage";
     }
     /**
@@ -714,7 +723,9 @@ public class CloudHostController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_disk_add)){
             return "not_have_access";
         }
+        CloudHostVO host = cloudHostService.getByRealHostId(realId);
         model.addAttribute("realId", realId);
+        model.addAttribute("hostId", host.getId());
         model.addAttribute("diskType", diskType);
         return "desktop/host_disk_manage_add";
     }

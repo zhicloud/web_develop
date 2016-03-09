@@ -128,7 +128,7 @@
                                       <option value="1">停用</option>
                                   </c:if>
                               </select>
-                              <select id="userType" class="chosen-select form-control" style="width: 150px;">
+                              <select id="userType" class="chosen-select form-control" style="width: 150px;display:none;" >
                                   <option value="">用户类型(全部)</option>
                                   <c:if test="${userType == 0}">
                                       <option value="0" selected="selected">管理员用户</option>

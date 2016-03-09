@@ -170,7 +170,10 @@
         LEFT JOIN cloud_host_warehouse chw ON ch.warehouse_id = chw.id
         LEFT JOIN cloud_host_config_model m ON chw.cloud_host_config_model_id = m.id
         <where>
-            ch.type = 1 AND ch.warehouse_id = #{warehouse_id}
+            ch.type = 1 
+            <if test="warehouse_id!=null and warehouse_id!=''">
+               AND ch.warehouse_id = #{warehouse_id}
+            </if>
             <if test="param!=null and param!=''">
                 AND (u.username LIKE #{param} OR ch.display_name LIKE #{param})
             </if>
@@ -862,7 +865,8 @@
 		update cloud_host 
 			<set>
 				cpu_core = #{cpuCore},
-				memory = #{memory} 
+				memory = #{memory} ,
+				bandwidth = #{bandwidth}
 			</set>
 		where id = #{id}
 	</update>

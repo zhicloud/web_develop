@@ -27,13 +27,13 @@ public class SendSms {
       String message = "";
       try{
           if("1".equals(flag)){
-              message = "【致云科技】管理员您好，云端在线发现告警。" +region+" 地域的http-gateway连接失败，请及时排查解决。【"+type+"】";
+              message = "管理员您好，云端在线发现告警。" +region+" 地域的http-gateway连接失败，请及时排查解决。"+type+"";
               SmsSendService smsSendService = MessageServiceManager.singleton().getSmsService();
               Map<String, Object> params = new HashMap<String, Object>();
               params.put("content",  message);
               return  smsSendService.sendSms(MessageConstant.SMS_INFO_NOTIFICATION, params, phone);
           }else{
-              message = "【致云科技】管理员您好，云端在线故障恢复。" +region+" 地域的http-gateway已恢复连接。【"+type+"】";
+              message = "管理员您好，云端在线故障恢复。" +region+" 地域的http-gateway已恢复连接。"+type+"";
               SmsSendService smsSendService = MessageServiceManager.singleton().getSmsService();
               Map<String, Object> params = new HashMap<String, Object>();
               params.put("content", message);
@@ -51,13 +51,13 @@ public class SendSms {
       try{
 
         if("1".equals(flag)){
-            message = "【致云科技】管理员您好，云端在线发现故障。" +info+"请及时排查解决。【"+type+"】"  ;
+            message = "管理员您好，云端在线发现故障。" +info+"请及时排查解决。"+type+""  ;
             SmsSendService smsSendService = MessageServiceManager.singleton().getSmsService();
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("content", message);
             return  smsSendService.sendSms(MessageConstant.SMS_INFO_NOTIFICATION, params, phone);
         }else {
-            message = "【致云科技】管理员您好，云端在线故障恢复。" + info + "已恢复正常。【" + type + "】";
+            message = "管理员您好，云端在线故障恢复。" + info + "已恢复正常。" + type + "";
             SmsSendService smsSendService = MessageServiceManager.singleton().getSmsService();
             Map<String, Object> params = new HashMap<String, Object>();
             params.put("content", message);
