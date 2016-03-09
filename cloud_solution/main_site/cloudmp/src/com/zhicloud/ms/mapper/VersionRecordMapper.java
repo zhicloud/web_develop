@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
  
 
+
 import com.zhicloud.ms.vo.VersionRecordVO;
 
 /**
@@ -43,7 +44,7 @@ public interface VersionRecordMapper {
 	 * @return VersionRecordVO
 	 * @since JDK 1.7
 	 */
-	public VersionRecordVO getLatestVersion(String platformType);
+	public VersionRecordVO getLatestVersion(Map<String,Object> condition);
 	/**
 	 * 
 	 * getVersionById:根据id查询版本 

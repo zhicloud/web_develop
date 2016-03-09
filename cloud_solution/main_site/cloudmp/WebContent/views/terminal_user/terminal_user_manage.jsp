@@ -726,7 +726,7 @@
 //        		});
 //
 //        });
-//        $("#warehouseId_chosen").css("width","250px");
+        $("#warehouseId_chosen").css("width","250px");
         
       });
 
