@@ -1,43 +1,26 @@
 package com.zhicloud.ms.service.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.zhicloud.ms.app.helper.DefaultTreeNode;
+import com.zhicloud.ms.common.util.RandomPassword;
+import com.zhicloud.ms.mapper.*;
+import com.zhicloud.ms.remote.MethodResult;
+import com.zhicloud.ms.service.ICloudHostService;
+import com.zhicloud.ms.service.ICloudHostWarehouseService;
+import com.zhicloud.ms.service.IOperLogService;
+import com.zhicloud.ms.util.DateUtil;
+import com.zhicloud.ms.util.StringUtil;
+import com.zhicloud.ms.vo.*;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.zhicloud.ms.app.helper.DefaultTreeNode;
-import com.zhicloud.ms.common.util.RandomPassword;
-import com.zhicloud.ms.mapper.CloudHostConfigModelMapper;
-import com.zhicloud.ms.mapper.CloudHostMapper;
-import com.zhicloud.ms.mapper.CloudHostWarehouseMapper;
-import com.zhicloud.ms.mapper.SysGroupMapper;
-import com.zhicloud.ms.mapper.SysUserMapper;
-import com.zhicloud.ms.mapper.TerminalUserMapper;
-import com.zhicloud.ms.remote.MethodResult;
-import com.zhicloud.ms.service.ICloudHostWarehouseService;
-import com.zhicloud.ms.service.IOperLogService;
-import com.zhicloud.ms.util.DateUtil;
-import com.zhicloud.ms.util.StringUtil;
-import com.zhicloud.ms.vo.CloudHostConfigModel;
-import com.zhicloud.ms.vo.CloudHostVO;
-import com.zhicloud.ms.vo.CloudHostWarehouse;
-import com.zhicloud.ms.vo.SysGroupVO;
-import com.zhicloud.ms.vo.SysUser;
-import com.zhicloud.ms.vo.TerminalUserVO;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 @Transactional(readOnly=true)
  class CloudHostWarehouseServiceImpl implements ICloudHostWarehouseService {
@@ -46,6 +29,8 @@ import com.zhicloud.ms.vo.TerminalUserVO;
 	
 	@Resource
     private IOperLogService operLogService;
+
+    @Resource private ICloudHostService cloudHostService;
 	
 	private SqlSession sqlSession;
 	
@@ -337,8 +322,9 @@ import com.zhicloud.ms.vo.TerminalUserVO;
 		}
 		for(int i=0;i<nodes.length;i++){
 			//给云主机设置userId
+      CloudHostVO cloudHostVO = chList.get(i);
 			Map<String,Object> cloudHostData = new HashMap<String, Object>();
-			cloudHostData.put("id", chList.get(i).getId());
+			cloudHostData.put("id", cloudHostVO.getId());
 			cloudHostData.put("userId",nodes[i]);
 			cloudHostData.put("assignTime",DateUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
 			chMapper.updateCloudHostUserIdById(cloudHostData);
@@ -351,6 +337,15 @@ import com.zhicloud.ms.vo.TerminalUserVO;
 			Map<String,Object> warehouseData = new HashMap<String, Object>();
 			warehouseData.put("id", warehouseId);
 			chwMapper.updateWarehouseForDispatchHost(warehouseData);
+
+      // 同步分配主机的usb开放状态
+        TerminalUserVO terminalUserVO = terminalMapper.getById(nodes[i]);
+        Integer[] options = new Integer[4];
+        options[2] = terminalUserVO.getUsbStatus();
+        cloudHostVO.setOptions(options);
+
+        cloudHostService.updateOptions(cloudHostVO);
+
 		}
         operLogService.addLog("主机仓库", "分配主机成功", "1", "1", request);
 		return new MethodResult(MethodResult.SUCCESS,"分配成功");
@@ -370,7 +365,10 @@ import com.zhicloud.ms.vo.TerminalUserVO;
 		for(int i=0;i<nodes.length;i++){
 			//给云主机设置userId
 			Map<String,Object> cloudHostData = new HashMap<String, Object>();
-			cloudHostData.put("id", hostIds[i]);
+        Map<String, Object> conditon = new HashMap<String, Object>();
+        conditon.put("id", hostIds[i]);
+        CloudHostVO cloudHostVO = chMapper.getCloudHostById(conditon);
+        cloudHostData.put("id", hostIds[i]);
 			cloudHostData.put("userId",nodes[i]);
 			cloudHostData.put("assignTime",DateUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
 			chMapper.updateCloudHostUserIdById(cloudHostData);
@@ -383,6 +381,15 @@ import com.zhicloud.ms.vo.TerminalUserVO;
 			Map<String,Object> warehouseData = new HashMap<String, Object>();
 			warehouseData.put("id", warehouseId);
 			chwMapper.updateWarehouseForDispatchHost(warehouseData);
+
+        // 同步分配主机的usb开放状态
+        TerminalUserVO terminalUserVO = terminalMapper.getById(nodes[i]);
+        Integer[] options = new Integer[4];
+        options[2] = terminalUserVO.getUsbStatus();
+        cloudHostVO.setOptions(options);
+
+        cloudHostService.updateOptions(cloudHostVO);
+
 		}
 		operLogService.addLog("主机仓库", "分配主机成功", "1", "1", request);
 		return new MethodResult(MethodResult.SUCCESS,"分配成功");
@@ -589,7 +596,6 @@ import com.zhicloud.ms.vo.TerminalUserVO;
     
     /**
      * @Description:获取资源池最大并发创建数集合
-     * @param condition 参数
      * @return List<CloudHostWarehouse>
      */
     public List<CloudHostWarehouse> getAllConcurrent() {

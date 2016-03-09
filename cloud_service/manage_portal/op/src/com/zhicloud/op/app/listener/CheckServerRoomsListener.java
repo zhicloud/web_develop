@@ -562,7 +562,7 @@ public class CheckServerRoomsListener implements ServletContextListener {
             try {
                 SmsSendService smaSendService = MessageServiceManager.singleton().getSmsService();
                 Map<String, Object> parameter = new LinkedHashMap<>();
-                parameter.put("content", "【致云科技】管理员您好,云端在线 " + array.size() + "台服务器发生故障,请及时登录监控平台处理");
+                parameter.put("content", "管理员您好,云端在线 " + array.size() + "台服务器发生故障,请及时登录监控平台处理");
                 smaSendService.sendSms(MonitorConstant.monitor_sm_notify, parameter);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -605,7 +605,7 @@ public class CheckServerRoomsListener implements ServletContextListener {
             try {
                 SmsSendService smaSendService = MessageServiceManager.singleton().getSmsService();
                 Map<String, Object> parameter = new LinkedHashMap<>();
-                parameter.put("content", "【致云科技】管理员您好,云端在线 " + array.size() + "台云主机发生故障,请及时登录监控平台处理");
+                parameter.put("content", "管理员您好,云端在线 " + array.size() + "台云主机发生故障,请及时登录监控平台处理");
                 smaSendService.sendSms(MonitorConstant.monitor_sm_notify, parameter);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -660,7 +660,7 @@ public class CheckServerRoomsListener implements ServletContextListener {
             try {
                 SmsSendService smaSendService = MessageServiceManager.singleton().getSmsService();
                 Map<String, Object> parameter = new LinkedHashMap<>();
-                parameter.put("content", "【致云科技】管理员您好,，云端在线 " + list_recover.size() + "台设备已恢复正常");
+                parameter.put("content", "管理员您好,，云端在线 " + list_recover.size() + "台设备已恢复正常");
                 smaSendService.sendSms(MonitorConstant.monitor_sm_notify, parameter);
             } catch (Exception e) {
                 e.printStackTrace();

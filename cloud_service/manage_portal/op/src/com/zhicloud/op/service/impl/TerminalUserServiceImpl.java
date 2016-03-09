@@ -1868,7 +1868,7 @@ public class TerminalUserServiceImpl extends BeanDirectCallableDefaultImpl imple
 		}
 		//发送短信
 		Integer code = (Integer)((int)((Math.random()*9+1)*100000));
-	    String message = new String("【致云科技】致云Zhicloud欢迎您，您的手机验证码是：" + code + "，请及时完成验证。"); 
+	    String message = new String("致云Zhicloud欢迎您，您的手机验证码是：" + code + "，请及时完成验证。"); 
 		String state  = new SendSms().zhicloudSendSms(phone,message);
 		if (("1").equals(state)) 
 		{
@@ -2264,7 +2264,7 @@ public class TerminalUserServiceImpl extends BeanDirectCallableDefaultImpl imple
 			}
 			//发送短信
 			Integer code = (Integer)((int)((Math.random()*9+1)*100000));
-		    String message = new String("【致云科技】致云Zhicloud欢迎您，您的手机验证码是：" + code + "，请及时完成验证。"); 
+		    String message = new String("致云Zhicloud欢迎您，您的手机验证码是：" + code + "，请及时完成验证。"); 
 			String state  =new SendSms().zhicloudSendSms(terminalUserVO.getPhone(),message);
 			if (("1").equals(state)) 
 			{
@@ -2337,7 +2337,7 @@ public class TerminalUserServiceImpl extends BeanDirectCallableDefaultImpl imple
 					if (n<=0) {
 						throw new AppException("重置失败");
 					}
-					String message = new String("【致云科技】由于您忘记了密码，申请重置，以下是系统为您提供的初始化密码：" + password + "，为了您账号的安全，请登录后及时修改。"); 
+					String message = new String("由于您忘记了密码，申请重置，以下是系统为您提供的初始化密码：" + password + "，为了您账号的安全，请登录后及时修改。"); 
 					String state  =new SendSms().zhicloudSendSms(terminalUserVO.getPhone(),message);
 					if (("1").equals(state)) 
 					{
@@ -2428,7 +2428,7 @@ public class TerminalUserServiceImpl extends BeanDirectCallableDefaultImpl imple
 			//发送短信
 			Integer loginMobileCode = (Integer)((int)((Math.random()*9+1)*100000));
 			
-		    String message = new String("【致云科技】致云Zhicloud欢迎您的注册，您的手机验证码是：" + loginMobileCode + "，请在30分钟内完成验证。"); 
+		    String message = new String("致云Zhicloud欢迎您的注册，您的手机验证码是：" + loginMobileCode + "，请在30分钟内完成验证。"); 
 			
 			String state  = new SendSms().zhicloudSendSms(phone,message);
 
@@ -2508,7 +2508,7 @@ public class TerminalUserServiceImpl extends BeanDirectCallableDefaultImpl imple
 			if (!terminalUserVO.getPhone().isEmpty())
 			{
 				
-				String message = new String("【致云科技】尊敬的" + account + "您好，您的余额还可以支付" + day + "天的费用，为不影响您云主机的正常使用，请及时充值。谢谢");
+				String message = new String("尊敬的" + account + "您好，您的余额还可以支付" + day + "天的费用，为不影响您云主机的正常使用，请及时充值。谢谢");
 				String state = new SendSms().zhicloudSendSms(terminalUserVO.getPhone(), message);
 				if (("1").equals(state))
 				{
@@ -2580,11 +2580,11 @@ public class TerminalUserServiceImpl extends BeanDirectCallableDefaultImpl imple
 				String message = "";
 				if( remainBalance.compareTo(BigDecimal.ZERO) > 0 )
 				{
-					message = "【致云科技】您好，从您的账户扣除云主机["+hostName+"] "+strBillingStartTime+" 至 "+strBillingEndTime+" 的使用费"+fee+"元，扣费之后账户剩余"+remainBalance+"元，您的云主机预计还可以使用"+remainTimeText+"。";
+					message = "您好，从您的账户扣除云主机["+hostName+"] "+strBillingStartTime+" 至 "+strBillingEndTime+" 的使用费"+fee+"元，扣费之后账户剩余"+remainBalance+"元，您的云主机预计还可以使用"+remainTimeText+"。";
 				}
 				else
 				{
-					message = "【致云科技】您好，从您的账户扣除云主机["+hostName+"] "+strBillingStartTime+" 至 "+strBillingEndTime+" 的使用费"+fee+"元，扣费之后您的账户余额不足0元，您的所有云主机将被暂停使用，如果您希望继续使用这些云主机，请于7天内充值激活云主机，超过7天未激活的云主机将被销毁。";
+					message = "您好，从您的账户扣除云主机["+hostName+"] "+strBillingStartTime+" 至 "+strBillingEndTime+" 的使用费"+fee+"元，扣费之后您的账户余额不足0元，您的所有云主机将被暂停使用，如果您希望继续使用这些云主机，请于7天内充值激活云主机，超过7天未激活的云主机将被销毁。";
 				}
 				String state = new SendSms().zhicloudSendSms(terminalUserVO.getPhone(), message);
 				if( "1".equals(state) )
@@ -2661,7 +2661,7 @@ public class TerminalUserServiceImpl extends BeanDirectCallableDefaultImpl imple
 			}
 			//发送短信
 			Integer code = (Integer)((int)((Math.random()*9+1)*100000));
-		    String message = new String("【致云科技】致云Zhicloud欢迎您，您的手机验证码是：" + code + "，请及时完成验证。"); 
+		    String message = new String("致云Zhicloud欢迎您，您的手机验证码是：" + code + "，请及时完成验证。"); 
 			String state  = new SendSms().zhicloudSendSms(phone,message);
 			if (("1").equals(state)) 
 			{
@@ -2772,7 +2772,7 @@ public class TerminalUserServiceImpl extends BeanDirectCallableDefaultImpl imple
 					if(balance.compareTo(totalPrice.multiply(new BigDecimal(8)))<0 && balance.compareTo(totalPrice.multiply(new BigDecimal(7))) >= 0){
 						SendMail sm = new SendMail();
 						sm.sendHintEmail(terminalUser, "7","【余额不足】通知-致云Zhicloud");
-						String message = new String("【致云科技】尊敬的用户，您好！您的账户余额还可供您当前所有产品使用7天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
+						String message = new String("尊敬的用户，您好！您的账户余额还可供您当前所有产品使用7天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
 						String state  = new SendSms().zhicloudSendSms(terminalUser.getPhone(),message);
 						if("1".equals(state)){
 //							System.out.println("-----success-----");
@@ -2796,7 +2796,7 @@ public class TerminalUserServiceImpl extends BeanDirectCallableDefaultImpl imple
 					if(balance.compareTo(totalPrice.multiply(new BigDecimal(4)))<0 && balance.compareTo(totalPrice.multiply(new BigDecimal(3))) >= 0){
 						SendMail sm = new SendMail();
 						sm.sendHintEmail(terminalUser, "3","【余额不足】通知-致云Zhicloud");
-						String message = new String("【致云科技】尊敬的用户，您好！您的账户余额还可供您当前所有产品使用3天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
+						String message = new String("尊敬的用户，您好！您的账户余额还可供您当前所有产品使用3天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
 						String state  = new SendSms().zhicloudSendSms(terminalUser.getPhone(),message);
 						if("1".equals(state)){
 //							System.out.println("-----success-----");
@@ -2820,7 +2820,7 @@ public class TerminalUserServiceImpl extends BeanDirectCallableDefaultImpl imple
 					if(balance.compareTo(totalPrice.multiply(new BigDecimal(3)))<0 && balance.compareTo(totalPrice.multiply(new BigDecimal(2))) >= 0){
 						SendMail sm = new SendMail();
 						sm.sendHintEmail(terminalUser, "2","【余额不足】通知-致云Zhicloud");
-						String message = new String("【致云科技】尊敬的用户，您好！您的账户余额还可供您当前所有产品使用2天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
+						String message = new String("尊敬的用户，您好！您的账户余额还可供您当前所有产品使用2天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
 						String state  = new SendSms().zhicloudSendSms(terminalUser.getPhone(),message);
 						if("1".equals(state)){
 //							System.out.println("-----success-----");
@@ -2844,7 +2844,7 @@ public class TerminalUserServiceImpl extends BeanDirectCallableDefaultImpl imple
 					if(balance.compareTo(totalPrice.multiply(new BigDecimal(2)))<0 && balance.compareTo(new BigDecimal(1))>=0){
 						SendMail sm = new SendMail();
 						sm.sendHintEmail(terminalUser, "1","【余额不足】通知-致云Zhicloud");
-						String message = new String("【致云科技】尊敬的用户，您好！您的账户余额还可供您当前所有产品使用1天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
+						String message = new String("尊敬的用户，您好！您的账户余额还可供您当前所有产品使用1天，为了不影响您的业务情况，请您及时充值，谢谢。"); 
 						String state  = new SendSms().zhicloudSendSms(terminalUser.getPhone(),message);
 						if("1".equals(state)){
 //							System.out.println("-----success-----");
@@ -2874,7 +2874,7 @@ public class TerminalUserServiceImpl extends BeanDirectCallableDefaultImpl imple
 					if(newBalance.compareTo(BigDecimal.ZERO) <= 0){
 						SendMail sm = new SendMail();
 						sm.sendHintEmail(terminalUser, "0","【余额为零】通知-致云Zhicloud");
-						String message = new String("【致云科技】尊敬的用户，您好！您的账户余额已为零，目前已暂停您所有产品的服务，为了不影响您的业务情况，请您尽快充值开通服务，谢谢。"); 
+						String message = new String("尊敬的用户，您好！您的账户余额已为零，目前已暂停您所有产品的服务，为了不影响您的业务情况，请您尽快充值开通服务，谢谢。"); 
 						String state  = new SendSms().zhicloudSendSms(terminalUser.getPhone(),message);
 						if("1".equals(state)){
 //							System.out.println("-----success-----");
@@ -3379,7 +3379,7 @@ public class TerminalUserServiceImpl extends BeanDirectCallableDefaultImpl imple
                }
                
                //发送短信
-               String message = new String("【致云科技】亲爱的用户，您好。致云Zhicloud云服务现金券兑换码："+cashCouponCode+"，价值"+cashCouponMoney+"元，请及时兑换使用，谢谢。"); 
+               String message = new String("亲爱的用户，您好。致云Zhicloud云服务现金券兑换码："+cashCouponCode+"，价值"+cashCouponMoney+"元，请及时兑换使用，谢谢。"); 
                String state  = new SendSms().zhicloudSendSms(terminalUserVO.getPhone(),message);
                
                if (("1").equals(state)) 

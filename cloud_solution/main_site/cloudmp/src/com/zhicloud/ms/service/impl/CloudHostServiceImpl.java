@@ -1528,6 +1528,11 @@ public class CloudHostServiceImpl implements ICloudHostService {
         //更新主机的userid 和assign_time
         data.put("id", id);
         cloudHostMapper.updateCloudHostUserIdById(data);
+        // 复位关联主机的USB开启选项
+        Integer[] options = new Integer[4];
+        options[2] =  AppConstant.USB_STATUS_DISABLE;
+        host.setOptions(options);
+        updateOptions(host);
         operLogService.addLog("云主机", "取消关联云主机"+host.getDisplayName()+"成功", "1", "1", request);
         return new MethodResult(MethodResult.SUCCESS, "取消关联成功");
     }
@@ -2005,7 +2010,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
     * <p>Title: getDesktopCloudHostInTimerBackUpStart</p> 
     * <p>Description: </p> 
     * @return 
-    * @see com.zhicloud.ms.service.ICloudHostService#getCloudHostInTimerBackUpStart()
+    * @see com.zhicloud.ms.service.ICloudHostService#getCloudHostInTimerBackUpStart(java.lang.String)
      */
     public List<CloudHostVO> getCloudHostInTimerBackUpStart(String timerKey) {
         CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
@@ -2017,7 +2022,7 @@ public class CloudHostServiceImpl implements ICloudHostService {
     * <p>Description: </p> 
     * @param limit
     * @return 
-    * @see com.zhicloud.ms.service.ICloudHostService#getDesktopCloudHostInTimerBackUpStop(java.lang.Integer, java.lang.String)
+    * @see com.zhicloud.ms.service.ICloudHostService#getCloudHostInTimerBackUpStop(java.lang.Integer, java.lang.String, java.lang.String)
      */
     public List<CloudHostVO> getCloudHostInTimerBackUpStop(Integer limit,String now,String timerKey) {
         try{
@@ -2783,6 +2788,44 @@ public class CloudHostServiceImpl implements ICloudHostService {
 		}
 		return new MethodResult(MethodResult.FAIL, "显示名修改失败");
 	}
-}
+
+      /**
+       * @function 根据真实云主机ID修改option参数
+       * @param cloudHostVO
+       * @return
+       */
+      @Override public MethodResult updateOptions(CloudHostVO cloudHostVO) {
+
+          String realHostId = cloudHostVO.getRealHostId();
+
+          HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
+
+          JSONObject result = null;
+          try {
+              result = channel.hostQueryInfo(realHostId);
+          } catch (IOException e) {
+              e.printStackTrace();
+              return new MethodResult(MethodResult.FAIL, "从gw获取数据失败");
+
+          }
+          //获取主机信息
+          JSONObject hostInfo = (JSONObject)result.get("host");
+          if (MethodResult.FAIL.equals(result.getString("status"))) {
+              return new MethodResult(MethodResult.FAIL, "获取主机配置失败");
+          }
+
+          JSONObject hostModifyResult = null;
+          try {
+              hostModifyResult =
+                  channel.hostModify(realHostId, "", new Integer("0"), new BigInteger("0"), cloudHostVO.getOptions(), new Integer[0], "", "", "", new BigInteger("0"), new BigInteger("0"));
+          } catch (IOException e) {
+              e.printStackTrace();
+              return new MethodResult(MethodResult.FAIL, "options参数修改失败");
+
+          }
+
+          return new MethodResult(MethodResult.SUCCESS, "options参数修改成功");
+      }
+  }
 
  

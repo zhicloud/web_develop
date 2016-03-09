@@ -108,9 +108,14 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
         condition.put("email", userName); 
         // 验证该账号和邮箱是否已经存在
         ManSystemUserVO systemUserVO = systemUserMapper.validateUserIsExists(condition);
-        if(systemUserVO != null){
+        if (systemUserVO != null) {
+            return new MethodResult(MethodResult.FAIL, "用户名已被用户注册");
+        }
+
+        if(!userService.checkAvailable(userName)){
         	return new MethodResult(MethodResult.FAIL, "用户名已经存在");
         }
+
 
 		SysUserMapper sysUserMapper = this.sqlSession.getMapper(SysUserMapper.class);
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
@@ -172,6 +177,7 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
 
 
         return new MethodResult(MethodResult.SUCCESS, "添加成功");
+
 		}
 
 		return new MethodResult(MethodResult.FAIL, "添加失败");
@@ -230,7 +236,7 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
 			}
 			message = "导入完成\n导入：" + successResult + "条纪录 失败：" + (failResult + duplicateResult)+"条纪录</br>用户名重名："+duplicateResult+"条纪录</br>默认密码："+AppConstant.DEFAULT_USER_PASSWORD;
 
-        if(failResult > 0){
+        if(duplicateResult > 0){
             message = message+"\n 请检查用户名是否重名";
         }
 			return new MethodResult(MethodResult.SUCCESS, message);
@@ -307,12 +313,16 @@ public class TerminalUserServiceImpl implements ITerminalUserService {
 		userData.put("id", id);
 		userData.put("usb_status", usbStatus);
 		userData.put("modified_time",
-				StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+        StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
 
 		Integer terminalUserResult = terminalUserMapper
 				.updateUSBStatusById(userData);
 
 		if (terminalUserResult > 0) {
+
+        // 修改关联主机usb配置
+
+
 			return new MethodResult(MethodResult.SUCCESS, "修改成功");
 		}
 		return new MethodResult(MethodResult.FAIL, "修改失败");

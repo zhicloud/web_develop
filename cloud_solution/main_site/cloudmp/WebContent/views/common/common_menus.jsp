@@ -112,7 +112,7 @@ function checkIPAvailable(){
 	jQuery.ajax({
   	 	type: "GET",
   	 	async:false,
-   		url: "<%=request.getContextPath()%>/blacklist/checkIpAvailable",
+   		url: "<%=request.getContextPath()%>/networkrule/blacklist/checkIpAvailable",
   		data: null,
   		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
    		success: function(result){

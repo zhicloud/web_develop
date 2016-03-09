@@ -89,7 +89,7 @@
 
                             <!-- tile header -->
                             <div class="tile-header">
-                                <h3><a href="<%=request.getContextPath() %>/image_upload_address/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入上传地址信息</h3>
+                                <h3><a href="<%=request.getContextPath() %>/image/image_upload_address/all"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入上传地址信息</h3>
                                 <div class="controls">
                                     <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                                 </div>
@@ -99,7 +99,7 @@
                             <!-- tile body -->
                             <div class="tile-body">
 
-                                <form class="form-horizontal" id="image_upload_address_form" role="form" action="${pageContext.request.contextPath }/image_upload_address/mod" method="POST">
+                                <form class="form-horizontal" id="image_upload_address_form" role="form" action="${pageContext.request.contextPath }/image/image_upload_address/mod" method="POST">
                                     <div class="form-group">
                                         <label for="service_name" class="col-sm-2 control-label" >服务名*</label>
                                         <div class="col-sm-4">
@@ -260,7 +260,7 @@
             var options = {
                 success:function result(data){
                     if (data.status == "success") {
-                        location.href = "${pageContext.request.contextPath}/image_upload_address/all";
+                        location.href = "${pageContext.request.contextPath}/image/image_upload_address/all";
                     } else {
                         $("#tipscontent").html(data.message);
                         $("#dia").click();

@@ -93,7 +93,7 @@ public class InterfaceController {
 	 */
 	@RequestMapping(value="/login",method=RequestMethod.GET)
 	public void login(HttpServletRequest request, HttpServletResponse response) throws IOException
-	{
+	{ 
 	    try{
 	        response.setCharacterEncoding("utf-8");
 	        response.setContentType("text/json; charset=utf-8"); 
@@ -171,7 +171,8 @@ public class InterfaceController {
 	            info.setLastLoginTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
 	            info.setIp(ip);
 //	            boxRealInfoService.addOrUpdateBoxInfo(info);
-	        BoxRealInfoCacheManager.singleton().getCache().put(info);
+	            BoxRealInfoCacheManager.singleton().getCache().put(info);
+ 
 
 	        // 写反回流
 	            ServiceUtil.writeJsonTo(response.getOutputStream(), result);

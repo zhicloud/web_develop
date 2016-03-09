@@ -465,5 +465,13 @@ public interface ICloudHostService {
      * @return
      */
     public MethodResult updateDisplayNameById(Map<String,Object> condition);
+
+
+    /**
+     * @function 根据真实云主机ID修改option参数
+     * @param cloudHostVO
+     * @return
+     */
+    MethodResult updateOptions(CloudHostVO cloudHostVO);
 }
 
