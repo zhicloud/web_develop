@@ -173,7 +173,7 @@
 	                                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"> 操作 <span class="caret"></span>
 	                                  </button>
 	                                  <ul class="dropdown-menu" role="menu" style="left:-122px;"> 
-	<!--                                     <li><a href="#">分配盒子</a></li>  -->
+	<!--                                     <li><a href="#">分配云终端</a></li>  -->
 	                                    <c:if test="${hostList.status==3}">
 	                                    	<li><a href="#" onclick="operatorHost('${hostList.realHostId}','1');">开机</a></li> 
 	                                    </c:if>

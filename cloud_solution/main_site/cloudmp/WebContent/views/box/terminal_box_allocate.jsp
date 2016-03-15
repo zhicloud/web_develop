@@ -68,7 +68,7 @@
           <div class="pageheader">
             
 
-            <h2><i class="fa fa-desktop"></i> 分配终端盒子</h2>
+            <h2><i class="fa fa-desktop"></i> 分配云终端</h2>
             
 
           </div>

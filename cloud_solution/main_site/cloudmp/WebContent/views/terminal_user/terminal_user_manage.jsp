@@ -271,10 +271,10 @@
                                   </button>
                                   <ul class="dropdown-menu" role="menu"> 
 									<c:if test="${terminal_user.boxId==null }">
-										<li><a href="javascript:void(0);" onclick="bindBoxBtn('${terminal_user.id}');" >分配盒子</a></li>
+										<li><a href="javascript:void(0);" onclick="bindBoxBtn('${terminal_user.id}');" >分配云终端</a></li>
 									</c:if>
 									<c:if test="${terminal_user.boxId!=null }">
-										<li><a href="javascript:void(0);" onclick="unboundBoxBtn('${terminal_user.id}');">回收盒子</a></li> 
+										<li><a href="javascript:void(0);" onclick="unboundBoxBtn('${terminal_user.id}');">回收云终端</a></li> 
 									</c:if>
                                     <li><a href="javascript:void(0);" onclick="$('#allocateHostsIds').val('${terminal_user.id}');$('#allocat').click();">分配主机</a></li>
                                     <li><a href="javascript:void(0);" onclick="$('#ids_password').val('${terminal_user.id}');$('#usernames').val('${terminal_user.username}');$('#pass').click();">重置密码</a></li> 
@@ -872,14 +872,14 @@
     function updateUser(id){
     	  location.href = path+"/user/"+id+"/update"; 
     }
-    //分配盒子
+    //分配云终端
     function bindBoxBtn(id){
     	  location.href = path+"/user/"+id+"/bindbox"; 
     }
-    //回收盒子
+    //回收云终端
     function unboundBoxBtn(id){
         curId = id;
-    	$("#confirmcontent").html("确定回收该用户的盒子吗？");
+    	$("#confirmcontent").html("确定回收该用户的云终端吗？");
         $("#confirm_btn").attr("onclick","unboundBox();");
         $("#con").click();
     	  

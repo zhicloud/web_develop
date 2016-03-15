@@ -90,17 +90,17 @@ public class TerminalBoxController {
     @ResponseBody
     public MethodResult add(TerminalBoxVO terminalBoxVO, HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.terminal_box_add)){
-            return new MethodResult(MethodResult.FAIL,"您没有新增盒子的权限，请联系管理员");
+            return new MethodResult(MethodResult.FAIL,"您没有新增云终端的权限，请联系管理员");
         }
 
         Map<String, Object> data = new LinkedHashMap<String, Object>();
         data.put("serial_number", terminalBoxVO.getSerialNumber());
         data.put("name", terminalBoxVO.getName());
         if(MethodResult.SUCCESS.equals(terminalBoxService.addTerminalBox(data).status)) {
-            operLogService.addLog("终端盒子", "新增盒子"+terminalBoxVO.getName()+"成功", "1", "1", request);
+            operLogService.addLog("云终端", "新增云终端"+terminalBoxVO.getName()+"成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"创建成功");
         } 
-        operLogService.addLog("终端盒子", "新增盒子"+terminalBoxVO.getName()+"失败", "1", "2", request);
+        operLogService.addLog("云终端", "新增云终端"+terminalBoxVO.getName()+"失败", "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"创建失败");
     }
 
@@ -119,7 +119,7 @@ public class TerminalBoxController {
     @ResponseBody
     public MethodResult modify(TerminalBoxVO terminalBoxVO, HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.terminal_box_modify)){
-            return new MethodResult(MethodResult.FAIL,"您没有修改盒子的权限，请联系管理员");
+            return new MethodResult(MethodResult.FAIL,"您没有修改云终端的权限，请联系管理员");
         }
 
         Map<String, Object> data = new LinkedHashMap<String, Object>();
@@ -127,10 +127,10 @@ public class TerminalBoxController {
         data.put("serial_number", terminalBoxVO.getSerialNumber());
         data.put("name", terminalBoxVO.getName());
         if(MethodResult.SUCCESS.equals(terminalBoxService.modifyTerminalBox(data).status)) {
-            operLogService.addLog("终端盒子", "修改盒子"+terminalBoxVO.getName()+"成功", "1", "1", request);
+            operLogService.addLog("云终端", "修改云终端"+terminalBoxVO.getName()+"成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"修改成功");
         }
-        operLogService.addLog("终端盒子", "修改盒子"+terminalBoxVO.getName()+"失败", "1", "2", request);
+        operLogService.addLog("云终端", "修改云终端"+terminalBoxVO.getName()+"失败", "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"修改失败");
     }
 
@@ -157,7 +157,7 @@ public class TerminalBoxController {
     @ResponseBody
     public MethodResult allocate(@RequestParam("boxId") String id, @RequestParam("userId") String userId, HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.terminal_box_allocate)){
-            return new MethodResult(MethodResult.FAIL,"您没有分配盒子的权限，请联系管理员");
+            return new MethodResult(MethodResult.FAIL,"您没有分配云终端的权限，请联系管理员");
         }
 
         Map<String, Object> data = new LinkedHashMap<String, Object>();
@@ -165,10 +165,10 @@ public class TerminalBoxController {
         data.put("allocate_user_id", userId);
 
         if(MethodResult.SUCCESS.equals(terminalBoxService.allocateTerminalBox(data).status)) {
-            operLogService.addLog("终端盒子", "分配盒子成功", "1", "1", request);
+            operLogService.addLog("云终端", "分配云终端成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"分配成功");
         }
-        operLogService.addLog("终端盒子", "分配盒子失败", "1", "2", request);
+        operLogService.addLog("云终端", "分配云终端失败", "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"分配失败");
     }
 
@@ -176,16 +176,16 @@ public class TerminalBoxController {
     @ResponseBody
     public MethodResult release(@RequestParam("id") String id, HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.terminal_box_release)){
-            return new MethodResult(MethodResult.FAIL,"您没有回收盒子的权限，请联系管理员");
+            return new MethodResult(MethodResult.FAIL,"您没有回收云终端的权限，请联系管理员");
         }
 
         Map<String, Object> data = new LinkedHashMap<String, Object>();
         data.put("id", id);
         if(MethodResult.SUCCESS.equals(terminalBoxService.releaseTerminalBox(data).status)) {
-            operLogService.addLog("终端盒子", "回收盒子成功", "1", "1", request);
+            operLogService.addLog("云终端", "回收云终端成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"回收成功");
         }
-        operLogService.addLog("终端盒子", "回收盒子失败", "1", "2", request);
+        operLogService.addLog("云终端", "回收云终端失败", "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"回收失败");
     }
 
@@ -193,16 +193,16 @@ public class TerminalBoxController {
     @ResponseBody
     public MethodResult delete(@PathVariable("id") String id, HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.terminal_box_delete)){
-            return new MethodResult(MethodResult.FAIL,"您没有删除盒子的权限，请联系管理员");
+            return new MethodResult(MethodResult.FAIL,"您没有删除云终端的权限，请联系管理员");
         }
         List<String> ids = new ArrayList<String>();
         ids.add(id);
 
         if(MethodResult.SUCCESS.equals(terminalBoxService.deleteTerminalBoxByIds(ids).status)) {
-            operLogService.addLog("终端盒子", "删除盒子成功", "1", "1", request);
+            operLogService.addLog("云终端", "删除云终端成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"删除成功");
         }
-        operLogService.addLog("终端盒子", "删除盒子失败", "1", "2", request);
+        operLogService.addLog("云终端", "删除云终端失败", "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"删除失败");
     }
 
@@ -210,16 +210,16 @@ public class TerminalBoxController {
     @ResponseBody
     public MethodResult deleteBoxes(@RequestParam("ids[]") String[] ids, HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.terminal_box_delete)){
-            return new MethodResult(MethodResult.FAIL,"您没有删除盒子的权限，请联系管理员");
+            return new MethodResult(MethodResult.FAIL,"您没有删除云终端的权限，请联系管理员");
         }
 
         List<String> idsList = Arrays.asList(ids);
 
         if(MethodResult.SUCCESS.equals(terminalBoxService.deleteTerminalBoxByIds(idsList).status)) {
-            operLogService.addLog("终端盒子", "删除盒子成功", "1", "1", request);
+            operLogService.addLog("云终端", "删除云终端成功", "1", "1", request);
             return new MethodResult(MethodResult.SUCCESS,"删除成功");
         }
-        operLogService.addLog("终端盒子", "删除盒子失败", "1", "2", request);
+        operLogService.addLog("云终端", "删除云终端失败", "1", "2", request);
         return new MethodResult(MethodResult.FAIL,"删除失败");
     }
 

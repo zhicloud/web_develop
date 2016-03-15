@@ -99,7 +99,7 @@
                             <div class="tile-header">
                                 <%--<button type="button" class="btn btn-red delete" id="boxAdd">--%>
                                 <%--<i class="fa fa-plus"></i>--%>
-                                <%--<span> 新增终端盒子 </span>--%>
+                                <%--<span> 新增云终端 </span>--%>
                                 <%--</button>--%>
                                 <%--<button type="button" class="btn btn-blue delete" onclick="$('#file').trigger('click');">--%>
                                 <%--<i class="fa fa-file-excel-o"></i>--%>
@@ -220,7 +220,7 @@
                                                 <form role="form">
 
                                                     <div class="form-group">
-                                                        <label style="align:center;" id="confirmcontent">确定要删除该终端盒子吗？</label>
+                                                        <label style="align:center;" id="confirmcontent">确定要删除该云终端吗？</label>
                                                     </div>
 
                                                 </form>

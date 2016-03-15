@@ -67,7 +67,7 @@
           <div class="pageheader">
             
 
-            <h2><i class="fa fa-book"></i> 盒子固件升级</h2>
+            <h2><i class="fa fa-book"></i> 云终端固件升级</h2>
             
 
           </div>
@@ -421,4 +421,3 @@
   </body>
 </html>
       
- 
