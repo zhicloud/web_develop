@@ -235,7 +235,7 @@ function saveHostInfo(){
                           <div class="modal-dialog">
                               <div class="modal-content" style="width:60%;margin-left:20%;">
                                   <div class="modal-header">
-                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="window.location.reload();">Close</button>
                                       <h3 class="modal-title" id="modalDialogLabel"><strong>提示</strong></h3>
                                   </div>
                                   <div class="modal-body">
@@ -372,7 +372,8 @@ function saveStartupForm(){
                             $("#tipscontent").html(data.message);
                             $("#dia").click();
                         }else{
-                            window.location.reload();
+                            $("#tipscontent").html(data.message);
+                            $("#dia").click();
                         }
                     },
                     error: function(data){
