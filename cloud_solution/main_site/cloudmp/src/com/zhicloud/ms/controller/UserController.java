@@ -591,9 +591,9 @@ public class UserController {
 		condition.put("allocate_user_id", userId);
 		MethodResult mr = terminalBoxService.allocateTerminalBox(condition);
 		if(mr.isSuccess()){
-            operLogService.addLog("终端盒子", "分配盒子成功", "1", "1", request);
+            operLogService.addLog("云终端", "分配云终端成功", "1", "1", request);
         }else{
-              operLogService.addLog("终端盒子", "分配盒子失败", "1", "2", request);
+              operLogService.addLog("云终端", "分配云终端失败", "1", "2", request);
         }
 		return mr;
 	}
@@ -603,9 +603,9 @@ public class UserController {
 	public MethodResult unboundBox(@RequestParam("id") String userId,HttpServletRequest request){
 		MethodResult mr = terminalBoxService.releaseTerminalBoxByUserId(userId);
 		if(mr.isSuccess()){
-            operLogService.addLog("终端盒子", "回收盒子成功", "1", "1", request);
+            operLogService.addLog("云终端", "回收云终端成功", "1", "1", request);
         }else{
-              operLogService.addLog("终端盒子", "回收盒子失败", "1", "2", request);
+              operLogService.addLog("云终端", "回收云终端失败", "1", "2", request);
         }
 		return mr;
 	}
