@@ -383,7 +383,7 @@
                             <form class="form-horizontal" role="form" parsley-validate id="basicvalidations_iso" action="<%=request.getContextPath() %>/cloudserver/settenant" method="post"   >
                               <input type="hidden" name="hostId" id="hostId"> 
                               <div class="form-group">
-		                        <label for="input07" class="col-sm-3 control-label">光盘镜像选择*</label>
+		                        <label for="imageId" class="col-sm-3 control-label">光盘镜像选择*</label>
 		                        <div class="col-sm-8" id="selectbox">
 		                          <select class="chosen-select   form-control" name="imageId"id="imageId" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
 		                            <option value="">请选择镜像</option> 
