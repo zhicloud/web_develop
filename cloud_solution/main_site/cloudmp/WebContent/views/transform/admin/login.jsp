@@ -33,7 +33,7 @@ body #content .inside-block .l-box{
 	min-height: 663px;
 	margin-top:-331.5px;
 	margin-left:-280px;
-	padding:47px 70px 93px;
+	padding:47px 0 93px;
 }
 body #content .inside-block .l-box .m-logo{
 	margin-top:40px;
