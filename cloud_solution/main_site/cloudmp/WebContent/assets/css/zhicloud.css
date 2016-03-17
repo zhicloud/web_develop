@@ -29,8 +29,8 @@ html {
     min-height: 100%; }
   #wrap #content {
     padding-bottom: 0;
-    padding-left: 265px;
-    padding-right: 25px;
+    /*padding-left: 265px;*/
+    /*padding-right: 25px;*/
     height: 100%;
     width: 100%; }
     #wrap #content .main {
@@ -44,7 +44,7 @@ body {
     overflow: auto;
     margin-right: 0; }
   body.bg-1 {
-    background-image: url(../images/noise.png), url(../images/backgrounds/1.jpg);
+    background-image: url(../images/backgrounds/1.jpg);
     background-repeat: repeat, no-repeat;
     background-position: left top;
     background-size: auto, cover; }
@@ -13906,7 +13906,7 @@ body #content.full-page.error .search {
       body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li>a{background:rgba(0,0,0,.3);}
       body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li.active>a{background:rgba(0,0,0,0);color:#fff;}
       
-      /* ==========×Ô¶¨Òåcss========= */
+      /* ==========ï¿½Ô¶ï¿½ï¿½ï¿½css========= */
       .span2btn{
     	cursor: pointer;
       }
