@@ -289,7 +289,7 @@
                           <select id="oper_select" class="chosen-select form-control">
                             <option value="">批量操作</option> 
                             <option value="del">删除</option>
-                            <option value="assign">分配</option>
+                            <option value="assign">分配到对应数量的用户</option>
                           </select>
                           <span class="input-group-btn">
                             <button class="btn btn-default" type="button" id="save_oper">提交</button>
@@ -617,7 +617,7 @@
 						async: false,
 						success:function(data){
 							if(data.status == "success"){
-								location.href=path +"/views_manage_assign.jsp"; 
+								location.href=path +"/views/warehouse_manage_assign.jsp";
 							}else if(data.status == "fail"){
 								return;
 							}
