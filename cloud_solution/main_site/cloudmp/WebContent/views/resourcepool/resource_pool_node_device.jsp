@@ -358,7 +358,7 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		window.location.reload();
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -381,7 +381,7 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		window.location.reload();
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -417,7 +417,9 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		$("#tipscontent").html("挂载成功，将在5秒后刷新结果，请稍等...");
+		        		$("#dia").click();
+		        		setTimeout(function(){window.location.href = document.referrer},5000); 
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -438,7 +440,7 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		window.location.reload();
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -472,7 +474,7 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		window.location.reload();
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -493,7 +495,7 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		window.location.reload();
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -526,7 +528,7 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		window.location.reload();
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -548,7 +550,7 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		window.location.reload();
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -589,7 +591,7 @@
 								        		 $("#tipscontent").html(data.message);
 								     		     $("#dia").click();  
 	 		        						}else{  
-	 		        							location.href = location.href;
+	 		        							window.location.reload();
 	 		        						}
 	 		        					},
 	 		        					dataType:'json',

@@ -1854,6 +1854,9 @@ public class CloudHostServiceImpl implements ICloudHostService {
         CloudHostVO cloud = null;
         try {
             // 参数处理
+            if(server.getBandwidth() == null ){
+                server.setBandwidth(new BigInteger(server.getBandwidthdiy()+""));
+            }
             String bandwidth = server.getBandwidth().toString();
             if(StringUtil.isBlank(server.getCpuCore().toString())){
                 operLogService.addLog("云主机", "修改主机配置"+server.getDisplayName()+"失败", "1", "2", request);

@@ -236,8 +236,8 @@
                             <th class="sortable sort-alpha">镜像名称</th>
                             <th class="sortable sort-alpha">显示名称</th>
                             <th class="sortable sort-alpha">类型</th>
-                            <th class="sortable sort-alpha">格式</th>
-                            <th class="sortable sort-alpha">镜像用途</th> 
+                            <th class="sortable sort-alpha">镜像用途</th>
+                            <th class="sortable sort-alpha">格式</th> 
                             <th class="sortable sort-alpha">创建时间</th>  
                             <th class="sortable sort-alpha">状态</th>  
                             <th class="no-sort">操作</th>
@@ -453,7 +453,7 @@
 		                            <label for="uploadtype1">raw</label>
 		                          </div>
 		                          <div class="radio  col-md-3">
-		                            <input type="radio" name="isotype"   id="uploadtype2" value="qcow2">
+		                            <input type="radio" name="isotype"   id="uploadtype2" value="qcow2"  >
 		                            <label for="uploadtype2">qcow2</label>
 		                          </div>
 		                        </div>
@@ -481,7 +481,7 @@
 	                        <label for="isopath" class="col-sm-3 control-label">镜像路径</label>
 	                        <div class="col-sm-8">
 	                         <div style="float:left;width:75%;">
-	                         	<input id="isopath" type="text" style="width:100%;" disabled="disabled" class="form-control" parsley-required="true">
+	                         	<input id="isopath" type="text" style="width:100%;" readonly="readonly" class="form-control" parsley-required="true" >
 	                         </div>
 	                         <div id="picker" style="width:25%;float: left;">选择文件</div>
 	                         <div id="chooseinfo" style="display:none;color: red;">请选择镜像文件</div>
@@ -589,6 +589,7 @@
 
       // Add custom class to pagination div
       $.fn.dataTableExt.oStdClasses.sPaging = 'dataTables_paginate pagination-sm paging_bootstrap paging_custom';  
+      
  
       /*************************************************/
       /**************** BASIC DATATABLE ****************/
@@ -605,7 +606,7 @@
  
 
       /* Build the DataTable with third column using our custom sort functions */
-      var oTable01 = $('#basicDataTable').dataTable({
+      var oTable01 = $('#basicDataTable').dataTable({ 
         "sDom":
           "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
           "t"+
@@ -670,6 +671,9 @@
              window.location.href = encodeURI(path + "/image/imagelist?name="+name+"&image_type="+image_type+"&type="+type+"&status="+status);
 
          });
+        
+      //initialize chosen
+        $('.dataTables_length select').chosen({disable_search_threshold: 10});
 
          $('#name').bind('keypress',function(event){
              if(event.keyCode == "13")

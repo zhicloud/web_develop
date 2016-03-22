@@ -289,7 +289,7 @@
                           <select id="oper_select" class="chosen-select form-control">
                             <option value="">批量操作</option> 
                             <option value="del">删除</option>
-                            <option value="assign">分配</option>
+                            <option value="assign">分配到对应数量的用户</option>
                           </select>
                           <span class="input-group-btn">
                             <button class="btn btn-default" type="button" id="save_oper">提交</button>
@@ -383,7 +383,7 @@
                             <form class="form-horizontal" role="form" parsley-validate id="basicvalidations_iso" action="<%=request.getContextPath() %>/cloudserver/settenant" method="post"   >
                               <input type="hidden" name="hostId" id="hostId"> 
                               <div class="form-group">
-		                        <label for="input07" class="col-sm-3 control-label">光盘镜像选择*</label>
+		                        <label for="imageId" class="col-sm-3 control-label">光盘镜像选择*</label>
 		                        <div class="col-sm-8" id="selectbox">
 		                          <select class="chosen-select   form-control" name="imageId"id="imageId" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
 		                            <option value="">请选择镜像</option> 
@@ -617,7 +617,7 @@
 						async: false,
 						success:function(data){
 							if(data.status == "success"){
-								location.href=path +"/views_manage_assign.jsp"; 
+								location.href=path +"/views/warehouse_manage_assign.jsp";
 							}else if(data.status == "fail"){
 								return;
 							}

@@ -1042,21 +1042,24 @@ public class ResourcePoolController {
                  cList.addAll(list);
              }
 
-             reqTime = System.currentTimeMillis();
+             reqTime = System.currentTimeMillis(); 
+             channel = HttpGatewayManager.getAsyncChannel(Integer.valueOf(1)); 
              result = channel.serverQueryStorageDevice(MountDiskVo.LEVEL, target,MountDiskVo.DISK_TYPE_CLOUDSTORAGE );  
              if("success".equals(result.get("status"))){
                  List<MountDiskVo> list = StorageManager.singleton().getDiskVoList(reqTime, MountDiskVo.DISK_TYPE_CLOUDSTORAGE);
                  cList.addAll(list);
              }
 
-             reqTime = System.currentTimeMillis();
+             reqTime = System.currentTimeMillis(); 
+             channel = HttpGatewayManager.getAsyncChannel(Integer.valueOf(1)); 
              result = channel.serverQueryStorageDevice(MountDiskVo.LEVEL, target, MountDiskVo.DISK_TYPE_NASDISK);  
              if("success".equals(result.get("status"))){
                  List<MountDiskVo> list = StorageManager.singleton().getDiskVoList(reqTime, MountDiskVo.DISK_TYPE_NASDISK);
                  cList.addAll(list);
              }
  
-             reqTime = System.currentTimeMillis();
+             reqTime = System.currentTimeMillis(); 
+             channel = HttpGatewayManager.getAsyncChannel(Integer.valueOf(1)); 
              result = channel.serverQueryStorageDevice(MountDiskVo.LEVEL, target, MountDiskVo.DISK_TYPE_IPSAN);  
              if("success".equals(result.get("status"))){
                  List<MountDiskVo> list = StorageManager.singleton().getDiskVoList(reqTime, MountDiskVo.DISK_TYPE_IPSAN);

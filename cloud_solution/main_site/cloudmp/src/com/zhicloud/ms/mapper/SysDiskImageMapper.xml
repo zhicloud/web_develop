@@ -197,6 +197,12 @@
 		where  id  = #{id}
 	</update>
 	
+	<update id="updateTypeByUuid">
+		update sys_disk_image set
+		type = #{type}
+		where  real_image_id  = #{uuid}
+	</update>
+	
 	
 	<delete id="deleteSysDiskImageByIds">
 		delete from sys_disk_image

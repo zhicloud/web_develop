@@ -128,6 +128,18 @@ public interface ISysDiskImageService {
 	 */
 	public MethodResult updateImageType(String[] ids,Integer imageType);
 	
+	/**
+	 * 
+	* @Title: updateTypeByUuid 
+	* @Description: 根据真实镜像id更新镜像类型 
+	* @param @param uuid
+	* @param @param type
+	* @param @return      
+	* @return MethodResult     
+	* @throws
+	 */
+	public MethodResult updateTypeByUuid(String uuid,Integer type);
+	
 	
 
 }

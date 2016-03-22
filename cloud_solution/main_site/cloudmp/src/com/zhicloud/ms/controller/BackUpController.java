@@ -438,7 +438,7 @@ public class BackUpController {
             HostBackupProgressPool pool = HostBackupProgressPoolManager.singleton().getPool();
             HostBackupProgressData  hostBackup = new HostBackupProgressData();
             hostBackup.setSessionId(sessionId);
-            hostBackup.setUuid(uuid);
+            hostBackup.setUuid(host.getRealHostId());
             hostBackup.updateTime();
             hostBackup.setBackupStatus(10);
             pool.put(hostBackup);

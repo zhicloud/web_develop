@@ -387,13 +387,13 @@
 		      $("#dia").click();
     		return false;
     	}
-//      	if(filetype != ".tgz"){
-//      		isCommited = false;
-//     		$("#tipscontent").html("文件格式不正确");
-// 		      $("#dia").click();
-//     		return false;
+     	if(filetype != ".tgz"){
+     		isCommited = false;
+    		$("#tipscontent").html("文件格式不正确");
+		      $("#dia").click();
+    		return false;
     		
-//     	}
+    	}
     	
     	return true;
     }

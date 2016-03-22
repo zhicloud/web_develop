@@ -403,7 +403,7 @@
 							        		  $("#tipscontent").html(data.message);
 							     		      $("#dia").click();  		        							
 		        						}else{  		        							
-	   		        						history.go(-1);
+		        							window.location.href = document.referrer;
 		        						}
 		        					},
 		        					dataType:'json',

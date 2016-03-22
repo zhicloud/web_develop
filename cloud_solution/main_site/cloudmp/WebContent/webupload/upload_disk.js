@@ -28,10 +28,14 @@ jQuery(function() {
         chunkSize:chunkSize,
 	    accept: {
 	            title: 'DISK',
-	            extensions: 'iso,img,qcow2',
-	            mimeTypes: 'iso/*'
+	            extensions: '*',
+	            mimeTypes: '*'
 	        }
     });
+    $("input[name='isotype']").on('click', function(file) {
+    	$("#isopath").val(''); 
+    })
+    
 	//添加文件之前先清空原来数据
     uploader.on( 'beforeFileQueued', function( file ) {
     	uploader.reset();
@@ -50,8 +54,19 @@ jQuery(function() {
     	filesize = file.size;
 		$("#isopath").css("border","0");
 		$("#chooseinfo").css("display","none");
+		var filetype = file.name.substr(file.name.lastIndexOf('.')).toLowerCase();
+		var realType = $('input[name="isotype"]:checked ').val();
 		
-    });
+		if(!(realType == 'raw' && filetype == '.img')&&!(realType == 'qcow2' && filetype == '.qcow2')){
+			$("#chooseinfo").css("display","block");
+	    	$("#chooseinfo").html("请根据镜像类型选择正确的镜像文件");
+	    	$("#isopath").val('');
+		} 
+		else{
+			$("#chooseinfo").css("display","none"); 
+		}
+		
+    }); 
 
     // 文件上传过程中创建进度条实时显示。
     uploader.on( 'uploadProgress', function( file, percentage ) {
@@ -63,7 +78,9 @@ jQuery(function() {
 	        $percent.find(".green").html(progresswid  + '%');
     });
     uploader.on( 'uploadSuccess', function( file,response ) {
-    	updateMemoryData('disk');
+    	var obj = JSON.parse(JSON.stringify(response)); 
+    	var uuid = obj['zc-uuid'];
+    	updateMemoryData('disk',uuid);     	
     	$('#closebtn').click();
     	$("#successconfirm").click();
     });

@@ -268,8 +268,7 @@ public class StorageManager {
 	public List<MountDiskVo> getDiskVoList(long reqTime,int diskType){
 		List<MountDiskVo> list = new LinkedList<MountDiskVo>();
 		while (true){
-			long l= (System.currentTimeMillis()-reqTime);
-			//System.err.println(l);
+			long l= (System.currentTimeMillis()-reqTime); 
 			if (l>5*1000){//超过5秒
 				//超时退出
 				return list;
@@ -295,11 +294,13 @@ public class StorageManager {
             			vo.setDisk_volume(BigInteger.valueOf(volumeAarry.getLong(i)));//单位GB	    						
 						list.add(vo);
 					}
-				}
-			    break;
+					return list;
+				}else{
+				    return list;
+				} 
 			}
 		}	
 		
-		return list;
+	 
 	}
 }

@@ -278,9 +278,9 @@ function deleteRow(){
 	                     		<td>
 	                     		<%-- <input type="text" value="${valuevo.name }" class="form-control" id="name${status.count}" > --%>
 	                     		<select class="chosen-select chosen-transparent form-control" name="name" id="name${status.count}">
-			                            <option value="cpu_usage">CPU利用率</option>  
-			                            <option value="disk_usage">磁盘利用率</option> 
-			                            <option value="memory_usage">内存利用率</option> 
+			                            <option value="cpu_usage" <c:if test="${valuevo.code=='cpu_usage' }">selected</c:if>>CPU利用率</option>  
+			                            <option value="disk_usage" <c:if test="${valuevo.code=='disk_usage' }">selected</c:if>>磁盘利用率</option> 
+			                            <option value="memory_usage" <c:if test="${valuevo.code=='memory_usage' }">selected</c:if>>内存利用率</option> 
 		                        </select>
 	                     		</td>
 								<%-- <td><input type="text" value="${valuevo.code }" class="form-control" id="code${status.count}" ></td> --%>
