@@ -52,8 +52,8 @@ body #content.full-page .inside-block .logindiv .input-group input {
 
 
 	background-color: rgba(0, 0, 0, 0.2);
-    background-color: rgb(0, 0, 0);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000,endColorstr=#33000000);    /*IE8支持*/
+    /*background-color: rgb(0, 0, 0);*/
+    /*filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000,endColorstr=#33000000);    !*IE8支持*!*/
 
     border: 0 !important;
 	-webkit-border-radius: 4px 0 0 4px !important;

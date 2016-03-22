@@ -7365,8 +7365,8 @@ body #content .modal .modal-dialog .modal-content div.checkbox {
 
 body #content div.checkbox.check-transparent label:before{
     background-color: rgba(0, 0, 0, 0.2);
-    background-color: rgb(0, 0, 0);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000,endColorstr=#33000000);    /*IE8支持*/
+    /*background-color: rgb(0, 0, 0);*/
+    /*filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000,endColorstr=#33000000);    !*IE8支持*!*/
     border: 0;
     -webkit-box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.1);
     box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.1); }
