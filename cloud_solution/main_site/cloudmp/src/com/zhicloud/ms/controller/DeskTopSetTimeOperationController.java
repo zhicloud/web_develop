@@ -279,10 +279,10 @@ public class DeskTopSetTimeOperationController {
          } catch (Exception e) {
             e.printStackTrace();
             operLogService.addLog("预启动", "更新时间失败", "1", "2", request);
-            return new MethodResult(MethodResult.FAIL, "更新失败");
+            return new MethodResult(MethodResult.FAIL, "设置失败,请稍后重试");
         }
         operLogService.addLog("预启动", "更新时间成功", "1", "1", request);
-        return new MethodResult(MethodResult.SUCCESS, "更新成功");
+        return new MethodResult(MethodResult.SUCCESS, "设置成功");
     }
 
 

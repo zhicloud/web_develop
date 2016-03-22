@@ -67,7 +67,7 @@
           <div class="pageheader">
             
 
-            <h2><i class="fa fa-hdd-o"></i> 终端盒子实时情况</h2>
+            <h2><i class="fa fa-hdd-o"></i> 云终端实时情况</h2>
             
 
           </div>
@@ -148,10 +148,10 @@
 <!--                             </div> -->
 <!--                           </th> -->
                               <th class="sortable sort-alpha">用户名</th>
-                              <th class="sortable sort-amount">盒子编号</th>
+                              <th class="sortable sort-amount">云终端编号</th>
                               <th class="sortable sort-amount">ip</th>
                               <th class="sortable sort-amount">网关</th>
-                              <th class="sortable sort-amount">盒子mac</th>
+                              <th class="sortable sort-amount">云终端mac</th>
                               <th class="sortable sort-amount">软件版本</th>
                               <th class="sortable sort-amount">硬件版本</th>
                               <th class="sortable sort-amount">上次登录时间</th>
@@ -214,7 +214,7 @@
                             <form role="form">   
 
                               <div class="form-group">
-                                <label style="align:center;" id="confirmcontent">确定要删除该终端盒子吗？</label>
+                                <label style="align:center;" id="confirmcontent">确定要删除该云终端吗？</label>
                                </div>
 
                             </form>

@@ -67,7 +67,7 @@
           <div class="pageheader">
             
 
-            <h2><i class="fa fa-hdd-o"></i> 未分配终端盒子管理</h2>
+            <h2><i class="fa fa-hdd-o"></i> 未分配云终端管理</h2>
             
 
           </div>
@@ -97,7 +97,7 @@
                       <div class="tile-header">
 <!--                           <button type="button" class="btn btn-red delete" id="boxAdd"> -->
 <!--                               <i class="fa fa-plus"></i> -->
-<!--                               <span> 新增终端盒子 </span> -->
+<!--                               <span> 新增云终端 </span> -->
 <!--                           </button> -->
                           <%--<button type="button" class="btn btn-blue delete" onclick="$('#file').trigger('click');">--%>
                               <%--<i class="fa fa-file-excel-o"></i>--%>
@@ -130,7 +130,7 @@
                             </div>
                           </th>
                               <th class="sortable sort-alpha">编号</th>
-                              <th class="sortable sort-amount">终端盒子名称</th>
+                              <th class="sortable sort-amount">云终端名称</th>
                               <th class="sortable sort-amount">创建时间</th>
                               <th class="sortable sort-amount">状态</th>
                               <th class="no-sort">操作</th>
@@ -161,7 +161,7 @@
                                 <td>
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-red delete" onclick="bindBoxBtn('${terminal_boxes.id }')">
-                              				<span> 分配盒子 </span>
+                              				<span> 分配云终端 </span>
                           				</button>
                                     </div>
                                 </td>
@@ -203,7 +203,7 @@
                             <form role="form">   
 
                               <div class="form-group">
-                                <label style="align:center;" id="confirmcontent">确定要删除该终端盒子吗？</label>
+                                <label style="align:center;" id="confirmcontent">确定要删除该云终端吗？</label>
                                </div>
 
                             </form>
@@ -423,7 +423,7 @@
 
         function bindBoxBtn(id) {
         	curId = id;
-        	$("#confirmcontent").html("确定分配该盒子给用户吗？");
+        	$("#confirmcontent").html("确定分配该云终端给用户吗？");
             $("#confirm_btn").attr("onclick","bindBox();");
             $("#con").click();
         }

@@ -378,10 +378,7 @@
       
     });
     function saveForm(){
-		if(isCommited){
-     		return false;
-		} 
-		isCommited = true; 
+
 		
 		jQuery.ajax({
 	        url: path+'/main/checklogin',
@@ -415,8 +412,12 @@
    		        			};
    		        			var form = jQuery("#basicvalidations");
    		        			form.parsley('validate');
-   		        			if(form.parsley('isValid')){  		        				
-			        			jQuery("#basicvalidations").ajaxSubmit(options); 
+   		        			if(form.parsley('isValid')){
+                                if(isCommited){
+                                    return false;
+                                }
+                                isCommited = true;
+                                jQuery("#basicvalidations").ajaxSubmit(options);
    		        			}
  		        	} 
 	        }
