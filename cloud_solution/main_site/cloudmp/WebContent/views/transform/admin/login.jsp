@@ -48,10 +48,6 @@ body #content.full-page .inside-block .logindiv .input-group .input-group-addon 
 body #content.full-page .inside-block .logindiv .input-group .input-group-addon i:after {content: "";height: 50%;margin-left: -25px;position: absolute;top: 25%;}
 body #content.full-page .inside-block .logindiv .input-group input {
 
-
-
-    background-color: rgb(0, 0, 0);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000,endColorstr=#33000000);    /*IE8支持*/
 	background-color: rgba(0, 0, 0, 0.2);
 
     border: 0 !important;
@@ -368,6 +364,8 @@ jQuery(document).ready(function(){
 			login();
 		}
 	})
+
+
 	/* $("body").click(function(){
 		$("#errorinfo").html("");
 		$("#errorMask").hide();
