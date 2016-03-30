@@ -474,7 +474,7 @@
                                </div>
 							  <div class="form-group" style="display:none;" id="manualdiv">
                                 <label for="manualpass">新密码:</label>
-                                <input type="text" class="form-control" id="manualpass" parsley-required="true" parsley-maxlength="20">
+                                <input type="password" class="form-control" id="manualpass" parsley-required="true" parsley-maxlength="20" parsley-minlength="6">
                               </div>
                             </form>
                           </div>

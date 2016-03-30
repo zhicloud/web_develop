@@ -988,8 +988,12 @@ public class ManSysUserServiceImpl implements ManSysUserService {
         logger.debug("SysUserServiceImpl.manualPassword()");
         try {
             try {
+                ManSystemUserMapper systemUserMapper = this.sqlSession.getMapper(ManSystemUserMapper.class);
                 Map<String, Object> user = new LinkedHashMap<String, Object>();
-                user.put("password", newpassword);
+        //        user.put("password", newpassword); 
+                user.put("password", TransFormLoginHelper.md5(AppConstant.PASSWORD_MD5_STR, newpassword));
+                user.put("billid", billid);
+                 systemUserMapper.updateSystemUser(user);
                 EmailSendService emailSendService = MessageServiceManager.singleton().getMailService();
                 emailSendService.sendMailWithBcc(EmailTemplateConstant.INFO_RESET_PASSWORD_MANUAL, email, user);
             } catch (Exception e) {

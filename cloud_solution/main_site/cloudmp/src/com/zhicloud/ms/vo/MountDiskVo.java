@@ -6,7 +6,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 public class MountDiskVo {
-	public static final Integer LEVEL= 0;
+	public static final Integer LEVEL= 1;
 	public static final Integer DISK_TYPE_LOCALSTORAGE= 0;
 	public static final Integer DISK_TYPE_CLOUDSTORAGE= 1;	
 	public static final Integer DISK_TYPE_NASDISK= 2;	

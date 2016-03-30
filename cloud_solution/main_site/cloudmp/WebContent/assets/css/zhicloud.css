@@ -29,8 +29,8 @@ html {
     min-height: 100%; }
   #wrap #content {
     padding-bottom: 0;
-    /*padding-left: 265px;*/
-    /*padding-right: 25px;*/
+    padding-left: 265px;
+    padding-right: 25px;
     height: 100%;
     width: 100%; }
     #wrap #content .main {
@@ -13906,7 +13906,7 @@ body #content.full-page.error .search {
       body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li>a{background:rgba(0,0,0,.3);}
       body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li.active>a{background:rgba(0,0,0,0);color:#fff;}
       
-      /* ==========ï¿½Ô¶ï¿½ï¿½ï¿½css========= */
+      /* ==========×Ô¶¨Òåcss========= */
       .span2btn{
     	cursor: pointer;
       }
