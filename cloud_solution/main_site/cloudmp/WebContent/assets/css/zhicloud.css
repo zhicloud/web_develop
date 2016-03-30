@@ -7355,21 +7355,34 @@ body #content .modal .modal-dialog .modal-content fieldset[disabled] .form-contr
 body #content div.checkbox,
 body #content .modal .modal-dialog .modal-content div.checkbox {
   margin: 5px 0; }
-  body #content div.checkbox.check-transparent input[type=checkbox] + label:before,
+
+/*body #content div.checkbox.check-transparent input[type=checkbox] + label:before,*/
   body #content .modal .modal-dialog .modal-content div.checkbox.check-transparent input[type=checkbox] + label:before {
     background-color: rgba(0, 0, 0, 0.2);
     border: 0;
     -webkit-box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.1);
     box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.1); }
+
+body #content div.checkbox.check-transparent label:before{
+    background-color: rgba(0, 0, 0, 0.2);
+
+    border: 0;
+    -webkit-box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.1); }
+
   body #content div.checkbox.check-transparent input[type=checkbox]:checked + label:before,
   body #content .modal .modal-dialog .modal-content div.checkbox.check-transparent input[type=checkbox]:checked + label:before {
     background-color: white;
     -webkit-box-shadow: none;
     box-shadow: none;
     border: 0; }
-  body #content div.checkbox.check-transparent input[type=checkbox]:checked + label::after,
-  body #content .modal .modal-dialog .modal-content div.checkbox.check-transparent input[type=checkbox]:checked + label::after {
+  body #content div.checkbox.check-transparent label::after{
     color: #717171; }
+
+/*body #content div.checkbox.check-transparent input[type=checkbox]:checked + label::after,*/
+body #content .modal .modal-dialog .modal-content div.checkbox.check-transparent input[type=checkbox]:checked + label::after {
+    color: #717171; }
+
   body #content div.checkbox.check-transparent label,
   body #content .modal .modal-dialog .modal-content div.checkbox.check-transparent label {
     color: rgba(255, 255, 255, 0.5); }
