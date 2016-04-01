@@ -115,15 +115,15 @@
                     <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/networkpool/ipresourcepool/${poolId}/an" method="post"   >
                       <input name="prefixion" type="hidden" value="server_pool_"/>
                       <div class="form-group">
-                        <label for="input01" class="col-sm-2 control-label">起始IP *</label>
+                        <label for="ip" class="col-sm-2 control-label">起始IP *</label>
                          <div class="col-sm-4">
-                             <input type="text" class="form-control" id="ip" name="ip"  parsley-trigger="change"  parsley-ip="true" parsley-required="true"  parsley-maxlength="50" parsley-validation-minlength="1">
+                             <input type="text" class="form-control" id="ip" name="ip"  parsley-trigger="change"  parsley-ip="true" parsley-required="true"  parsley-maxlength="50" parsley-validation-minlength="1" onchange="getCount()">
                         </div>
                       </div>
                       <div class="form-group">  
-                        <label for="input01" class="col-sm-2 control-label">IP数量 *</label>
+                        <label for="range" class="col-sm-2 control-label">IP数量 *</label>
                          <div class="col-sm-4">
-                             <input type="text" class="form-control" id="range" name="range"  parsley-trigger="change" parsley-required="true" parsley-type="integer" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1"/>
+                             <input type="text" class="form-control" id="range" name="range"  parsley-trigger="change" parsley-required="true" parsley-type="integer" parsley-min="1" parsley-validation-minlength="1"/>
                         </div>
                       </div>
                       
@@ -189,18 +189,49 @@
     <!-- Wrap all page content end -->
     <section class="videocontent" id="video"></section>
     <script type="text/javascript" src="<%=request.getContextPath()%>/js/plugins/jquery.form.js"></script>
-    <script>
+     <script type="text/javascript">
 		var poolId = "${poolId}";
 		var isCommited = false;
+        var max = 0;
 	    //返回
 	    function backhome(){
 	    	window.location.href = "<%=request.getContextPath()%>/networkpool/ipresourcepool/"+poolId+"/qn";
-	    }    
+	    }
+
+        function getCount() {
+            var ip = $("#ip").val();
+            var p = new Array();
+            p = ip.split(".");
+
+            var n1 = parseInt(p[0]);
+            var n2 = parseInt(p[1]);
+            var n3 = parseInt(p[2]);
+            var n4 = parseInt(p[3]);
+
+            var sum = 0;
+
+            if (n1 < 127) {
+                sum = 2097152000;
+            }
+            if (n1 < 192) {
+                sum = 1072130048;
+            }
+            if (n1 < 224) {
+                sum = 2031616;
+            }
+
+            max = sum - (n1 * n2 * n3 * n4);
+
+        }
+
+
     	function saveForm(){
-    		if(isCommited){
-         		return false;
-    		 } 
-    		isCommited=true;    		
+
+            if (parseInt($("#range").val()) > max) {
+                $("#tipscontent").html("IP个数超过最大值" + max);
+                $("#dia").click();
+                return;
+            }
     		
 			jQuery.ajax({
 		        url: '<%=request.getContextPath()%>/main/checklogin',
@@ -232,7 +263,11 @@
 	 		        			}; 
 				        		var form = jQuery("#basicvalidations");
 	 		        			form.parsley('validate');
-	 		        			if(form.parsley('isValid')){  		        				
+	 		        			if(form.parsley('isValid')){
+                                    if(isCommited){
+                                        return false;
+                                    }
+                                    isCommited = true;
 				        			jQuery("#basicvalidations").ajaxSubmit(options); 
 	 		        			}
 			        	} 
