@@ -111,7 +111,7 @@
                           <input type="text" class="form-control" name="versionNumber" id="versionNumber"  parsley-trigger="change" parsley-required="true" parsley-checkversionname="true" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
                            <span style="font-size:50%;">
                                                                 版本名称规则：<br>
-                                                                  客户缩写（如ZS）_数字版本号_硬件厂家名称缩写（如SD，XH）_CPU架构（如ARM,X86）共四部分组成;
+                                                                  客户缩写(如ZS)_数字版本号_CPU架构(如ARM,X86)_硬件厂家名称缩写（如SD，XH）共四部分组成;
 						  <br>   
 						     例：ZS_1.1.1_X86_SD，不能有中文和特殊符号，英文字母均为全大写。
                            </span> 
