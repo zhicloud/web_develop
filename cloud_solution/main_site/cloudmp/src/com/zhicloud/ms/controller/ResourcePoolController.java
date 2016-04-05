@@ -88,6 +88,9 @@ public class ResourcePoolController {
                 JSONObject computerObject = computerList.getJSONObject(i);
                 String uuid = computerObject.getString("uuid");
                 String name = computerObject.getString("name");
+                if(!name.contains("desktop_pool")){
+                    continue;
+                }
                 int status = computerObject.getInt("status");
                 Integer cpuCount = computerObject.getInt("cpu_count");
                 BigDecimal cpuUsage = new BigDecimal(computerObject.getString("cpu_usage"));
