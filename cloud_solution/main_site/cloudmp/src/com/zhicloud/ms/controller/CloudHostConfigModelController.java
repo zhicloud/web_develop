@@ -47,10 +47,10 @@ public class CloudHostConfigModelController {
 		}
 		List<CloudHostConfigModel> chcmList =  cloudHostConfigModelService.getAll();
 		model.addAttribute("chcmList", chcmList);
-		List<CloudHostWarehouse> warehouseList = cloudHostWarehouseService.getAll();
- 		model.addAttribute("warehouseList", warehouseList);
- 		List<SysDiskImageVO> sdiList = sysDiskImageService.queryAllSysDiskImage();
- 		model.addAttribute("sdiList",sdiList);
+//		List<CloudHostWarehouse> warehouseList = cloudHostWarehouseService.getAll();
+// 		model.addAttribute("warehouseList", warehouseList);
+// 		List<SysDiskImageVO> sdiList = sysDiskImageService.queryAllSysDiskImage();
+// 		model.addAttribute("sdiList",sdiList);
 		return "host_type_manage";
 	}
 	
