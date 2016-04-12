@@ -246,45 +246,48 @@ public class SysDiskImageController {
 		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_image_delete)){
 			return new MethodResult(MethodResult.FAIL,"您没有删除镜像的权限，请联系管理员");
 		}
-		int su1 = 0; //  完全删除成功  
-		int su2 = 0; //  镜像类型不能删除
-		int su3 = 0; //  删除失败
-		String [] imageIds = id.split(",");
-		MethodResult result = new MethodResult(MethodResult.SUCCESS,"删除成功");
-		for(String imageId : imageIds){			
-			List<CloudHostConfigModel> modelList = cloudHostConfigModelService.getCloudHostConfigModelServiceByImageId(imageId);
-			if(modelList != null && modelList.size() > 0){
-				su2 ++ ;
- 			}else{				
-				MethodResult re = sysDiskImageService.deleteSysDiskImage(imageId);
-				if(re.isSuccess()){
-					su1 ++ ;
-				}else{
-					su3 ++ ; 
-				}
-			}
-		}
-		if(su1 >0 && su2==0 && su3==0){
-	        operLogService.addLog("主机镜像", "批量删除镜像成功", "1", "1", request);
-			return new MethodResult(MethodResult.SUCCESS,"删除成功");
-		}
-		if(su1 >0 && su2>0 && su3>0){
-            operLogService.addLog("主机镜像", "批量删除镜像成功,部分镜像平台删除失败,部分镜像已经创建类型需先删除类型", "1", "1", request);
-			return new MethodResult(MethodResult.SUCCESS,"删除成功,部分镜像平台删除失败,部分镜像已经创建类型需先删除类型");
-		}
-		if(su1 >0 && su2>0 && su3==0){
-            operLogService.addLog("主机镜像", "批量删除镜像成功,部分镜像已经创建类型需先删除类型", "1", "1", request);
-			return new MethodResult(MethodResult.SUCCESS,"删除成功,部分镜像已经创建类型需先删除类型");			
-		}
-		if(su1 >0 && su2==0 && su3>0){
-            operLogService.addLog("主机镜像", "批量删除镜像成功,部分镜像平台删除失败", "1", "1", request);
-			return new MethodResult(MethodResult.SUCCESS,"删除成功,部分镜像平台删除失败");			
-		}
-		if(su1 ==0 ){
-            operLogService.addLog("主机镜像", "批量删除镜像失败", "1", "2", request);
-			return new MethodResult(MethodResult.FAIL,"删除失败");			
-		}
-		return result;
+      int su1 = 0; //  完全删除成功
+      int su2 = 0; //  镜像类型不能删除
+      int su3 = 0; //  删除失败
+      String [] imageIds = id.split(",");
+      for(String imageId : imageIds){
+          List<CloudHostConfigModel> modelList = cloudHostConfigModelService.getCloudHostConfigModelServiceByImageId(imageId);
+          if(modelList != null && modelList.size() > 0){
+              su2 ++ ;
+          }else{
+              MethodResult re = sysDiskImageService.deleteSysDiskImage(id);
+              if(re.isSuccess()){
+                  su1 ++ ;
+              }else{
+                  su3 ++ ;
+              }
+          }
+      }
+
+      String flag = MethodResult.FAIL;
+      String message = "";
+      String n = "2";
+
+
+      if (su1 > 0) {
+          flag = MethodResult.SUCCESS;
+          message = "批量删除镜像成功";
+          n = "1";
+      } else {
+          message = "批量删除镜像失败";
+      }
+
+      if (su2 > 0) {
+          flag = MethodResult.FAIL;
+          message += ", 部分镜像已经创建类型, 需先删除类型";
+      }
+      if (su3 > 0) {
+          flag = MethodResult.FAIL;
+          message += ", 部分镜像平台删除失败";
+      }
+
+      operLogService.addLog("主机镜像", message, "1", n, request);
+      return new MethodResult(flag, message);
 	}
 	/**
 	 * 

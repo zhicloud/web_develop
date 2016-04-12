@@ -641,5 +641,15 @@ import java.util.*;
             return updateConcurrent(condition);
         }
     }
+
+
+    /**
+     * @Description:获取关联的仓库
+     * @param configModelId 关联类型id
+     * @return
+     */
+    @Override public List<CloudHostWarehouse> getByConfigModelId(String configModelId) {
+        return this.sqlSession.getMapper(CloudHostWarehouseMapper.class).getByConfigModelId(configModelId);
+    }
 }
 

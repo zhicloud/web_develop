@@ -1,19 +1,7 @@
 package com.zhicloud.ms.service.impl;
 
-import java.math.BigInteger;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.apache.ibatis.session.SqlSession;
-import org.apache.log4j.Logger;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.zhicloud.ms.mapper.CloudHostConfigModelMapper;
+import com.zhicloud.ms.mapper.CloudHostWarehouseMapper;
 import com.zhicloud.ms.mapper.SysDiskImageMapper;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.CloudHostConfigModelService;
@@ -22,7 +10,19 @@ import com.zhicloud.ms.util.DateUtil;
 import com.zhicloud.ms.util.FlowUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.CloudHostConfigModel;
+import com.zhicloud.ms.vo.CloudHostWarehouse;
 import com.zhicloud.ms.vo.SysDiskImageVO;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.math.BigInteger;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service("cloudHostConfigModelService")
 @Transactional(readOnly=true)
@@ -101,13 +101,57 @@ public class CloudHostConfigModelServiceImpl implements CloudHostConfigModelServ
 
 	@Override
 	@Transactional(readOnly=false)
-	public void deleteType(String id) {
-		logger.debug("CloudHostConfigModelServiceImpl.deleteType()");
-		CloudHostConfigModelMapper chcmMapper = this.sqlSession.getMapper(CloudHostConfigModelMapper.class);
-		String [] typeIds = id.split(",");
-		for(String typeId : typeIds){			
-			chcmMapper.deleteType(typeId);
+	public MethodResult deleteType(String id) {
+      logger.debug("CloudHostConfigModelServiceImpl.deleteType()");
+      CloudHostConfigModelMapper chcmMapper = this.sqlSession.getMapper(CloudHostConfigModelMapper.class);
+      CloudHostWarehouseMapper cloudHostWarehouseMapper = this.sqlSession.getMapper(CloudHostWarehouseMapper.class);
+
+      int su1 = 0; //  完全删除成功
+      int su2 = 0; //  镜像类型不能删除
+      int su3 = 0; //  删除失败
+      String [] typeIds = id.split(",");
+      for(String typeId : typeIds){
+
+        List<CloudHostWarehouse> modelList = cloudHostWarehouseMapper.getByConfigModelId(typeId);
+        if(modelList != null && modelList.size() > 0){
+            su2 ++ ;
+        }else{
+            int re = chcmMapper.deleteType(typeId);
+            if(re > 0){
+                su1 ++ ;
+            }else{
+                su3 ++ ;
+            }
+        }
 		}
+
+
+      String [] imageIds = id.split(",");
+      for(String imageId : imageIds){
+
+      }
+
+      String flag = MethodResult.FAIL;
+      String message = "";
+
+
+      if (su1 > 0) {
+          flag = MethodResult.SUCCESS;
+          message = "批量删除镜像成功";
+      } else {
+          message = "批量删除镜像失败";
+      }
+
+      if (su2 > 0) {
+          flag = MethodResult.FAIL;
+          message += ", 部分镜像已经创建类型, 需先删除类型";
+      }
+      if (su3 > 0) {
+          flag = MethodResult.FAIL;
+          message += ", 部分镜像平台删除失败";
+      }
+
+      return new MethodResult(flag, message);
 	}
 
 	@Override

@@ -206,4 +206,23 @@
 		select pool_id,pool_name,max_creating from pool_max_creating 
 		where pool_id = #{pool_id}
 	</select>
+
+    <select id="getByConfigModelId" resultMap="CloudHostWarehouse">
+        SELECT
+          id,
+          cloud_host_config_model_id,
+          name,
+          total_amount,
+          remain_amount,
+          create_time,
+          modify_time,
+          assigned_amount,
+          check_time,
+          minimum,
+          pool_id
+        FROM
+         cloud_host_warehouse
+        WHERE
+          cloud_host_config_model_id = #{config_model_id}
+    </select>
 </mapper>
