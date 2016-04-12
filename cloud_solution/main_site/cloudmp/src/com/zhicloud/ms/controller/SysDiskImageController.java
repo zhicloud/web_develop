@@ -271,10 +271,10 @@ public class SysDiskImageController {
 
       if (su1 > 0) {
           flag = MethodResult.SUCCESS;
-          message = "批量删除镜像成功";
+          message = "删除镜像成功";
           n = "1";
       } else {
-          message = "批量删除镜像失败";
+          message = "删除镜像失败";
       }
 
       if (su2 > 0) {

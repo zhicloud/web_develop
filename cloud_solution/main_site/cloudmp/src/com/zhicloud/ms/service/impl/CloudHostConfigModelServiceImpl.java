@@ -137,18 +137,18 @@ public class CloudHostConfigModelServiceImpl implements CloudHostConfigModelServ
 
       if (su1 > 0) {
           flag = MethodResult.SUCCESS;
-          message = "批量删除镜像成功";
+          message = "删除类型成功";
       } else {
-          message = "批量删除镜像失败";
+          message = "删除类型失败";
       }
 
       if (su2 > 0) {
           flag = MethodResult.FAIL;
-          message += ", 部分镜像已经创建类型, 需先删除类型";
+          message += ", 部分类型已经创建仓库, 需先删除仓库";
       }
       if (su3 > 0) {
           flag = MethodResult.FAIL;
-          message += ", 部分镜像平台删除失败";
+          message += ", 部分类型删除失败";
       }
 
       return new MethodResult(flag, message);
