@@ -147,6 +147,7 @@
     <script>
 		var poolId = "${poolId}";
 		var isCommited = false;
+        var max = 0;
 	    //返回
 	    function backhome(){
 	    	window.location.href = "<%=request.getContextPath()%>/networkpool/portresourcepool/"+poolId+"/qn";
@@ -171,12 +172,15 @@
                 sum = 1072130048;
                 n1 = n1 - 127;
             }
+
+            max = sum - (n1 * n2 * n3 * n4);
+
             if (n1 < 224) {
                 sum = 2031616;
                 n1 = n1 - 192;
+                max = sum - (n1 * n3 * n4);
             }
 
-            max = sum - (n1 * n2 * n3 * n4);
 
         }
 
