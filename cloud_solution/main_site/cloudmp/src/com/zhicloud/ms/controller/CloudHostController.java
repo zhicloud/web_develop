@@ -176,14 +176,23 @@ public class CloudHostController {
 	      model.addAttribute("flag", flagStr);
         return "host_manage";
     }
+	
+	/**
+	 * 桌面列表
+	 * @param model
+	 * @param request
+	 * @return desktop/host_manage页面
+	 * @throws UnsupportedEncodingException
+	 */
 	@RequestMapping(value="/cloudhost/all",method=RequestMethod.GET)
     public String getAllHost(Model model,HttpServletRequest request)
       throws UnsupportedEncodingException {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage)){
             return "not_have_access";
         }
-
-
+       
+      //重装系统完成的UUID
+      String uId = request.getParameter("uId");
       String param = request.getParameter("param");
       String runningStatusStr = request.getParameter("running_status");
       String flagStr = request.getParameter("flag");
@@ -235,9 +244,17 @@ public class CloudHostController {
             } 
 
             HostResetProgressData flush = resetpool.get(vo.getRealHostId());
+            
             if(flush != null && flush.getResetStatus() == 1){
                 vo.setStatus(11); 
-            } 
+            }
+            
+            //系统安装完成后调整到列表，设置主句的状态
+            if(null !=uId && !"".equals(uId)){
+            	if(uId.equals(data.getUuid())){
+            		vo.setStatus(0); 
+            	}
+            }
             newCloudServerList.add(vo);
         }
         model.addAttribute("cloudHostList", newCloudServerList); 
@@ -1241,6 +1258,13 @@ public class CloudHostController {
     }
     
 
+    /**
+     * 点击重装系统进入后台页面调整方法
+     * @param uuid  主机uuid
+     * @param imageId
+     * @param request
+     * @return
+     */
     @RequestMapping(value="/warehouse/cloudhost/{id}/flushdiskimage",method=RequestMethod.GET)
     public String flushDiskImageManage(@PathVariable("id") String id,Model model,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_flush_disk_image)){
@@ -1260,7 +1284,7 @@ public class CloudHostController {
         ComputeInfoExt cPool = computePool.getFromComputePool(myCloudHostData.getPoolId());
         
         List<SysDiskImageVO> sysDiskImageList = sysDiskImageService.querySysDiskImageByImageType(AppConstant.DISK_IMAGE_TYPE_SERVER);
-        if(cPool.getMode2() == 1){
+        if(null !=cPool && cPool.getMode2() == 1){
             int i = 0;
             for(SysDiskImageVO image : sysDiskImageList){
                 if(image.getFileType() != 1){
@@ -1278,6 +1302,13 @@ public class CloudHostController {
         return "/desktop/flush_disk_manage";
     }
     
+    /**
+     * 重装系统页面点击添加进入的方法
+     * @param uuid
+     * @param imageId
+     * @param request
+     * @return
+     */
     @RequestMapping(value="/warehouse/cloudhost/flushdiskimage",method=RequestMethod.POST)
     @ResponseBody
     public MethodResult flushdiskimage(String uuid,String imageId,HttpServletRequest request) {
