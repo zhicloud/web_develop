@@ -59,6 +59,17 @@ public interface ICloudHostService {
 	 * @since JDK 1.7
 	 */
 	public CloudHostVO queryCloudHostById(String cloudHostId);
+	
+	/**
+	 * 
+	 * queryCloudHostById:通过主机名查询主机.   
+	 * @author sasa
+	 * @param cloudHostId 对于uuid
+	 * @return CloudHost
+	 * @since JDK 1.7
+	 */
+	public CloudHostVO queryCloudHostByHostName(String hostName);
+	
 	/**
 	 * 
 	 * operatorCloudHost:对主机进行开机、关机、重启和强制关机的操作.   

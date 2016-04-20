@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +27,15 @@ import com.zhicloud.ms.app.pool.serviceInfoPool.ServiceInfoPoolManager;
 import com.zhicloud.ms.common.util.CapacityUtil;
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
 import com.zhicloud.ms.constant.MonitorConstant;
+import com.zhicloud.ms.mapper.CloudHostMapper;
 import com.zhicloud.ms.remote.MethodResult;
+import com.zhicloud.ms.service.ICloudHostService;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.service.MonitorService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.constant.TransformConstant;
 import com.zhicloud.ms.transform.controller.TransFormBaseAction;
+import com.zhicloud.ms.vo.CloudHostVO;
 
 /**
  * @ClassName: MonitorController
@@ -44,13 +48,26 @@ public class MonitorController extends TransFormBaseAction {
     /* 日志 */
     public static final Logger logger = Logger.getLogger(MonitorController.class);
 
+    private SqlSession sqlSession;
+    
     @Resource
     private MonitorService monitorService;
     
     @Resource
     private IOperLogService operLogService;
+    
+    @Resource
+	ICloudHostService cloudHostService;
 
-    /**
+    public SqlSession getSqlSession() {
+		return sqlSession;
+	}
+
+	public void setSqlSession(SqlSession sqlSession) {
+		this.sqlSession = sqlSession;
+	}
+
+	/**
      * @Description:取得区域监控数据
      * @param request
      * @return
@@ -428,11 +445,16 @@ public class MonitorController extends TransFormBaseAction {
          * return TransformConstant.transform_jsp_noaccsess; }
          */
         JSONObject json = JSONObject.fromObject(data);
-        JSONObject objectdata = new JSONObject();
+//        JSONObject objectdata = new JSONObject();
         if (json != null && !json.isEmpty()) {
             String type = json.getString("type");
+            String uuid = json.getString("uuid");
+        	// 查找云主机
+            CloudHostVO cloudHost = cloudHostService.queryCloudHostByHostName(uuid);
+            JSONObject objectdata = objectdata(cloudHost);
+            objectdata.put("uuid", uuid);// 主机uuid
+            
             if (MonitorConstant.server_flag.equals(type)) {
-                String uuid = json.getString("uuid");
                 JSONObject server = MonitorConstant.getObjectByUUID(uuid, MonitorConstant.serverMap);
                 String status = MonitorConstant.judgeThresholdUseRule(server, MonitorConstant.server_flag);
                 objectdata.put("type", type);
@@ -461,7 +483,6 @@ public class MonitorController extends TransFormBaseAction {
                                         0) + "G");
                 request.setAttribute("objectdata", objectdata);
             } else if (MonitorConstant.host_flag.equals(type)) {
-                String uuid = json.getString("uuid");
                 synchronized (MonitorConstant.hostsMap) {
                     JSONObject host = MonitorConstant.getObjectByUUID(uuid, MonitorConstant.hostsMap);
                     String status = MonitorConstant.judgeThresholdUseRule(host, MonitorConstant.host_flag);
@@ -505,6 +526,39 @@ public class MonitorController extends TransFormBaseAction {
             }
         }
         return "/monitor/monitor_view_detail";
+    }
+    
+    /**
+     * 云主机信息转json格式
+     * @param cloudHost 云主机bean
+     * @return objectdata  json字符串
+     */
+    private static JSONObject objectdata(CloudHostVO cloudHost){
+    	JSONObject objectdata = new JSONObject();
+    	if(null != cloudHost){
+    		objectdata.put("hostName", cloudHost.getHostName());//主机真实名称
+            objectdata.put("realHostId", cloudHost.getRealHostId());//显示名称
+            objectdata.put("account", cloudHost.getAccount());//spice用户名
+            objectdata.put("password", cloudHost.getPassword());//密码
+            objectdata.put("sysImageName", cloudHost.getSysImageName());//镜像名称
+            objectdata.put("realHostId", cloudHost.getRealHostId());//真实主机id
+            objectdata.put("innerIp", cloudHost.getInnerIp());//内网ip
+            objectdata.put("innerPort", cloudHost.getInnerPort());//内网端口
+            objectdata.put("outerIp", cloudHost.getOuterIp());//外网ip
+            objectdata.put("outerPort", cloudHost.getOuterPort());//外网端口
+    	}else{
+    		objectdata.put("hostName", "");//主机真实名称
+            objectdata.put("realHostId", "");//显示名称
+            objectdata.put("account", "");//spice用户名
+            objectdata.put("password", "");//密码
+            objectdata.put("sysImageName", "");//镜像名称
+            objectdata.put("realHostId", "");//真实主机id
+            objectdata.put("innerIp", "");//内网ip
+            objectdata.put("innerPort", "");//内网端口
+            objectdata.put("outerIp", "");//外网ip
+            objectdata.put("outerPort", "");//外网端口
+    	}
+        return objectdata;
     }
     
     /**
