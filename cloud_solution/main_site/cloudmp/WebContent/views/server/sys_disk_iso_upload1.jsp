@@ -1,23 +1,16 @@
- <%@ page pageEncoding="utf-8"%>
- 
+<%@ page pageEncoding="utf-8"%>
+<!-- sys_disk_iso_upload1.jsp -->
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/webupload/webuploader.css" />
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/webupload/style.css" />
 <script src="<%=request.getContextPath()%>/assets/js/jquery.js"></script>
 <script src="<%=request.getContextPath() %>/webupload/webuploader.js"></script>
 <script src="<%=request.getContextPath() %>/webupload/upload.js"></script>
 <style>
-	.inputdiv {
-		width:50%;
-		float:left;
-		margin-left:5px;
-	}
-	.lablediv {
-		width:20%;
-		float:left;
-	}
+.inputdiv { width:50%;float:left;margin-left:5px; }
+.lablediv { width:20%;float:left; }
 </style>
 
- <body class="bg-1">
+<body class="bg-1">
         <div id="wrapper">
         <div id="container">
             <!--头部，相册选择和格式选择-->

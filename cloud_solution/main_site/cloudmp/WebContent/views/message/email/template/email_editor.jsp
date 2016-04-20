@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
+<!-- email_editor.jsp -->
 <head>
     <title></title>
 </head>

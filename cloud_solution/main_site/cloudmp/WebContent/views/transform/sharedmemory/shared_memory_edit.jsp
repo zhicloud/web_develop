@@ -1,4 +1,5 @@
 <%@ page pageEncoding="utf-8"%>
+<!-- shared_memory_edit.jsp -->
   <head>
     <title>共享存储信息编辑 </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -1,4 +1,5 @@
 ﻿<%@ page pageEncoding="utf-8"%>
+<!-- bind_eip.jsp -->
   <head>
     <title>绑定EIP</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

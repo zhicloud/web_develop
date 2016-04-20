@@ -1,5 +1,6 @@
 <%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- create_elb.jsp -->
 <html>
   <head>
     <title>创建ELB</title>

@@ -1,4 +1,5 @@
 <%@ page pageEncoding="utf-8"%>
+<!-- system_menu_edit.jsp -->
   <head>
     <title>功能菜单编辑</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

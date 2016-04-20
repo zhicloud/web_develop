@@ -1,5 +1,6 @@
 ﻿<%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- sys_warnrule_manage.jsp -->
 <html>
   <head>
     <title>告警规则管理 </title>

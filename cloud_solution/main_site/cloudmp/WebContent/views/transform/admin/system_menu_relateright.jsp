@@ -1,5 +1,6 @@
 <%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- system_menu_relateright.jsp -->
 <html>
   <head>
     <title>初始化菜单功能权限 </title>

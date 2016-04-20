@@ -2,7 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
+<!-- system_user_manage.jsp -->
 <html>
+
   <head>
     <title>控制台-${productName}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -152,88 +154,76 @@
                     </div>
                   </div>
                        
-                  <div class="tile-body no-vpadding"> 
-                   
-                    <div class="table-responsive">
-                    
-                      <table  class="table table-datatable table-custom" id="basicDataTable">
-                        <thead>
-                          <tr>
-						    <th class="no-sort">
-                            <div class="checkbox check-transparent">
-                              <input type="checkbox"  id="allchck">
-                              <label for="allchck"></label>
-                            </div>
-                          </th>
-                            <th>用户账号</th>
-                            <th>显示名称</th>
-                            <th>用户类型</th>                            
-                            <th>邮箱</th>
-                            <th>联系电话</th>
-                            <th>状态</th>
-                            <th>创建时间</th>
-                            <th class="no-sort">操作</th>                            
-                          </tr>
-                        </thead>
-                        <tbody>
-                        
-					<c:forEach items="${systemUserList}" var="systemUser">
-                    		<tr class="odd gradeX">
-						    <td>
-									<div class="checkbox check-transparent">
-									  <input type="checkbox" value="${systemUser.billid }" id="${systemUser.billid }">
-									  <label for="${systemUser.billid }"></label>
-									</div>
-                             </td>
-                            <td class="cut">${systemUser.usercount }</td>
-                            <td class="cut">${systemUser.displayname }</td>
-                           <td class="cut">
-                            <c:if test="${systemUser.userType==0}">管理员用户</c:if>
-                            <c:if test="${systemUser.userType==1}">租户管理员用户</c:if>
-                            </td>                          
-                            <td class="cut">${systemUser.email }</td>
-                            <td class="cut">${systemUser.telphone }</td>
-                            <td class="cut">
-                            <c:if test="${systemUser.status==0}">正常</c:if>
-                            <c:if test="${systemUser.status==1}">禁用</c:if>
-                            </td>
-                            <td class="cut">${systemUser.insert_date }</td>
-							<td> 
-                              <div class="btn-group">
-                                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    		操作 <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu" role="user"> 
-                                    <li><a href="#"  onclick="updateuser('modify','${systemUser.billid}')">修改基本信息</a></li>
-                                    <li><a href="#" role="button" data-toggle="modal" onclick="beforeresetpassword('${systemUser.billid}', '${systemUser.email }')">重置用户密码</a></li>
-                                    <li><a href="#" onclick="deletedataone('${systemUser.billid}')">删除用户信息</a></li>
-                                    <li><a href="#" onclick="setuserstatus('${systemUser.billid}','${systemUser.status }')">设置用户状态</a></li>
-                                    <li><a href="#" onclick="getUserRoleGroup('${systemUser.billid}')">查看用户授权</a></li>
-                                   <%--  <li><a href="#" onclick="setuserusbstatus('${systemUser.billid}','${systemUser.usb_status }')">设置USB权限</a></li> --%>
-                                  </ul>
-                              </div>
-                            </td>                                                        
-                        </tr> 
-                    	</c:forEach>                         
-                        </tbody>
-                      </table>
-                      
-                    </div>
-                    
-                  </div>
-                  <!-- /tile body -->
-                    <div class="col-sm-2" style="margin-top: -40px;">
-                        <div class="input-group table-options">
-                          <select class="chosen-select form-control" id="multyselect">
-                            <option value="opp">批量操作</option> 
-                            <option value="delete">删除</option>
-                            <option value="status">用户状态</option>
-                          </select>
-                          <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" onclick="multyopp()">提交</button>
-                          </span>
-                        </div>
-                      </div>    
+							<div class="tile-body no-vpadding"> 
+								<div class="table-responsive">
+									<table  class="table table-datatable table-custom" id="basicDataTable">
+										<thead>
+											<tr>
+												<th class="no-sort"><div class="checkbox check-transparent"><input type="checkbox"  id="allchck"><label for="allchck"></label></div></th>
+												<th>用户账号</th>
+												<th>显示名称</th>
+												<th>用户类型</th>                            
+												<th>邮箱</th>
+												<th>联系电话</th>
+												<th>状态</th>
+												<th>创建时间</th>
+												<th class="no-sort">操作</th>                            
+											</tr>
+										</thead>
+										
+										<tbody>
+											<c:forEach items="${systemUserList}" var="systemUser">
+												<tr class="odd gradeX">
+													<td>
+														<div class="checkbox check-transparent">
+															<input type="checkbox" value="${systemUser.billid }" id="${systemUser.billid }">
+															<label for="${systemUser.billid }"></label>
+														</div>
+													</td>
+													<td class="cut">${systemUser.usercount }</td>
+													<td class="cut">${systemUser.displayname }</td>
+													<td class="cut">
+														<c:if test="${systemUser.userType==0}">管理员用户</c:if>
+														<c:if test="${systemUser.userType==1}">租户管理员用户</c:if>
+													</td>                          
+													<td class="cut">${systemUser.email }</td>
+													<td class="cut">${systemUser.telphone }</td>
+													<td class="cut">
+														<c:if test="${systemUser.status==0}">正常</c:if>
+														<c:if test="${systemUser.status==1}">禁用</c:if>
+													</td>
+													<td class="cut">${systemUser.insert_date }</td>
+													<td> 
+														<div class="btn-group">
+															<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">操作<span class="caret"></span></button>
+															<ul class="dropdown-menu" role="user"> 
+																<li><a href="#"  onclick="updateuser('modify','${systemUser.billid}')">修改基本信息</a></li>
+																<li><a href="#" role="button" data-toggle="modal" onclick="beforeresetpassword('${systemUser.billid}', '${systemUser.email }')">重置用户密码</a></li>
+																<li><a href="#" onclick="deletedataone('${systemUser.billid}')">删除用户信息</a></li>
+																<li><a href="#" onclick="setuserstatus('${systemUser.billid}','${systemUser.status }')">设置用户状态</a></li>
+																<li><a href="#" onclick="getUserRoleGroup('${systemUser.billid}')">查看用户授权</a></li>
+																<%--  <li><a href="#" onclick="setuserusbstatus('${systemUser.billid}','${systemUser.usb_status }')">设置USB权限</a></li> --%>
+															</ul>
+														</div>
+													</td>                                                        
+												</tr> 
+											</c:forEach>                         
+										</tbody>
+									</table>
+								</div>
+							</div>
+                  			<!-- /tile body -->
+                  			
+							<div class="col-sm-2" style="margin-top: -40px;">
+								<div class="input-group table-options">
+									<select class="chosen-select form-control" id="multyselect">
+										<option value="opp">批量操作</option> 
+										<option value="delete">删除</option>
+										<option value="status">用户状态</option>
+									</select>
+									<span class="input-group-btn"><button class="btn btn-default" type="button" onclick="multyopp()">提交</button></span>
+								</div>
+							</div>    
                       
                      <!-- 修改密码弹出框 -->    
                     <div class="modal fade" id="userpassword" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">
@@ -336,7 +326,6 @@
                           </div>
                           <div class="modal-body">
                             <form role="form" id="userusbstatusform" class="form-horizontal">
-                              
                               <div class="form-group" style="margin-left:40%;float:left;width:20%;">
 		                            <input type="radio" name="userusbstatusinput" value="0" id="userusbstatusinput1">
 		                            <label for="userusbstatusinput1">未开启</label>

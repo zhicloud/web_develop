@@ -1,5 +1,6 @@
 ﻿<%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- monitor_resource_manage.jsp -->
 <html>
   <head>
     <title>资源监控——资源池信息监控 </title>

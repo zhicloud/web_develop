@@ -1,5 +1,6 @@
 <%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- index.jsp -->
 <html>
   <head>
     <title>${productName}</title>

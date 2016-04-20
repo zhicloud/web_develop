@@ -5,6 +5,7 @@
 response.setHeader("Access-Control-Allow-Origin", "*");
 %>
 <!DOCTYPE html>
+<!-- sys_disk_image_manage.jsp -->
 <html>
   <head>
     <title>控制台-${productName}</title>

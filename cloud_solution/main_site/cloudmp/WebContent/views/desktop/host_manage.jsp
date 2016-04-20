@@ -2,507 +2,320 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
+<!-- host_manage.jsp -->
 <html>
-  <head>
-    <title>控制台-${productName}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8" />
+<head>
+	<title>控制台-${productName}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8" />
+	<link rel="icon" type="image/ico" href="<%=request.getContextPath()%>/assets/images/favicon.ico" />
+	<!-- Bootstrap -->
+	<link href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+	<link href="<%=request.getContextPath()%>/font-awesome/css/font-awesome.css" rel="stylesheet">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/animate/animate.min.css">
+	<link type="text/css" rel="stylesheet" media="all" href="<%=request.getContextPath()%>/assets/js/vendor/mmenu/css/jquery.mmenu.all.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/videobackground/css/jquery.videobackground.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap-checkbox.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/rickshaw/css/rickshaw.min.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/morris/css/morris.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/tabdrop/css/tabdrop.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote-bs3.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen.min.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen-bootstrap.css">
+	<link href="<%=request.getContextPath()%>/assets/css/zhicloud.css" rel="stylesheet">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="<%=request.getContextPath()%>/assets/js/html5shiv.js"></script>
+	<script src="<%=request.getContextPath()%>/assets/js/respond.min.js"></script>
+	<![endif]-->
+</head>
 
-    <link rel="icon" type="image/ico" href="<%=request.getContextPath()%>/assets/images/favicon.ico" />
-    <!-- Bootstrap -->
-    <link href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link href="<%=request.getContextPath()%>/font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/animate/animate.min.css">
-    <link type="text/css" rel="stylesheet" media="all" href="<%=request.getContextPath()%>/assets/js/vendor/mmenu/css/jquery.mmenu.all.css" />
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/videobackground/css/jquery.videobackground.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap-checkbox.css">
+<body class="bg-1">
+<!-- Preloader -->
+<div class="mask"><div id="loader"></div></div>
+<!--/Preloader -->
 
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/rickshaw/css/rickshaw.min.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/morris/css/morris.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/tabdrop/css/tabdrop.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote-bs3.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen.min.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen-bootstrap.css">
+<!-- Wrap all page content here -->
+<div id="wrap">
+	<!-- Make page fluid -->
+	<div class="row">
+		<%@include file="/views/common/common_menus.jsp" %>
+		<!-- Page content -->
+		<div id="content" class="col-md-12">
+			<!-- page header -->
+			<div class="pageheader"><h2><i class="fa fa-desktop"></i> 桌面列表</h2></div>
+			<!-- /page header -->
 
-    <link href="<%=request.getContextPath()%>/assets/css/zhicloud.css" rel="stylesheet">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="<%=request.getContextPath()%>/assets/js/html5shiv.js"></script>
-      <script src="<%=request.getContextPath()%>/assets/js/respond.min.js"></script>
-    <![endif]-->
-  </head>
-  <body class="bg-1">
-
- 
-
-    <!-- Preloader -->
-    <div class="mask"><div id="loader"></div></div>
-    <!--/Preloader -->
-
-    <!-- Wrap all page content here -->
-    <div id="wrap">
-
-      
-
-
-      <!-- Make page fluid -->
-      <div class="row">
-        
-
-
-
-
-        <%@include file="/views/common/common_menus.jsp" %>
-
-        
-        <!-- Page content -->
-        <div id="content" class="col-md-12">
-          
-
-
-          <!-- page header -->
-          <div class="pageheader">
-            
-
-            <h2><i class="fa fa-desktop"></i> 桌面列表</h2>
-            
-
-          </div>
-          <!-- /page header -->
-          
-
-          <!-- content main container -->
-          <div class="main">
-
-
-
-            
-
-
-            <!-- row -->
-            <div class="row">
-              
-              
-              <!-- col 6 -->
-          <div class="col-md-12">
-
-				  <section class="tile color transparent-black">
-
-
-                  <!-- /tile header -->
-
-                        
-                    <div class="tile-header"> 
-                  </div>
-                      <div class="tile-widget bg-transparent-black-2">
-                          <div class="row">
-                              <div class="col-sm-6 col-xs-6" style="z-index: 100;">
-
-                                  <div class="input-group table-options">
-                            <span class="input-group-btn">
-                                <input id="param" type="text" name="param" value="${parameter == null?"":parameter}"/>
-                            </span>
-                            <span class="input-group-btn">
-                              <select id="flag" class="chosen-select form-control" style="width: 150px;">
-                                  <option value="">分配状态(全部)</option>
-                                  <c:if test="${flag == 0}">
-                                      <option value="0" selected="selected">未分配</option>
-                                  </c:if>
-                                  <c:if test="${flag != 0}">
-                                      <option value="0">未分配</option>
-                                  </c:if>
-                                  <c:if test="${flag == 1}">
-                                      <option value="1" selected="selected">已分配</option>
-                                  </c:if>
-                                  <c:if test="${flag != 1}">
-                                      <option value="1">已分配</option>
-                                  </c:if>
-                              </select>
-                              <select id="running_status" class="chosen-select form-control" style="width: 150px;">
-                                  <option value="">运行状态(全部)</option>
-                                  <c:if test="${running_status == 1}">
-                                      <option value="1" selected="selected">关机</option>
-                                  </c:if>
-                                  <c:if test="${running_status != 1}">
-                                      <option value="1">关机</option>
-                                  </c:if>
-                                  <c:if test="${running_status == 2}">
-                                      <option value="2" selected="selected">运行</option>
-                                  </c:if>
-                                  <c:if test="${running_status != 2}">
-                                      <option value="2">运行</option>
-                                  </c:if>
-                                  <c:if test="${running_status == 3}">
-                                      <option value="3" selected="selected">告警</option>
-                                  </c:if>
-                                  <c:if test="${running_status != 3}">
-                                      <option value="3">告警</option>
-                                  </c:if>
-                                  <c:if test="${running_status == 4}">
-                                      <option value="4" selected="selected">故障</option>
-                                  </c:if>
-                                  <c:if test="${running_status != 4}">
-                                      <option value="4">故障</option>
-                                  </c:if>
-                              </select>
-                              <%--</span>--%>
-                              <%--<span class="input-group-btn">--%>
-                                <button id="search_btn" class="btn btn-default" type="button">查看</button>
-                              </span>
-
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  <div class="tile-body no-vpadding"> 
-                   
-                    <div class="table-responsive">
-                    
-                      <table  class="table table-datatable table-custom" id="basicDataTable">
-                        <thead>
-                          <tr>
-						    <th class="no-sort">
-                            <div class="checkbox check-transparent">
-                              <input type="checkbox" value="1" id="allchck">
-                              <label for="allchck"></label>
-                            </div>
-                          </th>
-                            <th class="sort-alpha">云主机名称</th>
-                            <th class="sort-alpha">类型</th>
-                            <th class="sort-alpha">配置</th>
-                            <th class="sort-alpha">分配状态</th>
-							<th class="sort-alpha">分配时间</th>
-                            <th class="sort-alpha">运行状态</th>  
-                            <th class="sort-alpha">所属用户</th>  
-                            <th class="no-sort">操作</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${cloudHostList}" var="hostList">
-                        
-                          <tr class="odd gradeX">
-						          <td>
-									<div class="checkbox check-transparent">
-									  <input type="checkbox" name="idcheck" value="${hostList.id}" id="${hostList.id}" isAssigned="${hostList.userId}" realHostId="${hostList.realHostId }" status="${hostList.status }">
-									  <label for="${hostList.id}"></label>
+			<!-- content main container -->
+			<div class="main">
+				<!-- row -->
+				<div class="row">
+					<!-- col 6 -->
+					<div class="col-md-12">
+						<section class="tile color transparent-black">
+							<div class="tile-header"></div>
+							<!-- tile-widget -->
+							<div class="tile-widget bg-transparent-black-2">
+								<div class="row">
+									<div class="col-sm-6 col-xs-6" style="z-index: 100;">
+										<div class="input-group table-options">
+											<span class="input-group-btn"><input id="param" type="text" name="param" value="${parameter == null?"":parameter}"/></span>
+											<span class="input-group-btn" style="width:395px;">
+												<select id="flag" class="chosen-select form-control btn-sty" style="width: 150px;">
+													<option value="">分配状态(全部)</option>
+													<c:if test="${flag == 0}"><option value="0" selected="selected">未分配</option></c:if>
+													<c:if test="${flag != 0}"><option value="0">未分配</option></c:if>
+													<c:if test="${flag == 1}"><option value="1" selected="selected">已分配</option></c:if>
+													<c:if test="${flag != 1}"><option value="1">已分配</option></c:if>
+												</select>
+												<select id="running_status" class="chosen-select form-control btn-sty" style="width: 150px;">
+													<option value="">运行状态(全部)</option>
+													<c:if test="${running_status == 1}"><option value="1" selected="selected">关机</option></c:if>
+													<c:if test="${running_status != 1}"><option value="1">关机</option></c:if>
+													<c:if test="${running_status == 2}"><option value="2" selected="selected">运行</option></c:if>
+													<c:if test="${running_status != 2}"><option value="2">运行</option></c:if>
+													<c:if test="${running_status == 3}"><option value="3" selected="selected">告警</option></c:if>
+													<c:if test="${running_status != 3}"><option value="3">告警</option></c:if>
+													<c:if test="${running_status == 4}"><option value="4" selected="selected">故障</option></c:if>
+													<c:if test="${running_status != 4}"><option value="4">故障</option></c:if>
+												</select>
+												<%--</span>--%>
+												<%--<span class="input-group-btn">--%>
+												<button id="search_btn" class="btn btn-default" type="button">查看</button>
+											</span>
+										</div>
 									</div>
-                                 </td>
-                                  <td class="cut">
-                                  	${hostList.displayName}
-                                  </td>
-                                  <td class="cut">
-                                  	<c:if test="${hostList.modelName == null}">
-		                            &nbsp;                                                                        
-		                            </c:if>
-                                  	${hostList.modelName}
-                                  </td>
-                                  <td class="cut">${hostList.cpuCore}核/${hostList.getMemoryText(0) }/${hostList.getDataDiskText(0) }/${hostList.getBandwidthText(0) }</td>
-                                  <td class="cut">
-                                  	<c:if test="${hostList.userId!=null }">
-                            		已分配
-	                            	</c:if>
-	                            	<c:if test="${hostList.userId==null }">
-                            		未分配
-                            	</c:if>
-                                  </td>
-								  <td class="cut">
-								  	<c:if test="${hostList.getAssignDate()!=null }">
-                            		<fmt:formatDate value="${hostList.getAssignDate() }" pattern="yyyy-MM-dd HH:mm:ss"/>
-	                            	</c:if>
-	                            	<c:if test="${hostList.getAssignDate()==null }">
-                            		无
-                            	</c:if>
-								  </td>
-								  <td class="cut">${hostList.getSummarizedStatusText() }</td> 
-								  <td class="cut">${hostList.userAccount }</td> 
-                                  <td> 
-                                  <c:choose>
-                                  	<c:when test="${hostList.realHostId==null and hostList.status==1}">
-                                  		无
-                                  	</c:when>
-                                  	<c:otherwise>
-                                  		<div class="btn-group">
-                                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    操作 <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu" role="menu">
-                                  	<c:if test="${hostList.status==0 or hostList.status == 3}">
-		                              <li><a href="javascript:void(0);" onclick="deleteHostBtn('${hostList.id }');">删除</a></li>                        	
-		                            </c:if> 
-		                            <c:if test="${hostList.status==9 or hostList.status == 10}">
-		                              <li><a href="javascript:void(0);" onclick="backupHostBtn('${hostList.id }');" >备份与恢复</a></li>                     	
-		                            </c:if>
-		                            <c:if test="${hostList.status==11}">
-			                              <li><a href="javascript:void(0);" onclick="flushManageBtn('${hostList.id }');">重装系统</a></li>
-		                            </c:if>
-		                            <c:if test="${hostList.status==2}">
-		                           		<li><a href="javascript:void(0);" onclick="toDetail('${hostList.id }');" title="详细"></a></li>
-		                           		<li><a href="javascript:void(0);" onclick="updateDisplayName('${hostList.id }','${hostList.displayName }');">修改显示名</a></li>
-		                            	<c:if test="${hostList.userId==null && hostList.realHostId!=null}">
-		                              		<li><a href="javascript:void(0);" onclick="assignOneUserBtn('${hostList.id }');">分配</a></li>
-		                            	</c:if>
-		                                 <c:if test="${hostList.runningStatus==1}">
-			                              <li><a href="javascript:void(0);" onclick="startHostBtn('${hostList.id }');" >开机</a></li>
-			                              <li><a href="javascript:void(0);" onclick="startHostISOBtn('${hostList.id }');" >从光盘启动</a></li>
-			                              <li><a href="javascript:void(0);" onclick="updateHostBtn('${hostList.id }','1');">配置修改</a></li>
-			                              <li><a href="javascript:void(0);" onclick="diskManageBtn('${hostList.id }');">磁盘管理</a></li>
-			                              <li><a href="javascript:void(0);" onclick="backupHostBtn('${hostList.id }');">备份与恢复</a></li> 
-			                              <li><a href="javascript:void(0);" onclick="flushManageBtn('${hostList.id }');">重装系统</a></li>
-			                                                  	
-			                              
-		                                </c:if>
-		                                <c:if test="${hostList.runningStatus==2}">
-			                              <li><a href="javascript:void(0);" onclick="shutdownHostBtn('${hostList.id }');" >关机</a></li>
-			                              <li><a href="javascript:void(0);" onclick="restartHostBtn('${hostList.id }');" >重启</a></li>
-			                              <li><a href="javascript:void(0);" onclick="resetHostBtn('${hostList.id }');" >强制重启</a></li>
-			                              <li><a href="javascript:void(0);" onclick="haltHostBtn('${hostList.id }');" >强制关机</a></li>
-			                              <li><a href="javascript:void(0);" onclick="updateHostBtn('${hostList.id }','2');">配置修改</a></li>
-			                              <li><a href="javascript:void(0);" onclick="diskManageBtn('${hostList.id }');">磁盘管理</a></li>
-		                                 </c:if>
-		                                 <c:if test="${hostList.realHostId!=null}">
-		                                 	<li><a href="javascript:void(0);" onclick="hostDiagramBtn('${hostList.realHostId }');">资源监控</a></li>
-		                                 </c:if>
-		                              <li><a href="javascript:void(0);" onclick="deleteHostBtn('${hostList.id }');" >删除</a></li>
-		                             </c:if>  
-                                  </ul>
-                              </div>
-                                	</c:otherwise>
-                                </c:choose>
-                            </td>
-                          </tr>
-                        </c:forEach>
-                        </tbody>
-                      </table>
-                      
-                    </div>
-                    
-                    
-                    
-                  </div>
-                  <!-- /tile body -->
-                  
-                  <div class="col-sm-2" style="margin-top: -40px;">
-                        <div class="input-group table-options">
-                          <select id="oper_select" class="chosen-select form-control">
-                            <option value="">批量操作</option> 
-                            <option value="del">删除</option>
-                            <option value="assign">分配到对应数量的用户</option>
-                          </select>
-                          <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" id="save_oper">提交</button>
-                          </span>
-                        </div>
-                      </div>
-					<div class="tile-body">
+								</div>
+							</div>
+							<!-- tile-body -->
+							<div class="tile-body no-vpadding"> 
+								<div class="table-responsive">
+									<table  class="table table-datatable table-custom" id="basicDataTable">
+										<thead>
+											<tr>
+												<th class="no-sort"><div class="checkbox check-transparent"><input type="checkbox" value="1" id="allchck"><label for="allchck"></label></div></th>
+												<th class="sort-alpha">云主机名称</th>
+												<th class="sort-alpha">类型</th>
+												<th class="sort-alpha">配置</th>
+												<th class="sort-alpha">分配状态</th>
+												<th class="sort-alpha">分配时间</th>
+												<th class="sort-alpha">运行状态</th>  
+												<th class="sort-alpha">所属用户</th>  
+												<th class="no-sort">操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach items="${cloudHostList}" var="hostList">
+											<tr class="odd gradeX">
+												<td><div class="checkbox check-transparent"><input type="checkbox" name="idcheck" value="${hostList.id}" id="${hostList.id}" isAssigned="${hostList.userId}" realHostId="${hostList.realHostId }" status="${hostList.status }"><label for="${hostList.id}"></label></div></td>
+												<td class="cut">${hostList.displayName}</td>
+												<td class="cut"><c:if test="${hostList.modelName == null}">&nbsp;</c:if>${hostList.modelName}</td>
+												<td class="cut">${hostList.cpuCore}核/${hostList.getMemoryText(0) }/${hostList.getDataDiskText(0) }/${hostList.getBandwidthText(0) }</td>
+												<td class="cut"><c:if test="${hostList.userId!=null }">已分配</c:if><c:if test="${hostList.userId==null }">未分配</c:if></td>
+												<td class="cut"><c:if test="${hostList.getAssignDate()!=null }"><fmt:formatDate value="${hostList.getAssignDate() }" pattern="yyyy-MM-dd HH:mm:ss"/></c:if><c:if test="${hostList.getAssignDate()==null }">无</c:if></td>
+												<td class="cut">${hostList.getSummarizedStatusText() }</td> 
+												<td class="cut">${hostList.userAccount }</td> 
+												<td> 
+													<c:choose>
+														<c:when test="${hostList.realHostId==null and hostList.status==1}">无</c:when>
+														<c:otherwise>
+															<div class="btn-group">
+																<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">操作<span class="caret"></span></button>
+																<ul class="dropdown-menu" role="menu">
+																	<c:if test="${hostList.status==0 or hostList.status == 3}"><li><a href="javascript:void(0);" onclick="deleteHostBtn('${hostList.id }');">删除</a></li></c:if> 
+																	<c:if test="${hostList.status==9 or hostList.status == 10}"><li><a href="javascript:void(0);" onclick="backupHostBtn('${hostList.id }');" >备份与恢复</a></li></c:if>
+																	<c:if test="${hostList.status==11}"><li><a href="javascript:void(0);" onclick="flushManageBtn('${hostList.id }');">重装系统</a></li></c:if>
+																	<c:if test="${hostList.status==2}">
+																		<li><a href="javascript:void(0);" onclick="toDetail('${hostList.id }');" title="详细"></a></li>
+																		<li><a href="javascript:void(0);" onclick="updateDisplayName('${hostList.id }','${hostList.displayName }');">修改显示名</a></li>
+																		<c:if test="${hostList.userId==null && hostList.realHostId!=null}"><li><a href="javascript:void(0);" onclick="assignOneUserBtn('${hostList.id }');">分配</a></li></c:if>
+																		<c:if test="${hostList.runningStatus==1}">
+																			<li><a href="javascript:void(0);" onclick="startHostBtn('${hostList.id }');" >开机</a></li>
+																			<li><a href="javascript:void(0);" onclick="startHostISOBtn('${hostList.id }');" >从光盘启动</a></li>
+																			<li><a href="javascript:void(0);" onclick="updateHostBtn('${hostList.id }','1');">配置修改</a></li>
+																			<li><a href="javascript:void(0);" onclick="diskManageBtn('${hostList.id }');">磁盘管理</a></li>
+																			<li><a href="javascript:void(0);" onclick="backupHostBtn('${hostList.id }');">备份与恢复</a></li> 
+																			<li><a href="javascript:void(0);" onclick="flushManageBtn('${hostList.id }');">重装系统</a></li>
+																		</c:if>
+																		<c:if test="${hostList.runningStatus==2}">
+																			<li><a href="javascript:void(0);" onclick="shutdownHostBtn('${hostList.id }');" >关机</a></li>
+																			<li><a href="javascript:void(0);" onclick="restartHostBtn('${hostList.id }');" >重启</a></li>
+																			<li><a href="javascript:void(0);" onclick="resetHostBtn('${hostList.id }');" >强制重启</a></li>
+																			<li><a href="javascript:void(0);" onclick="haltHostBtn('${hostList.id }');" >强制关机</a></li>
+																			<li><a href="javascript:void(0);" onclick="updateHostBtn('${hostList.id }','2');">配置修改</a></li>
+																			<li><a href="javascript:void(0);" onclick="diskManageBtn('${hostList.id }');">磁盘管理</a></li>
+																		</c:if>
+																		<c:if test="${hostList.realHostId!=null}"><li><a href="javascript:void(0);" onclick="hostDiagramBtn('${hostList.realHostId }');">资源监控</a></li></c:if>
+																		<li><a href="javascript:void(0);" onclick="deleteHostBtn('${hostList.id }');" >删除</a></li>
+																	</c:if>  
+																</ul>
+															</div>
+														</c:otherwise>
+													</c:choose>
+												</td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						
+							<div class="col-sm-2" style="margin-top: -40px;">
+								<div class="input-group table-options">
+									<select id="oper_select" class="chosen-select form-control">
+										<option value="">批量操作</option> 
+										<option value="del">删除</option>
+										<option value="assign">分配</option>
+									</select>
+									<span class="input-group-btn"><button class="btn btn-default" type="button" id="save_oper">提交</button></span>
+								</div>
+							</div>
+						
+							<div class="tile-body">
+								<a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>
+								<a href="#modalConfirm" id="con" role="button"   data-toggle="modal"> </a>
+								<a href="#modalForm" id="mform" role="button"   data-toggle="modal"> </a>
+								<a href="#modalhostallocate" id="tenant" role="button"   data-toggle="modal"> </a>
+								<a href="#changename" id="changenameBtn" role="button"   data-toggle="modal"> </a>
+								<a href="#modaliso" id="isoBTN" role="button"   data-toggle="modal"> </a>
+								<div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
+									<div class="modal-dialog">
+										<div class="modal-content" style="width:60%;margin-left:20%;">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+												<h3 class="modal-title" id="modalConfirmLabel"><strong>确认</strong> </h3>
+											</div>
+											<div class="modal-body"><form role="form"><div class="form-group"><label style="align:center;" id="confirmcontent">确定要删除该云主机吗？</label></div></form></div>
+											<div class="modal-footer">
+												<button class="btn btn-green" id="confirm_btn"  onclick="toDelete();" data-dismiss="modal" aria-hidden="true">确定</button>
+												<button class="btn btn-red" data-dismiss="modal" aria-hidden="true">取消</button>
+											</div>
+										</div>
+									</div>
+								</div>                    
+						
+								<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
+									<div class="modal-dialog">
+										<div class="modal-content" style="width:60%;margin-left:20%;">
+										<div class="modal-header">
+										<button onclick="setNullBtn();" type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+										<h3 class="modal-title" id="modalConfirmLabel"><strong>主机管理</strong> </h3>
+										</div>
+											<div class="modal-body">
+												<form class="form-horizontal" id="addAmountForm" role="form" action="<%=request.getContextPath() %>/addAmount" method="post" onsubmit="return false">
+													<input type="hidden" id="warehouse_id" name="id" value="">
+													<div class="form-group">
+														<label for="selectpool" class="col-sm-2 control-label" style="width:150px;">服务器资源池 </label>
+														<div class="col-sm-4" id="selectpool" style="width:160px;">
+															<select class="form-control" name="poolId" id="poolId" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectpool">
+																<option value="">请选择资源池</option>  
+																<c:forEach items="${computerPool }" var="sdi"><option value="${sdi.uuid }">${sdi.name }</option></c:forEach>  
+															</select>                       
+														</div>
+													</div>
+													<div class="form-group">
+														<label for="cmount_input" class="col-sm-2 control-label" style="width:150px;">增加主机数量</label>
+														<div class="col-sm-4" style="width:160px;"><input type="text" id="cmount_input" class="form-control" name="addAmount" maxlength="4" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"  parsley-required="true" parsley-max="100" parsley-min="1"></div>
+													</div>
+												</form>
+											</div>
+											<div class="modal-footer">
+												<button class="btn btn-green"  id="form_btn" onclick="saveAddAmount(3);">确定</button>
+												<button onclick="setNullBtn();" class="btn btn-red" data-dismiss="modal" aria-hidden="true">取消</button>
+											</div>
+										</div>
+									</div>
+								</div>
+	                    
+								<div class="modal fade" id="modaliso" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+												<h3 class="modal-title" id="modalConfirmLabel"><strong>从光盘启动</strong></h3>
+											</div>
+											<div class="modal-body">
+												<form class="form-horizontal" role="form" parsley-validate id="basicvalidations_iso" action="<%=request.getContextPath() %>/cloudserver/settenant" method="post"   >
+													<input type="hidden" name="hostId" id="hostId"> 
+													<div class="form-group">
+														<label for="input07" class="col-sm-3 control-label">光盘镜像选择*</label>
+														<div class="col-sm-8" id="selectbox">
+															<select class="chosen-select   form-control" name="imageId"id="imageId" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
+																<option value="">请选择镜像</option> 
+																<c:forEach items="${isoList }" var="sdi"><option value="${sdi.realImageId }">${sdi.name}</option></c:forEach>   
+															</select>
+														</div>
+													</div>
+												</form>
+											</div>
+											<div class="modal-footer">
+												<button class="btn btn-green" onclick="saveIsoStart();">保存</button>
+												<button class="btn btn-red" data-dismiss="modal" aria-hidden="true">关闭</button>
+											</div>
+										</div>
+									</div>
+								</div>
+	                    
+								<!-- update displayname form -->
+								<div class="modal fade" id="changename" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
+									<div class="modal-dialog">
+										<div class="modal-content" style="width:60%;margin-left:20%;">
+											<div class="modal-header">
+												<button onclick="setNullBtn();" type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+												<h3 class="modal-title" id="modalConfirmLabel"><strong>修改显示名</strong> </h3>
+											</div>
+											
+											<div class="modal-body">
+												<form class="form-horizontal" id="updateName" role="form" parsley-validate action="<%=request.getContextPath() %>/cloudhost/updatename" method="post" onsubmit="return false">
+													<input type="hidden" id="host_id" name="id" value="">
+													<div class="form-group">
+														<label for="input01" class="col-sm-2 control-label" style="width:150px;">显示名</label>
+														<div class="col-sm-4" style="width:160px;"><input id="name_input" type="text" class="form-control" oldName="" value="" name="displayName" parsley-checkhostdisplayname="true" maxlength="40" parsley-required="true"></div>
+													</div>
+												</form>
+											</div>
+		
+											<div class="modal-footer">
+												<button class="btn btn-green"  id="form_btn" onclick="saveUpdateName();">确定</button>
+												<button onclick="setNullBtn();" class="btn btn-red" data-dismiss="modal" aria-hidden="true">取消</button>
+											</div>
+										</div>
+									</div>
+								</div>
+	
+								<div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content" style="width:60%;margin-left:20%;">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+												<h3 class="modal-title" id="modalDialogLabel"><strong>提示</strong></h3>
+											</div>
+											<div class="modal-body"><p id="tipscontent"></p></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /content container -->
+		</div>
+		<!-- Page content end -->
+	</div>
+	<!-- Make page fluid-->
+</div>
+<!-- Wrap all page content end -->
+<section class="videocontent" id="video"></section>
 
-                    <a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>
-                    <a href="#modalConfirm" id="con" role="button"   data-toggle="modal"> </a>
-					<a href="#modalForm" id="mform" role="button"   data-toggle="modal"> </a>
-					<a href="#modalhostallocate" id="tenant" role="button"   data-toggle="modal"> </a>
-					<a href="#changename" id="changenameBtn" role="button"   data-toggle="modal"> </a>
-					<a href="#modaliso" id="isoBTN" role="button"   data-toggle="modal"> </a>
-					
-                    
-                    
+<!-- JavaScript -->
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/custom/hostwarehouseform.js"></script>
 
-                    <div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
-                      <div class="modal-dialog">
-                        <div class="modal-content" style="width:60%;margin-left:20%;">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
-                            <h3 class="modal-title" id="modalConfirmLabel"><strong>确认</strong> </h3>
-                          </div>
-                          <div class="modal-body">
-                            <form role="form">   
-
-                              <div class="form-group">
-                                <label style="align:center;" id="confirmcontent">确定要删除该云主机吗？</label>
-                               </div>
-
-                            </form>
-                          </div>
-                          <div class="modal-footer">
-                            <button class="btn btn-green" id="confirm_btn"  onclick="toDelete();" data-dismiss="modal" aria-hidden="true">确定</button>
-                            <button class="btn btn-red" data-dismiss="modal" aria-hidden="true">取消</button>
-                            
-                          </div>
-                        </div><!-- /.modal-content -->
-                      </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->                        
-					
-					
-					 <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
-                      <div class="modal-dialog">
-                        <div class="modal-content" style="width:60%;margin-left:20%;">
-                          <div class="modal-header">
-                            <button onclick="setNullBtn();" type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
-                            <h3 class="modal-title" id="modalConfirmLabel"><strong>主机管理</strong> </h3>
-                          </div>
-                          <div class="modal-body">
-                            <form class="form-horizontal" id="addAmountForm" role="form" action="<%=request.getContextPath() %>/addAmount" method="post" onsubmit="return false">
-		                      <input type="hidden" id="warehouse_id" name="id" value="">
-		                      <div class="form-group">
-		                        <label for="selectpool" class="col-sm-2 control-label" style="width:150px;">服务器资源池 </label>
-		                        <div class="col-sm-4" id="selectpool" style="width:160px;">
-									<select class="form-control" name="poolId" id="poolId" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectpool">
-			                            <option value="">请选择资源池</option>  
-			                            <c:forEach items="${computerPool }" var="sdi">
-		 	                                 <option value="${sdi.uuid }">${sdi.name }</option>
-		 	                             </c:forEach>  
-			                          </select>                       
-			                     </div>
-		                      </div>
-		                      <div class="form-group">
-		                        <label for="cmount_input" class="col-sm-2 control-label" style="width:150px;">增加主机数量</label>
-		                        <div class="col-sm-4" style="width:160px;">
-		                          <input type="text" id="cmount_input" class="form-control" name="addAmount" maxlength="4" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"  parsley-required="true" parsley-max="100" parsley-min="1">
-		                        </div>
-		                      </div>
-                    		</form>
-                          </div>
-                          <div class="modal-footer">
-                            <button class="btn btn-green"  id="form_btn" onclick="saveAddAmount(3);">确定</button>
-                            <button onclick="setNullBtn();" class="btn btn-red" data-dismiss="modal" aria-hidden="true">取消</button>
-                            
-                          </div>
-                        </div><!-- /.modal-content -->
-                      </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
-                    
-                    <div class="modal fade" id="modaliso" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
-                            <h3 class="modal-title" id="modalConfirmLabel"><strong>从光盘启动</strong></h3>
-                          </div>
-                          <div class="modal-body">
-                            <form class="form-horizontal" role="form" parsley-validate id="basicvalidations_iso" action="<%=request.getContextPath() %>/cloudserver/settenant" method="post"   >
-                              <input type="hidden" name="hostId" id="hostId"> 
-                              <div class="form-group">
-		                        <label for="imageId" class="col-sm-3 control-label">光盘镜像选择*</label>
-		                        <div class="col-sm-8" id="selectbox">
-		                          <select class="chosen-select   form-control" name="imageId"id="imageId" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
-		                            <option value="">请选择镜像</option> 
-		                            <c:forEach items="${isoList }" var="sdi">
- 		                                 <option value="${sdi.realImageId }">${sdi.name}</option>
- 		                             </c:forEach>   
-		                          </select>
-		                        </div>
-		                      </div>
-
-                            </form>
-                          </div>
-                          <div class="modal-footer">
-                            <button class="btn btn-green" onclick="saveIsoStart();">保存</button>
-                            <button class="btn btn-red" data-dismiss="modal" aria-hidden="true">关闭</button>
-                          </div>
-                        </div><!-- /.modal-content -->
-                      </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal --> 
-                     
-                    
-                    
-                    <!-- update displayname form -->
-                    <div class="modal fade" id="changename" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
-                      <div class="modal-dialog">
-                        <div class="modal-content" style="width:60%;margin-left:20%;">
-                          <div class="modal-header">
-                            <button onclick="setNullBtn();" type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
-                            <h3 class="modal-title" id="modalConfirmLabel"><strong>修改显示名</strong> </h3>
-                          </div>
-                          <div class="modal-body">
-                            <form class="form-horizontal" id="updateName" role="form" parsley-validate action="<%=request.getContextPath() %>/cloudhost/updatename" method="post" onsubmit="return false">
-		                      <input type="hidden" id="host_id" name="id" value="">
-		                      
-		                      <div class="form-group">
-		                        <label for="input01" class="col-sm-2 control-label" style="width:150px;">显示名</label>
-		                        <div class="col-sm-4" style="width:160px;">
-		                          <input id="name_input" type="text" class="form-control" oldName="" value="" name="displayName" parsley-checkhostdisplayname="true" maxlength="40" parsley-required="true">
-		                        </div>
-		                      </div>
-                    </form>
-                          </div>
-                          <div class="modal-footer">
-                            <button class="btn btn-green"  id="form_btn" onclick="saveUpdateName();">确定</button>
-                            <button onclick="setNullBtn();" class="btn btn-red" data-dismiss="modal" aria-hidden="true">取消</button>
-                            
-                          </div>
-                        </div><!-- /.modal-content -->
-                      </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal --> 
-                    
-                    <div class="modal fade" id="modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content" style="width:60%;margin-left:20%;">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
-                            <h3 class="modal-title" id="modalDialogLabel"><strong>提示</strong></h3>
-                          </div>
-                          <div class="modal-body">
-                            <p id="tipscontent"></p>
-                          </div>
-                        </div><!-- /.modal-content -->
-                      </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal -->
-                    
-                  </div>
- 
-                </section>
-
-
-                
-                
-              </div>
-           
-                           
-
-
-
-            </div>
-            <!-- /row -->
-
-
-            
-
-
-
-          </div>
-          <!-- /content container -->
-
-
-
-
-
-
-        </div>
-        <!-- Page content end -->
-
-
-
-
-      </div>
-      <!-- Make page fluid-->
-
-
-
-
-    </div>
-    <!-- Wrap all page content end -->
-
-
-
-    <section class="videocontent" id="video"></section>
-
-
-
-   	<script type="text/javascript" src="<%=request.getContextPath()%>/js/custom/hostwarehouseform.js"></script>
 
     <script>
-
     var path = '<%=request.getContextPath()%>';
     var warehouseId = '${warehouseId}';
     var hostIds = [];
@@ -538,7 +351,7 @@
           "<'row'<'col-md-4 sm-center'i><'col-md-4'><'col-md-4 text-right sm-center'p>>",
         "aaSorting": [ [5,'desc']],
           "oLanguage": {
-              "sSearch": "搜索"
+              "sSearch": "搜索："
           },
         "aoColumnDefs": [
                          { 'bSortable': false, 'aTargets': [ "no-sort" ] }

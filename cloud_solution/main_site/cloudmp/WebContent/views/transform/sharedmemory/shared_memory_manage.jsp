@@ -1,5 +1,6 @@
 <%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- shared_memory_manage.jsp -->
 <html>
 <head>
     <title>控制台-共享存储管理</title>

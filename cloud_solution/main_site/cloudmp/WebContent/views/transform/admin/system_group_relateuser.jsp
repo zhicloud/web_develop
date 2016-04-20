@@ -1,5 +1,6 @@
 <%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- system_group_relateuser.jsp -->
 <html>
   <head>
     <title>关联用户 </title>

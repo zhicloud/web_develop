@@ -1,9 +1,10 @@
-<%@ page pageEncoding="utf-8"%>
-<%@page import="com.zhicloud.ms.transform.constant.TransformConstant"%>
-<%@page import="com.zhicloud.ms.transform.util.TransFormLoginInfo"%>
-<%@page import="com.zhicloud.ms.transform.util.TransFormLoginHelper"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ page pageEncoding="utf-8" %>
+<%@ page import="com.zhicloud.ms.transform.constant.TransformConstant" %>
+<%@ page import="com.zhicloud.ms.transform.util.TransFormLoginInfo" %>
+<%@ page import="com.zhicloud.ms.transform.util.TransFormLoginHelper" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<!-- common_menus.jsp -->
 <META NAME="Generator" CONTENT="EditPlus">
 <META NAME="Author" CONTENT="">
 <META NAME="Keywords" CONTENT="">
@@ -49,67 +50,72 @@
 var windowtemptimeoutcount = 0 ;
 var windowtemptimeflag = false;
 var windowintervalid;
+
 function logout(){
 	jQuery.ajax({
-  	 	type: "POST",
-  	 	async:false,
-   		url: "<%=request.getContextPath()%>/transform/logout",
-  		data: null,
-  		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
-   		success: function(result){
-   		  var obj = eval("("+result+")");
-     	if(obj.status=="success"){
-     		window.location.href = "<%=request.getContextPath()%>";
-     	}else{
-     		return;
-     	}
-   	}
+		type: "POST",
+		async:false,
+		url: "<%=request.getContextPath()%>/transform/logout",
+		data: null,
+		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
+		success: function(result){
+			var obj = eval("("+result+")");
+			if(obj.status=="success"){
+				window.location.href = "<%=request.getContextPath()%>";
+			}else{
+				return;
+			}
+		}
 	});		
 }
+
 function ieclosewithlogout(){
 	jQuery.ajax({
-  	 	type: "POST",
-  	 	async:false,
-   		url: "<%=request.getContextPath() %>/transform/logout",
-  		data: null,
-  		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
-   		success: function(result){
-   	}
-	});  	
+		type: "POST",
+		async:false,
+		url: "<%=request.getContextPath() %>/transform/logout",
+		data: null,
+		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
+		success: function(result){}
+	});
 }
+
 //定时更新后台服务器时间
 function updateServeTime(){
 	if(!windowtemptimeflag){
 		jQuery.ajax({
-	  	 	type: "POST",
-	  	 	async:false,
-	   		url: "<%=request.getContextPath() %>/transform/updateuserlogin",
-	  		data: null,
-	  		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
-	   		success: function(result){
-	   		},
-	   		error:function(result){
-	   			windowtemptimeoutcount++;
-	   			if(windowtemptimeoutcount>=4){
-	   				windowtemptimeflag = true;
-	   				clearInterval(windowintervalid);
-	   			}
-	   		}
+			type: "POST",
+			async:false,
+			url: "<%=request.getContextPath() %>/transform/updateuserlogin",
+			data: null,
+			contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
+			success: function(result){},
+			error:function(result){
+				windowtemptimeoutcount++;
+				if(windowtemptimeoutcount>=4){
+					windowtemptimeflag = true;
+					clearInterval(windowintervalid);
+				}
+			}
 		}); 
 	}
 }
+
 window.onload = function(){
 	updateServeTime();
 	windowintervalid = window.setInterval(updateServeTime,5000);
 }
+
 //通用导出数据方法
 function exportData(url){
 	window.location.href = "<%=request.getContextPath() %>"+url;
 }
+
 //检测客户端IP是否可用
 function checkIPAvailable(){
 	var returnval = false;
 	jQuery.ajax({
+
   	 	type: "GET",
   	 	async:false,
    		url: "<%=request.getContextPath()%>/networkrule/blacklist/checkIpAvailable",
@@ -123,6 +129,7 @@ function checkIPAvailable(){
 	});	
 	return returnval;
 }
+
 //更新镜像缓存数据
 function updateMemoryData(obj,uuid){
 	var returnval = false;
@@ -133,31 +140,31 @@ function updateMemoryData(obj,uuid){
   		data: {type:obj,uuid:uuid},
   		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
    		success: function(result){
-     		if(result.success){
-     			returnval = true;
-     		}
-   	}
+     		if(result.success){ returnval = true; }
+   		}
 	});	
 	return returnval;
 }
+
 //检测登录超时
 function checkLoginOut(){
 	var returnval = true;
 	jQuery.ajax({
-  	 	type: "post",
-  	 	async:false,
-   		url: "<%=request.getContextPath()%>/main/checklogin",
-  		data: null,
-   		success: function(result){
-   			if(result.status == "fail"){ 
-      		  $("#tipscontent").html("登录超时，请重新登录");
- 		      $("#dia").click();
- 		     returnval = false;
-     		}
-   	}
+		type: "post",
+		async:false,
+		url: "<%=request.getContextPath()%>/main/checklogin",
+		data: null,
+		success: function(result){
+			if(result.status == "fail"){ 
+				$("#tipscontent").html("登录超时，请重新登录");
+				$("#dia").click();
+				returnval = false;
+			}
+		}
 	});
 	return returnval;
 }
+
 //判断是否具有权限
 function uploadHasPrivilege(obj){
 	var returnval = false;
@@ -168,13 +175,12 @@ function uploadHasPrivilege(obj){
   		data: {type:obj},
   		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
    		success: function(result){
-     		if(result.success==true){
-     			returnval = true;
-     		}
-   	}
+     		if(result.success==true){ returnval = true; }
+   		}
 	});	
 	return returnval;
 }
+
 //获取SS可用地址
 function getAvailableAdress(){
 	var returnval = "";
@@ -185,11 +191,12 @@ function getAvailableAdress(){
   		data: null,
    		success: function(result){
    			returnval = result;
-   	}
+   		}
 	});	
 	return returnval;
 }
 </script>
+
   <body class="bg-1">
     <!-- Preloader -->
     <div class="mask"><div id="loader"></div></div>
@@ -203,49 +210,30 @@ function getAvailableAdress(){
 
         <!-- Fixed navbar -->
         <div class="navbar navbar-default navbar-fixed-top navbar-transparent-black mm-fixed-top" role="navigation" id="navbar">
+			<!-- Branding -->
+			<div class="navbar-header col-md-2">
+				<a class="navbar-brand" href="index.html"><strong>致云</strong>${productName}</a>
+				<div class="sidebar-collapse"><a href="#"><i class="fa fa-bars"></i></a></div>
+			</div>
+			<!-- Branding end -->
 
-          <!-- Branding -->
-          <div class="navbar-header col-md-2">
-            <a class="navbar-brand" href="index.html">
-              <strong>致云</strong>${productName}
-            </a>
-            <div class="sidebar-collapse">
-              <a href="#">
-                <i class="fa fa-bars"></i>
-              </a>
-            </div>
-          </div>
-          <!-- Branding end -->
+			<!-- .nav-collapse -->
+			<div class="navbar-collapse">
+				<!-- Page refresh -->
+				<ul class="nav navbar-nav refresh"><li class="divided"><a href="#" class="page-refresh"><i class="fa fa-refresh"></i></a></li></ul>
+				<!-- /Page refresh -->
+				
+				<!-- Search -->
+				<!-- <div class="search" id="main-search"><i class="fa fa-search"></i> <input type="text" placeholder="关键字"></div> -->
+				<!-- Search end -->
 
-
-          <!-- .nav-collapse -->
-          <div class="navbar-collapse">
-                        
-            <!-- Page refresh -->
-            <ul class="nav navbar-nav refresh">
-              <li class="divided">
-                <a href="#" class="page-refresh"><i class="fa fa-refresh"></i></a>
-              </li>
-            </ul>
-            <!-- /Page refresh -->
-
-            <!-- Search -->
-<!--             <div class="search" id="main-search"> -->
-<!--               <i class="fa fa-search"></i> <input type="text" placeholder="关键字"> -->
-<!--             </div> -->
-            <!-- Search end -->
-
-            <!-- Quick Actions -->
-            <ul class="nav navbar-nav quick-actions">
-              
-
+				<!-- Quick Actions -->
+				<ul class="nav navbar-nav quick-actions">
 <!--               <li class="dropdown divided"> -->
-                
 <!--                 <a class="dropdown-toggle button" data-toggle="dropdown" href="#"> -->
 <!--                   <i class="fa fa-envelope"></i> -->
 <!--                   <span class="label label-transparent-black"></span> -->
 <!--                 </a> -->
-
 <!--                 <ul class="dropdown-menu wider arrow nopadding messages"> -->
 <!--                   <li><h1>您有 <strong>0</strong> 个新的短消息</h1></li> -->
 <!--                   <li> -->
@@ -357,44 +345,35 @@ function getAvailableAdress(){
            
             </ul>
             <!-- /Quick Actions -->
-
-            <!-- Sidebar -->
-            <ul class="nav navbar-nav side-nav" id="sidebar">
-              
-              <li class="collapsed-content"> 
-                <ul>
-                  <li class="search"><!-- Collapsed search pasting here at 768px --></li>
-                </ul>
-              </li>
-
-              <li class="navigation" id="navigation">
-                <a href="#" class="sidebar-toggle" data-toggle="#navigation">平 台 控 制 面 板<i class="fa fa-angle-up"></i></a>
-                
-                <ul class="menu">
-					${sessionScope.menuhtml }
-                </ul>
-              </li>
-              <li class="settings" id="general-settings">
-                <a href="#" class="sidebar-toggle underline" data-toggle="#general-settings">数据同步配置 <i class="fa fa-angle-up"></i></a>
-
-                <div class="form-group">
-                  <label class="col-xs-8 control-label">实时数据显示</label>
-                  <div class="col-xs-4 control-label">
-                    <div class="onoffswitch greensea">
-                      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch-on" checked="">
-                      <label class="onoffswitch-label" for="switch-on">
-                        <span class="onoffswitch-inner"></span>
-                        <span class="onoffswitch-switch"></span>
-                      </label>
-                    </div>
-                  </div>
-                </div>         
-
-              </li>
-            </ul>
-            <!-- Sidebar end -->
-          </div>
-          <!--/.nav-collapse -->
-        </div>
-        <!-- Fixed navbar end -->
-        <!-- Page content -->
+            
+		<!-- Sidebar -->
+		<ul class="nav navbar-nav side-nav" id="sidebar">
+		  	<li class="collapsed-content"> 
+				<ul><li class="search"><!-- Collapsed search pasting here at 768px --></li></ul>
+			</li>
+			<li class="navigation" id="navigation">
+			  	<a href="#" class="sidebar-toggle" data-toggle="#navigation">平 台 控 制 面 板<i class="fa fa-angle-up"></i></a>
+				<ul class="menu">${sessionScope.menuhtml }</ul>
+			</li>
+			<li class="settings" id="general-settings">
+				<a href="#" class="sidebar-toggle underline" data-toggle="#general-settings">数据同步配置 <i class="fa fa-angle-up"></i></a>
+				<div class="form-group">
+					<label class="col-xs-8 control-label">实时数据显示</label>
+					<div class="col-xs-4 control-label">
+						<div class="onoffswitch greensea">
+							<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch-on" checked="">
+							<label class="onoffswitch-label" for="switch-on">
+								<span class="onoffswitch-inner"></span>
+								<span class="onoffswitch-switch"></span>
+							</label>
+						</div>
+					</div>
+				</div>         
+			</li>
+		</ul>
+		<!-- Sidebar end -->
+		<div class="header-bg"></div>
+	</div>
+	<!--/.nav-collapse -->
+</div>
+<!-- Fixed navbar end -->
