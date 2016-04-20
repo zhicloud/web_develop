@@ -1,5 +1,6 @@
 <%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- system_role_relategroup.jsp -->
 <html>
   <head>
     <title>关联角色组 </title>

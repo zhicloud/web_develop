@@ -1,5 +1,6 @@
 ﻿<%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- monitor_area_manage.jsp -->
 <html>
   <head>
     <title>资源监控——总体概况分析 </title>

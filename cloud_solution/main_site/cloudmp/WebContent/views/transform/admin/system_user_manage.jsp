@@ -2,238 +2,165 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
+<!-- system_user_manage.jsp -->
 <html>
-  <head>
-    <title>控制台-${productName}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8" />
- 
-    <link rel="icon" type="image/ico" href="<%=request.getContextPath()%>/assets/images/favicon.ico" />
-    <!-- Bootstrap -->
-    <link href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link href="<%=request.getContextPath()%>/font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/animate/animate.min.css">
-    <link type="text/css" rel="stylesheet" media="all" href="<%=request.getContextPath()%>/assets/js/vendor/mmenu/css/jquery.mmenu.all.css" />
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/videobackground/css/jquery.videobackground.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap-checkbox.css">
+<head>
+	<title>控制台-${productName}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8" />
+	<link rel="icon" type="image/ico" href="<%=request.getContextPath()%>/assets/images/favicon.ico" />
+	<!-- Bootstrap -->
+	<link href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+	<link href="<%=request.getContextPath()%>/font-awesome/css/font-awesome.css" rel="stylesheet">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/animate/animate.min.css">
+	<link type="text/css" rel="stylesheet" media="all" href="<%=request.getContextPath()%>/assets/js/vendor/mmenu/css/jquery.mmenu.all.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/videobackground/css/jquery.videobackground.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap-checkbox.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/rickshaw/css/rickshaw.min.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/morris/css/morris.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/tabdrop/css/tabdrop.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote-bs3.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen.min.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen-bootstrap.css">
+	<link href="<%=request.getContextPath()%>/assets/css/zhicloud.css" rel="stylesheet">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="<%=request.getContextPath()%>/assets/js/html5shiv.js"></script>
+	<script src="<%=request.getContextPath()%>/assets/js/respond.min.js"></script>
+	<![endif]-->
+</head>
 
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/rickshaw/css/rickshaw.min.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/morris/css/morris.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/tabdrop/css/tabdrop.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote-bs3.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen.min.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen-bootstrap.css">
+<body class="bg-1">
+	<!-- Preloader -->
+	<div class="mask"><div id="loader"></div></div>
+	<!--/Preloader -->
+	
+	<!-- Wrap all page content here -->
+	<div id="wrap">
+		<!-- Make page fluid -->
+		<div class="row">
+			<%@include file="/views/common/common_menus.jsp" %>
+			<!-- Page content -->
+			<div id="content" class="col-md-12">
+			<!-- page header -->
+			<div class="pageheader"><h2><i class="fa fa-user"></i> 用户管理</h2></div>
+          	<!-- /page header -->
+          	
+			<!-- content main container -->
+			<div class="main">
+				<!-- row -->
+				<div class="row">
+					<!-- col 6 -->
+					<div class="col-md-12">
+						<section class="tile color transparent-black">
+							<!-- tile header -->
+							<div class="tile-header"> 
+								<button type="button" class="btn btn-red add" onclick="updateuser('add',null)"><i class="fa fa-plus"></i><span> 新增用户</span></button>
+								<button type="button" class="btn btn-green file-excel-o" onclick="exportData('/export/userdata')"><i class="fa fa-file-excel-o"></i><span>导出数据</span></button>
+							</div>
+							<!-- /tile header -->
 
-    <link href="<%=request.getContextPath()%>/assets/css/zhicloud.css" rel="stylesheet">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="<%=request.getContextPath()%>/assets/js/html5shiv.js"></script>
-      <script src="<%=request.getContextPath()%>/assets/js/respond.min.js"></script>
-    <![endif]-->
-  </head>
-  <body class="bg-1">
-
- 
-
-    <!-- Preloader -->
-    <div class="mask"><div id="loader"></div></div>
-    <!--/Preloader -->
-
-    <!-- Wrap all page content here -->
-    <div id="wrap">
-
-      
-
-
-      <!-- Make page fluid -->
-      <div class="row">
-        
-
-
-
-
-         <%@include file="/views/common/common_menus.jsp" %>
-
-        
-        <!-- Page content -->
-        <div id="content" class="col-md-12">
-          
-
-
-          <!-- page header -->
-          <div class="pageheader">
-            
-
-            <h2><i class="fa fa-user"></i> 用户管理</h2>
-            
-
-          </div>
-          <!-- /page header -->
-          
-
-          <!-- content main container -->
-          <div class="main">
-
-
-
-            
-
-
-            <!-- row -->
-            <div class="row">
-              
-              
-              <!-- col 6 -->
-          <div class="col-md-12">
-
-				  <section class="tile color transparent-black">
-
-
- 
-                  <!-- tile header -->
-                  <div class="tile-header"> 
-                     <button type="button" class="btn btn-red add" onclick="updateuser('add',null)">
-                              <i class="fa fa-plus"></i>
-                              <span> 新增用户</span>
-                    </button>
-                    <button type="button" class="btn btn-green file-excel-o" onclick="exportData('/export/userdata')">
-                              <i class="fa fa-file-excel-o"></i>
-                              <span>导出数据</span>
-                    </button>
-                  </div>
-                  <!-- /tile header -->
-                      <div class="tile-widget bg-transparent-black-2">
-                          <div class="row">
-                      <div class="col-sm-6 col-xs-6" style="z-index: 100;">
-                          <div class="input-group table-options">
-                          <span class="input-group-btn">
-                                <input id="param" type="text" name="param" value="${parameter == null?"":parameter}"/>
-                            </span>
-                          <span class="input-group-btn">
-                              <select id="status" class="chosen-select form-control" style="width: 150px;">
-                                  <option value="">状态(全部)</option>
-                                  <c:if test="${status == 0}">
-                                      <option value="0" selected="selected">正常</option>
-                                  </c:if>
-                                  <c:if test="${status != 0}">
-                                      <option value="0">正常</option>
-                                  </c:if>
-                                  <c:if test="${status == 1}">
-                                      <option value="1" selected="selected">停用</option>
-                                  </c:if>
-                                  <c:if test="${status != 1}">
-                                      <option value="1">停用</option>
-                                  </c:if>
-                              </select>
-                              <select id="userType" class="chosen-select form-control" style="width: 150px;">
-                                  <option value="">用户类型(全部)</option>
-                                  <c:if test="${userType == 0}">
-                                      <option value="0" selected="selected">管理员用户</option>
-                                  </c:if>
-                                  <c:if test="${userType != 0}">
-                                      <option value="0">管理员用户</option>
-                                  </c:if>
-                                  <c:if test="${userType == 1}">
-                                      <option value="1" selected="selected">租户管理员用户</option>
-                                  </c:if>
-                                  <c:if test="${userType != 1}">
-                                      <option value="1">租户管理员用户</option>
-                                  </c:if>
-                              </select>
-                              <%--</span>--%>
-                           <%--<span class="input-group-btn">--%>
-                                <button id="search_btn" class="btn btn-default" type="button">查看</button>
-                              </span>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
+							<div class="tile-widget bg-transparent-black-2">
+								<div class="row">
+									<div class="col-sm-6 col-xs-6" style="z-index: 100;">
+										<div class="input-group table-options">
+											<span class="input-group-btn"><input id="param" type="text" name="param" value="${parameter == null?"":parameter}"/></span>
+											<span class="input-group-btn">
+												<select id="status" class="chosen-select form-control" style="width: 150px;">
+													<option value="">状态(全部)</option>
+													<c:if test="${status == 0}"><option value="0" selected="selected">正常</option></c:if>
+													<c:if test="${status != 0}"><option value="0">正常</option></c:if>
+													<c:if test="${status == 1}"><option value="1" selected="selected">停用</option></c:if>
+													<c:if test="${status != 1}"><option value="1">停用</option></c:if>
+												</select>
+												<select id="userType" class="chosen-select form-control" style="width: 150px;">
+													<option value="">用户类型(全部)</option>
+													<c:if test="${userType == 0}"><option value="0" selected="selected">管理员用户</option></c:if>
+													<c:if test="${userType != 0}"><option value="0">管理员用户</option></c:if>
+													<c:if test="${userType == 1}"><option value="1" selected="selected">租户管理员用户</option></c:if>
+													<c:if test="${userType != 1}"><option value="1">租户管理员用户</option></c:if>
+												</select>
+												<%--</span>--%>
+												<%--<span class="input-group-btn">--%>
+												<button id="search_btn" class="btn btn-default" type="button">查看</button>
+											</span>
+	                          			</div>
+                    					</div>
+								</div>
+							</div>
                        
-                  <div class="tile-body no-vpadding"> 
-                   
-                    <div class="table-responsive">
-                    
-                      <table  class="table table-datatable table-custom" id="basicDataTable">
-                        <thead>
-                          <tr>
-						    <th class="no-sort">
-                            <div class="checkbox check-transparent">
-                              <input type="checkbox"  id="allchck">
-                              <label for="allchck"></label>
-                            </div>
-                          </th>
-                            <th>用户账号</th>
-                            <th>显示名称</th>
-                            <th>用户类型</th>                            
-                            <th>邮箱</th>
-                            <th>联系电话</th>
-                            <th>状态</th>
-                            <th>创建时间</th>
-                            <th class="no-sort">操作</th>                            
-                          </tr>
-                        </thead>
-                        <tbody>
-                        
-					<c:forEach items="${systemUserList}" var="systemUser">
-                    		<tr class="odd gradeX">
-						    <td>
-									<div class="checkbox check-transparent">
-									  <input type="checkbox" value="${systemUser.billid }" id="${systemUser.billid }">
-									  <label for="${systemUser.billid }"></label>
-									</div>
-                             </td>
-                            <td class="cut">${systemUser.usercount }</td>
-                            <td class="cut">${systemUser.displayname }</td>
-                           <td class="cut">
-                            <c:if test="${systemUser.userType==0}">管理员用户</c:if>
-                            <c:if test="${systemUser.userType==1}">租户管理员用户</c:if>
-                            </td>                          
-                            <td class="cut">${systemUser.email }</td>
-                            <td class="cut">${systemUser.telphone }</td>
-                            <td class="cut">
-                            <c:if test="${systemUser.status==0}">正常</c:if>
-                            <c:if test="${systemUser.status==1}">禁用</c:if>
-                            </td>
-                            <td class="cut">${systemUser.insert_date }</td>
-							<td> 
-                              <div class="btn-group">
-                                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    		操作 <span class="caret"></span>
-                                  </button>
-                                  <ul class="dropdown-menu" role="user"> 
-                                    <li><a href="#"  onclick="updateuser('modify','${systemUser.billid}')">修改基本信息</a></li>
-                                    <li><a href="#" role="button" data-toggle="modal" onclick="beforeresetpassword('${systemUser.billid}', '${systemUser.email }')">重置用户密码</a></li>
-                                    <li><a href="#" onclick="deletedataone('${systemUser.billid}')">删除用户信息</a></li>
-                                    <li><a href="#" onclick="setuserstatus('${systemUser.billid}','${systemUser.status }')">设置用户状态</a></li>
-                                    <li><a href="#" onclick="getUserRoleGroup('${systemUser.billid}')">查看用户授权</a></li>
-                                   <%--  <li><a href="#" onclick="setuserusbstatus('${systemUser.billid}','${systemUser.usb_status }')">设置USB权限</a></li> --%>
-                                  </ul>
-                              </div>
-                            </td>                                                        
-                        </tr> 
-                    	</c:forEach>                         
-                        </tbody>
-                      </table>
-                      
-                    </div>
-                    
-                  </div>
-                  <!-- /tile body -->
-                    <div class="col-sm-2" style="margin-top: -40px;">
-                        <div class="input-group table-options">
-                          <select class="chosen-select form-control" id="multyselect">
-                            <option value="opp">批量操作</option> 
-                            <option value="delete">删除</option>
-                            <option value="status">用户状态</option>
-                          </select>
-                          <span class="input-group-btn">
-                            <button class="btn btn-default" type="button" onclick="multyopp()">提交</button>
-                          </span>
-                        </div>
-                      </div>    
+							<div class="tile-body no-vpadding"> 
+								<div class="table-responsive">
+									<table  class="table table-datatable table-custom" id="basicDataTable">
+										<thead>
+											<tr>
+												<th class="no-sort"><div class="checkbox check-transparent"><input type="checkbox"  id="allchck"><label for="allchck"></label></div></th>
+												<th>用户账号</th>
+												<th>显示名称</th>
+												<th>用户类型</th>                            
+												<th>邮箱</th>
+												<th>联系电话</th>
+												<th>状态</th>
+												<th>创建时间</th>
+												<th class="no-sort">操作</th>                            
+											</tr>
+										</thead>
+										
+										<tbody>
+											<c:forEach items="${systemUserList}" var="systemUser">
+												<tr class="odd gradeX">
+													<td>
+														<div class="checkbox check-transparent">
+															<input type="checkbox" value="${systemUser.billid }" id="${systemUser.billid }">
+															<label for="${systemUser.billid }"></label>
+														</div>
+													</td>
+													<td class="cut">${systemUser.usercount }</td>
+													<td class="cut">${systemUser.displayname }</td>
+													<td class="cut">
+														<c:if test="${systemUser.userType==0}">管理员用户</c:if>
+														<c:if test="${systemUser.userType==1}">租户管理员用户</c:if>
+													</td>                          
+													<td class="cut">${systemUser.email }</td>
+													<td class="cut">${systemUser.telphone }</td>
+													<td class="cut">
+														<c:if test="${systemUser.status==0}">正常</c:if>
+														<c:if test="${systemUser.status==1}">禁用</c:if>
+													</td>
+													<td class="cut">${systemUser.insert_date }</td>
+													<td> 
+														<div class="btn-group">
+															<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">操作<span class="caret"></span></button>
+															<ul class="dropdown-menu" role="user"> 
+																<li><a href="#"  onclick="updateuser('modify','${systemUser.billid}')">修改基本信息</a></li>
+																<li><a href="#" role="button" data-toggle="modal" onclick="beforeresetpassword('${systemUser.billid}', '${systemUser.email }')">重置用户密码</a></li>
+																<li><a href="#" onclick="deletedataone('${systemUser.billid}')">删除用户信息</a></li>
+																<li><a href="#" onclick="setuserstatus('${systemUser.billid}','${systemUser.status }')">设置用户状态</a></li>
+																<li><a href="#" onclick="getUserRoleGroup('${systemUser.billid}')">查看用户授权</a></li>
+																<%--  <li><a href="#" onclick="setuserusbstatus('${systemUser.billid}','${systemUser.usb_status }')">设置USB权限</a></li> --%>
+															</ul>
+														</div>
+													</td>                                                        
+												</tr> 
+											</c:forEach>                         
+										</tbody>
+									</table>
+								</div>
+							</div>
+                  			<!-- /tile body -->
+                  			
+							<div class="col-sm-2" style="margin-top: -40px;">
+								<div class="input-group table-options">
+									<select class="chosen-select form-control" id="multyselect">
+										<option value="opp">批量操作</option> 
+										<option value="delete">删除</option>
+										<option value="status">用户状态</option>
+									</select>
+									<span class="input-group-btn"><button class="btn btn-default" type="button" onclick="multyopp()">提交</button></span>
+								</div>
+							</div>    
                       
                      <!-- 修改密码弹出框 -->    
                     <div class="modal fade" id="userpassword" tabindex="-1" role="dialog" aria-labelledby="modalDialogLabel" aria-hidden="true">
@@ -336,7 +263,6 @@
                           </div>
                           <div class="modal-body">
                             <form role="form" id="userusbstatusform" class="form-horizontal">
-                              
                               <div class="form-group" style="margin-left:40%;float:left;width:20%;">
 		                            <input type="radio" name="userusbstatusinput" value="0" id="userusbstatusinput1">
 		                            <label for="userusbstatusinput1">未开启</label>

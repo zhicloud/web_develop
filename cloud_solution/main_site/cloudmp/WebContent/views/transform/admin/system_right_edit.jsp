@@ -1,4 +1,5 @@
 <%@ page pageEncoding="utf-8"%>
+<!-- system_right_edit.jsp -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <head>
     <title>功能权限编辑</title>

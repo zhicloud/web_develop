@@ -1,4 +1,5 @@
 <%@ page pageEncoding="utf-8"%>
+<!-- system_user_updatepassword.jsp -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style>
   body #content .tile table > tbody > tr td .checkbox,

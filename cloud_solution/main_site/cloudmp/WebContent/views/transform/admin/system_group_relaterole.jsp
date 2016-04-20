@@ -1,5 +1,6 @@
 <%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- system_group_relaterole.jsp -->
 <html>
   <head>
     <title>关联角色 </title>

@@ -1,5 +1,6 @@
 ﻿<%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- monitor_server_manage.jsp -->
 <html>
   <head>
     <title>资源监控——服务器信息 </title>

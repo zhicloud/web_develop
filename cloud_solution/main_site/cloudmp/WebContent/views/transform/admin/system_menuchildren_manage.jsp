@@ -1,5 +1,6 @@
 <%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- system_menuchildren_manage.jsp -->
 <html>
   <head>
     <title>子菜单维护 </title>

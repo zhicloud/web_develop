@@ -1,4 +1,5 @@
 <%@ page pageEncoding="utf-8"%>
+<!-- system_log_manage.jsp -->
 <%@ include file="/views/common/common.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <div class="centercontent_block tables" id="mainpage">

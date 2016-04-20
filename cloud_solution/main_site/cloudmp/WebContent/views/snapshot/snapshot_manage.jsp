@@ -1,5 +1,6 @@
 <%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- snapshot_manage.jsp -->
 <html>
   <head>
     <title>快照管理</title>

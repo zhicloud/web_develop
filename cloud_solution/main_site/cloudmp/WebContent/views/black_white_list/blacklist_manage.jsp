@@ -2,122 +2,78 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
+<!-- blacklist_manage.jsp -->
 <html>
-  <head>
-    <title>控制台-${productName}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8" />
+<head>
+	<title>控制台-${productName}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8" />
+	<link rel="icon" type="image/ico" href="<%=request.getContextPath()%>/assets/images/favicon.ico" />
+	<!-- Bootstrap -->
+	<link href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+	<link href="<%=request.getContextPath()%>/font-awesome/css/font-awesome.css" rel="stylesheet">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/animate/animate.min.css">
+	<link type="text/css" rel="stylesheet" media="all" href="<%=request.getContextPath()%>/assets/js/vendor/mmenu/css/jquery.mmenu.all.css" />
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/videobackground/css/jquery.videobackground.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap-checkbox.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/rickshaw/css/rickshaw.min.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/morris/css/morris.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/tabdrop/css/tabdrop.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote-bs3.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen.min.css">
+	<link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen-bootstrap.css">
+	<link href="<%=request.getContextPath()%>/assets/css/zhicloud.css" rel="stylesheet">
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	<script src="<%=request.getContextPath()%>/assets/js/html5shiv.js"></script>
+	<script src="<%=request.getContextPath()%>/assets/js/respond.min.js"></script>
+	<![endif]-->
+</head>
 
-    <link rel="icon" type="image/ico" href="<%=request.getContextPath()%>/assets/images/favicon.ico" />
-    <!-- Bootstrap -->
-    <link href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
-    <link href="<%=request.getContextPath()%>/font-awesome/css/font-awesome.css" rel="stylesheet">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/animate/animate.min.css">
-    <link type="text/css" rel="stylesheet" media="all" href="<%=request.getContextPath()%>/assets/js/vendor/mmenu/css/jquery.mmenu.all.css" />
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/videobackground/css/jquery.videobackground.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap-checkbox.css">
+<body class="bg-1">
+	<!-- Preloader -->
+	<div class="mask"><div id="loader"></div></div>
+	<!--/Preloader -->
 
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/rickshaw/css/rickshaw.min.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/morris/css/morris.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/tabdrop/css/tabdrop.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote-bs3.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen.min.css">
-    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen-bootstrap.css">
-
-    <link href="<%=request.getContextPath()%>/assets/css/zhicloud.css" rel="stylesheet">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="<%=request.getContextPath()%>/assets/js/html5shiv.js"></script>
-      <script src="<%=request.getContextPath()%>/assets/js/respond.min.js"></script>
-    <![endif]-->
-  </head>
-  <body class="bg-1">
-
- 
-
-    <!-- Preloader -->
-    <div class="mask"><div id="loader"></div></div>
-    <!--/Preloader -->
-
-    <!-- Wrap all page content here -->
-    <div id="wrap">
-
-      
-
-
-      <!-- Make page fluid -->
-      <div class="row">
-        
-
-
-
-
-        <%@include file="/views/common/common_menus.jsp" %>
-
-        
-        <!-- Page content -->
-        <div id="content" class="col-md-12">
-          
-
-
-          <!-- page header -->
-          <div class="pageheader">
-            
-
-            <h2><i class="fa fa-file-text"></i> 网络规则</h2>
-            
-
-          </div>
-          <!-- /page header -->
-          
-
-          <!-- content main container -->
-          <div class="main">
-
-
-
-            
-
-
-            <!-- row -->
-            <div class="row">
-              
-              
-              <!-- col 6 -->
-          <div class="col-md-12">
-
-				  <section class="tile color transparent-black">
-                  <!-- tile widget -->
-	                  <div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
-	                    <!-- Nav tabs -->
-	                    <ul class="nav nav-tabs tabdrop">
-	                      <li class="active" ><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/blacklist/all';">黑名单</a></li>
-	                      <li><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/whitelist/all';" data-toggle="tab">白名单</a></li>
-	                      <li><a href="#messages-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/desktopqos/all';" data-toggle="tab">QOS规则设置</a></li>
-	                      <li><a href="#tasks-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/rule/all';">智能路由例外配置 </a></li>
-	                      <div id="space"></div>
-	                      
-	                     </ul>
-	                    <!-- / Nav tabs -->
-	                  </div>
-	                  <!-- /tile widget -->
-
-                  <!-- /tile header -->
-
-                        
-                    <div class="tile-header">
-                     <button type="button" class="btn btn-red delete" id="add_blacklist">
-                              <i class="fa fa-plus"></i>
-                              <span>增加黑名单 </span>
-                    </button>  
-                    <div class="controls">
-                      <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
-                    </div>
-                   
-                  </div>
+	<!-- Wrap all page content here -->
+	<div id="wrap">
+		<!-- Make page fluid -->
+		<div class="row">
+			<%@include file="/views/common/common_menus.jsp" %>
+			<!-- Page content -->
+			<div id="content" class="col-md-12">
+			<!-- page header -->
+			<div class="pageheader"><h2><i class="fa fa-file-text"></i> 网络规则</h2></div>
+			<!-- /page header -->
+			
+			<!-- content main container -->
+			<div class="main">
+				<!-- row -->
+				<div class="row">
+					<!-- col 6 -->
+					<div class="col-md-12">
+						<section class="tile color transparent-black">
+							<!-- tile widget -->
+							<div class="tile-widget color transparent-black rounded-top-corners nopadding nobg">
+								<!-- Nav tabs -->
+								<ul class="nav nav-tabs tabdrop">
+									<li class="active" ><a href="#users-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/blacklist/all';">黑名单</a></li>
+									<li><a href="#orders-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/whitelist/all';" data-toggle="tab">白名单</a></li>
+									<li><a href="#messages-tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/desktopqos/all';" data-toggle="tab">QOS规则设置</a></li>
+									<li><a href="#tasks-tab" data-toggle="tab" onclick="window.location.href='<%=request.getContextPath() %>/networkrule/rule/all';">智能路由例外配置 </a></li>
+									<div id="space"></div>
+								</ul>
+								<!-- / Nav tabs -->
+							</div>
+							<!-- /tile widget -->
+							
+							<!-- tile header -->
+							<div class="tile-header">
+								<button type="button" class="btn btn-red delete" id="add_blacklist"><i class="fa fa-plus"></i><span>增加黑名单 </span></button>  
+								<div class="controls"><a href="#" class="refresh"><i class="fa fa-refresh"></i></a></div>
+							</div>
                        
                   <div class="tile-body no-vpadding"> 
                    
@@ -444,15 +400,14 @@
    			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
    			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
    			 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
-   			 -1).height(
-   			  $("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
+   			 -2).height($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).height());
    	    $(window).resize(function(){
    		 $("#space").width($("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop").width()
    				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(0).width()
    				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(1).width()
    				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(2).width()
    				 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
-   				 -1);
+   				 -2);
    	});
         
       });

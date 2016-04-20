@@ -1,5 +1,6 @@
 <%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- system_role_relateright.jsp -->
 <html>
   <head>
     <title>关联功能菜单 </title>

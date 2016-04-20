@@ -1,5 +1,6 @@
 ﻿<%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- monitor_room_manage.jsp -->
 <html>
   <head>
     <title>资源监控——机房信息 </title>

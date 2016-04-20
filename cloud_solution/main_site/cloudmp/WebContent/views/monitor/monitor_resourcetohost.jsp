@@ -1,5 +1,6 @@
 ﻿<%@ page pageEncoding="utf-8"%>
 <!DOCTYPE html>
+<!-- monitor_resourcetohost.jsp -->
 <html>
   <head>
     <title>资源监控——云主机信息 </title>
