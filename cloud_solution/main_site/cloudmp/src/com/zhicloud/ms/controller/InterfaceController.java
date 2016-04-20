@@ -93,92 +93,99 @@ public class InterfaceController {
 	 */
 	@RequestMapping(value="/login",method=RequestMethod.GET)
 	public void login(HttpServletRequest request, HttpServletResponse response) throws IOException
-	{
-      response.setCharacterEncoding("utf-8");
-		response.setContentType("text/json; charset=utf-8"); 
-		logger.info(request.getLocalAddr());
-		logger.info(request.getHeader("X-Forwarded-For"));
- 		boolean ipInnerFlag = HttpUtil.isIpAddr(request);
-		//获取用户名
-		String username = StringUtil.trim(request.getParameter("user_name"));
-		//获取密码
-		String password = StringUtil.trim(request.getParameter("password"));
-		//获取mac地址
-		String mac = StringUtil.trim(request.getParameter("mac"));
-		String ip = StringUtil.trim(request.getParameter("ip"));
-		String subnetMask = StringUtil.trim(request.getParameter("subnet_mask"));
-		String softwareVersion = StringUtil.trim(request.getParameter("software_version"));
-	    String hardwareVersion = StringUtil.trim(request.getParameter("hardware_version"));
-	    String gateway = StringUtil.trim(request.getParameter("gateway"));
-	    String time = StringUtil.trim(request.getParameter("time"));
-	    if(StringUtil.isBlank(time)){
-	        time = StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS");
-	    }
-		if(StringUtil.isBlank(username)){ 
-			ServiceUtil.writeFailMessage(response.getOutputStream(), "user_name is required"); 
-		}  
-		if(StringUtil.isBlank(password)){ 
-			ServiceUtil.writeFailMessage(response.getOutputStream(), "password is required"); 
-		}  
-		if(userService.checkAvailable(username) && userService.checkAlias(username)){			
-			ServiceUtil.writeFailMessage(response.getOutputStream(), "user_name is not exsit"); 
-		}
-		//查询用户信息
-		SysUser user = userService.checkTerminalLogin(request, response);
-		
-		if(user != null){
-			TerminalUserVO terminalUser = terminalUserService.queryById(user.getId());
-			if(terminalUser == null){
-			    ServiceUtil.writeFailMessage(response.getOutputStream(), "user_name is not exsit"); 
-			    return ;
-			}
-			//查询主机信息		
-			List<Map<Object, Object>> hostList= cloudHostService.queryCloudHostForTerminal(user,ipInnerFlag);
-			
-            // 行业和地区
-            String region = StringUtil.trim(request.getParameter("region"));
-            String industry = StringUtil.trim(request.getParameter("industry"));
-            List<TerminalInformationPushVO> infoList = terminalInformationPushService.queryInfomationByCondition(
-                    user.getGroupId(), time, region, industry);
-            Map<Object, Object> result = ServiceUtil.toSuccessObject("");
-			List<Map<Object, Object>> infoDatas = new ArrayList<Map<Object, Object>>();
-			for(TerminalInformationPushVO info : infoList){
-			    Map<Object, Object> infoData = new LinkedHashMap<Object, Object>();
-			    infoData.put("title", info.getTitle());
-			    infoData.put("content", info.getContent());
-			    infoData.put("time", info.getCreateTime());
-			    infoDatas.add(infoData);
-			}
-            result.put("hosts", hostList);	
-            result.put("messages", infoDatas);
-            result.put("name", terminalUser.getName());	
-            //默认不开通usb 
-        	result.put("user_status", terminalUser.getStatus());	
-        	result.put("usb", terminalUser.getUsbStatus());		 
-            BoxRealInfoVO info = boxRealInfoService.getInfoByUserId(mac);
-            if(info == null){
-                info = new BoxRealInfoVO();
-                info.setMac(mac);
-            }
-            info.setUserId(user.getId());
-            info.setUserName(username);
-            info.setGateway(gateway);
-            info.setHardwareVersion(hardwareVersion);
-            info.setSoftwareVersion(softwareVersion);
-            info.setSubnetMask(subnetMask);
-            info.setLastAliveTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
-            info.setLastLoginTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
-            info.setIp(ip);
-//            boxRealInfoService.addOrUpdateBoxInfo(info);
-        BoxRealInfoCacheManager.singleton().getCache().put(info);
+	{ 
+	    try{
+	        response.setCharacterEncoding("utf-8");
+	        response.setContentType("text/json; charset=utf-8"); 
+	        logger.info(request.getLocalAddr());
+	        logger.info(request.getHeader("X-Forwarded-For"));
+	        boolean ipInnerFlag = HttpUtil.isIpAddr(request);
+	        //获取用户名
+	        String username = StringUtil.trim(request.getParameter("user_name"));
+	        //获取密码
+	        String password = StringUtil.trim(request.getParameter("password"));
+	        //获取mac地址
+	        String mac = StringUtil.trim(request.getParameter("mac"));
+	        String ip = StringUtil.trim(request.getParameter("ip"));
+	        String subnetMask = StringUtil.trim(request.getParameter("subnet_mask"));
+	        String softwareVersion = StringUtil.trim(request.getParameter("software_version"));
+	        String hardwareVersion = StringUtil.trim(request.getParameter("hardware_version"));
+	        String gateway = StringUtil.trim(request.getParameter("gateway"));
+	        String time = StringUtil.trim(request.getParameter("time"));
+	        if(StringUtil.isBlank(time)){
+	            time = StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS");
+	        }
+	        if(StringUtil.isBlank(username)){ 
+	            ServiceUtil.writeFailMessage(response.getOutputStream(), "user_name is required"); 
+	        }  
+	        if(StringUtil.isBlank(password)){ 
+	            ServiceUtil.writeFailMessage(response.getOutputStream(), "password is required"); 
+	        }  
+	        if(userService.checkAvailable(username) && userService.checkAlias(username)){           
+	            ServiceUtil.writeFailMessage(response.getOutputStream(), "user_name is not exsit"); 
+	        }
+	        //查询用户信息
+	        SysUser user = userService.checkTerminalLogin(request, response);
+	        
+	        if(user != null){
+	            TerminalUserVO terminalUser = terminalUserService.queryById(user.getId());
+	            if(terminalUser == null){
+	                ServiceUtil.writeFailMessage(response.getOutputStream(), "user_name is not exsit"); 
+	                return ;
+	            }
+	            //查询主机信息        
+	            List<Map<Object, Object>> hostList= cloudHostService.queryCloudHostForTerminal(user,ipInnerFlag);
+	            
+	            // 行业和地区
+	            String region = StringUtil.trim(request.getParameter("region"));
+	            String industry = StringUtil.trim(request.getParameter("industry"));
+	            List<TerminalInformationPushVO> infoList = terminalInformationPushService.queryInfomationByCondition(
+	                    user.getGroupId(), time, region, industry);
+	            Map<Object, Object> result = ServiceUtil.toSuccessObject("");
+	            List<Map<Object, Object>> infoDatas = new ArrayList<Map<Object, Object>>();
+	            for(TerminalInformationPushVO info : infoList){
+	                Map<Object, Object> infoData = new LinkedHashMap<Object, Object>();
+	                infoData.put("title", info.getTitle());
+	                infoData.put("content", info.getContent());
+	                infoData.put("time", info.getCreateTime());
+	                infoDatas.add(infoData);
+	            }
+	            result.put("hosts", hostList);  
+	            result.put("messages", infoDatas);
+	            result.put("name", terminalUser.getUsername());
+	            //默认不开通usb 
+	            result.put("user_status", terminalUser.getStatus());    
+	            result.put("usb", terminalUser.getUsbStatus());      
+	            BoxRealInfoVO info = boxRealInfoService.getInfoByUserId(mac);
+	            if(info == null){
+	                info = new BoxRealInfoVO();
+	                info.setMac(mac);
+	            }
+	            info.setUserId(user.getId());
+	            info.setUserName(username);
+	            info.setGateway(gateway);
+	            info.setHardwareVersion(hardwareVersion);
+	            info.setSoftwareVersion(softwareVersion);
+	            info.setSubnetMask(subnetMask);
+	            info.setLastAliveTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+	            info.setLastLoginTime(StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+	            info.setIp(ip);
+//	            boxRealInfoService.addOrUpdateBoxInfo(info);
+	            BoxRealInfoCacheManager.singleton().getCache().put(info);
+ 
 
-        // 写反回流
-			ServiceUtil.writeJsonTo(response.getOutputStream(), result);
-			
-		}else{  
-			//写返回流
-			ServiceUtil.writeFailMessage(response.getOutputStream(), "not found user information"); 
-		} 
+	        // 写反回流
+	            ServiceUtil.writeJsonTo(response.getOutputStream(), result);
+	            
+	        }else{  
+	            //写返回流
+	            ServiceUtil.writeFailMessage(response.getOutputStream(), "not found user information"); 
+	        } 
+	        
+	    }catch(Exception e){
+	        e.printStackTrace();
+	    }
+      
 		
 
 	}
@@ -338,19 +345,24 @@ public class InterfaceController {
 		//平台类型
 		String platformType = StringUtil.trim(request.getParameter("platform_type")); 
 		//操作系统类型
-		String osType = StringUtil.trim(request.getParameter("os_type"));   
+		String osType = StringUtil.trim(request.getParameter("os_type")); 
+		//硬件产商类型
+		String hardwareCompany = StringUtil.trim(request.getParameter("hardware_company"));  
 		if(StringUtil.isBlank(versionNumber)){
 			//参数有误
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "version_number is required"); 
 		}
 		//设置默认值
 		if(StringUtil.isBlank(platformType)){
-		    platformType = "arm";
+		    platformType = "ARM";
 		}
 		if(StringUtil.isBlank(osType)){
 		    osType = "ubuntu";
         }
-		VersionRecordVO version = versionRecordService.getLatestVersion(platformType);
+		if(StringUtil.isBlank(hardwareCompany)){
+		    hardwareCompany = "XH";
+        }
+		VersionRecordVO version = versionRecordService.getLatestVersion(platformType,hardwareCompany);
 		if(version == null || version.getVersionNumber().equals(versionNumber)){
  			result.put("need_update", false);	
 			ServiceUtil.writeJsonTo(response.getOutputStream(), result);

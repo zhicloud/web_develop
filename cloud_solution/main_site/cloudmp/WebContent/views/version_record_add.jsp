@@ -107,31 +107,49 @@
                     <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/version/add" method="post"    >
                       
                       <div class="form-group">
-                        <label for="input01" class="col-sm-2 control-label">版本名称 *</label>
+                        <label for="versionNumber" class="col-sm-2 control-label">版本名称 *</label>
                         <div class="col-sm-4">
                           <input type="text" class="form-control" name="versionNumber" id="versionNumber"  parsley-trigger="change" parsley-required="true" parsley-checkversionname="true" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
+                           <span style="font-size:50%;">
+                                                                版本名称规则：<br>
+                                                                  客户缩写(如ZS)_数字版本号_CPU架构(如ARM,X86)_硬件厂家名称缩写（如SD，XH）共四部分组成;
+						  <br>   
+						     例：ZS_1.1.1_X86_SD，不能有中文和特殊符号，英文字母均为全大写。
+                           </span> 
+						
                         </div>
                       </div>
                       
                       <div class="form-group">
-                        <label for="input07" class="col-sm-2 control-label">平台类型*</label>
+                        <label for="platformType" class="col-sm-2 control-label">平台类型*</label>
                         <div class="col-sm-4" id="selectbox">
                           <select class="chosen-select chosen-transparent form-control" name="platformType" id="platformType" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
-                            <option value="">请选择镜像</option>  
-                            <option value="x86">x86</option>
-                            <option value="arm">arm</option>
+                            <option value="">请选择平台类型</option>  
+                            <option value="X86">X86</option>
+                            <option value="ARM">ARM</option>
+                               
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="hardwareCompany" class="col-sm-2 control-label">硬件产商*</label>
+                        <div class="col-sm-4" id="selectbox1">
+                          <select class="chosen-select chosen-transparent form-control" name="hardwareCompany" id="hardwareCompany" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox1">
+                            <option value="">请选择硬件产商</option>  
+                            <option value="XH">小海XH</option>
+                            <option value="SD">思叠SD</option>
                                
                           </select>
                         </div>
                       </div>
                       
                       <div class="form-group">
-                        <label for="colorpicker-rgb" class="col-sm-2 control-label">版本上传*</label>
+                        <label for="filename" class="col-sm-2 control-label">版本上传*</label>
                         <div class="col-sm-4">
                           <div class="input-group">
                           <span class="input-group-btn">
                             <span class="btn btn-primary btn-file">
-                              <i class="fa fa-upload"></i><input type="file" name="filename"  multiple="*.tgz">
+                              <i class="fa fa-upload"></i><input id="filename" type="file" name="filename"  multiple="*.tgz">
                             </span>
                           </span>
                           <input type="text" class="form-control" readonly="">
@@ -140,7 +158,7 @@
                       </div>
                          
                      <div class="form-group">
-                        <label for="input05" class="col-sm-2 control-label">描述</label>
+                        <label for="updateInfo" class="col-sm-2 control-label">描述</label>
                         <div class="col-sm-4">
                           <textarea class="form-control" name="updateInfo" id="updateInfo" rows="6" parsley-maxlength="100"></textarea>
                         </div>
@@ -370,13 +388,13 @@
 		      $("#dia").click();
     		return false;
     	}
-//      	if(filetype != ".tgz"){
-//      		isCommited = false;
-//     		$("#tipscontent").html("文件格式不正确");
-// 		      $("#dia").click();
-//     		return false;
+     	if(filetype != ".tgz"){
+     		isCommited = false;
+    		$("#tipscontent").html("文件格式不正确");
+		      $("#dia").click();
+    		return false;
     		
-//     	}
+    	}
     	
     	return true;
     }

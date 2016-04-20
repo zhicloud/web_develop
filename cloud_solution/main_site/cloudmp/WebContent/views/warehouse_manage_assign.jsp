@@ -342,7 +342,8 @@ function saveMenu(){
 				async: false,
 				success:function(data){
 					if(data.status == "success"){
-						location.href=path + "/warehouse/cloudhost/"+curWarehouseId+"/all";
+//						location.href=path + "/warehouse/cloudhost/"+curWarehouseId+"/all";
+						window.location.href = document.referrer;
 					}else if(data.status == "fail"){
 						$("#tipscontent").html(data.message);
 					    $("#dia").click();

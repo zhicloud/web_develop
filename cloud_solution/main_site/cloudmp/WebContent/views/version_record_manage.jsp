@@ -68,7 +68,7 @@
           <div class="pageheader">
             
 
-            <h2><i class="fa fa-book"></i> 盒子固件升级</h2>
+            <h2><i class="fa fa-book"></i> 云终端固件升级</h2>
             
 
           </div>
@@ -127,6 +127,7 @@
                           </th>
                             <th class="sortable sort-alpha">版本号</th>
                             <th class="sortable sort-alpha">平台类型</th>
+                            <th class="sortable sort-alpha">硬件产商</th>
                             <th class="sortable sort-alpha">更新内容</th>
                             <th class="sortable sort-alpha">文件大小</th>
                              <th class="sortable sort-alpha">创建时间</th>  
@@ -144,6 +145,7 @@
                                 </td>
                             <td>${version.versionNumber}</td> 
                             <td>${version.platformType}</td> 
+                            <td>${version.hardwareCompany}</td> 
                             <td class="cut">${version.updateInfo}</td> 
                             <td><fmt:formatNumber value="${version.fsize/1024/1024}" pattern="#,##0.0#"/>MB</td> 
                             <td class="center">
@@ -420,4 +422,3 @@
   </body>
 </html>
       
- 

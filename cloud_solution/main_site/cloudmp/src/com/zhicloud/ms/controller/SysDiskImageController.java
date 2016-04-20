@@ -380,9 +380,10 @@ public class SysDiskImageController {
 	 */
 	@RequestMapping(value="/update",method=RequestMethod.GET)
     @ResponseBody
-    public MethodResult updateImage(String type, HttpServletRequest request) {
+    public MethodResult updateImage(String type,String uuid, HttpServletRequest request) {
         if ("disk".equals(type)) {
             sysDiskImageService.initSysDiskImageFromHttpGateway();
+            sysDiskImageService.updateTypeByUuid(uuid, 2);
         } else if ("iso".equals(type)) {
             try {
                 ComputeInfoCacheJob.singleton().execute(null);

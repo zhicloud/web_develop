@@ -43,7 +43,7 @@ public interface IVersionRecordService {
 	 * @return VersionRecordVO
 	 * @since JDK 1.7
 	 */
-	public VersionRecordVO getLatestVersion(String platformType);
+	public VersionRecordVO getLatestVersion(String platformType,String hardwareCompany);
 	/**
 	 * 
 	 * getVersionById: 根据id查询版本

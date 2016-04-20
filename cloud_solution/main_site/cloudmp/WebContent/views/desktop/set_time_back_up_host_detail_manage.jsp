@@ -185,10 +185,10 @@
                                     				     无 
                                     </c:if>
                                     <c:if test="${detail.status == 4}">
-                                    				     无 
+                                    	<button type="button" class="btn btn-primary btn-xs" onclick="toDetail('${detail.hostId}');">查看详情</button>
                                     </c:if>
                                     <c:if test="${detail.status == 5}">
-                                    				     无 
+                                    	<button type="button" class="btn btn-primary btn-xs" onclick="toDetail('${detail.hostId}');">查看详情</button>
                                     </c:if>
                                     <c:if test="${detail.status == 6}">
                                     				     无 
@@ -439,6 +439,9 @@
     
     $(window).resize(function() {
     });
+    function toDetail(id){
+    	window.location.href = path+"/warehouse/cloudhost/"+id+"/backupManage";
+    }
 
         
       

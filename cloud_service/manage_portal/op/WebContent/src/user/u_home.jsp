@@ -33,8 +33,7 @@
 			<li style="background: url('img/banner4.jpg') no-repeat center top;"><a target="_blank" href="<%=request.getContextPath() %>?target=eggplan" title="蛋壳+计划"></a></li>
 			<li style="background: url('img/banner2.jpg') no-repeat center top;"><a target="_blank" href="<%=request.getContextPath() %>/bean/page.do?userType=4&bean=vpcService&method=createVpnPage" title="专属云-简单.极致"></a></li>
 			<li style="background: url('img/banner6.jpg') no-repeat center top;"><a target="_blank" href="javascript:;" title="复杂数据处理性能"></a></li>
-			 <li style="background: url('img/banner7.jpg') no-repeat center top;"><a target="_blank" href="http://mp.weixin.qq.com/s?__biz=MzA3NTI4MjYxMg==&mid=400542344&idx=1&sn=9f2bb6ffda2f57ecd4dbdc1d831e2a25#rd
-" title="活动"></a></li>
+			  
 		</ul>
 	</div>
 	<div class="f-cb"></div>

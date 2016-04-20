@@ -456,11 +456,7 @@
       
     });
     function saveForm(){
-		if(isCommited){
-     		return false;
-		 } 
-		isCommited=true;     	
-    	
+
 		jQuery.ajax({
 	        url: path+'/main/checklogin',
 	        type: 'post', 
@@ -477,7 +473,7 @@
 	        		  isCommited = false;
 	        		  $("#tipscontent").html("登录超时，请重新登录");
 	     		      $("#dia").click();
-		        	}else{ 
+		        	}else{
  		        			var options = {
  		        					success:function result(data){
  		        						if(data.status == "fail"){
@@ -494,8 +490,14 @@
  		        			};
  		        			var form = jQuery("#basicvalidations");
  		        			form.parsley('validate');
- 		        			if(form.parsley('isValid')){  		        				
+ 		        			if(form.parsley('isValid')){
+                                if(isCommited){
+                                    return false;
+                                }
+                                isCommited=true;
 			        			jQuery("#basicvalidations").ajaxSubmit(options); 
+ 		        			}else{
+ 		        				isCommited=false; 
  		        			}
 		        	} 
 	        }

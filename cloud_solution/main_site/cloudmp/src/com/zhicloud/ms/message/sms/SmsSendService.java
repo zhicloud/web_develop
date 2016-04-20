@@ -169,7 +169,7 @@ public class SmsSendService {
      * @param parameter
      * @return
      */
-    public String sendSms(String code, Map<String, Object> parameter) {
+    public String sendSms_old(String code, Map<String, Object> parameter) {
 
         if (parameter == null) {
             parameter = new LinkedHashMap<>();
@@ -262,7 +262,7 @@ public class SmsSendService {
     * @return String     
     * @throws
      */
-    public String sendSms_new(String code, Map<String, Object> parameter) {
+    public String sendSms(String code, Map<String, Object> parameter) {
 
         if (parameter == null) {
             parameter = new LinkedHashMap<>();
@@ -304,10 +304,13 @@ public class SmsSendService {
             JSONObject obj = JSONObject.fromObject(SendState);  
             String state = null;
             /*转换为json对象后，取出值**/  
-            if(SendState.indexOf("state")>0){  
-                state = obj.getString("state");  
+            if(SendState.indexOf("code")>0){  
+                state = obj.getString("code");  
               
             }  
+            if("200".equals(state)){
+                state = "1";
+            }
             
             //写入发送纪录
             Map<String, Object> record = new LinkedHashMap<>();

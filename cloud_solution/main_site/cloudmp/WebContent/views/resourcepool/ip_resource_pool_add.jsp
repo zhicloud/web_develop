@@ -116,7 +116,7 @@
                     <form class="form-horizontal" role="form" parsley-validate id="basicvalidations" action="<%=request.getContextPath() %>/networkpool/ipresourcepool/add" method="post"   >
                       <input name="prefixion" type="hidden" value="server_pool_"/>
                       <div class="form-group">
-                        <label for="input01" class="col-sm-2 control-label">资源池名 *</label>
+                        <label for="name" class="col-sm-2 control-label">资源池名 *</label>
                          <div class="col-sm-4">
                              <input type="text" class="form-control" id="name" name="name"  parsley-trigger="change" parsley-required="true" parsley-checkdesktoprecomputersourcepoolname="true" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1"/>
                         </div>

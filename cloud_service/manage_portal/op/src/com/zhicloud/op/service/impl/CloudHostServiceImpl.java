@@ -1313,28 +1313,30 @@ public class CloudHostServiceImpl extends BeanDirectCallableDefaultImpl implemen
                         .getId() + "] delete host '" + hostName + "' succeeded, uuid:[" + cloudHost
                         .getRealHostId() + "], message:[" + HttpGatewayResponseHelper
                         .getMessage(hostDeleteResult) + "]");
+                // 从缓冲池删除
+                CloudHostPoolManager.getCloudHostPool().removeByRealHostId(cloudHost.getRealHostId());
+                CloudHostPoolManager.getCloudHostPool()
+                    .removeByHostName(cloudHost.getRegion(), cloudHost.getHostName());
+
+                // 从数据库删除
+                int n = cloudHostMapper.updateForDeleteByIds(new String[] {hostId});
+                int m = cloudhostShoppingConfig.deleteByHostId(hostId);
+
+                if (n <= 0 || m <= 0) {
+                    return new MethodResult(MethodResult.FAIL, "删除失败");
+                }
+                logStatus = AppConstant.OPER_LOG_SUCCESS;
+                return new MethodResult(MethodResult.SUCCESS, "删除成功");
             } else {
                 logger.warn(
                     "CloudHostServiceImpl.deleteCloudHostById() > [" + Thread.currentThread()
                         .getId() + "] delete host '" + hostName + "' failed, uuid:[" + cloudHost
                         .getRealHostId() + "], message:[" + HttpGatewayResponseHelper
-                        .getMessage(hostDeleteResult) + "]");
-            }
-
-            // 从缓冲池删除
-            CloudHostPoolManager.getCloudHostPool().removeByRealHostId(cloudHost.getRealHostId());
-            CloudHostPoolManager.getCloudHostPool()
-                .removeByHostName(cloudHost.getRegion(), cloudHost.getHostName());
-
-            // 从数据库删除
-            int n = cloudHostMapper.updateForDeleteByIds(new String[] {hostId});
-            int m = cloudhostShoppingConfig.deleteByHostId(hostId);
-
-            if (n <= 0 || m <= 0) {
+                        .getMessage(hostDeleteResult) + "]"); 
                 return new MethodResult(MethodResult.FAIL, "删除失败");
             }
-            logStatus = AppConstant.OPER_LOG_SUCCESS;
-            return new MethodResult(MethodResult.SUCCESS, "删除成功");
+
+            
         } catch (AppException e) {
             throw e;
         } catch (Exception e) {

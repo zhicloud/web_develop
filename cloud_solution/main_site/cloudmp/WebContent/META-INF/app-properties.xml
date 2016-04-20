@@ -205,7 +205,7 @@
 	</property>
 	<property key="version" name="version" type="String" 
 		description="version">
-		【云桌面1.1】20160112-1
+		【云桌面1.2】20160405-1
 	</property>
 	<property key="black_white_list" name="黑白名单开关" type="String" description="黑白名单开关">
 		3

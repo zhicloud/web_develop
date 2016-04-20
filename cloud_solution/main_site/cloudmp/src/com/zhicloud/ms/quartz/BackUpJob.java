@@ -61,6 +61,9 @@ public class BackUpJob implements Job {
     
     @Override
     public void execute(JobExecutionContext context)throws JobExecutionException {
+        if(cloudHostService == null){
+            BackUpJob.singleton();
+        }
         String now = StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS");
         Integer mode = context.getJobDetail().getJobDataMap().getIntValue("mode");
         Integer disk = context.getJobDetail().getJobDataMap().getIntValue("disk");

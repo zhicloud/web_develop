@@ -33,6 +33,7 @@ public class VersionRecordVO {
 	private String createTime;
 	private long fsize;
 	private String platformType;
+	private String hardwareCompany;
 	public long getFsize() {
 		return fsize;
 	}
@@ -110,6 +111,13 @@ public class VersionRecordVO {
     public void setPlatformType(String platformType) {
         this.platformType = platformType;
     }
+    public String getHardwareCompany() {
+        return hardwareCompany;
+    }
+    public void setHardwareCompany(String hardwareCompany) {
+        this.hardwareCompany = hardwareCompany;
+    }
+    
     
 }
 

@@ -61,7 +61,7 @@
       <div class="pageheader">
 
 
-        <h2><i class="fa fa-inbox"></i> 修改终端盒子</h2>
+        <h2><i class="fa fa-inbox"></i> 修改云终端</h2>
 
 
       </div>
@@ -90,7 +90,7 @@
 
               <!-- tile header -->
               <div class="tile-header">
-                <h3><a href="<%=request.getContextPath() %>/box/list"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入终端盒子信息</h3>
+                <h3><a href="<%=request.getContextPath() %>/box/list"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a>输入云终端信息</h3>
                 <div class="controls">
                   <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                 </div>
@@ -133,14 +133,14 @@
                                       </c:if>
 
                     <div class="form-group">
-                    <label for="serial_number" class="col-sm-2 control-label">终端盒子编号*</label>
+                    <label for="serial_number" class="col-sm-2 control-label">云终端编号*</label>
                     <div class="col-sm-4">
                       <input type="text" class="form-control" id="serial_number" name="serialNumber" value="${terminal_box.serialNumber}" oldname="${terminal_box.serialNumber}" parsley-checkdboxserial="true" parsley-trigger="change" parsley-required="true" parsley-minlength="5" parsley-maxlength="50">
                     </div>
                   </div>
 
                   <div class="form-group">
-                    <label for="name" class="col-sm-2 control-label">终端盒子名称*</label>
+                    <label for="name" class="col-sm-2 control-label">云终端名称*</label>
                     <div class="col-sm-4">
                       <input type="text" class="form-control" id="name" name="name" value="${terminal_box.name}" oldname="${terminal_box.name}" parsley-trigger="change" parsley-required="true" parsley-minlength="5" parsley-maxlength="50">
                     </div>
@@ -176,7 +176,7 @@
                             <form role="form">   
 
                               <div class="form-group">
-                                <label style="align:center;" id="confirmcontent">确定要回收该终端盒子吗？</label>
+                                <label style="align:center;" id="confirmcontent">确定要回收该云终端吗？</label>
                                </div>
 
                             </form>

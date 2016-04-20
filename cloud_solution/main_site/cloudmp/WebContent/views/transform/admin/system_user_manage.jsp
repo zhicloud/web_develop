@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <!-- system_user_manage.jsp -->
 <html>
+<<<<<<< HEAD
 <head>
 	<title>控制台-${productName}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -90,6 +91,156 @@
                     					</div>
 								</div>
 							</div>
+=======
+  <head>
+    <title>控制台-${productName}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+ 
+    <link rel="icon" type="image/ico" href="<%=request.getContextPath()%>/assets/images/favicon.ico" />
+    <!-- Bootstrap -->
+    <link href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath()%>/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/animate/animate.min.css">
+    <link type="text/css" rel="stylesheet" media="all" href="<%=request.getContextPath()%>/assets/js/vendor/mmenu/css/jquery.mmenu.all.css" />
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/videobackground/css/jquery.videobackground.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap-checkbox.css">
+
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/rickshaw/css/rickshaw.min.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/morris/css/morris.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/tabdrop/css/tabdrop.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/summernote/css/summernote-bs3.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen.min.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/js/vendor/chosen/css/chosen-bootstrap.css">
+
+    <link href="<%=request.getContextPath()%>/assets/css/zhicloud.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="<%=request.getContextPath()%>/assets/js/html5shiv.js"></script>
+      <script src="<%=request.getContextPath()%>/assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body class="bg-1">
+
+ 
+
+    <!-- Preloader -->
+    <div class="mask"><div id="loader"></div></div>
+    <!--/Preloader -->
+
+    <!-- Wrap all page content here -->
+    <div id="wrap">
+
+      
+
+
+      <!-- Make page fluid -->
+      <div class="row">
+        
+
+
+
+
+         <%@include file="/views/common/common_menus.jsp" %>
+
+        
+        <!-- Page content -->
+        <div id="content" class="col-md-12">
+          
+
+
+          <!-- page header -->
+          <div class="pageheader">
+            
+
+            <h2><i class="fa fa-user"></i> 用户管理</h2>
+            
+
+          </div>
+          <!-- /page header -->
+          
+
+          <!-- content main container -->
+          <div class="main">
+
+
+
+            
+
+
+            <!-- row -->
+            <div class="row">
+              
+              
+              <!-- col 6 -->
+          <div class="col-md-12">
+
+				  <section class="tile color transparent-black">
+
+
+ 
+                  <!-- tile header -->
+                  <div class="tile-header"> 
+                     <button type="button" class="btn btn-red add" onclick="updateuser('add',null)">
+                              <i class="fa fa-plus"></i>
+                              <span> 新增用户</span>
+                    </button>
+                    <button type="button" class="btn btn-green file-excel-o" onclick="exportData('/export/userdata')">
+                              <i class="fa fa-file-excel-o"></i>
+                              <span>导出数据</span>
+                    </button>
+                  </div>
+                  <!-- /tile header -->
+                      <div class="tile-widget bg-transparent-black-2">
+                          <div class="row">
+                      <div class="col-sm-6 col-xs-6" style="z-index: 100;">
+                          <div class="input-group table-options">
+                          <span class="input-group-btn">
+                                <input id="param" type="text" name="param" value="${parameter == null?"":parameter}"/>
+                            </span>
+                          <span class="input-group-btn">
+                              <select id="status" class="chosen-select form-control" style="width: 150px;">
+                                  <option value="">状态(全部)</option>
+                                  <c:if test="${status == 0}">
+                                      <option value="0" selected="selected">正常</option>
+                                  </c:if>
+                                  <c:if test="${status != 0}">
+                                      <option value="0">正常</option>
+                                  </c:if>
+                                  <c:if test="${status == 1}">
+                                      <option value="1" selected="selected">停用</option>
+                                  </c:if>
+                                  <c:if test="${status != 1}">
+                                      <option value="1">停用</option>
+                                  </c:if>
+                              </select>
+                              <select id="userType" class="chosen-select form-control" style="width: 150px;display:none;" >
+                                  <option value="">用户类型(全部)</option>
+                                  <c:if test="${userType == 0}">
+                                      <option value="0" selected="selected">管理员用户</option>
+                                  </c:if>
+                                  <c:if test="${userType != 0}">
+                                      <option value="0">管理员用户</option>
+                                  </c:if>
+                                  <c:if test="${userType == 1}">
+                                      <option value="1" selected="selected">租户管理员用户</option>
+                                  </c:if>
+                                  <c:if test="${userType != 1}">
+                                      <option value="1">租户管理员用户</option>
+                                  </c:if>
+                              </select>
+                              <%--</span>--%>
+                           <%--<span class="input-group-btn">--%>
+                                <button id="search_btn" class="btn btn-default" type="button">查看</button>
+                              </span>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+>>>>>>> zhicloud/master
                        
 							<div class="tile-body no-vpadding"> 
 								<div class="table-responsive">
@@ -400,7 +551,7 @@
                                </div>
 							  <div class="form-group" style="display:none;" id="manualdiv">
                                 <label for="manualpass">新密码:</label>
-                                <input type="text" class="form-control" id="manualpass" parsley-required="true" parsley-maxlength="20">
+                                <input type="password" class="form-control" id="manualpass" parsley-required="true" parsley-maxlength="20" parsley-minlength="6">
                               </div>
                             </form>
                           </div>

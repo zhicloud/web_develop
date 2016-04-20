@@ -222,7 +222,8 @@ public class TransFormRoleController extends TransFormBaseAction {
     
     /**
      * @Description:新增用户信息
-     * @param systemUserVO
+     * @param request
+     * @param response
      * @return MethodResult
      */
     @RequestMapping(value = "/transform/useradmin/saveuser")

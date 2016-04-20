@@ -1,5 +1,6 @@
 package com.zhicloud.op.message.sms;
 
+ 
 import com.zhicloud.op.common.util.MD5Util;
 import com.zhicloud.op.common.util.StringUtil;
 import com.zhicloud.op.core.CoreSpringContextManager;
@@ -351,44 +352,42 @@ public class SmsSendService {
         client.getParams().setContentCharset("UTF-8");
 
         method.setRequestHeader("ContentType","application/x-www-form-urlencoded;charset=UTF-8");
-//        String digestStr = name+MD5Util.md5_16(password)+recipient+content+timeStamp;
-        NameValuePair[] data = {//提交短信
+         NameValuePair[] data = {//提交短信
             new NameValuePair("batchno",       smsId),
             new NameValuePair("account",     name), 
             new NameValuePair("content",  content),
             new NameValuePair("mobiles",    recipient),
             new NameValuePair("timestamp",timeStamp),
             new NameValuePair("digest",MD5Util.md5(name+MD5Util.md5_16(password)+recipient+content+timeStamp)),
-        };  
-        return "1";
+        };   
 
-//        method.setRequestBody(data);
-//        try {
-//            //处理返回值
-//            String state = client.executeMethod(method)+"";
-//            if("200".equals(state)){
-//                state = "1";
-//            }
-//            
-//            //写入发送纪录
-//            Map<String, Object> record = new LinkedHashMap<>();
-//            record.put("id", StringUtil.generateUUID());
-//            record.put("sender_address", configName);
-//            record.put("recipient_address", recipient);
-//            record.put("content", content);
-//            record.put("type", AppConstant.MESSAGE_TYPE_SMS);
-//            record.put("sms_state", state);
-//            record.put("create_time", StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
-//            messageRecordService.addRecord(record);
-//
-//             
-//            return state; 
-//
-//        } catch(Exception e){
-//            throw new AppException("失败");
-//        }
+        method.setRequestBody(data);
+        try {
+            //处理返回值
+            String state = client.executeMethod(method)+"";
+            if("200".equals(state)){
+                state = "1";
+            }
+            
+            //写入发送纪录
+            Map<String, Object> record = new LinkedHashMap<>();
+            record.put("id", StringUtil.generateUUID());
+            record.put("sender_address", configName);
+            record.put("recipient_address", recipient);
+            record.put("content", content);
+            record.put("type", AppConstant.MESSAGE_TYPE_SMS);
+            record.put("sms_state", state);
+            record.put("create_time", StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+            messageRecordService.addRecord(record);
 
-    } 
+             
+            return state; 
+
+        } catch(Exception e){
+            throw new AppException("失败");
+        }
+
+    }  
     
      
 

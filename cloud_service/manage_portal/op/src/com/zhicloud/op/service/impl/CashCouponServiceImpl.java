@@ -268,7 +268,7 @@ public class CashCouponServiceImpl extends BeanDirectCallableDefaultImpl impleme
 			}
 			
 			//发送短信
-		    String message = new String("【致云科技】亲爱的用户，您好。致云Zhicloud云服务现金券兑换码："+cashCouponCode+"，价值"+cashCouponMoney+"元，请及时兑换使用，谢谢。"); 
+		    String message = new String("亲爱的用户，您好。致云Zhicloud云服务现金券兑换码："+cashCouponCode+"，价值"+cashCouponMoney+"元，请及时兑换使用，谢谢。"); 
 			String state  = new SendSms().zhicloudSendSms(phone,message);
 			
 			if (("1").equals(state)) 

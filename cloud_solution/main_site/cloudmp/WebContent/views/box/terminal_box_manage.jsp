@@ -68,7 +68,7 @@
           <div class="pageheader">
             
 
-            <h2><i class="fa fa-hdd-o"></i> 终端盒子资产管理</h2>
+            <h2><i class="fa fa-hdd-o"></i> 云终端管理</h2>
             
 
           </div>
@@ -98,7 +98,7 @@
                       <div class="tile-header">
                           <button type="button" class="btn btn-red delete" id="boxAdd">
                               <i class="fa fa-plus"></i>
-                              <span> 新增终端盒子 </span>
+                              <span> 新增云终端 </span>
                           </button>
                     <button type="button" class="btn btn-green file-excel-o" onclick="exportData('/export/boxdata')">
                               <i class="fa fa-file-excel-o"></i>
@@ -152,7 +152,7 @@
                             </div>
                           </th>
                               <th class="sortable sort-alpha">编号</th>
-                              <th class="sortable sort-amount">终端盒子名称</th>
+                              <th class="sortable sort-amount">云终端名称</th>
                               <th class="sortable sort-amount">创建时间</th>
                               <th class="sortable sort-amount">分配用户</th>
                               <th class="sortable sort-amount">分配时间</th>
@@ -260,7 +260,7 @@
                             <form role="form">   
 
                               <div class="form-group">
-                                <label style="align:center;" id="confirmcontent">确定要删除该终端盒子吗？</label>
+                                <label style="align:center;" id="confirmcontent">确定要删除该云终端吗？</label>
                                </div>
 
                             </form>
@@ -466,12 +466,12 @@
                      myids.push(jQuery(this).val());
                  });
                  if(myids.length < 1){
-                     $("#tipscontent").html("请选择要删除的终端盒子");
+                     $("#tipscontent").html("请选择要删除的云终端");
                      $("#dia").click();
                      return;
                  }
                  ids = myids;
-                 $("#confirmcontent").html("确定要删除所选终端盒子吗？");
+                 $("#confirmcontent").html("确定要删除所选云终端吗？");
                  $("#confirm_btn").attr("onclick","deleteMultTerminalBox();");
                  $("#con").click();
              }
@@ -518,7 +518,7 @@
         }
 
         function del_box(id) {
-            $("#confirmcontent").html("确定要删除该终端盒子吗？");
+            $("#confirmcontent").html("确定要删除该云终端吗？");
             curId = id;
             $("#confirm_btn").attr("onclick","deleteTerminalBox();");
             $("#con").click();
@@ -529,7 +529,7 @@
         }
 
         function release_box(id) {
-            $("#confirmcontent").html("确定要回收该终端盒子吗？");
+            $("#confirmcontent").html("确定要回收该云终端吗？");
             curId = id;
             $("#confirm_btn").attr("onclick","releaseTerminalBox();");
             $("#con").click();

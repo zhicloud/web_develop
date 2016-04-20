@@ -174,7 +174,7 @@ response.setHeader("Access-Control-Allow-Origin", "*");
                              raw                                                                   
                             </c:if>
                             <c:if test="${image.fileType == 1}">
-                             qcw2                                                                   
+                             qcow2                                                                   
                             </c:if>
                             </td> 
                             <td  class="cut">${image.imageTypeName}</td>

@@ -233,7 +233,7 @@
                             <form role="form">   
 
                               <div class="form-group">
-                                <label style="align:center;" id="confirmcontent">确定要删除该终端盒子吗？</label>
+                                <label style="align:center;" id="confirmcontent">确定要删除该云终端吗？</label>
                                </div>
 
                             </form>

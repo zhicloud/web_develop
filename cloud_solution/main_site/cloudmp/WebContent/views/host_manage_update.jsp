@@ -178,7 +178,7 @@
                         </div>
                       </div>
                       
-                      <!-- <div class="form-group">
+                       <div class="form-group">
                         <label for="input01" class="col-sm-2 control-label">带宽 *</label>
                         <div class="col-sm-8"> 
                           <div class="radio radio-transparent col-md-2">
@@ -209,7 +209,7 @@
                           <input type="text" class="form-control" id="bandwidthdiy" name=bandwidthdiy disabled="disabled" parsley-trigger="change" parsley-required="true"  parsley-type="integer" parsley-max="1000" parsley-validation-minlength="1">
                         </div>
                         </div>
-                      </div> -->
+                      </div> 
                          
                     <%-- <div class="form-group">
                         <label for="input07" class="col-sm-2 control-label">镜像 *</label>
@@ -404,7 +404,7 @@
 							        		  $("#tipscontent").html(data.message);
 							     		      $("#dia").click();  		        							
 		        						}else{  		        							
-	   		        						history.go(-1);
+		        							window.location.href = document.referrer;
 		        						}
 		        					},
 		        					dataType:'json',

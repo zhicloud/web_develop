@@ -48,8 +48,10 @@ body #content.full-page .inside-block .logindiv .input-group .input-group-addon 
 body #content.full-page .inside-block .logindiv .input-group .input-group-addon i {width: 18px;color: rgba(255, 255, 255, 0.6);}
 body #content.full-page .inside-block .logindiv .input-group .input-group-addon i:after {content: "";height: 50%;margin-left: -25px;position: absolute;top: 25%;}
 body #content.full-page .inside-block .logindiv .input-group input {
-	background-color: rgba(0, 0, 0, 0.2) !important;
-	border: 0 !important;
+
+	background-color: rgba(0, 0, 0, 0.2);
+
+    border: 0 !important;
 	-webkit-border-radius: 4px 0 0 4px !important;
 	-moz-border-radius: 4px 0 0 4px !important;
 	-ms-border-radius: 4px 0 0 4px !important;
@@ -292,15 +294,15 @@ function reset(){
 <body class="bg-1">
 <div id="wrap" >
 	<div class="row" >
-		<div id="content" class="col-md-12 full-page login" >
+		<div id="content" class="col-md-12 full-page login" style="padding-left: 0;padding-right: 0;" >
 			<div class="inside-block">
-				<div class="l-box">
+				<div class="l-box" style="padding-right: 0;padding-left: 0;">
 					<div class="m-logo"><img src="<%=request.getContextPath()%>/assets/images/m_logo.png" alt="致云云管理中心 LOGO"/></div>
 					<div class="m-title">
 					<h3 style="margin-top:0;margin-bottom:5px;">${productName}</h3>
 					<img src="<%=request.getContextPath()%>/assets/images/m_title.png" alt="致云云管理中心 ZHICLOUD"/></div>
 					<div id="logindiv" class="logindiv">
-						<section style="overflow:hidden;">
+						<div style="overflow:hidden;">
 							<div class="input-group">
 								<input type="text" class="form-control" id="username" placeholder="用 户 名"/>
 								<div class="input-group-addon"><i class="fa fa-user"></i></div>
@@ -311,19 +313,19 @@ function reset(){
 								<div class="input-group-addon"><i class="fa fa-key"></i></div>
 							</div>
 							<div class="tips-info" id="ptipsInfo"></div>
-						</section>
-						<section class="log-in">
-							<button class="btn btn-primary" onclick="login()">登 录</button>
+						</div>
+						<div class="log-in">
+							<button class="btn btn-primary" onclick="login()" style="display: inline-block; height: 45px; line-height: 45px; width: 151px; color: #fcf7f5; padding: 0; border: none; font-size: 16px;">登 录</button>
 							<span></span>
-							<button class="btn btn-slategray" onclick="reset()">重 置</button>
-						</section>
-						<section class="controls">
-							<div class="checkbox check-transparent">
+							<button class="btn btn-slategray" onclick="reset()" style="display: inline-block; height: 45px; line-height: 45px; width: 151px; color: #fcf7f5; padding: 0; border: none; font-size: 16px;">重 置</button>
+						</div>
+						<div class="controls" style="overflow: hidden; width: 333px; margin: 10px auto 0;">
+							<div class="checkbox check-transparent" style="padding: 0; display: block; margin: 0 !important; float:left;">
 								<input type="checkbox" id="remember"/>
 								<label for="remember">记住密码</label>
 							</div>
-							<a class="psw-forget" href="javascript:;">忘记密码?</a>
-						</section>
+							<a class="psw-forget" href="javascript:;" style="font-size: 12px; display: block; float:right; color: rgba(255, 255, 255, 0.6);">忘记密码?</a>
+						</div>
 						<div class="novice-guide">
 							<a class="c-dsk-client" href="${pageContext.request.contextPath}/download/btngrad.png">云桌面客户端下载</a>
 							<a class="use-guide" href="javascript:;">使用指南</a>
@@ -363,6 +365,8 @@ jQuery(document).ready(function(){
 			login();
 		}
 	})
+
+
 	/* $("body").click(function(){
 		$("#errorinfo").html("");
 		$("#errorMask").hide();

@@ -140,7 +140,7 @@
                           <tr class="odd gradeX">
 						          <td>
 									<div class="checkbox check-transparent">
-									  <input type="checkbox" value="${sys_groups.id }" id="${sys_groups.id }">
+									  <input type="checkbox" value="${sys_groups.id }" id="${sys_groups.id }" amount="${sys_groups.amount}">
 									  <label for="${sys_groups.id }"></label>
 									</div>
                                  </td>
@@ -158,7 +158,7 @@
 			                        <li><a href="javascript:void(0);" onclick="itemGroupBtn('${sys_groups.id }');">成员管理</a></li>
 			                        <li class="divider"></li> 
 			                        <li><a href="javascript:void(0);" onclick="updateGroupBtn('${sys_groups.id }');">修改</a></li> 
-			                        <li><a href="javascript:void(0);" onclick="deleteGroupBtn('${sys_groups.id }');">删除</a></li> 
+			                        <li><a href="javascript:void(0);" onclick="deleteGroupBtn('${sys_groups.id }', ${sys_groups.amount});">删除</a></li>
                                   </ul>
                               </div>
                             </td>
@@ -283,7 +283,10 @@
     <script>
     var path = "<%=request.getContextPath()%>";
     var curId = "";
+    var amount = 0;
     var ids = [];
+    var amounts = [];
+    var flag = false;
     $(function(){
       // Add custom class to pagination div
       $.fn.dataTableExt.oStdClasses.sPaging = 'dataTables_paginate pagination-sm paging_bootstrap paging_custom';
@@ -342,14 +345,30 @@
 				 var datatable = $("#basicDataTable").find("tbody tr input[type=checkbox]:checked");
 				 $(datatable).each(function(){
 					 myids.push(jQuery(this).val());
+                     amounts.push(jQuery(this).attr("amount"));
 				 });
 		        if(myids.length < 1){
 		        	$("#tipscontent").html("请选择要删除的分组");
 					$("#dia").click();
 		       	 	return;
-		        } 
+		        }
+
+                $.each(amounts, function(n, value) {
+                    console.info("value: " + value);
+                   if (value != 0) {
+                       flag = true;
+                   }
+                });
+
+                amounts = [];
 		        ids = myids;
-				$("#confirmcontent").html("确定要删除所选分组吗？");
+                // 判断是否有成员
+                if (flag) {
+                    $("#confirmcontent").html("所选分组有包含用户成员的分组,确定要删除所选分组吗？");
+                } else {
+                    $("#confirmcontent").html("确定要删除所选分组吗？");
+                }
+                flag = false;
 		    	$("#confirm_btn").attr("onclick","deleteMultGroup();");
 		    	$("#con").click();
 		  	}	
@@ -364,11 +383,17 @@
     	window.location.href = "${pageContext.request.contextPath}/group/"+id+"/updatepage";
     }
     //删除群组
-    function deleteGroupBtn(id){
+    function deleteGroupBtn(id, amount){
     	curId = id;
-		  $("#confirmcontent").html("确定要删除该分组吗？");
-	      $("#confirm_btn").attr("onclick","deleteGroup();");
-	      $("#con").click();
+        // 判断是否有成员
+        if (amount > 0) {
+            $("#confirmcontent").html("所选分组包含用户成员,确定要删除该分组吗？");
+        } else {
+            $("#confirmcontent").html("确定要删除该分组吗？");
+        }
+
+        $("#confirm_btn").attr("onclick","deleteGroup();");
+        $("#con").click();
     }
     
       function deleteGroup(){

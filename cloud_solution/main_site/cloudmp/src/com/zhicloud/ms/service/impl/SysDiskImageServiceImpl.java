@@ -479,7 +479,21 @@ public class SysDiskImageServiceImpl implements ISysDiskImageService {
 
 		return new MethodResult(MethodResult.SUCCESS, "更新成功");	
 		
-	} 
+	}
+
+    @Override
+    @Transactional(readOnly=false)
+    public MethodResult updateTypeByUuid(String uuid, Integer type) {
+        SysDiskImageMapper sysDiskImageMapper = this.sqlSession.getMapper(SysDiskImageMapper.class);
+        Map<String, Object> sysDiskImageData = new LinkedHashMap<String, Object>();
+        sysDiskImageData.put("type", type); 
+        sysDiskImageData.put("uuid", uuid); 
+        sysDiskImageMapper.updateTypeByUuid(sysDiskImageData);
+        return new MethodResult(MethodResult.SUCCESS, "更新成功");
+    } 
+    
+    
+    
 
 }
 

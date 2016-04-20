@@ -114,5 +114,15 @@ public interface SysDiskImageMapper
 	* @throws
 	 */
 	public int updateImageTypeById(Map<String, Object> data);
+	/**
+	 * 
+	* @Title: updateTypeByUuid 
+	* @Description: 根据镜像真实id更新type 
+	* @param @param data
+	* @param @return      
+	* @return int     
+	* @throws
+	 */
+	public int updateTypeByUuid(Map<String, Object> data);
 	
  }

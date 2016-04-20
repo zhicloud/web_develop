@@ -272,10 +272,10 @@
                                   </button>
                                   <ul class="dropdown-menu" role="menu"> 
 									<c:if test="${terminal_user.boxId==null }">
-										<li><a href="javascript:void(0);" onclick="bindBoxBtn('${terminal_user.id}');" >分配盒子</a></li>
+										<li><a href="javascript:void(0);" onclick="bindBoxBtn('${terminal_user.id}');" >分配云终端</a></li>
 									</c:if>
 									<c:if test="${terminal_user.boxId!=null }">
-										<li><a href="javascript:void(0);" onclick="unboundBoxBtn('${terminal_user.id}');">回收盒子</a></li> 
+										<li><a href="javascript:void(0);" onclick="unboundBoxBtn('${terminal_user.id}');">回收云终端</a></li> 
 									</c:if>
                                     <li><a href="javascript:void(0);" onclick="$('#allocateHostsIds').val('${terminal_user.id}');$('#allocat').click();">分配主机</a></li>
                                     <li><a href="javascript:void(0);" onclick="$('#ids_password').val('${terminal_user.id}');$('#usernames').val('${terminal_user.username}');$('#pass').click();">重置密码</a></li> 
@@ -435,13 +435,13 @@
                               <div class="form-group">
 		                        <label for="password" class="col-sm-2 control-label">密码*</label>
 		                        <div class="col-sm-8">
-		                          <input type="password" class="form-control" id="password" name="password"  parsley-trigger="change" parsley-required="true"  parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
+		                          <input type="password" class="form-control" id="password" name="password"  parsley-trigger="change" parsley-required="true"  parsley-minlength="6" parsley-maxlength="16" parsley-validation-minlength="1">
 		                        </div>
 		                      </div> 
 		                      <div class="form-group">
 		                        <label for="confirm_password" class="col-sm-2 control-label">密码确认*</label>
 		                        <div class="col-sm-8">
-		                          <input type="password" class="form-control" id="confirm_password" name="confirm_password"  parsley-trigger="change" parsley-required="true"  parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1" parsley-equalto="#password">
+		                          <input type="password" class="form-control" id="confirm_password" name="confirm_password"  parsley-trigger="change" parsley-required="true"  parsley-minlength="6" parsley-maxlength="16" parsley-validation-minlength="1" parsley-equalto="#password">
 		                        </div>
 		                      </div> 
 
@@ -727,7 +727,7 @@
 //        		});
 //
 //        });
-//        $("#warehouseId_chosen").css("width","250px");
+        $("#warehouseId_chosen").css("width","250px");
         
       });
 
@@ -873,14 +873,14 @@
     function updateUser(id){
     	  location.href = path+"/user/"+id+"/update"; 
     }
-    //分配盒子
+    //分配云终端
     function bindBoxBtn(id){
     	  location.href = path+"/user/"+id+"/bindbox"; 
     }
-    //回收盒子
+    //回收云终端
     function unboundBoxBtn(id){
         curId = id;
-    	$("#confirmcontent").html("确定回收该用户的盒子吗？");
+    	$("#confirmcontent").html("确定回收该用户的云终端吗？");
         $("#confirm_btn").attr("onclick","unboundBox();");
         $("#con").click();
     	  

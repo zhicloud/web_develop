@@ -5,6 +5,7 @@ import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
 import com.zhicloud.ms.app.pool.storage.StorageManager;
 import com.zhicloud.ms.app.pool.storage.StorageResult;
+import com.zhicloud.ms.constant.MonitorConstant;
 import com.zhicloud.ms.httpGateway.HttpGatewayAsyncChannel;
 import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
@@ -14,8 +15,10 @@ import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.*;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,11 +26,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -751,6 +756,16 @@ public class ResourcePoolController {
           MethodResult result = computePoolService.removeComputePool(uuid);
           if("success".equals(result.status)){
               operLogService.addLog("桌面云资源池管理", "删除计算资源池", "1", "1", request);
+              Iterator<String> its = MonitorConstant.hostsMap.keySet().iterator(); 
+              while (its.hasNext()) {
+                  String key = its.next();
+                  String resourceid = key.split("∮")[0];                  
+                  if(resourceid.equals(uuid)){
+                      MonitorConstant.hostsMap.remove(key);  
+                      break;
+                  };
+                  
+              } 
               return new MethodResult(MethodResult.SUCCESS,"资源池删除成功");
           }
       } catch (Exception e) {
@@ -784,9 +799,13 @@ public class ResourcePoolController {
                 for (int i = 0; i < computerList.size(); i ++) {
                     JSONObject computerObject = computerList.getJSONObject(i);
                     String name = computerObject.getString("name");
-                    ComputeInfoExt computer = new ComputeInfoExt();
-                    computer.setName(name);
-                    curList.add(computer);
+                    String status = computerObject.getString("status");
+                    if(status.equals("0")){
+                        ComputeInfoExt computer = new ComputeInfoExt();
+                        computer.setName(name);
+                        curList.add(computer);
+                    }
+                    
                 }
             }
         } catch (MalformedURLException e) {
@@ -1023,21 +1042,24 @@ public class ResourcePoolController {
                  cList.addAll(list);
              }
 
-             reqTime = System.currentTimeMillis();
+             reqTime = System.currentTimeMillis(); 
+             channel = HttpGatewayManager.getAsyncChannel(Integer.valueOf(1)); 
              result = channel.serverQueryStorageDevice(MountDiskVo.LEVEL, target,MountDiskVo.DISK_TYPE_CLOUDSTORAGE );  
              if("success".equals(result.get("status"))){
                  List<MountDiskVo> list = StorageManager.singleton().getDiskVoList(reqTime, MountDiskVo.DISK_TYPE_CLOUDSTORAGE);
                  cList.addAll(list);
              }
 
-             reqTime = System.currentTimeMillis();
+             reqTime = System.currentTimeMillis(); 
+             channel = HttpGatewayManager.getAsyncChannel(Integer.valueOf(1)); 
              result = channel.serverQueryStorageDevice(MountDiskVo.LEVEL, target, MountDiskVo.DISK_TYPE_NASDISK);  
              if("success".equals(result.get("status"))){
                  List<MountDiskVo> list = StorageManager.singleton().getDiskVoList(reqTime, MountDiskVo.DISK_TYPE_NASDISK);
                  cList.addAll(list);
              }
  
-             reqTime = System.currentTimeMillis();
+             reqTime = System.currentTimeMillis(); 
+             channel = HttpGatewayManager.getAsyncChannel(Integer.valueOf(1)); 
              result = channel.serverQueryStorageDevice(MountDiskVo.LEVEL, target, MountDiskVo.DISK_TYPE_IPSAN);  
              if("success".equals(result.get("status"))){
                  List<MountDiskVo> list = StorageManager.singleton().getDiskVoList(reqTime, MountDiskVo.DISK_TYPE_IPSAN);

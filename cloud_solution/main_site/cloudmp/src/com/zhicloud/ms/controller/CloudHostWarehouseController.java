@@ -570,7 +570,8 @@ public class CloudHostWarehouseController {
             Iterator<String> its = pool_keys.iterator();
             JSONArray pool_arrays = new JSONArray();
 
-            while (its.hasNext()) {
+            while (its.hasNext()) { 
+                boolean flag = true;
                 ComputeInfoExt ext = poolMap.get(its.next());
                 // 只显示以desktop_pool开始的资源池信息
                 if (ext.getName() != null && ext.getName().startsWith("desktop_pool")) {
@@ -579,19 +580,22 @@ public class CloudHostWarehouseController {
                     obj.put("name", ext.getName());
                     obj.put("max_creating", 2);
                     // 循环比对
-                    for (CloudHostWarehouse cloud : lists) {
-                        if (ext.getUuid().equals(cloud.getPoolId())) {
-                            obj.put("max_creating", cloud.getMax_creating());
+                    for(int i=0;i<lists.size();i++){ 
+                        if (ext.getUuid().equals(lists.get(i).getPoolId())) {
+                            obj.put("max_creating", lists.get(i).getMax_creating());
+                            flag = false;
                             break;
-                        } else {
-                            //如果没有设置默认值，向数据库插入默认值2                           
-                            Map<String, Object> map = new LinkedHashMap<String, Object>();
-                            map.put("pool_id", ext.getUuid());
-                            map.put("pool_name", ext.getName());
-                            map.put("max_creating", 2);
-                            cloudHostWarehouseService.saveConcurrent(map);
-                        }
-                    } 
+                        } 
+                    }
+                    if(flag){
+                        //如果没有设置默认值，向数据库插入默认值2                           
+                        Map<String, Object> map = new LinkedHashMap<String, Object>();
+                        map.put("pool_id", ext.getUuid());
+                        map.put("pool_name", ext.getName());
+                        map.put("max_creating", 2);
+                        cloudHostWarehouseService.saveConcurrent(map);
+                    }
+                     
                     pool_arrays.add(obj);
                 }
             }

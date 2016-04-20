@@ -115,11 +115,11 @@
                         <label for="input07" class="col-sm-2 control-label">磁盘格式*</label>
                         <div class="col-sm-4" id="selectbox">
                           <select class="chosen-select chosen-transparent form-control" name="mode" id="input07" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
-                            <option value="">请选择磁盘格式</option> 
+<!--                             <option value="">请选择磁盘格式</option>  -->
                              	<option value="0">raw</option>
-                             	<option value="1">ext3</option>
-                             	<option value="2">ntfs</option>
-                             	<option value="3">ext4</option>
+<!--                              	<option value="1">ext3</option> -->
+<!--                              	<option value="2">ntfs</option> -->
+<!--                              	<option value="3">ext4</option> -->
                           </select>
                         </div>
                       </div>
@@ -273,6 +273,7 @@
     <script>
     
     var path = '<%=request.getContextPath()%>'; 
+    var hostId = '${hostId}';
     var isCommited = false;
     $(function(){
       $(".chosen-select").chosen({disable_search_threshold: 10});
@@ -313,7 +314,7 @@
  		        							 
  		        							$("#tipscontent").html("添加成功，将在5秒后刷新结果，请稍等...");
 							     		    $("#dia").click();
-							     		    window.setTimeout("window.history.go(-1);", 5000);
+							     		    window.setTimeout("goHistory();", 5000);
  		        						}
  		        					},
  		        					dataType:'json',
@@ -329,6 +330,10 @@
 	     }); 
 		
 	}
+    
+    function goHistory(){
+    	window.location.href = path+"/cloudhost/"+hostId+"/diskManage";
+    }
       
     </script>
   </body>

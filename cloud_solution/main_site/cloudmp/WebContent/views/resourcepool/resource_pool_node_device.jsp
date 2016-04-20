@@ -252,23 +252,23 @@
                             	<input type="hidden" name="disk_type" value="2"><!-- 2=共享存储/NAS -->	
                            	 
 			                    <div class="form-group">
-			                        <label for="input01" class="col-sm-2 control-label" style="width:180px;">路径标识名*</label>
+			                        <label for="name" class="col-sm-2 control-label" style="width:180px;">路径标识名*</label>
 			                        <div class="col-sm-4" style="width:200px;">
-			                            <input type="text" name="name"  parsley-trigger="change" parsley-required="true" parsley-checkdesktoprecomputersourcepoolname="true" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1"/>
+			                            <input type="text" id="name" name="name"  parsley-trigger="change" parsley-required="true" parsley-checkdesktoprecomputersourcepoolname="true" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1"/>
 			                        </div>
 			                    </div>
 		                      
 			                    <div class="form-group">
-			                        <label for="input01" class="col-sm-2 control-label" style="width:180px;">共享存储路径*</label>
+			                        <label for="path" class="col-sm-2 control-label" style="width:180px;">共享存储路径*</label>
 			                        <div class="col-sm-4" style="width:200px;">	                        
-			                            <input type="text"  name="path"  parsley-trigger="change" parsley-required="true" parsley-checkdesktoprecomputersourcepoolname="true" parsley-minlength="2" parsley-maxlength="100" parsley-validation-minlength="1"/>
+			                            <input type="text" id="path" name="path"  parsley-trigger="change" parsley-required="true" parsley-checkdesktoprecomputersourcepoolname="true" parsley-minlength="2" parsley-maxlength="100" parsley-validation-minlength="1"/>
 			                        </div>
 			                    </div>
 
 			                    <div class="form-group">
-			                        <label for="input01" class="col-sm-2 control-label" style="width:180px;">共享链接信息*</label>
+			                        <label for="crypt" class="col-sm-2 control-label" style="width:180px;">共享链接信息*</label>
 			                        <div class="col-sm-4" style="width:200px;">	                        
-			                            <input type="text"  name="crypt"  parsley-trigger="change" parsley-required="true" parsley-checkdesktoprecomputersourcepoolname="true" parsley-minlength="2" parsley-maxlength="100" parsley-validation-minlength="1"/>
+			                            <input type="text" id="crypt" name="crypt"  parsley-trigger="change" parsley-required="true" parsley-checkdesktoprecomputersourcepoolname="true" parsley-minlength="2" parsley-maxlength="100" parsley-validation-minlength="1"/>
 			                        </div>
 			                    </div>
                     		</form>
@@ -359,7 +359,7 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		window.location.reload();
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -382,7 +382,7 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		window.location.reload();
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -418,7 +418,9 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		$("#tipscontent").html("挂载成功，将在5秒后刷新结果，请稍等...");
+		        		$("#dia").click();
+		        		setTimeout(function(){window.location.reload()},5000);
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -439,7 +441,7 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		window.location.reload();
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -473,7 +475,7 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		window.location.reload();
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -494,7 +496,7 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		window.location.reload();
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -527,7 +529,7 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		window.location.reload();
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -549,7 +551,7 @@
 		        },
 		        success: function(result){  
 		        	if(result.status=="success"){
-		        		location.href = location.href;
+		        		window.location.reload();
 		        	}
 		        	else{
 			        	$("#tipscontent").html(result.message);
@@ -590,7 +592,7 @@
 								        		 $("#tipscontent").html(data.message);
 								     		     $("#dia").click();  
 	 		        						}else{  
-	 		        							location.href = location.href;
+	 		        							window.location.reload();
 	 		        						}
 	 		        					},
 	 		        					dataType:'json',

@@ -1,5 +1,6 @@
 package com.zhicloud.ms.util;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -17,10 +18,10 @@ public class MD5 {
 	 * @return
 	 */
     public static  String md5(String plainText) {
-         String result = null;
+        String result = null;
         try {
          MessageDigest md = MessageDigest.getInstance("MD5");
-         md.update(plainText.getBytes());
+         md.update(plainText.getBytes("utf-8"));
          byte b[] = md.digest();
          int i;
          StringBuffer buf = new StringBuffer("");
@@ -34,7 +35,7 @@ public class MD5 {
          }  
          result =  buf.toString();
          System.out.println(result);
-        } catch (NoSuchAlgorithmException e) {
+        } catch (Exception e) {
          e.printStackTrace();
         }
         return result;

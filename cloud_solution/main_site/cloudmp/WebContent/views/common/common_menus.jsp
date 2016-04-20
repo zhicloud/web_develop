@@ -115,6 +115,7 @@ function exportData(url){
 function checkIPAvailable(){
 	var returnval = false;
 	jQuery.ajax({
+<<<<<<< HEAD
 		type: "GET",
 		async:false,
 		url: "<%=request.getContextPath()%>/blacklist/checkIpAvailable",
@@ -123,18 +124,30 @@ function checkIPAvailable(){
 		success: function(result){
 			if(result.success){ returnval = true; }
 		}
+=======
+  	 	type: "GET",
+  	 	async:false,
+   		url: "<%=request.getContextPath()%>/networkrule/blacklist/checkIpAvailable",
+  		data: null,
+  		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
+   		success: function(result){
+     		if(result.success){
+     			returnval = true;
+     		}
+   	}
+>>>>>>> zhicloud/master
 	});	
 	return returnval;
 }
 
 //更新镜像缓存数据
-function updateMemoryData(obj){
+function updateMemoryData(obj,uuid){
 	var returnval = false;
 	jQuery.ajax({
   	 	type: "GET",
   	 	async:false,
    		url: "<%=request.getContextPath()%>/image/update",
-  		data: {type:obj},
+  		data: {type:obj,uuid:uuid},
   		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
    		success: function(result){
      		if(result.success){ returnval = true; }

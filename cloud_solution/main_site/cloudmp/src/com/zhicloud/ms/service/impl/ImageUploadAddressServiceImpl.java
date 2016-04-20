@@ -131,7 +131,7 @@ public class ImageUploadAddressServiceImpl implements ImageUploadAddressService 
         boolean flag = HttpUtil.isIpAddr(request);
 
         ImageUploadAddressVO address = this.getAddressByPolling();
-        if (address == null) {
+        if (address == null || address.getServiceEnable() == AppConstant.SERVICE_DISABLE) {
             return "none";
         }
         String url = "";
