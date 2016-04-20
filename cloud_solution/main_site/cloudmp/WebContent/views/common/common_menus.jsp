@@ -115,16 +115,7 @@ function exportData(url){
 function checkIPAvailable(){
 	var returnval = false;
 	jQuery.ajax({
-<<<<<<< HEAD
-		type: "GET",
-		async:false,
-		url: "<%=request.getContextPath()%>/blacklist/checkIpAvailable",
-		data: null,
-		contenttype :"application/x-www-form-urlencoded;charset=utf-8", 
-		success: function(result){
-			if(result.success){ returnval = true; }
-		}
-=======
+
   	 	type: "GET",
   	 	async:false,
    		url: "<%=request.getContextPath()%>/networkrule/blacklist/checkIpAvailable",
@@ -135,7 +126,6 @@ function checkIPAvailable(){
      			returnval = true;
      		}
    	}
->>>>>>> zhicloud/master
 	});	
 	return returnval;
 }
