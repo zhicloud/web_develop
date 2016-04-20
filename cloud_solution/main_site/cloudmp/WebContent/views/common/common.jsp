@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-<!-- common.jsp -->
-=======
 <%@ page pageEncoding="utf-8"%>
->>>>>>> zhicloud/master
 <link rel="icon" type="image/ico" href="<%=request.getContextPath()%>/assets/images/favicon.ico" />
 <link href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
 <link href="<%=request.getContextPath()%>/font-awesome/css/font-awesome.css" rel="stylesheet">
