@@ -218,6 +218,20 @@ public class CloudHostServiceImpl implements ICloudHostService {
         
         return host;
     }
+    
+    /**
+     * 通过主机id查询主机.
+     * @see com.zhicloud.ms.service.ICloudHostService#queryCloudHostById(java.lang.String)
+     */
+    @Override
+    public CloudHostVO queryCloudHostByHostName(String hostName) {
+        CloudHostMapper cloudHostMapper = this.sqlSession.getMapper(CloudHostMapper.class);
+        //返回查询结果
+        CloudHostVO host = cloudHostMapper.getByRealHostId(hostName);
+        
+        return host;
+    }
+    
 
     /**
      * 操作主机开机、关机、重启和强制关机的操作.

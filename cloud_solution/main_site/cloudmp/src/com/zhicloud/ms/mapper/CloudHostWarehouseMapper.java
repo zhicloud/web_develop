@@ -1,9 +1,9 @@
 package com.zhicloud.ms.mapper;
 
+import com.zhicloud.ms.vo.CloudHostWarehouse;
+
 import java.util.List;
 import java.util.Map;
-
-import com.zhicloud.ms.vo.CloudHostWarehouse;
 
 
 /**
@@ -64,7 +64,7 @@ public interface CloudHostWarehouseMapper {
 	 * 总数-1
 	 * 已分配-1
 	 * @author sasa
-	 * @param String
+	 * @param id
 	 * @return int
 	 * @since JDK 1.7
 	 */
@@ -75,7 +75,7 @@ public interface CloudHostWarehouseMapper {
 	 * 总数-1
 	 * 未分配-1
 	 * @author sasa
-	 * @param String
+	 * @param id
 	 * @return int
 	 * @since JDK 1.7
 	 */
@@ -85,7 +85,7 @@ public interface CloudHostWarehouseMapper {
 	 * updateWarehouseAmountForDeleteNotCreatedHost:删除未创建的主机
 	 * 总数-1 
 	 * @author sasa
-	 * @param String
+	 * @param id
 	 * @return int
 	 * @since JDK 1.7
 	 */
@@ -150,4 +150,11 @@ public interface CloudHostWarehouseMapper {
      * @return CloudHostWarehouse
      */
     public CloudHostWarehouse getConcurrent(String pool_id);
+
+    /**
+     *
+     * @param ConfigModelId 关联类型ID
+     * @return List<CloudHostWarehouse>
+     */
+    public List<CloudHostWarehouse> getByConfigModelId(String ConfigModelId);
 }

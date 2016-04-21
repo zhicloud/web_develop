@@ -1,17 +1,5 @@
 package com.zhicloud.ms.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.CloudHostConfigModelService;
 import com.zhicloud.ms.service.ICloudHostWarehouseService;
@@ -22,6 +10,16 @@ import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
 import com.zhicloud.ms.vo.CloudHostConfigModel;
 import com.zhicloud.ms.vo.CloudHostWarehouse;
 import com.zhicloud.ms.vo.SysDiskImageVO;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 @Controller
@@ -83,13 +81,18 @@ public class CloudHostConfigModelController {
 	@RequestMapping(value={"/chcm/{id}/delete","/cscm/{id}/delete"},method=RequestMethod.GET)
 	@ResponseBody
 	public MethodResult deleteType(@PathVariable("id") String id,HttpServletRequest request){
-		if(!((new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_type_delete)) || (new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_type_delete)))){
-			return new MethodResult(MethodResult.FAIL,"您没有删除配置的权限，请联系管理员");
-		}
-		cloudHostConfigModelService.deleteType(id);
-        operLogService.addLog("主机配置", "删除主机配置", "1", "1", request);
+      if(!((new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_type_delete)) || (new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_type_delete)))){
+          return new MethodResult(MethodResult.FAIL,"您没有删除配置的权限，请联系管理员");
+      }
 
-		return new MethodResult(MethodResult.SUCCESS,"删除成功");
+      MethodResult result = cloudHostConfigModelService.deleteType(id);
+      String flag = "2";
+      if (result.isSuccess()) {
+          flag = "1";
+      }
+      operLogService.addLog("主机配置", "删除主机配置", "1", flag, request);
+
+		return new MethodResult(result.status, result.message);
 	}
 	/**
 	 * 查询一个主机类型，返回至更新页

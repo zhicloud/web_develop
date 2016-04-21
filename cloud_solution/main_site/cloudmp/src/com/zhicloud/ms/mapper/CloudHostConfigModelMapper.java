@@ -1,14 +1,14 @@
 package com.zhicloud.ms.mapper;
 
+import com.zhicloud.ms.vo.CloudHostConfigModel;
+
 import java.util.List;
 import java.util.Map;
-
-import com.zhicloud.ms.vo.CloudHostConfigModel;
 
 public interface CloudHostConfigModelMapper {
 	public List<CloudHostConfigModel> getAll();
 	public int addType(Map<String,Object> condition);
-	public void deleteType(String id);
+	public int deleteType(String id);
 	public CloudHostConfigModel getById(String id);
 	public int updateById(Map<String,Object> condition);
 	/**

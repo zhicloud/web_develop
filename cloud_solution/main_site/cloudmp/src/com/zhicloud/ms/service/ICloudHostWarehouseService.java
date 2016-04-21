@@ -1,15 +1,13 @@
 package com.zhicloud.ms.service;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import net.sf.json.JSONArray;
-
 import com.zhicloud.ms.app.helper.DefaultTreeNode;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.vo.CloudHostWarehouse;
+import net.sf.json.JSONArray;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 
 public interface ICloudHostWarehouseService {
@@ -93,4 +91,11 @@ public interface ICloudHostWarehouseService {
      * @return MethodResult
      */
     public int saveConcurrent(Map<String, Object> condition);
+
+    /**
+     * @Description:获取关联的仓库
+     * @param configModelId 关联类型id
+     * @return
+     */
+    public List<CloudHostWarehouse> getByConfigModelId(String configModelId);
 }

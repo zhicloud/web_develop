@@ -1,14 +1,14 @@
 package com.zhicloud.ms.service;
 
-import java.util.List;
-
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.vo.CloudHostConfigModel;
+
+import java.util.List;
 
 public interface CloudHostConfigModelService {
 	public List<CloudHostConfigModel> getAll();
 	public String addType(CloudHostConfigModel chcm);
-	public void deleteType(String id);
+	public MethodResult deleteType(String id);
 	public CloudHostConfigModel getById(String id);
 	public int updateType(String id,CloudHostConfigModel chcm);
 	/**

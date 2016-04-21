@@ -228,7 +228,7 @@
                       <div class="modal-dialog">
                         <div class="modal-content" style="width:60%;margin-left:20%;">
                           <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="window.location.reload()">Close</button>
                             <h3 class="modal-title" id="modalConfirmLabel"><strong>确认</strong> </h3>
                           </div>
                           <div class="modal-body">
@@ -407,7 +407,12 @@
  }
     
     function toDelete(){
+
+        console.info("operid: " + operid);
+
     	jQuery.get(path + "/chcm/"+operid+"/delete",function(data){
+
+            console.info("data: " + data);
 			if(data.status == "success"){	        					
 					location.href = path+"/chcm/all"; 
 			}else{
@@ -468,4 +473,3 @@
   </body>
 </html>
       
- 

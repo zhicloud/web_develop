@@ -123,20 +123,20 @@
                         
                       
                       <div class="form-group">
-                        <label for="input07" class="col-sm-2 control-label">主机选择*</label>
+                        <label for="fromhostid" class="col-sm-2 control-label">主机选择*</label>
                         <div class="col-sm-4" id="selectbox">
                           <select class="chosen-select chosen-transparent form-control" name="id" id="fromHostId" parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
                             <option value="">请选择主机</option> 
                             <c:forEach items="${hostList }" var="sdi">
                                  	<c:if test="${sdi.realHostId!=null }">
-                                 		<option value="${sdi.realHostId }">${sdi.displayName }</option>
+                                 		<option value="${sdi.realHostId }">${sdi.userAccount}-${sdi.displayName }</option>
                                  	</c:if>
                              </c:forEach>   
                           </select>
                         </div>
                       </div>
                      <div class="form-group">
-	                        <label for="input01" class="col-sm-2 control-label">备份类型</label>
+	                        <label for="mode0" class="col-sm-2 control-label">备份类型</label>
 	                        <div class="col-sm-10">
 	                          <div class="radio radio-transparent col-md-2">
 	                            <input type="radio" name="mode"   id="mode0" value="0" onclick="$('#choose_disk').hide();">
@@ -150,7 +150,7 @@
 	                      </div>
 			                      
 	                      <div class="form-group" id="choose_disk">
-	                        <label for="input01" class="col-sm-2 control-label">备份盘选择</label>
+	                        <label for="disk0" class="col-sm-2 control-label">备份盘选择</label>
 	                        <div class="col-sm-10">
 	                          <div class="radio radio-transparent col-md-2">
 	                            <input type="radio" name="disk"   id="disk0" value="0" >
@@ -375,4 +375,3 @@
       
 
       
- 

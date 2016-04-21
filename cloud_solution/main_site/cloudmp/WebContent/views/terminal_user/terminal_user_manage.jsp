@@ -42,7 +42,7 @@
  
 
     <!-- Preloader -->
-    <div class="mask"><div id="loader"></div></div>
+    <div class="mask"></div>
     <!--/Preloader -->
 
     <!-- Wrap all page content here -->
@@ -233,7 +233,7 @@
                     		<tr class="gradeX">
                           	<td>
 								<div class="checkbox check-transparent">
-								  <input type="checkbox" value="${terminal_user.id}" name="checkboxid" username="${terminal_user.username}" id="chck${terminal_user.id}" >
+								  <input type="checkbox" value="${terminal_user.id}" name="checkboxid" username="${terminal_user.username}" id="chck${terminal_user.id}" amount="${terminal_user.cloudHostAmount}">
 								  <label for="chck${terminal_user.id}"></label>
 								</div>
                                 </td>
@@ -284,7 +284,7 @@
                                     <li><a href="javascript:void(0);" onclick="updateUser('${terminal_user.id}');">修改</a></li> 
                                     <li><a href="javascript:void(0);" onclick="userDetail('${terminal_user.id}');">详情</a></li> 
                                     <li class="divider"></li>
-                                    <li><a href="javascript:void(0);" onclick="deleteUser('${terminal_user.id}');">删除</a></li>
+                                    <li><a href="javascript:void(0);" onclick="deleteUser('${terminal_user.id}', ${terminal_user.cloudHostAmount});">删除</a></li>
                                   </ul>
                               </div>
                             </td>
@@ -626,7 +626,7 @@
     var operid = "";
     var oper = "";
     var usernames = "";
-    var ids = ";"
+    var ids = "";
 
 
 
@@ -706,109 +706,9 @@
           $(this).toggleClass('checked');
         });
 
-//        jQuery("#file").change(function(){
-//        	$("#loader").delay(500).fadeOut(300);
-//
-//        	 jQuery("#upload_file_form").ajaxSubmit(function(e){
-//        		 $(".mask").delay(800).fadeOut(300,
-//        		            function() {
-//        		                widthLess1024();
-//        		                widthLess768()
-//        		            });
-//        		 if(e.status == "success"){
-//                     $("#tipscontent").html(e.message);
-//                     $("#dia").click();
-//
-//        		 }else{
-//        			 $("#tipscontent").html(e.message);
-//          		      $("#dia").click();
-//        		 }
-//
-//        		});
-//
-//        });
         $("#warehouseId_chosen").css("width","250px");
         
       });
-
-//    $(function(){
-//
-//        var $list=$("#thelist");
-//        var $btn =$("#ctlBtn");   //开始上传
-//
-//        var uploader = WebUploader.create({
-//
-//            auto: false,
-//
-//            // swf文件路径
-//            swf: path + '/webupload/Uploader.swf',
-//
-//            // 文件接收服务端。
-//            server: path + '/user/import',
-//
-//            // 选择文件的按钮。可选。
-//            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-//            pick: '#picker',
-//
-//            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
-//            resize: false,
-//
-//            // 只允许选择excel文件。
-//            accept: {
-//                title: 'Excel',
-//                extensions: 'xls,xlsx',
-//                mimeTypes: 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-//            },
-//
-//            method: 'POST'
-//        });
-//
-//        // 当有文件被添加进队列的时候
-//        uploader.on( 'fileQueued', function( file ) {
-//            console.info("queue");
-//            $list.append( '<div id="' + file.id + '" class="item">' +
-//                    '<h4 class="info">' + file.name + '</h4>' +
-//                    '<p class="state">等待上传...</p>' +
-//                    '</div>' );
-//        });
-//
-//        // 文件上传过程中创建进度条实时显示。
-//        uploader.on( 'uploadProgress', function( file, percentage ) {
-//            console.info("progress");
-//            var $li = $( '#'+file.id ),
-//                    $percent = $li.find('.progress .progress-bar');
-//
-//            // 避免重复创建
-//            if ( !$percent.length ) {
-//                $percent = $('<div class="progress progress-striped active">' +
-//                        '<div class="progress-bar" role="progressbar" style="width: 0%">' +
-//                        '</div>' +
-//                        '</div>').appendTo( $li ).find('.progress-bar');
-//            }
-//
-//            $li.find('p.state').text('上传中');
-//
-//            $percent.css( 'width', percentage * 100 + '%' );
-//        });
-//
-//        uploader.on( 'uploadSuccess', function( file ) {
-//            console.info("succes");
-//            $( '#'+file.id ).find('p.state').text('已上传');
-//        });
-//
-//        uploader.on( 'uploadError', function( file ) {
-//            console.info("error");
-//            $( '#'+file.id ).find('p.state').text('上传出错');
-//        });
-//
-//        uploader.on( 'uploadComplete', function( file ) {
-//            console.info("complete");
-//            $( '#'+file.id ).find('.progress').fadeOut();
-//        });
-//
-//
-//    });
-
 
 
     $(function(){
@@ -829,7 +729,7 @@
         });
     });
 
-    function deleteUser(id){
+    function deleteUser(id, amount){
     	operid = id;
     	oper = 1;
 		jQuery.ajax({
@@ -847,8 +747,14 @@
 	        	if(result.status == "fail"){
 	      		  $("#tipscontent").html("登录超时，请重新登录");
 	   		      $("#dia").click();
-		        	}else{ 	        		  
-				       $("#con").click();		        		 	        	 
+		        	}else{
+                        if (amount > 0) {
+                            $("#confirmcontent").html("该用户账号下存在关联产品, 删除用户将删除用户与产品的绑定关系, 请谨慎删除.");
+                        }
+                        else {
+                            $("#confirmcontent").html( "确定要删除该用户吗？");
+                        }
+				       $("#con").click();
 	           } 
 	        }
 	     });
@@ -944,24 +850,45 @@
     function toOper(){
     	oper = $("#operselect").val();
     	operid = "";
+        var amount = "";
     	$("input[name='checkboxid']:checked").each(function(){  
-                operid += $(this).val()+","
+                operid += $(this).val()+",";
+                amount += $(this).attr("amount") + ",";
         });
         if(operid == ""){
         	$("#tipscontent").html("请选择用户");
 		    $("#dia").click();
         }
-        else{       	
-	    	if(oper == "reset"){
+        else{
+            console.info("amount: " + amount);
+
+            if(oper == "reset"){
 	    		getUsernamesAndIds();
 	    		$("#usernames").val(usernames);
 	    		$("#ids_password").val(ids);
 	    		$("#pass").click();
 	    	}
 	    	
-	    	else if(oper == "delete"){   	
-			    $("#con").click(); 
-	    		
+	    	else if(oper == "delete"){
+                var amountArr = new Array;
+                var flag = false;
+                amountArr = amount.split(",");
+
+                for (n in amountArr) {
+                    if (amountArr[n] > 0) {
+                        flag = true;
+                    }
+                }
+                if (flag) {
+                    $("#confirmcontent").html("勾选用户账号下存在关联产品, 删除用户将删除用户与产品的绑定关系, 请谨慎删除.");
+                }
+                else {
+                    $("#confirmcontent").html( "确定要删除勾选用户吗？");
+                }
+
+			    $("#con").click();
+
+
 	    	}else if(oper == "usb"){
 	    		$("#optionsRadios11").click();;
 	    		getUsernamesAndIds();
