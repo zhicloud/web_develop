@@ -88,71 +88,43 @@
             <div class="row">
               
               
-              <!-- col 6 -->
-          <div class="col-md-12">
-
-				  <section class="tile color transparent-black">
-
-
- 
-                  <!-- tile header -->
-                  <div class="tile-header"> 
-                     <button type="button" class="btn btn-red add" onclick="updateuser('add',null)">
-                              <i class="fa fa-plus"></i>
-                              <span> 新增用户</span>
-                    </button>
-                    <button type="button" class="btn btn-green file-excel-o" onclick="exportData('/export/userdata')">
-                              <i class="fa fa-file-excel-o"></i>
-                              <span>导出数据</span>
-                    </button>
-                  </div>
-                  <!-- /tile header -->
-                      <div class="tile-widget bg-transparent-black-2">
-                          <div class="row">
-                      <div class="col-sm-6 col-xs-6" style="z-index: 100;">
-                          <div class="input-group table-options">
-                          <span class="input-group-btn">
-                                <input id="param" type="text" name="param" value="${parameter == null?"":parameter}"/>
-                            </span>
-                          <span class="input-group-btn">
-                              <select id="status" class="chosen-select form-control" style="width: 150px;">
-                                  <option value="">状态(全部)</option>
-                                  <c:if test="${status == 0}">
-                                      <option value="0" selected="selected">正常</option>
-                                  </c:if>
-                                  <c:if test="${status != 0}">
-                                      <option value="0">正常</option>
-                                  </c:if>
-                                  <c:if test="${status == 1}">
-                                      <option value="1" selected="selected">停用</option>
-                                  </c:if>
-                                  <c:if test="${status != 1}">
-                                      <option value="1">停用</option>
-                                  </c:if>
-                              </select>
-                              <select id="userType" class="chosen-select form-control" style="width: 150px;display:none;" >
-                                  <option value="">用户类型(全部)</option>
-                                  <c:if test="${userType == 0}">
-                                      <option value="0" selected="selected">管理员用户</option>
-                                  </c:if>
-                                  <c:if test="${userType != 0}">
-                                      <option value="0">管理员用户</option>
-                                  </c:if>
-                                  <c:if test="${userType == 1}">
-                                      <option value="1" selected="selected">租户管理员用户</option>
-                                  </c:if>
-                                  <c:if test="${userType != 1}">
-                                      <option value="1">租户管理员用户</option>
-                                  </c:if>
-                              </select>
-                              <%--</span>--%>
-                           <%--<span class="input-group-btn">--%>
-                                <button id="search_btn" class="btn btn-default" type="button">查看</button>
-                              </span>
-                          </div>
-                      </div>
-                    </div>
-                  </div>
+<!-- col 6 -->
+<div class="col-md-12">
+	<section class="tile color transparent-black">
+		<!-- tile header -->
+		<div class="tile-header"> 
+			<button type="button" class="btn btn-red add" onclick="updateuser('add',null)"><i class="fa fa-plus"></i><span> 新增用户</span></button>
+			<button type="button" class="btn btn-green file-excel-o" onclick="exportData('/export/userdata')"><i class="fa fa-file-excel-o"></i><span>导出数据</span></button>
+		</div>
+		<!-- /tile header -->
+		<div class="tile-widget bg-transparent-black-2">
+			<div class="row">
+				<div class="col-sm-6 col-xs-6" style="z-index: 100;">
+					<div class="input-group table-options">
+						<span class="input-group-btn"><input id="param" type="text" name="param" value="${parameter == null?"":parameter}"/></span>
+						<span class="input-group-btn">
+							<select id="status" class="chosen-select form-control" style="width: 150px;">
+								<option value="">状态(全部)</option>
+								<c:if test="${status == 0}"><option value="0" selected="selected">正常</option></c:if>
+								<c:if test="${status != 0}"><option value="0">正常</option></c:if>
+								<c:if test="${status == 1}"><option value="1" selected="selected">停用</option></c:if>
+								<c:if test="${status != 1}"><option value="1">停用</option></c:if>
+							</select>
+							<select id="userType" class="chosen-select form-control" style="width: 150px;" >
+								<option value="">用户类型(全部)</option>
+								<c:if test="${userType == 0}"><option value="0" selected="selected">管理员用户</option></c:if>
+								<c:if test="${userType != 0}"><option value="0">管理员用户</option></c:if>
+								<c:if test="${userType == 1}"><option value="1" selected="selected">租户管理员用户</option></c:if>
+								<c:if test="${userType != 1}"><option value="1">租户管理员用户</option></c:if>
+							</select>
+							<%--</span>--%>
+							<%--<span class="input-group-btn">--%>
+							<button id="search_btn" class="btn btn-default" type="button">查看</button>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
                        
 							<div class="tile-body no-vpadding"> 
 								<div class="table-responsive">
