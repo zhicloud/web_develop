@@ -152,7 +152,7 @@
        </div>
                   </div>
 
-                      <div class="tile-widget bg-transparent-black-2">
+                      <div class="tile-widget bg-transparent-black-1">
                           <div class="row">
                       <div class="col-sm-6 col-xs-6" style="z-index: 100;">
                           <div class="input-group table-options">

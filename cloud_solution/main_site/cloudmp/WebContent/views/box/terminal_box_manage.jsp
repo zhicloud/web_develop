@@ -105,7 +105,7 @@
                               <span>导出数据</span>
                     </button>
                       </div>
-                      <div class="tile-widget bg-transparent-black-2" >
+                      <div class="tile-widget bg-transparent-black-1" >
                           <div class="row">
                               <div class="col-sm-6 col-xs-6" style="z-index: 100;">
                                   <div class="input-group table-options">
@@ -169,7 +169,7 @@
 								  <label for="chck${terminal_boxes.id}"></label>
 								</div>
                                 </td>
-                                <td class="cut"><a hrep="javascript:void(0);" onclick="mod_box('${terminal_boxes.id }');" style="color:#FAFAFA;cursor:pointer">${terminal_boxes.serialNumber}</a></td>
+                                <td class="cut"><a style="color:#323232;cursor:pointer" href="javascript:void(0);" onclick="mod_box('${terminal_boxes.id }');">${terminal_boxes.serialNumber}</a></td>
                                 <td class="cut">${terminal_boxes.name}</td>
                                 <td class="cut"><fmt:formatDate
                                         value="${terminal_boxes.createTimeDate}"
