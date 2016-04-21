@@ -66,7 +66,7 @@
                   <!-- tile header -->
                   <div class="tile-header">
                     
-                    <h1><a href="javascript:history.back();"    style="color:#FAFAFA;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a> 主机信息</h1>
+                    <h1><a href="javascript:history.back();"    style="color:#323232;cursor:pointer;padding-right:10px;"> <i class="fa fa-reply"></i></a> 主机信息</h1>
                     <div class="controls">
                       <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
                       <a href="#" class="remove"><i class="fa fa-times"></i></a>
@@ -123,7 +123,7 @@
                       
                       <div class="col-md-3" style="width:540px;padding-left:30px;">
                         
-                        <h5><font color="#FFFFFF">CPU利用率</font></h5>
+                        <h5><font color="#323232">CPU利用率</font></h5>
 <!--                         <div id="line-cpu" style="height: 180px;width:690px;"></div> -->
 						 <div id="main_line_1" style="height:248px;width: 495px;"></div>
                       </div>
@@ -135,7 +135,7 @@
                       <div class="row">
                        <div class="col-md-3" style="width:540px;margin-left:5px;">
                         
-                        <h5><font color="#FFFFFF">内存利用率</font></h5>
+                        <h5><font color="#323232">内存利用率</font></h5>
 						 <div id="main_line_3" style="height:248px;width: 495px;"></div>
                       </div>
                       
@@ -147,7 +147,7 @@
                     <div class="row">
                       <div class="col-md-3" style="width:540px;padding-left:30px;">
                         
-                        <h5><font color="#FFFFFF">磁盘吞吐量</font></h5>
+                        <h5><font color="#323232">磁盘吞吐量</font></h5>
 						 <div id="main_line_2" style="height:248px;width: 495px;"></div>
                       </div>
                       </div>
@@ -158,7 +158,7 @@
                        <div class="row">
                       <div class="col-md-3" style="width:540px;margin-left:5px;">
                         
-                        <h5><font color="#FFFFFF">网络吞吐量</font></h5>
+                        <h5><font color="#323232">网络吞吐量</font></h5>
 						 <div id="main_line_4" style="height:248px;width: 495px;"></div>
                       </div>
                     </div>
@@ -290,7 +290,7 @@
 			            		        x:350,
 			            		        y:'bottom',
 			            		        textStyle:{
-			            		        	color:'#FFF'
+			            		        	color:'#323232'
 			            		        }
 			            		    },
 			            		    grid: {
@@ -326,7 +326,7 @@
 				            	            	show:true,
 				            	            	margin:4,
 				            	            	textStyle: {
-			            		                    color: '#FFFFFF',
+			            		                    color: '#323232',
 			            		                    fontFamily: 'sans-serif',
 			            		                    fontSize: 12,
 			            		                    fontStyle: 'normal',
@@ -337,7 +337,7 @@
 				            	            	show:true,
 			            		            	lineStyle:{
 			            		            		width:1,
-			            		            		color:'#ccc'
+			            		            		color:'#323232'
 			            		            	}
 			            		            },
 				            	            splitLine : {
@@ -356,7 +356,7 @@
 			            		                formatter: '{value}',
 			            		                margin:4,
 			            		                textStyle: {
-			            		                    color: '#FFFFFF',
+			            		                    color: '#323232',
 			            		                    fontFamily: 'sans-serif',
 			            		                    fontSize: 12,
 			            		                    fontStyle: 'normal',
@@ -459,7 +459,7 @@
 				            	            	show:true,
 				            	            	margin:4,
 				            	            	textStyle: {
-			            		                    color: '#FFFFFF',
+			            		                    color: '#323232',
 			            		                    fontFamily: 'sans-serif',
 			            		                    fontSize: 12,
 			            		                    fontStyle: 'normal',
@@ -484,7 +484,7 @@
 			            		            axisLabel : {
 			            		                formatter: '{value}%',
 			            		                textStyle: {
-			            		                    color: '#FFFFFF',
+			            		                    color: '#323232',
 			            		                    fontFamily: 'sans-serif',
 			            		                    fontSize: 12,
 			            		                    fontStyle: 'normal',
@@ -543,7 +543,7 @@
 			            		        x:350,
 			            		        y:'bottom',
 			            		        textStyle:{
-			            		        	color:'#FFF'
+			            		        	color:'#323232'
 			            		        }
 			            		    },
 			            		    grid: {
@@ -578,7 +578,7 @@
 				            	            	show:true,
 				            	            	margin:4,
 				            	            	textStyle: {
-			            		                    color: '#FFFFFF',
+			            		                    color: '#323232',
 			            		                    fontFamily: 'sans-serif',
 			            		                    fontSize: 12,
 			            		                    fontStyle: 'normal',
@@ -603,7 +603,7 @@
 			            		            axisLabel : {
 			            		                formatter: '{value}',
 			            		                textStyle: {
-			            		                    color: '#FFFFFF',
+			            		                    color: '#323232',
 			            		                    fontFamily: 'sans-serif',
 			            		                    fontSize: 12,
 			            		                    fontStyle: 'normal',
@@ -706,7 +706,7 @@
 				            	            	show:true,
 				            	            	margin:4,
 				            	            	textStyle: {
-			            		                    color: '#FFFFFF',
+			            		                    color: '#323232',
 			            		                    fontFamily: 'sans-serif',
 			            		                    fontSize: 12,
 			            		                    fontStyle: 'normal',
@@ -731,7 +731,7 @@
 			            		            axisLabel : {
 			            		                formatter: '{value}%',
 			            		                textStyle: {
-			            		                    color: '#FFFFFF',
+			            		                    color: '#323232',
 			            		                    fontFamily: 'sans-serif',
 			            		                    fontSize: 12,
 			            		                    fontStyle: 'normal',

@@ -146,7 +146,7 @@
                             <c:if test="${chcm.name == null}">
                             &nbsp;                                                                        
                             </c:if>
-                            <a hrep="javascript:void(0);" onclick="updateType('${chcm.id }');" style="color:#FAFAFA;cursor:pointer">${chcm.name}</a></td>
+                            <a hrep="javascript:void(0);" onclick="updateType('${chcm.id }');" style="color:rgb(50, 50, 50);cursor:pointer">${chcm.name}</a></td>
                             <td>${chcm.cpuCore}核/${chcm.memoryText }G/${chcm.dataDiskText }G/${chcm.bandwidthText }M</td>
                             <td>
                             <c:if test="${chcm.sysImageName == null}">

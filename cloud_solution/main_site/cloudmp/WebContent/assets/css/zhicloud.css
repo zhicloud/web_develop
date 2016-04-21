@@ -1474,7 +1474,8 @@ body #content .tile.transparent-black input[type="email"],
 body #content .tile.transparent-black input[type="url"],
 body #content .tile.transparent-black input[type="search"],
 body #content .tile.transparent-black input[type="tel"],
-body #content .tile.transparent-black input[type="color"], body #content .tile.transparent-white .uneditable-input,
+body #content .tile.transparent-black input[type="color"], 
+body #content .tile.transparent-white .uneditable-input,
 body #content .tile.transparent-white textarea,
 body #content .tile.transparent-white input[type="text"],
 body #content .tile.transparent-white input[type="password"],
@@ -1681,7 +1682,7 @@ body #content .tile-right-side.transparent-white input[type="email"],
 body #content .tile-right-side.transparent-white input[type="url"],
 body #content .tile-right-side.transparent-white input[type="search"],
 body #content .tile-right-side.transparent-white input[type="tel"],
-body #content .tile-right-side.transparent-white input[type="color"] { display:inline-block;vertical-align:top;background-color: rgba(0, 0, 0, 0.3);border: 0;color: rgba(255, 255, 255, 1.0);/* color: rgba(255, 255, 255, 0.8); */font-size: 12px;-webkit-font-smoothing: antialiased;line-height: 20px; }
+body #content .tile-right-side.transparent-white input[type="color"] { display:inline-block;vertical-align:top;background-color: rgba(0, 0, 0, 0.3);border: 0;color: rgba(255, 255, 255, 0.8);font-size: 12px;-webkit-font-smoothing: antialiased;line-height: 20px; }
   
 body #content .tile.transparent-black .uneditable-input:focus,
 body #content .tile.transparent-black textarea:focus,
@@ -3263,7 +3264,7 @@ body #content .tile-footer.transparent-white .form-group.form-footer,
 body #content .tile-left-side.transparent-black .form-group.form-footer,
 body #content .tile-left-side.transparent-white .form-group.form-footer,
 body #content .tile-right-side.transparent-black .form-group.form-footer,
-body #content .tile-right-side.transparent-white .form-group.form-footer { background-color: rgba(0, 0, 0, 0.2); }
+body #content .tile-right-side.transparent-white .form-group.form-footer { background-color: rgba(0, 0, 0, 0.1); }
   
 body #content .tile.transparent-black .form-control[disabled],
 body #content .tile.transparent-black .form-control[readonly],
@@ -8796,7 +8797,7 @@ body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li.active
 .span2btn{ cursor: pointer; }
       
 /* sgaoke CSS */   
-body #content .chosen-container{font-size:12px;line-height:24px;}
+body #content .chosen-container{font-size:12px;line-height:24px;margin-left: 10px;}
 .form-control.btn-sty{height:24px;font-size:12px;margin-left:10px;}
 body #content input[type="text"].form-control.tit-sty{height:37px;}
 body #content .tile.transparent-black .dataTables_wrapper div.dataTables_filter input{display:inline-block;color: rgba(0, 0, 0, 0.8) !important;border-bottom: 1px solid rgba(0, 0, 0, 0.6) !important;} 
