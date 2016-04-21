@@ -253,7 +253,7 @@
 								  <label for="chck${image.id}"></label>
 								</div>
                                 </td>
-                            <td  class="cut"><a hrep="javascript:void(0);" onclick="updateImage('${image.id }');" style="color:#FAFAFA;cursor:pointer">${image.name}</a></td>
+                            <td  class="cut"><a hrep="javascript:void(0);" onclick="updateImage('${image.id }');" style="color:#323232;cursor:pointer">${image.name}</a></td>
                             <td  class="cut">${image.displayName}</td>
                             <td  class="cut">
                             <c:if test="${image.typeName == null}">
