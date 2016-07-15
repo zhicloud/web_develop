@@ -119,6 +119,14 @@ public interface ManSysUserService {
     public String updatePassword(String billid, String newpassword, String oldpassword);
     
     /**
+     * @Description:重置用户密码
+     * @param billid
+     * @param respassword
+     * @return String
+     */
+    public String resPasswordById(String billid, String respassword);
+    
+    /**
      * @Description:修改用户状态
      * @param billids ID数组
      * @param status 状态值
@@ -164,4 +172,12 @@ public interface ManSysUserService {
      * @return String
      */
     public String manualPassword(String billid, String newpassword, String email);
+    
+    /**
+     * @Description:根据用户id和email查询用户信息
+     * @param usercount 用户Id
+     * @param email 绑定邮箱
+     * @return ManSystemUserVO
+     */
+    public ManSystemUserVO getUserByIdAndEamel(String usercount,String email);
 }

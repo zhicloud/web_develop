@@ -21,6 +21,7 @@ import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.service.ITimerInfoService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
+import com.zhicloud.ms.util.AlertDisplayContent;
 import com.zhicloud.ms.vo.CloudHostVO;
 import com.zhicloud.ms.vo.TimerInfoVO;
 
@@ -372,6 +373,11 @@ public class BackUpController {
         }
     }
     
+    /**
+     * 手动备份
+     * @param request
+     * @return
+     */
     @RequestMapping(value="/backresume/detailmanage",method=RequestMethod.GET)
     public String hostBackUpDetailManagePage(HttpServletRequest request){ 
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_set_time_back_up_detail_manage)){
@@ -613,10 +619,18 @@ public class BackUpController {
             
             JSONObject hostResult = channel.hostQueryInfo(realHostId);
             JSONObject hostInfo = (JSONObject) hostResult.get("host");
+            
+            //码率，帖率，系统类型，操作系统
+            int codeRate = Integer.valueOf(hostInfo.get("ibt").toString());
+            int frameRate = Integer.valueOf(hostInfo.get("fram").toString());
+            int operating_type = Integer.valueOf(hostInfo.get("operating_type").toString());
+            String operating_system = hostInfo.get("operating_system").toString();
+            
             Integer[] option = JSONLibUtil.getIntegerArray(hostInfo, "option");
             if(option.length>3){
                 if(option[2] == 0){
-                    channel.hostModify(realHostId, "", 0, BigInteger.ZERO, new Integer[]{0, 1, 1}, new Integer[]{1,200}, "", "", "", BigInteger.ZERO, BigInteger.ZERO);
+                    channel.hostModify(realHostId, "", 0, BigInteger.ZERO, new Integer[]{0, 1, 1}, new Integer[]{1,200}, "", "", "", BigInteger.ZERO, BigInteger.ZERO, codeRate,
+							frameRate, operating_type, operating_system);
                 }
             }
         } catch (MalformedURLException e) {
@@ -643,6 +657,43 @@ public class BackUpController {
         request.setAttribute("hostList", hostList);
         return "/desktop/manual_backup_manage";
     }
+    
+    
+    /**
+    * 
+    * @Title: manualBackup 
+    * @Description: T跳转弹框页面
+    * @param @param request
+    * @param @return      
+    * @return String     
+    * @throws
+     */
+    @RequestMapping(value="/backresume/gotodialog",method=RequestMethod.GET)
+    public String gotodialog(HttpServletRequest request){ 
+        String realHostId = request.getParameter("runningStatus");
+        //realHostId值为runBack时表示定时备份，否则为手动备份
+        if(AlertDisplayContent.RUNBACKSTATUS.equals(realHostId)){
+        	request.setAttribute("backupsTitle", AlertDisplayContent.AUTOBACKUP);
+        	request.setAttribute("content", AlertDisplayContent.RUNBLACK);
+        	request.setAttribute("runningStatus", "1");
+        }else{
+        	CloudHostVO cloudHost = cloudHostService.getByRealHostId(realHostId);
+            if(cloudHost != null){
+            	if(cloudHost.getRunningStatus()==1){
+            		request.setAttribute("backupsTitle", AlertDisplayContent.MANUALBACKUP);
+            		request.setAttribute("content", AlertDisplayContent.HANDBLACK_CLOES);
+            	}else{
+            		request.setAttribute("backupsTitle", AlertDisplayContent.MANUALBACKUP);
+            		request.setAttribute("content", AlertDisplayContent.HANDBLACK_OPEN);
+            	}
+            	request.setAttribute("runningStatus", cloudHost.getRunningStatus());
+            }else
+            	request.setAttribute("runningStatus", "2");
+        }
+        
+        return "/desktop/manual_backup_dialog";
+    }
+    
     /**
      * 
     * @Title: serverManualBackupPage 
@@ -701,7 +752,7 @@ public class BackUpController {
         try{
             //强制关闭该主机
             if(cloudHost.getRunningStatus() == AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING){
-                cloudHostService.operatorCloudHost(cloudHost.getId(), "4");
+                cloudHostService.operatorCloudHost(cloudHost.getId(), "4",false,0);
             }
             sessionId = this.hostBackup(parameter);
             if( sessionId == null )
@@ -770,7 +821,7 @@ public class BackUpController {
         try{
           //强制关闭该主机
             if(cloudHost.getRunningStatus() == AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING){
-                cloudHostService.operatorCloudHost(cloudHost.getId(), "4");
+                cloudHostService.operatorCloudHost(cloudHost.getId(), "4",true,0);
             }
             sessionId = this.hostBackup(parameter);
             if( sessionId == null )

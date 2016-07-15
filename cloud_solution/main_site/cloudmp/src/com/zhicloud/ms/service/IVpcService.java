@@ -1,14 +1,13 @@
 package com.zhicloud.ms.service; 
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.vo.CloudHostVO;
 import com.zhicloud.ms.vo.VpcBaseInfoVO;
 import com.zhicloud.ms.vo.VpcBindPortVO;
 import com.zhicloud.ms.vo.VpcOuterIpVO;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 /**
@@ -32,7 +31,7 @@ public interface IVpcService {
 	 * @param request
 	 * @return
 	 */
-	public MethodResult addVpc(String displayName,String ipAmount,String description,String[] hosts,HttpServletRequest request);
+	public MethodResult addVpc(String displayName,String ipAmount, String groupId, String description,String[] hosts,HttpServletRequest request);
 	
 	/**
 	 * 删除vpc

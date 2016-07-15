@@ -17,6 +17,7 @@
 
 package com.zhicloud.ms.service; 
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.zhicloud.ms.app.pool.CloudHostData;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.vo.CloudHostVO;
@@ -75,12 +76,14 @@ public interface ICloudHostService {
 	 * operatorCloudHost:对主机进行开机、关机、重启和强制关机的操作.   
 	 *
 	 * @author sasa
-	 * @param cloudHostId
-	 * @param operatorType
+	 * @param cloudHostId 云主机uuid
+	 * @param operatorType 自定义操作类型
+	 * @param option 是否强制重启
+	 * @param time  超时时间,单位：秒
 	 * @return MethodResult
 	 * @since JDK 1.7
 	 */
-	public MethodResult operatorCloudHost(String cloudHostId,String operatorType);
+	public MethodResult operatorCloudHost(String cloudHostId,String operatorType,Boolean option, Integer time);
 	/**
 	 * 
 	* @Title: operatorCloudHostByRealHostId 
@@ -91,7 +94,7 @@ public interface ICloudHostService {
 	* @return MethodResult     
 	* @throws
 	 */
-	public MethodResult operatorCloudHostByRealHostId(String realHostId,String operatorType);
+	public MethodResult operatorCloudHostByRealHostId(String realHostId,String operatorType,Boolean option, Integer time);
 	/**
 	 * 
 	 * fetchNewestCloudHostFromHttpGateway:从http-gateway同步新的主机信息
@@ -240,6 +243,13 @@ public interface ICloudHostService {
 	 * @return
 	 */
 	public CloudHostVO getByRealHostId(String realId);
+	
+	/**
+	 * 通过真实Name查询主机
+	 * @param realName
+	 * @return
+	 */
+	public CloudHostVO getByRealHostName(String realName);
 	/**
      * 
     * @Title: updateRunningStatusFromTerminal 
@@ -337,6 +347,25 @@ public interface ICloudHostService {
     * @throws
      */
     public void updateHostStatusToFailByName(String name);
+    
+    /**
+     * 
+     * @Title: updateHostStatusToFailByName 
+     * @Description: 根据主机名更新主机状态为创建失败
+     * @param @param name      
+     * @return void     
+     * @throws
+     */
+    public void updateStautsByName(String name);
+    
+    /**
+     * 主机创建成功更新status和runningStatus状态
+     * <p>Title: updateStautsAndRunningStatusByName</p> 
+     * <p>Description: </p> 
+     * @param name 
+     * @see com.zhicloud.ms.service.ICloudHostService#updateHostStatusToFailByName(java.lang.String)
+     */
+    public void updateStautsAndRunningStatusByName(String name);
     /**
      * 
     * @Title: addHostToServerByRealHostId 
@@ -484,5 +513,23 @@ public interface ICloudHostService {
      * @return
      */
     MethodResult updateOptions(CloudHostVO cloudHostVO);
+    
+    /**
+  	 * 主机迁移
+  	 * @param uuid 云主机uuid
+  	 * @param node_name 目的nc的node_name，可以为空
+  	 * @param type 0=cold, 1=warm, 2=hot
+  	 * @param callBackUrl web回调地址
+  	 * @return
+  	 */
+    public int operatorMigration(String uuid,Map<String,Object> condition);
+    
+    /**
+	 * 根基Id修改数据
+	 * @param id 标示位
+	 * @param status 状态
+	 * @return
+	 */
+	public int updateHostMigrationById(String id,String time, int status);
 }
 

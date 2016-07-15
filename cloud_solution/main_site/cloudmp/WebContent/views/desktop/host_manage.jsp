@@ -8,6 +8,11 @@
 	<title>控制台-${productName}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8" />
+	<script src="<%=request.getContextPath() %>/js/artDialog/artDialog.js?skin=chrome"></script>
+	<script src="<%=request.getContextPath() %>/js/artDialog/jquery.artDialog.source.js"></script>
+	<script src="<%=request.getContextPath() %>/js/artDialog/plugins/iframeTools.js?skin=chrome"></script>
+	<script src="<%=request.getContextPath() %>/js/artDialog/plugins/iframeTools.source.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/js/views/desktop/utilgetids.js"></script>
 	<link rel="icon" type="image/ico" href="<%=request.getContextPath()%>/assets/images/favicon.ico" />
 	<!-- Bootstrap -->
 	<link href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -109,7 +114,7 @@
 										<tbody>
 											<c:forEach items="${cloudHostList}" var="hostList">
 											<tr class="odd gradeX">
-												<td><div class="checkbox check-transparent"><input type="checkbox" name="idcheck" value="${hostList.id}" id="${hostList.id}" isAssigned="${hostList.userId}" realHostId="${hostList.realHostId }" status="${hostList.status }"><label for="${hostList.id}"></label></div></td>
+												<td style="color:black;"><div class="checkbox check-transparent"><input type="checkbox" name="idcheck" value="${hostList.id}" id="${hostList.id}" isAssigned="${hostList.userId}" realHostId="${hostList.realHostId }" status="${hostList.status }"><label for="${hostList.id}"></label></div></td>
 												<td class="cut">${hostList.displayName}</td>
 												<td class="cut"><c:if test="${hostList.modelName == null}">&nbsp;</c:if>${hostList.modelName}</td>
 												<td class="cut">${hostList.cpuCore}核/${hostList.getMemoryText(0) }/${hostList.getDataDiskText(0) }/${hostList.getBandwidthText(0) }</td>
@@ -124,13 +129,32 @@
 															<div class="btn-group">
 																<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">操作<span class="caret"></span></button>
 																<ul class="dropdown-menu" role="menu">
-																	<c:if test="${hostList.status==0 or hostList.status == 3}"><li><a href="javascript:void(0);" onclick="deleteHostBtn('${hostList.id }');">删除</a></li></c:if> 
+																	<c:if test="${hostList.status==0 or hostList.status == 3}"><li><a href="javascript:void(0);" onclick="deleteHostBtn('${hostList.id }','${hostList.userId }');">删除</a></li></c:if> 
 																	<c:if test="${hostList.status==9 or hostList.status == 10}"><li><a href="javascript:void(0);" onclick="backupHostBtn('${hostList.id }');" >备份与恢复</a></li></c:if>
 																	<c:if test="${hostList.status==11}"><li><a href="javascript:void(0);" onclick="flushManageBtn('${hostList.id }');">重装系统</a></li></c:if>
 																	<c:if test="${hostList.status==2}">
 																		<li><a href="javascript:void(0);" onclick="toDetail('${hostList.id }');" title="详细"></a></li>
 																		<li><a href="javascript:void(0);" onclick="updateDisplayName('${hostList.id }','${hostList.displayName }');">修改显示名</a></li>
 																		<c:if test="${hostList.userId==null && hostList.realHostId!=null}"><li><a href="javascript:void(0);" onclick="assignOneUserBtn('${hostList.id }');">分配</a></li></c:if>
+																		<c:if test="${hostList.runningStatus==1}">
+																			<li><a href="javascript:void(0);" onclick="startHostBtn('${hostList.id }');" >开机</a></li>
+																			<li><a href="javascript:void(0);" onclick="startHostISOBtn('${hostList.id }');" >从光盘启动</a></li>
+																			<li><a href="javascript:void(0);" onclick="updateHostBtn('${hostList.id }','1');">配置修改</a></li>
+																			<li><a href="javascript:void(0);" onclick="diskManageBtn('${hostList.id }');">磁盘管理</a></li>
+																			<li><a href="javascript:void(0);" onclick="backupHostBtn('${hostList.id }');">备份与恢复</a></li> 
+																			<li><a href="javascript:void(0);" onclick="flushManageBtn('${hostList.id }');">重装系统</a></li>
+																		</c:if>
+																		<c:if test="${hostList.runningStatus==2}">
+																			<li><a href="javascript:void(0);" onclick="showDialog('1','${hostList.id }');" >关机</a></li>
+																			<li><a href="javascript:void(0);" onclick="showDialog('2','${hostList.id }');" >重启</a></li>
+																			<!-- 
+																			<li><a href="javascript:void(0);" onclick="resetHostBtn('${hostList.id }');" >强制重启</a></li>
+																			<li><a href="javascript:void(0);" onclick="haltHostBtn('${hostList.id }');" >强制关机</a></li>
+																			 -->
+																			<li><a href="javascript:void(0);" onclick="updateHostBtn('${hostList.id }','2');">配置修改</a></li>
+																			<li><a href="javascript:void(0);" onclick="diskManageBtn('${hostList.id }');">磁盘管理</a></li>
+																		</c:if>
+																		<!-- 
 																		<c:if test="${hostList.runningStatus==1}">
 																			<li><a href="javascript:void(0);" onclick="startHostBtn('${hostList.id }');" >开机</a></li>
 																			<li><a href="javascript:void(0);" onclick="startHostISOBtn('${hostList.id }');" >从光盘启动</a></li>
@@ -147,8 +171,9 @@
 																			<li><a href="javascript:void(0);" onclick="updateHostBtn('${hostList.id }','2');">配置修改</a></li>
 																			<li><a href="javascript:void(0);" onclick="diskManageBtn('${hostList.id }');">磁盘管理</a></li>
 																		</c:if>
+																		 -->
 																		<c:if test="${hostList.realHostId!=null}"><li><a href="javascript:void(0);" onclick="hostDiagramBtn('${hostList.realHostId }');">资源监控</a></li></c:if>
-																		<li><a href="javascript:void(0);" onclick="deleteHostBtn('${hostList.id }');" >删除</a></li>
+																		<li><a href="javascript:void(0);" onclick="deleteHostBtn('${hostList.id }','${hostList.userId }');" >删除</a></li>
 																	</c:if>  
 																</ul>
 															</div>
@@ -166,6 +191,10 @@
 								<div class="input-group table-options">
 									<select id="oper_select" class="chosen-select form-control">
 										<option value="">批量操作</option> 
+										<!-- 
+										<option value="shutdownHostOper">关机</option>
+                            			<option value="restartHostOper">重启</option>
+										 -->
 										<option value="del">删除</option>
 										<option value="assign">分配</option>
 									</select>
@@ -180,14 +209,31 @@
 								<a href="#modalhostallocate" id="tenant" role="button"   data-toggle="modal"> </a>
 								<a href="#changename" id="changenameBtn" role="button"   data-toggle="modal"> </a>
 								<a href="#modaliso" id="isoBTN" role="button"   data-toggle="modal"> </a>
-								<div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true"  >
-									<div class="modal-dialog">
+								<div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" aria-labelledby="modalConfirmLabel" aria-hidden="true" >
+									<div class="modal-dialog"><!--  style="width: 82%; margin-left: 10%;margin-top: 25%;" -->
 										<div class="modal-content" style="width:60%;margin-left:20%;">
 											<div class="modal-header">
 												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">Close</button>
 												<h3 class="modal-title" id="modalConfirmLabel"><strong>确认</strong> </h3>
 											</div>
-											<div class="modal-body"><form role="form"><div class="form-group"><label style="align:center;" id="confirmcontent">确定要删除该云主机吗？</label></div></form></div>
+											<div class="modal-body"><form role="form"><div class="form-group"><label style="align:center;" id="confirmcontent">删除主机后数据不可恢复,是否继续删除。</label></div></form></div>
+											
+											<!-- 
+											
+											<div class="modal-body">
+												<form role="form">
+													<div class="form-group">
+														<label style="align:center;" id="cloesHost">确认关机</label>
+													</div>
+													<div>
+														<input type="checkbox" value="1" id="allchck">
+														<p>强制光机选项（系统关机失败执行，可能导致数据丢失，勾选有效）</p>
+														<p style="margin-left:11px;">强制关机出发时间<input style="width: 47px; margin-left: 10px;" type="text" id="closeHostTime">s</p>
+													</div>
+												</form>
+											</div>
+											 -->
+											
 											<div class="modal-footer">
 												<button class="btn btn-green" id="confirm_btn"  onclick="toDelete();" data-dismiss="modal" aria-hidden="true">确定</button>
 												<button class="btn btn-red" data-dismiss="modal" aria-hidden="true">取消</button>
@@ -322,6 +368,7 @@
     var oneCloudHostId = [];
     var sysImageName = '${warehouse.hostTypeName}';
     var currentId = "";
+    var trigerTime = "";
     var runStatus = "";
     var curIds = "";
     $(function(){
@@ -375,70 +422,81 @@
 		  addHosts(warehouseId,sysImageName);
  	  });
 	  
-	  jQuery("#save_oper").click(function(){
-		  	var option = jQuery("#oper_select").val();
-		  	if(option=="del"){
-				 var ids = "";
-				 var datatable = $("#basicDataTable").find("tbody tr input[type=checkbox]:checked");
-				 $(datatable).each(function(){
-					 if(!(jQuery(this).attr("realHostId")=="" && jQuery(this).attr("status")==1)){
-						ids += jQuery(this).val()+","
-					 }
-				 });
-// 				 jQuery("input[name='idcheck']:checkbox").each(function(){ 
-// 		            if(jQuery(this).attr("checked")){
-// 		                ids += jQuery(this).val()+","
-// 		            }
-// 		        })
-		        if(ids == ""){
-		        	$("#tipscontent").html("请选择要删除的主机(创建中的主机无法删除)");
-					$("#dia").click();
-		       	 	return;
-		        } 
-				curIds = ids;
-				$("#confirmcontent").html("确定要删除所选主机吗？");
-		    	$("#confirm_btn").attr("onclick","deleteMultHost();");
-		    	$("#con").click();
-		  	}else if(option=="assign"){
-		  		var ids = [];
-		    	var flag = false;
-		    	var datatable = $("#basicDataTable").find("tbody tr input[type=checkbox]:checked");
-				 $(datatable).each(function(){
-					 if(jQuery(this).attr("isAssigned")!='' || jQuery(this).attr("realHostId")==''){
-			            	$("#tipscontent").html('请选择有效的云主机进行分配');
-							$("#dia").click();
-			            	flag = true;
-			            	return false;
-			            }
-			            ids.push(jQuery(this).val());
-				 });
-				if(flag){
-					return;
-				}
-		        if(ids.length<1){
-		        	$("#tipscontent").html('请至少选择一台主机进行分配');
-					$("#dia").click();
-		        	return;
-		        }else{
-		        	hostIds = ids;
-		        	jQuery.ajax({
-						url: path+'/warehouse/assign',
-						type: 'post', 
-						data:{warehouseId:warehouseId,ids:ids},
-						dataType: 'json',
-						timeout: 10000,
-						async: false,
-						success:function(data){
-							if(data.status == "success"){
-								location.href=path +"/views/warehouse_manage_assign.jsp";
-							}else if(data.status == "fail"){
-								return;
-							}
+	  jQuery("#save_oper").click(
+			  function() {
+					var option = jQuery("#oper_select").val();
+					if (option == "del") {
+						curIds = getIds("请选择要删除的主机(创建中的主机无法删除)");
+						if (curIds == "nullString")
+							return;
+
+						goToBut("删除主机后数据不可恢复,是否继续删除。", "deleteMultHost();");
+					} else if (option == "shutdownHostOper") {
+						curIds = getIds("请选择要关机的主机");
+						if (curIds == "nullString")
+							return;
+
+						goToBut("确定要关机所选主机吗？", "shutdownOrRestartHost('"
+								+ curIds + "','1');");
+					} else if (option == "restartHostOper") {
+						curIds = getIds("请选择要重启的主机");
+						if (curIds == "nullString")
+							return;
+
+						goToBut("确定要重启所选主机吗？", "shutdownOrRestartHost('"
+								+ curIds + "','2');");
+					} else if (option == "assign") {
+						var ids = [];
+						var flag = false;
+						var datatable = $("#basicDataTable").find(
+								"tbody tr input[type=checkbox]:checked");
+						$(datatable)
+								.each(
+										function() {
+											if (jQuery(this).attr(
+													"isAssigned") != ''
+													|| jQuery(this).attr(
+															"realHostId") == '') {
+												$("#tipscontent").html(
+														'请选择有效的云主机进行分配');
+												$("#dia").click();
+												flag = true;
+												return false;
+											}
+											ids.push(jQuery(this).val());
+										});
+						if (flag) {
+							return;
 						}
-					});
-		        }
-		  	}
-	     });
+						if (ids.length < 1) {
+							$("#tipscontent").html('请至少选择一台主机进行分配');
+							$("#dia").click();
+							return;
+						} else {
+							hostIds = ids;
+							jQuery
+									.ajax({
+										url : path + '/warehouse/assign',
+										type : 'post',
+										data : {
+											warehouseId : warehouseId,
+											ids : ids
+										},
+										dataType : 'json',
+										timeout : 10000,
+										async : false,
+										success : function(data) {
+											if (data.status == "success") {
+												location.href = path
+														+ "/views/warehouse_manage_assign.jsp";
+											} else if (data.status == "fail") {
+												return;
+											}
+										}
+									});
+						}
+					}
+				});
 
         $("#search_btn").click(function(){
             var param = $("#param").val();
@@ -458,9 +516,12 @@
 	  
     })
     //删除主机
-    function deleteHostBtn(id){
+    function deleteHostBtn(id,dState){
     	currentId = id;
-    	$("#confirmcontent").html("确定要删除该主机吗？");
+    	if(dState != '')
+    		$("#confirmcontent").html("该主机以分配给用户,删除主机后数据不可能恢复，是否继续删除。");
+    	else
+    		$("#confirmcontent").html("确定要删除该主机吗？");
     	$("#confirm_btn").attr("onclick","deleteHost();");
     	$("#con").click();
     }
@@ -478,15 +539,17 @@
      	$("#isoBTN").click();
     }
     //关闭主机
-    function shutdownHostBtn(id){
+    function shutdownHostBtn(id,trigerTime){
     	currentId = id;
+    	trigerTime = trigerTime;
     	$("#confirmcontent").html("确定要关闭该主机吗？");
     	$("#confirm_btn").attr("onclick","shutdownHost();");
     	$("#con").click();
     }
     //重启主机
-    function restartHostBtn(id){
+    function restartHostBtn(id,trigerTime){
     	currentId = id;
+    	trigerTime = trigerTime;
     	$("#confirmcontent").html("确定要重启该主机吗？");
     	$("#confirm_btn").attr("onclick","restartHost();");
     	$("#con").click();
@@ -611,7 +674,7 @@
 		});
     }
     function restartHost(){
-    	jQuery.get(path + "/cloudhost/"+currentId+"/restart",function(data){
+    	jQuery.get(path + "/cloudhost/"+currentId+"/restart?trigerTime="+trigerTime,function(data){
 			if(data.status == "success"){   
 	    		location.href = path + "/cloudhost/all";
 			}else{  
@@ -620,6 +683,7 @@
 			}
 		});
     }
+    
     function resetHost(){
     	jQuery.get(path + "/cloudhost/"+currentId+"/reset",function(data){
 			if(data.status == "success"){   
@@ -631,7 +695,7 @@
 		});
     }
     function shutdownHost(){
-    	jQuery.get(path + "/cloudhost/"+currentId+"/shutdown",function(data){
+    	jQuery.get(path + "/cloudhost/"+currentId+"/shutdown?trigerTime="+trigerTime,function(data){
 			if(data.status == "success"){   
 	    		location.href = path + "/cloudhost/all";
 			}else{  
@@ -640,6 +704,29 @@
 			}
 		});
     }
+    
+    function restartHostDialog(currentId,trigerTime,type){
+    	jQuery.get(path + "/cloudhost/"+currentId+"/restart?option="+type+"&trigerTime="+trigerTime,function(data){
+			if(data.status == "success"){   
+	    		location.href = path + "/cloudhost/all";
+			}else{  
+				$("#tipscontent").html(data.message);
+				$("#dia").click();
+			}
+		});
+    }
+    
+    function shutdownHostDialog(currentId,trigerTime,type){
+    	jQuery.get(path + "/cloudhost/"+currentId+"/shutdown?option="+type+"&trigerTime="+trigerTime,function(data){
+			if(data.status == "success"){   
+	    		location.href = path + "/cloudhost/all";
+			}else{  
+				$("#tipscontent").html(data.message);
+				$("#dia").click();
+			}
+		});
+    }
+    
     function haltHost(){
     	jQuery.get(path + "/cloudhost/"+currentId+"/halt",function(data){
 			if(data.status == "success"){   
@@ -706,7 +793,7 @@
    		        			var form = jQuery("#basicvalidations_iso");
    		        			form.parsley('validate');
    		        			if(form.parsley('isValid')){  		        				
-   		        				jQuery.get(path + "/cloudhost/"+currentId+"/"+$("#imageId").val()+"/start",function(data){
+   		        				jQuery.get(path + "/warehouse/cloudhost/"+currentId+"/"+$("#imageId").val()+"/start",function(data){
    		        					if(data.status == "success"){   
    		        			    		window.location.reload();
    		        					}else{  
@@ -720,6 +807,23 @@
 	     }); 
 		
 	}
+    
+    function showDialog(type,id){
+    	var run = $("#fromHostId  option:selected").val();
+    	if($("#fromHostId  option:selected").text() == '请选择主机'){
+    		alert("请选择主机");
+    		return false;
+    	}else{
+    		var url = '<%=request.getContextPath()%>/cloudhost/showDialog?type='+type+'&id='+id;
+        	art.dialog.open(url, {
+            	id:"dialogBack",
+                title:'系统提示',
+                width: 380,
+                height: 280,
+                lock: true
+            });
+    	}
+    }
     
     $(function(){
 

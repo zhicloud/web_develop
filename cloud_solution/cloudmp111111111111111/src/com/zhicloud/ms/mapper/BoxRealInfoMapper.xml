@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.BoxRealInfoMapper">
+	
+	<resultMap id="BoxRealInfoVO" type="com.zhicloud.ms.vo.BoxRealInfoVO">
+		<id     column="user_id"                 property="userId" />
+        <result column="mac"                     property="mac" />
+        <result column="software_version"        property="softwareVersion" />
+		<result column="hardware_version"        property="hardwareVersion" />
+		<result column="serial_number"           property="serialNumber" />
+		<result column="user_id"                 property="userId" />
+		<result column="user_name"               property="userName" />
+ 		<result column="subnet_mask"             property="subnetMask" />
+ 		<result column="last_login_time"         property="lastLoginTime" />
+ 		<result column="last_alive_time"         property="lastAliveTime" />
+ 		<result column="last_logout_time"        property="lastLogoutTime" />
+ 		<result column="cumulative_online_time"  property="cumulativeOnlineTime" /> 
+	</resultMap>
+	
+	<!-- ********************* -->
+	
+	<select id="queryAllInfo" resultMap="BoxRealInfoVO">
+		select 
+		      a.mac,
+		      b.name user_name, 
+		      a.software_version,
+		      a.hardware_version,
+		      c.serial_number,
+		      a.user_id,
+		      a.subnet_mask,
+		      a.last_login_time,
+		      a.last_alive_time,
+		      a.last_logout_time,
+		      a.gateway,
+		      a.ip,
+		      a.cumulative_online_time
+		from box_real_info a
+		join terminal_user b on a.user_id = b.id
+		left join terminal_box c on c.allocate_user_id = a.user_id
+		order by a.last_alive_time desc 
+	</select>
+
+    <select id="queryAllInfoWithConditions" resultMap="BoxRealInfoVO">
+        SELECT
+        a.mac,
+        b.name user_name,
+        a.software_version,
+        a.hardware_version,
+        c.serial_number,
+        a.user_id,
+        a.subnet_mask,
+        a.last_login_time,
+        a.last_alive_time,
+        a.last_logout_time,
+        a.gateway,
+        a.ip,
+        a.cumulative_online_time
+        FROM box_real_info a
+        JOIN terminal_user b ON a.user_id = b.id
+        LEFT JOIN terminal_box c ON  c.allocate_user_id = a.user_id
+        <where>
+            1=1
+            <if test="user_name!=null and user_name!=''">
+                AND b.name LIKE #{user_name}
+            </if>
+        </where>
+        ORDER BY a.last_alive_time DESC
+    </select>
+
+	<select id="queryOnlineInfo" resultMap="BoxRealInfoVO">
+		select 
+		      mac,
+		      '' as user_name, 
+		      software_version,
+		      hardware_version,
+		      ''  as serial_number,
+		      user_id,
+		      subnet_mask,
+		      last_login_time,
+		      last_alive_time,
+		      last_logout_time,
+		      gateway,
+		      ip,
+		      cumulative_online_time
+		from box_real_info where( last_login_time &gt; last_logout_time)  or (last_logout_time is null)
+	</select>
+
+
+    <select id="queryByUserId" resultMap="BoxRealInfoVO">
+		select 
+		      a.mac,
+		      a.user_id, 
+		      a.user_name,
+		      a.ip,
+		      a.software_version,
+		      a.hardware_version, 
+		      a.subnet_mask,
+		      a.last_login_time,
+		      a.last_alive_time,
+		      a.last_logout_time,
+		      a.gateway,
+		      a.cumulative_online_time
+		from box_real_info a 
+        where a.user_id = #{userId}
+        limit 1
+	</select> 
+	
+	<!-- ********************* -->	
+	<insert id="addOrUpdateInfo">
+		replace into box_real_info (mac, user_id,user_name, ip, hardware_version,software_version,subnet_mask,last_login_time,last_alive_time,gateway,last_logout_time, cumulative_online_time)
+		values (#{mac}, #{userId},#{userName}, #{ip}, #{hardwareVersion}, #{softwareVersion}, #{subnetMask}, #{lastLoginTime}, #{lastAliveTime},#{gateway},#{lastLogoutTime}, #{cumulative_online_time})
+	</insert>
+	
+    <update id="updateCumulativeOnlineTimeByUserId">
+		update box_real_info set cumulative_online_time =cumulative_online_time+ #{cumulativeOnlineTime} where user_id = #{userId}
+	</update> 	 
+	 
+    <update id="updateLogoutTimeByUserId">
+		update box_real_info set last_logout_time =#{last_logout_time} where user_id = #{userId}
+	</update>
+
+    <!-- 批量更新盒子信息 -->
+    <insert id ="updateBoxInfoBatch" parameterType="list">
+        INSERT INTO box_real_info
+        (
+
+        mac,
+        user_name,
+        ip,
+        hardware_version,
+        software_version,
+        subnet_mask,
+        last_login_time,
+        last_alive_time,
+        gateway,
+        last_logout_time,
+        cumulative_online_time,
+        user_id
+        )
+        VALUES
+        <foreach collection="list"  item="item" separator=",">
+            (
+            #{item.mac},
+            #{item.userName},
+            #{item.ip},
+            #{item.hardwareVersion},
+            #{item.softwareVersion},
+            #{item.subnetMask},
+            #{item.lastLoginTime},
+            #{item.lastAliveTime},
+            #{item.gateway},
+            #{item.lastLogoutTime},
+            #{item.cumulativeOnlineTime},
+            #{item.userId}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        mac = VALUES (mac),
+        user_name = VALUES (user_name),
+        ip = VALUES (ip),
+        hardware_version = VALUES (hardware_version),
+        software_version = VALUES (software_version),
+        subnet_mask = VALUES (subnet_mask),
+        last_login_time = VALUES (last_login_time),
+        last_alive_time = VALUES (last_alive_time),
+        gateway = VALUES (gateway),
+        last_logout_time = VALUES (last_logout_time),
+        cumulative_online_time = VALUES(cumulative_online_time),
+        user_id = VALUES(user_id)
+    </insert>
+
+</mapper>

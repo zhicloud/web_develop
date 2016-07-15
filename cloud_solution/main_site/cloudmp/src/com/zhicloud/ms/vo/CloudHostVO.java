@@ -35,16 +35,25 @@ public class CloudHostVO implements JSONBean
 
 	
 	private String id; 
-	private String realHostId; 
+	/*
+	 * 真实主机id
+	 */
+	private String realHostId;
+	/*
+	 * 1=桌面云、2=服务器、3=专属云
+	 */
 	private Integer type; 
 	private String userId; 
 	private String userAccount; 
+	/*
+	 * 主机真实名称
+	 */
 	private String hostName;  
 	private String account; 
 	private String password; 
 	private Integer cpuCore;
 	private BigInteger memory = BigInteger.ZERO;
-  private Integer[] options;
+    private Integer[] options;
 	private String sysImageId; 
 	private BigInteger sysDisk = BigInteger.ZERO; 
 	private BigInteger dataDisk = BigInteger.ZERO;
@@ -54,7 +63,17 @@ public class CloudHostVO implements JSONBean
 	private Integer diskdiy;
 	private Integer bandwidthdiy;
 	private Integer isAutoStartup = 0; 
+	/*
+	 * 1=关机;2=运行
+	 * 3=告警;4=故障
+	 * 5=正在关机;6=正在开机
+	 * 7=正在重启
+	 */
 	private Integer runningStatus;
+	/*
+	 * 1=正常;2=停机;2=欠费;4=永久停机，云主机已删除
+	 * 状态：0:未创建1: 创建中 2:创建成功 3:创建失败 
+	 */
 	private Integer status = 0; 
 	private String innerIp; 
 	private Integer innerPort; 
@@ -99,6 +118,16 @@ public class CloudHostVO implements JSONBean
     private String cpucore_name;
     
     private Integer supportH264;
+    
+    /**
+     * 码率
+     */
+    private Integer codeRate;
+    
+    /**
+     * 帖率
+     */
+    private Integer frameRate;
 
     public Integer[] getOptions() {
         return options;
@@ -829,6 +858,23 @@ public class CloudHostVO implements JSONBean
 	{
 		return CapacityUtil.toCapacityLabel(this.remainMemory, scale);
 	}
+
+	public Integer getCodeRate() {
+		return codeRate;
+	}
+
+	public void setCodeRate(Integer codeRate) {
+		this.codeRate = codeRate;
+	}
+
+	public Integer getFrameRate() {
+		return frameRate;
+	}
+
+	public void setFrameRate(Integer frameRate) {
+		this.frameRate = frameRate;
+	}
+	
 }
 
 

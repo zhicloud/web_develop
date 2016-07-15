@@ -127,7 +127,9 @@
                             <th class="sort-alpha">专属云名称</th>
                             <th class="sort-alpha">IP个数</th>
                             <th class="sort-alpha">主机个数</th>
-                            <th class="sort-alpha">描述</th>
+                              <th class="sort-alpha">所属分组</th>
+
+                              <th class="sort-alpha">描述</th>
 							<th class="sort-alpha">创建时间</th>
                             <th class="sort-alpha">状态</th>  
                             <th class="no-sort">操作</th>
@@ -143,10 +145,12 @@
 									  <label for="${vpcList.id}"></label>
 									</div>
                                  </td>
-                                  <td class="cut">${vpcList.displayName}</td>
+
+                              <td class="cut">${vpcList.displayName}</td>
                                   <td>${vpcList.ipAmount}</td>
                                   <td>${vpcList.hostAmount}</td>
-                                  <td class="cut">
+                              <td class="cut">${vpcList.groupName}</td>
+                              <td class="cut">
                                   	<c:if test="${vpcList.description!=null }">
                             			${vpcList.description }
 	                            	</c:if>

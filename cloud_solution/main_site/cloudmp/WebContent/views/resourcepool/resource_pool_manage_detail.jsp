@@ -134,6 +134,7 @@
 <!--                            <p><strong>网络模式：</strong>私有云</p> -->
 <!--                            <p><strong>存储模式：</strong>本地存储</p> -->
                            <p><strong>运行状态：${cp.getStatusText() }</strong></p>
+                           <p><strong>云主机数量：<a href="javascript:void(0);" cur_id="${uuid }" cur_name="${cp.name }"  class="query_host_detail"><span class="badge badge-greensea">${cp.hostCount}</span></a></strong>台</p>
 <%--                            <p><strong>云主机数量：</strong><a href="#"><span class="badge badge-greensea">${cp.getAllHost()}</span></a>台</p> --%>
                            
                            <div class="progress-list">
@@ -351,6 +352,13 @@
 	    	$("#confirmcontent").html("确定要删除该资源节点吗？");
 	    	$("#confirm_btn").attr("onclick","deleteResourcePool();");
 	    	$("#con").click();
+	    });
+    	
+	    //查看主机详情
+		jQuery(".query_host_detail").click(function(){
+	    	var uuid = jQuery(this).attr("cur_id");
+	    	var name = jQuery(this).attr("cur_name");
+	    	window.location.href = path+"/cdrpm/"+uuid+"/"+name+"/hpdetails";
 	    });
     })
     function deleteResourcePool(){

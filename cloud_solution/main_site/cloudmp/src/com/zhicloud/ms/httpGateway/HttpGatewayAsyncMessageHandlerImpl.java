@@ -14,6 +14,9 @@ import com.zhicloud.ms.app.pool.diskImagePool.DiskImageProgressPoolManager;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressData;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPool;
 import com.zhicloud.ms.app.pool.host.back.HostBackupProgressPoolManager;
+import com.zhicloud.ms.app.pool.host.migration.MigrationProgressData;
+import com.zhicloud.ms.app.pool.host.migration.MigrationProgressPool;
+import com.zhicloud.ms.app.pool.host.migration.MigrationProgressPoolManager;
 import com.zhicloud.ms.app.pool.host.reset.HostResetProgressData;
 import com.zhicloud.ms.app.pool.host.reset.HostResetProgressPool;
 import com.zhicloud.ms.app.pool.host.reset.HostResetProgressPoolManager;
@@ -56,12 +59,17 @@ import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 public class HttpGatewayAsyncMessageHandlerImpl {
 
 	private final static Logger logger = Logger.getLogger(HttpGatewayAsyncMessageHandlerImpl.class);
   
 	BeanFactory factory = new ClassPathXmlApplicationContext("classpath:/applicationContext*.xml"); 
 	IBackUpDetailService backUpDetailService = (IBackUpDetailService)factory.getBean("backUpDetailService");
+	
+	public static HttpServletRequest request;
     
 	@HttpGatewayMessageHandler(messageType = "host_monitor_data")
 	public Map<String, String> hostMonitorData(HttpGatewayAsyncChannel channel, JSONObject messageData) {
@@ -370,7 +378,6 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 
         AppInconstant.hostResetProgress.put(uuid+"_reset", "reset_true");
 
-
         //获取对象
         HostResetProgressPool pool = HostResetProgressPoolManager.singleton().getPool();
         HostResetProgressData hostReset = pool.get(uuid);
@@ -425,8 +432,110 @@ public class HttpGatewayAsyncMessageHandlerImpl {
         }
         AppInconstant.hostResetProgress.put(uuid+"_reset", "reset_false");
         channel.release();
+    }
+	
+	
+	//主机迁移begin
+	@HttpGatewayMessageHandler(messageType = "migrate_host_ack")
+    public void flushDiskMigrationAck(HttpGatewayAsyncChannel channel, JSONObject messageData) {
+        logger.debug("recieve flush disk migrate ack.");
+        
+        String sessionId = channel.getSessionId();
+
+        //获取数据
+        String uuid = messageData.getString("host");
+        
+        AppInconstant.migrateProgress.put(uuid+"_migrate_progress", "migrate_true");
+        
+        //获取对象
+        MigrationProgressPool pool = MigrationProgressPoolManager.singleton().getPool();
+        MigrationProgressData migration = pool.get(uuid);
+        
+        //对象不存在
+        if(migration == null){
+            migration = new MigrationProgressData();
+            migration.setRealHostId(uuid);
+            migration.setSessionId(sessionId);
+            migration.setResetStatus(1);
+            pool.put(migration);
+        }
+        migration.setResetStatus(1); 
+        migration.setReady(true);
+        
+        migration.updateTime();
+        channel.release();
+        
+        logger.info(String.format("start to flush disk migrate. uuid[%s], disk[%d]", uuid, 0));
+    }
+
+    @HttpGatewayMessageHandler(messageType = "migrate_host_report")
+    public void flushDiskMigrationProgress(HttpGatewayAsyncChannel channel, JSONObject messageData) {
+        logger.debug("recieve flush disk migrate progress response.");
+        
+        String sessionId = channel.getSessionId();
+        
+        //获取数据
+        String uuid = messageData.getString("host");
+        int level = messageData.getInt("level");
+        AppInconstant.migrateProgress.put(uuid+"_migrate_progress", "migrate_true");
+
+        //获取对象
+        MigrationProgressPool pool = MigrationProgressPoolManager.singleton().getPool();
+        MigrationProgressData migration = pool.get(uuid);
+                
+        //对象不存在
+        if(migration == null){
+            migration = new MigrationProgressData();
+            migration.setRealHostId(uuid);
+            migration.setSessionId(sessionId);
+            migration.setResetStatus(1);
+            pool.put(migration);
+        }
+        migration.setResetStatus(1);        
+        migration.setProgress(level);
+        migration.setFinished(false);
+        migration.updateTime();
+        channel.release();
+        logger.error(String.format("flush disk migrate at progress[%d]. uuid[%s], disk[%d]", level, uuid, 0));
+    }
+	
+	@HttpGatewayMessageHandler(messageType = "migrate_host_result")
+    public void flushDiskMigration(HttpServletRequest request,HttpGatewayAsyncChannel channel, JSONObject messageData) {
+        logger.debug("recieve flush disk migrate response.");
+        
+        //获取数据
+        String sessionId = channel.getSessionId();
+        String uuid = messageData.getString("host");
+                        
+        //获取对象
+        MigrationProgressPool pool = MigrationProgressPoolManager.singleton().getPool();
+        MigrationProgressData migration = pool.get(uuid);
+                
+        //对象不存在
+        if(migration == null){
+            migration = new MigrationProgressData();
+            migration.setRealHostId(uuid);
+            migration.setSessionId(sessionId);
+            migration.setResetStatus(0);
+            pool.put(migration);
+        }
+        migration.setResetStatus(0);        
+        migration.setFinished(true);
+        migration.updateTime();
+                
+        if (HttpGatewayResponseHelper.isSuccess(messageData) == true) {
+            migration.setSuccess(true);
+            logger.info(String.format("flush disk migrate success. uuid[%s], disk[%d], success", uuid, 0));
+        } else {
+            migration.setSuccess(false);
+            logger.error(String.format("[%s]flush disk migrate fail. uuid[%s]", sessionId, uuid));
+        }
+        AppInconstant.migrateProgress.put(uuid+"_migrate_progress", "migrate_false");
+        channel.release();
         
     }
+	//主机迁移end
+	
 	
 	@HttpGatewayMessageHandler(messageType = "backup_host_ack")
 	public void backupHostAck(HttpGatewayAsyncChannel channel, JSONObject messageData) {
@@ -1732,81 +1841,6 @@ public class HttpGatewayAsyncMessageHandlerImpl {
 		logger.info(String.format("[%s]disable storage device response, data '%s'", sessionId, messageData));
     }   
  
-	/**
-	 * 
-	* @Title: migrateHostAck 
-	* @Description: 迁移是否开始
-	* @param @param channel
-	* @param @param messageData      
-	* @return void     
-	* @throws
-	 */
-	@HttpGatewayMessageHandler(messageType = "migrate_host_ack")
-    public void migrateHostAck(HttpGatewayAsyncChannel channel, JSONObject messageData) {
-         
-        String sessionId = channel.getSessionId();
-        String hostId = AppInconstant.cloudHostMigreateSessionId.get(sessionId);
-        if (HttpGatewayResponseHelper.isSuccess(messageData) == true) {
-            logger.info("host "+hostId+" migrate begin ");
-        }else{
-            if(hostId != null){
-                logger.info("host "+hostId+" migrate fail ");
-                AppInconstant.cloudHostMigrate.remove(hostId);
-                AppInconstant.cloudHostMigreateSessionId.remove(sessionId);
-            }
-        }
-        channel.release();
-     }  
-	/**
-	 * 
-	* @Title: migrateHostReport 
-	* @Description: 迁移进度 
-	* @param @param channel
-	* @param @param messageData      
-	* @return void     
-	* @throws
-	 */
-	@HttpGatewayMessageHandler(messageType = "migrate_host_report")
-    public void migrateHostReport(HttpGatewayAsyncChannel channel, JSONObject messageData) {
-         String sessionId = channel.getSessionId();
-         String hostId = AppInconstant.cloudHostMigreateSessionId.get(sessionId); 
-         AppInconstant.cloudHostMigrate.put(hostId, messageData.getInt("level"));
-         logger.info("host "+hostId+" migrate progress "+ messageData.getInt("level"));
-         channel.release();
-     }
-
-	/**
-	 * 
-	* @Title: migrateHostResult 
-	* @Description: 迁移结果 
-	* @param @param channel
-	* @param @param messageData      
-	* @return void     
-	* @throws
-	 */
-    @HttpGatewayMessageHandler(messageType = "migrate_host_result")
-    public void migrateHostResult(HttpGatewayAsyncChannel channel, JSONObject messageData) {
-        logger.debug("recieve backup host progress response.");
-        
-        //获取数据
-        String sessionId = channel.getSessionId();
-        String hostId = AppInconstant.cloudHostMigreateSessionId.get(sessionId); 
-        AppInconstant.cloudHostMigrate.remove(hostId);
-        AppInconstant.cloudHostMigreateSessionId.remove(sessionId);
-        if (HttpGatewayResponseHelper.isSuccess(messageData) == true) {
-            logger.info("host "+hostId+" migrate success ");
-            //成功代码
-            AppInconstant.cloudHostMigrate.put(hostId, 101);
-        }else{
-            if(hostId != null){
-                logger.info("host "+hostId+" migrate fail ");
-                //失败代码
-                AppInconstant.cloudHostMigrate.put(hostId, 102);
-            }
-        }
-        channel.release();
-    }  
-	
   	@HttpGatewayMessageHandler(messageType = "enable_service")
 	public void serviceEnable(HttpGatewayAsyncChannel channel, JSONObject messageData) {
 		String status = messageData.getString("status");

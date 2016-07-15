@@ -3,6 +3,7 @@ package com.zhicloud.ms.util;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.util.Random;
 
 public class NumberUtil
 {
@@ -124,6 +125,19 @@ public class NumberUtil
 	{
 		BigDecimal bigNum = new BigDecimal(num);
 		return bigNum.setScale(scale, roundingMode);
+	}
+	
+	/**
+	 * 随机生成验证码
+	 * @return
+	 */
+	public static String getCode(){
+		String result="";
+		Random random = new Random();
+			for(int i=0;i<4;i++){
+			result+=random.nextInt(10);
+		}
+		return result;
 	}
 	
 	/**

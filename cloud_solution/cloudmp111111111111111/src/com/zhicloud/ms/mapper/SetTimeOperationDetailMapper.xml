@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.SetTimeOperationDetailMapper">
+
+
+	<resultMap type="com.zhicloud.ms.vo.SetTimeOperationDetailVO" id="SetTimeOperationDetailVO">
+		<id     column="id"       property="id" />
+		<result column="create_time" property="createTime" />
+		<result column="host_id" property="hostId" />
+		<result column="display_name" property="displayName" />
+	</resultMap>
+
+
+	<select id="getAllDetail" resultMap="SetTimeOperationDetailVO">
+		select
+		      id,
+		      display_name,
+		      host_id,
+		      status,
+		      type,
+		      create_time
+		 from set_time_operation_detail
+		 order by create_time desc
+
+	</select>
+
+    <!-- ***************** -->
+
+    <insert id="insertDetail">
+		insert INTO set_time_operation_detail
+		(id, display_name, type, host_id, status, create_time)
+		 values
+		 (#{id}, #{displayName}, #{type}, #{hostId},#{status}, #{createTime});
+	</insert>
+	
+	<!-- ***************** --> 
+
+</mapper>

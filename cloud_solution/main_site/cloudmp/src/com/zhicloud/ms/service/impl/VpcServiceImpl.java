@@ -73,7 +73,7 @@ public class VpcServiceImpl implements IVpcService {
 
 	@Override
 	@Transactional(readOnly=false)
-	public MethodResult addVpc(String displayName, String ipAmount,String description, String[] hosts,HttpServletRequest request) {
+	public MethodResult addVpc(String displayName, String ipAmount,String groupId, String description, String[] hosts,HttpServletRequest request) {
 		logger.debug("VpcServiceImpl.addVpc()");
 		if(StringUtil.isBlank(displayName)){
 			return new MethodResult(MethodResult.FAIL, "请输入专属云显示名");
@@ -121,7 +121,8 @@ public class VpcServiceImpl implements IVpcService {
  			data.put("status",  1);// 创建成功
  			data.put("hostAmount",  0);
  			data.put("ipAmount",  0);
- 			data.put("userId",  loginInfo.getBillid());
+        data.put("groupId", groupId);
+        data.put("userId",  loginInfo.getBillid());
  			data.put("createTime",  StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
 			int n = vpcBaseInfoMapper.addVpc(data);
 			//申请ip 

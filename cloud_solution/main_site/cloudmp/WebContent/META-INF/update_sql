@@ -1,11 +1,76 @@
-更新内容：
-	测试
-修改时间：
-	2015/7/22
-修改人：
-	吴莉莎
-脚本： 
-	 update cloud_host set status = 1;
+-- **********************************
 
 
-************************************
+-- 更新内容：
+-- 	1.3新功能相关数据库脚本变更
+-- 修改时间：
+-- 	2016/5/6
+-- 修改人：
+-- 	张翔
+-- 脚本：
+
+DROP TABLE IF EXISTS `task_info`;
+CREATE TABLE `task_info` (
+  `id` varchar(32) NOT NULL,
+  `host_name` varchar(100) DEFAULT NULL COMMENT '主机名',
+  `oper_type` int(11) DEFAULT '0' COMMENT '操作类型',
+  `status` int(11) DEFAULT '0' COMMENT '状态',
+  `time` char(17) DEFAULT NULL COMMENT '时间',
+  `user_id` varchar(32) NOT NULL DEFAULT '操作用户ID',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务中心';
+
+
+ALTER TABLE `cloud_host_config_model`
+ADD COLUMN `code_rate`  int(11) NULL DEFAULT 2 COMMENT '码率' AFTER `support_h264`,
+ADD COLUMN `frame_rate`  int(11) NULL DEFAULT 15 COMMENT '帧率' AFTER `code_rate`,
+ADD COLUMN `operationSystem`  varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '系统操作类型' AFTER `frame_rate`;
+
+
+-- **********************************
+
+
+-- 更新内容：
+-- 	测试
+-- 修改时间：
+-- 	2015/7/22
+-- 修改人：
+-- 	吴莉莎
+-- 脚本： 
+-- 	 update cloud_host set status = 1;
+
+
+-- ************************************
+
+
+-- **********************************
+
+
+-- 更新内容：
+-- 	云主机配置增加H264帧率和码流配置
+-- 修改时间：
+-- 	2016/5/25
+-- 修改人：
+-- 	陈锦鸿
+-- 脚本： 
+ALTER TABLE `cloud_host`
+ADD COLUMN `codeRate`  int(11) NULL DEFAULT 2 COMMENT '码率' AFTER `vpc_ip`,
+ADD COLUMN `frameRate`  int(11) NULL DEFAULT 15 COMMENT '帖率' AFTER `codeRate`;
+
+
+DROP TABLE IF EXISTS `cloud_host_migartion`;
+CREATE TABLE `cloud_host_migartion` (
+  `id` char(32) NOT NULL COMMENT '唯一标示',
+  `realHostId` char(64) DEFAULT NULL COMMENT '主机ID',
+  `hostName` char(100) DEFAULT NULL COMMENT '主机名',
+  `localhostNC` varchar(15) DEFAULT NULL COMMENT '源NC',
+  `toNC` varchar(15) DEFAULT NULL COMMENT '目的NC',
+  `time` char(17) DEFAULT NULL COMMENT '迁移完成时间',
+  `status` int(1) DEFAULT '0' COMMENT '迁移状态:默认为0,1标示正则迁移，2标示迁移完成,3迁移失败',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ************************************
+
+ALTER TABLE `cloud_host`
+MODIFY COLUMN `status`  int(11) NULL DEFAULT 0 COMMENT '1: 正常、2: 停机、3：欠费、4：永久停机，云主机已删除' AFTER `running_status`;

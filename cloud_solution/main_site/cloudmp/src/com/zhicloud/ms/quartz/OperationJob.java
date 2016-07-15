@@ -64,7 +64,7 @@ public class OperationJob implements Job {
                     case AppConstant.STARTUP_TIMER: {
                         //若关机则发送开机命令
                         if (AppConstant.CLOUD_HOST_RUNNING_STATUS_SHUTDOWN == runningStatus) {
-                            result = channel.hostStart(realHostId, 0, "");
+                            result = channel.hostStart(realHostId,0,"");
                             if (HttpGatewayResponseHelper.isSuccess(result)) {
                                 setTimeOperationDetailService
                                     .insertDetail(cloudHostVO.getRealHostId(), AppConstant.RESULT_SUCCESS,
@@ -86,7 +86,7 @@ public class OperationJob implements Job {
                     //执行关机操作
                     case AppConstant.SHUTDOWN_TIMER: {
                         if (AppConstant.CLOUD_HOST_RUNNING_STATUS_RUNNING == runningStatus) {
-                            result = channel.hostStop(realHostId);
+                            result = channel.hostStop(realHostId,false,0);
                             if (HttpGatewayResponseHelper.isSuccess(result)) {
                                 setTimeOperationDetailService
                                     .insertDetail(cloudHostVO.getRealHostId(), AppConstant.RESULT_SUCCESS,

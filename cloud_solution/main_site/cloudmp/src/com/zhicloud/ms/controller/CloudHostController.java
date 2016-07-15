@@ -28,6 +28,7 @@ import com.zhicloud.ms.service.ISysDiskImageService;
 import com.zhicloud.ms.service.SharedMemoryService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
+import com.zhicloud.ms.util.AlertDisplayContent;
 import com.zhicloud.ms.util.CapacityUtil;
 import com.zhicloud.ms.util.StringUtil;
 import com.zhicloud.ms.vo.BackUpDetailVO;
@@ -227,7 +228,7 @@ public class CloudHostController {
       condition.put("running_status", runningStatus);
       condition.put("flag", flag);
 
-      List<CloudHostVO> cloudHostList = cloudHostService.getByWarehouseIdAndParams(condition);;
+      List<CloudHostVO> cloudHostList = cloudHostService.getByWarehouseIdAndParams(condition);
  
       List<CloudHostVO> newCloudServerList = new ArrayList<CloudHostVO>();
       HostResetProgressPool resetpool = HostResetProgressPoolManager.singleton().getPool();
@@ -322,7 +323,7 @@ public class CloudHostController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_start)){
             return new MethodResult(MethodResult.FAIL,"您没有启动主机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHost(id, "1");
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "1",false,0);
         return mr;
     }
     /**
@@ -341,9 +342,37 @@ public class CloudHostController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_start)){
             return new MethodResult(MethodResult.FAIL,"您没有启动主机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHost(id, "1");
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "1",false,0);
         return mr;
     }
+    
+    /**
+     * 
+     * @Title: manualBackup 
+     * @Description: T跳转弹框页面
+     * @param @param request
+     * @param @return      
+     * @return String     
+     * @throws
+      */
+     @RequestMapping(value="/cloudhost/showDialog",method=RequestMethod.GET)
+     public String showDialog(HttpServletRequest request){
+    	 //关机1，重启2
+    	 String type = request.getParameter("type");
+    	 String id = request.getParameter("id");
+    	 if("1".equals(type)){
+    		 request.setAttribute("backupsTitle", AlertDisplayContent.HOSTCLOSESTITLE);
+    	 }else{
+    		 request.setAttribute("backupsTitle", AlertDisplayContent.HOSTRESTATERSTITLE);
+    	 }
+    	 
+     	 request.setAttribute("content", AlertDisplayContent.FORCED_SHUTDOWN_OPTION);
+     	 request.setAttribute("trigerTime", AlertDisplayContent.FORCED_SHUTDOWN_TRIGGER_TIME);
+     	 request.setAttribute("id", id);
+     	 request.setAttribute("type", type);
+     	 return "/desktop/host_manage_dialog";
+     }
+    
     /**
      * 关闭云主机
      * @param id
@@ -355,7 +384,7 @@ public class CloudHostController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_shut_down)){
             return new MethodResult(MethodResult.FAIL,"您没有强制关闭主机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHost(id, "2"); 
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "2",false,0); 
         return mr;
     }
     /**
@@ -374,8 +403,44 @@ public class CloudHostController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_shut_down)){
             return new MethodResult(MethodResult.FAIL,"您没有强制关闭主机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHost(id, "2"); 
+        
+        boolean flag = false;
+        String trigerTime= request.getParameter("trigerTime");
+        String option= request.getParameter("option");//是否强制
+        if("true".equals(option))
+        	flag = true;
+        	
+        Integer time = 0;
+        if(null != trigerTime && !"".equals(trigerTime))
+        	time = Integer.valueOf(trigerTime);
+        
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "2",flag,time); 
         return mr;
+    }
+    
+    /**
+     * 批量重启或关机云主机
+     * @param ids 要批量操作的id
+     * @param type 类型:1关机，2重启
+     * @return
+     */
+    @RequestMapping(value="/cloudhost/shutdownOrRestartHost",method=RequestMethod.POST)
+    @ResponseBody
+    public MethodResult shutdownOrRestartHost(String ids,String type,HttpServletRequest request){
+    	MethodResult mr = null; 
+    	
+    	String [] hostIds = ids.split(",");
+    	if("1".equals(type)){
+    		for(String id:hostIds){
+    			mr = cloudHostService.operatorCloudHost(id, "2",false,0);
+        	}
+    	}else if("2".equals(type)){
+    		for(String id:hostIds){
+    			mr = cloudHostService.operatorCloudHost(id, "3",false,0);
+        	}
+    	}
+    	
+		return mr;
     }
     
     /**
@@ -389,7 +454,8 @@ public class CloudHostController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_restart)){
             return new MethodResult(MethodResult.FAIL,"您没有重启主机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHost(id, "3");
+        
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "3",false,0);
         return mr;
     }
     /**
@@ -408,7 +474,18 @@ public class CloudHostController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_restart)){
             return new MethodResult(MethodResult.FAIL,"您没有重启主机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHost(id, "3");
+        
+        boolean flag = false;
+        String trigerTime= request.getParameter("trigerTime");
+        String option= request.getParameter("option");//是否强制
+        if("true".equals(option))
+        	flag = true;
+        	
+        Integer time = 0;
+        if(null != trigerTime && !"".equals(trigerTime))
+        	time = Integer.valueOf(trigerTime);
+        
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "3",flag,time);
         return mr;
     }
     /**
@@ -422,7 +499,7 @@ public class CloudHostController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_reset)){
             return new MethodResult(MethodResult.FAIL,"您没有强制重启主机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHost(id, "5");
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "5",false,0);
         return mr;
     }
     /**
@@ -441,7 +518,7 @@ public class CloudHostController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_reset)){
             return new MethodResult(MethodResult.FAIL,"您没有强制重启主机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHost(id, "5");
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "5",false,0);
         return mr;
     }
     /**
@@ -455,7 +532,7 @@ public class CloudHostController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_shut_down)){
             return new MethodResult(MethodResult.FAIL,"您没有强制关机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHost(id, "4");
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "4",false,0);
         return mr;
     }
     /**
@@ -474,7 +551,7 @@ public class CloudHostController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_shut_down)){
             return new MethodResult(MethodResult.FAIL,"您没有强制关机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHost(id, "4");
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "4",false,0);
         return mr;
     }
     /**
@@ -627,7 +704,9 @@ public class CloudHostController {
     @RequestMapping(value="/warehouse/cloudhost/update",method=RequestMethod.POST)
     @ResponseBody
     public MethodResult updateServer(CloudHostVO server){
+    	
         MethodResult mr = cloudHostService.modifyAllocation(server);
+        
         return mr;
     }
     
@@ -1245,9 +1324,17 @@ public class CloudHostController {
             JSONObject hostResult = channel.hostQueryInfo(realHostId);
             JSONObject hostInfo = (JSONObject) hostResult.get("host");
             Integer[] option = JSONLibUtil.getIntegerArray(hostInfo, "option");
+            //码率，帖率，系统类型，操作系统
+            int codeRate = Integer.valueOf(hostInfo.get("ibt").toString());
+            int frameRate = Integer.valueOf(hostInfo.get("fram").toString());
+            int operating_type = Integer.valueOf(hostInfo.get("operating_type").toString());
+            String operating_system = hostInfo.get("operating_system").toString();
+            
             if(option.length>3){
                 if(option[2] == 0){
-                    channel.hostModify(realHostId, "", 0, BigInteger.ZERO, new Integer[]{0, 1, 1}, new Integer[]{1,200}, "", "", "", BigInteger.ZERO, BigInteger.ZERO);
+					channel.hostModify(realHostId, "", 0, BigInteger.ZERO, new Integer[] { 0, 1, 1 },
+							new Integer[] { 1, 200 }, "", "", "", BigInteger.ZERO, BigInteger.ZERO, 0, 0, codeRate,
+							frameRate, operating_type, operating_system);
                 }
             }
         } catch (MalformedURLException e) {

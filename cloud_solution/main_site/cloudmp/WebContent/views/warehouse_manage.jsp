@@ -159,7 +159,7 @@
                                   	<c:if test="${chw.name == null}">
 		                            &nbsp;                                                                        
 		                            </c:if>
-		                            &nbsp;<a hrep="javascript:void(0);" onclick="toDetail('${chw.id }');" style="color:#323232;cursor:pointer">${chw.name}</a>
+		                            &nbsp;<a hrep="javascript:void(0);" onclick="toDetail('${chw.id }');" style="color:black;cursor:pointer">${chw.name}</a>
                                   </td>
                                   <td class="cut">
                                   	<c:if test="${chw.hostTypeName == null}">

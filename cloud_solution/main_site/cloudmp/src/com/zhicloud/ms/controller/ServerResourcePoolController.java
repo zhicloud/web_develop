@@ -222,7 +222,7 @@ public class ServerResourcePoolController {
                 List<CloudHostVO> cList = new ArrayList<>();
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){
-                    JSONObject result = channel.hostQuery(uuid);
+                    JSONObject result = channel.hostQuery(uuid,"",0);
                     if("success".equals(result.get("status"))){
                         
                         JSONArray computerList = result.getJSONArray("hosts");
@@ -1123,7 +1123,7 @@ public class ServerResourcePoolController {
 		try {
 				HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
 				if(channel!=null){
-					JSONObject result = channel.hostQuery(poolId);
+					JSONObject result = channel.hostQuery(poolId,"",0);
 					if("success".equals(result.get("status"))){
 						//查询所有云主机
 						JSONArray computerList = result.getJSONArray("hosts");
@@ -1168,7 +1168,7 @@ public class ServerResourcePoolController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_resource_pool_host_start)){
             return new MethodResult(MethodResult.FAIL,"您没有开机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "1");
+        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "1",false,0);
         return mr;
     }
     /**
@@ -1187,7 +1187,7 @@ public class ServerResourcePoolController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_resource_pool_host_stop)){
             return new MethodResult(MethodResult.FAIL,"您没有关机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "2");
+        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "2",false,0);
         return mr;
     }
     /**
@@ -1206,7 +1206,7 @@ public class ServerResourcePoolController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_resource_pool_host_restart)){
             return new MethodResult(MethodResult.FAIL,"您没有重启的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "3");
+        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "3",false,0);
         return mr;
     }
     /**
@@ -1225,7 +1225,7 @@ public class ServerResourcePoolController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.server_resource_pool_host_halt)){
             return new MethodResult(MethodResult.FAIL,"您没有强制的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "4");
+        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "4",false,0);
         return mr;
     }
     @RequestMapping(value="/{id}/addserver",method=RequestMethod.GET)

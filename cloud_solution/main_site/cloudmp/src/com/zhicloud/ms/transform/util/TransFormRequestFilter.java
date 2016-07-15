@@ -36,7 +36,10 @@ public class TransFormRequestFilter extends OncePerRequestFilter{
                 || URI.indexOf("/js/") > -1 || URI.indexOf("/images/") > -1 || URI.indexOf("/font-awesome/") > -1
                 || URI.indexOf("/transform/login") > -1 || URI.indexOf("hgMessage/push.do") > -1
                 || URI.indexOf("interface") > -1 || URI.indexOf("cloudserver/getbackupprogress") > -1
-                || URI.indexOf("/transform/updateuserlogin") > -1 || URI.indexOf("/monitor/shieldobject") > -1) {
+                || URI.indexOf("/transform/updateuserlogin") > -1 || URI.indexOf("/monitor/shieldobject") > -1
+                || URI.indexOf("/transform/findPwdPage") > -1 || URI.indexOf("/transform/cheackuNameAndEmail") > -1
+                || URI.indexOf("/transform/findUserPassWord") > -1 || URI.indexOf("/transform/toSetPasswordPage") > -1
+                || URI.indexOf("/transform/userloginagain") > -1) {
         } else {
             if(AppInconstant.initUser.equals("false")){
                 if(URI.indexOf("/transform/useradmin/saveuser") > -1){

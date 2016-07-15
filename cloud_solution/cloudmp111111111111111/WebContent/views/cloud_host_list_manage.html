@@ -1,0 +1,74 @@
+<!-- cloud_host_list_manage.html -->
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="css/style.default.css" type="text/css" />
+<script type="text/javascript" src="js/plugins/jquery-1.7.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery-ui-1.8.16.custom.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery.cookie.js"></script>
+
+<script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="js/plugins/jquery.uniform.min.js"></script>
+<script type="text/javascript" src="js/custom/general.js"></script>
+<script type="text/javascript" src="js/custom/tables.js"></script>   
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	  //默认选中
+    var select = '<a href="#" id="addhost" class="btn btn_search radius50"><span>新增该类云主机</span></a>'+
+                 '<a href="" class="btn btn_trash"><span>批量删除</span></a>'+
+                 '<a href="" class="btn btn_flag"><span>分配至用户</span></a>'+
+                 '<label> &nbsp;&nbsp;筛选 <select size="1" name="status"><option value="1" selected="selected">已分配</option>'+
+                 '<option value="2">未分配</option></select> </label>';
+      jQuery("#dyntable2_length").append(select);
+
+});
+</script>
+
+<div class="pageheader">
+            <h1 class="pagetitle">云主机列表</h1>  
+        </div><!--pageheader--> 
+        <div id="contentwrapper" class="contentwrapper"> 
+            <span class="slogan" align="right">ABC仓库 创建时间 2015-01-01 00:00:00 共20台，已分配10台，未分配10台</span>
+                <table cellpadding="0" cellspacing="0" border="0" class="stdtable" id="dyntable2">
+                    <colgroup>
+                        <col class="con0" style="width: 4%" />
+                        <col class="con1" />
+                        <col class="con0" />
+                        <col class="con1" />
+                        <col class="con0" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                          <th class="head0 nosort"><input type="checkbox" /></th>
+                            <th class="head0">云主机名称</th>
+                            <th class="head1">主机类型</th>
+                            <th class="head0">配置</th>
+                            <th class="head1">状态</th>
+                            <th class="head0">分配时间</th>
+                            <th class="head1">运行时间</th>
+                            <th class="head1">所属用户</th>
+                            <th class="head1">操作</th>
+                        </tr>
+                    </thead> 
+                    <tbody>
+                        <tr class="gradeX">
+                          <td align="center"><span class="center">
+                            <input type="checkbox" />
+                          </span></td>
+                            <td>测试机</td>
+                            <td>Win7</td>
+                            <td>4核/4G/100G/4M</td>
+                            <td>未分配</td>
+                            <td>2015-01-01 00:00:00</td>
+                            <td class="center">关机</td>
+                            <td class="center">小明</td>
+                            <td class="center">分配  删除 启动 关机 重启 </td>
+                        </tr>
+                        
+                         
+                         
+                    </tbody>
+                </table>
+        	 
+        
+        </div><!--contentwrapper-->
+        
+        <br clear="all" />

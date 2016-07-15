@@ -39,6 +39,11 @@ public class TransformConstant {
     public static final String transform_jsp_warn = "/public/warning";
     public static final String transform_jsp_noaccsess = "not_have_access";
     public static final String transform_jsp_error = "/views/common/error.jsp";
+    
+    //找回密码页面
+    public static final String transform_jsp_findpassword = "/system_user_findpassword";
+    //重置密码页面
+    public static final String transform_jsp_tosetpwd = "/system_user_tosetpwd";
 
     // 业务页面
     public static final String transform_jsp_usermanage = "/transform/admin/system_user_manage";

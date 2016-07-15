@@ -74,7 +74,7 @@ public class BackUpJob implements Job {
           //获取所有开机状态的加入定时任务的主机，并进行强制关机
             List<CloudHostVO> startList =  cloudHostService.getCloudHostInTimerBackUpStart(timerKey);          
             for(CloudHostVO host : startList){                
-                cloudHostService.operatorCloudHost(host.getId(), "4");
+                cloudHostService.operatorCloudHost(host.getId(), "4",false,0);
             }
         }catch(Exception e){
             logger.error(e);
@@ -249,10 +249,18 @@ public class BackUpJob implements Job {
             
             JSONObject hostResult = channel.hostQueryInfo(realHostId);
             JSONObject hostInfo = (JSONObject) hostResult.get("host");
+            
+            //码率，帖率，系统类型，操作系统
+            int codeRate = Integer.valueOf(hostInfo.get("ibt").toString());
+            int frameRate = Integer.valueOf(hostInfo.get("fram").toString());
+            int operating_type = Integer.valueOf(hostInfo.get("operating_type").toString());
+            String operating_system = hostInfo.get("operating_system").toString();
+            
             Integer[] option = JSONLibUtil.getIntegerArray(hostInfo, "option");
             if(option.length>3){
                 if(option[2] == 0){
-                    channel.hostModify(realHostId, "", 0, BigInteger.ZERO, new Integer[]{0, 1, 1}, new Integer[]{1,200}, "", "", "", BigInteger.ZERO, BigInteger.ZERO);
+                    channel.hostModify(realHostId, "", 0, BigInteger.ZERO, new Integer[]{0, 1, 1}, new Integer[]{1,200}, "", "", "", BigInteger.ZERO, BigInteger.ZERO, codeRate,
+							frameRate, operating_type, operating_system);
                 }
             }
         } catch (MalformedURLException e) {

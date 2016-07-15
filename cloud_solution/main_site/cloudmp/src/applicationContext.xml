@@ -10,7 +10,8 @@
 	http://www.springframework.org/schema/tx
 	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 	http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+default-lazy-init="true">
 	
 	<context:component-scan base-package="com.zhicloud.ms"></context:component-scan>
 	<!-- 引入jdbc配置文件 -->
@@ -63,6 +64,9 @@
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
 	<bean id="cloudHostService" class="com.zhicloud.ms.service.impl.CloudHostServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="hostMigrateService" class="com.zhicloud.ms.service.impl.HostMigrateServiceImpl">
 		<property name="sqlSession" ref="sqlSession"></property>
 	</bean>
 	<bean id="sysDiskImageService" class="com.zhicloud.ms.service.impl.SysDiskImageServiceImpl">

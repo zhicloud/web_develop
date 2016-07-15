@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.CloudHostWarehouseMapper">
+	<resultMap type="com.zhicloud.ms.vo.CloudHostWarehouse" id="CloudHostWarehouse">
+		<id column="id"                                  property="id"/>
+		<result column="cloud_host_config_model_id"      property="cloudHostConfigModelId"/>
+		<result column="name"                            property="name"/>
+		<result column="total_amount"                    property="totalAmount"/>
+		<result column="remain_amount"                   property="remainAmount"/>
+		<result column="assigned_amount"                 property="assignedAmount"/>
+		<result column="create_time"                     property="createTime"/>
+		<result column="modify_time"                     property="modifyTime"/>
+		<result column="check_time"                      property="checkTime"/>
+		<result column="minimun"                         property="minimun"/>
+		<result column="pool_id"                         property="poolId"/>
+		<result column="file_type"                       property="fileType"/>
+		<result column="pool_name"                       property="pool_name"/>
+		<result column="max_creating"                    property="max_creating"/>
+	</resultMap>
+	<select id="getAll" resultMap="CloudHostWarehouse">
+		select chw.id,
+			chw.cloud_host_config_model_id,
+			chw.name,
+			chw.total_amount,
+			chw.remain_amount,
+			chw.create_time,
+			chw.modify_time,
+			chw.assigned_amount,
+			chw.check_time,
+			chw.pool_id,
+			chw.minimum,
+			chcm.sys_image_name sysImageName,
+			chcm.name hostTypeName ,
+			sdi.file_type
+		from cloud_host_warehouse chw 
+		left join cloud_host_config_model chcm
+			on chw.cloud_host_config_model_id = chcm.id
+		left join sys_disk_image sdi
+		    on sdi.id = chcm.sys_image_id
+		order by chw.modify_time desc
+	</select>
+	
+	<select id="getById" resultMap="CloudHostWarehouse">
+		select chw.id,
+			chw.cloud_host_config_model_id,
+			chw.name,
+			chw.total_amount,
+			chw.remain_amount,
+			chw.create_time,
+			chw.modify_time,
+			chw.check_time,
+			chw.minimum,
+			chw.pool_id,
+			chw.assigned_amount,
+			chcm.sys_image_name sysImageName,
+			chcm.name hostTypeName,
+			sdi.file_type
+		from cloud_host_warehouse chw 
+		left join cloud_host_config_model chcm
+			on chw.cloud_host_config_model_id = chcm.id
+		left join sys_disk_image sdi
+		    on sdi.id = chcm.sys_image_id
+		where chw.id = #{id} 
+	</select>
+	
+	<select id="getByName" resultMap="CloudHostWarehouse">
+		select * from cloud_host_warehouse 
+		where name = #{name} 
+	</select>
+	
+	<insert id="addWarehouse">
+		insert into cloud_host_warehouse (id,cloud_host_config_model_id,name,total_amount,create_time) 
+			values (#{id},#{cloudHostConfigModelId},#{name},#{totalAmount},#{createTime})
+	</insert>
+	
+	<update id="updateWarehouse">
+		update cloud_host_warehouse 
+			<set>
+				name = #{name},
+				cloud_host_config_model_id = #{cloudHostConfigModelId},
+				total_amount = #{totalAmount},
+				modify_time = #{modifyTime}
+			</set>
+		where id = #{id}
+	</update>
+	<update id="updateWarehouseRemainByAddOne">
+		update cloud_host_warehouse 
+			<set>
+				remain_amount = remain_amount + 1 
+			</set>
+		where id = #{id}
+	</update>
+	<update id="updateWarehouseRemainByDeleteOne">
+		update cloud_host_warehouse 
+			<set>
+				remain_amount = remain_amount - 1 
+			</set>
+		where id = #{id}
+	</update>
+	<update id="updateWarehouseForDispatchHost">
+		update cloud_host_warehouse 
+			<set>
+				remain_amount = remain_amount - 1 ,
+				assigned_amount = assigned_amount +1
+			</set>
+		where id = #{id}
+	</update>
+	<update id="updateWarehouseForRetrieveHost">
+		update cloud_host_warehouse 
+			<set>
+				remain_amount = remain_amount + 1 ,
+				assigned_amount = assigned_amount - 1
+			</set>
+		where id = #{id}
+	</update>
+	<update id="updateWarehouseAmountForDeleteDispatchedHost">
+		update cloud_host_warehouse 
+			<set>
+                total_amount = total_amount - 1 ,
+                assigned_amount = assigned_amount - 1
+			</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateWarehouseAmountForDeleteHost">
+		update cloud_host_warehouse 
+			<set>
+                total_amount = total_amount - 1 ,
+                remain_amount = remain_amount - 1
+			</set>
+		where id = #{id}
+	</update>
+	<update id="updateWarehouseAmountForDeleteNotCreatedHost">
+		update cloud_host_warehouse 
+			<set>
+				total_amount = total_amount - 1  
+			</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateWarehouseForAddNewHost">
+		update cloud_host_warehouse 
+			<set>
+				total_amount = remain_amount + 1 ,
+				remain_amount = assigned_amount + 1
+			</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="deleteWarehouse">
+		delete from cloud_host_warehouse 
+		where id = #{id}
+	</delete>
+	
+	<delete id="deleteByIds">
+		delete from cloud_host_warehouse 
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<update id="addAmount">
+		update cloud_host_warehouse 
+			<set>
+				total_amount = total_amount + #{addAmount},
+				modify_time = #{modifyTime}
+			</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateCheckTimeOrMinimum">
+		update cloud_host_warehouse 
+			<set>
+				check_time = #{checkTime},
+				minimum = #{minimum},
+				pool_id = #{poolId}
+			</set>
+		where id = #{id}
+	</update>
+	
+	<update id="correctAllCount">
+		update cloud_host_warehouse a
+		SET a.total_amount = (select count(*) from cloud_host b where b.warehouse_id= a.id) ,
+		a.remain_amount = (select count(*) from cloud_host b where b.warehouse_id= a.id and real_host_id is not null and user_id is null),
+		a.assigned_amount = (select count(*) from cloud_host b where b.warehouse_id= a.id and real_host_id is not null and user_id is not null)
+        where a.id = #{id}
+	</update>
+	
+	<insert id="addConcurrent">
+		insert into pool_max_creating (pool_id,pool_name,max_creating) 
+			values (#{pool_id},#{pool_name},#{max_creating})
+	</insert>
+	
+	<update id="updateConcurrent">
+		update pool_max_creating a
+		set a.max_creating = #{max_creating}
+        where a.pool_id = #{pool_id}
+	</update>
+	
+	<select id="getAllConcurrent" resultMap="CloudHostWarehouse">
+		select pool_id,pool_name,max_creating from pool_max_creating 
+	</select>
+	
+	<select id="getConcurrent" resultMap="CloudHostWarehouse">
+		select pool_id,pool_name,max_creating from pool_max_creating 
+		where pool_id = #{pool_id}
+	</select>
+
+    <select id="getByConfigModelId" resultMap="CloudHostWarehouse">
+        SELECT
+          id,
+          cloud_host_config_model_id,
+          name,
+          total_amount,
+          remain_amount,
+          create_time,
+          modify_time,
+          assigned_amount,
+          check_time,
+          minimum,
+          pool_id
+        FROM
+         cloud_host_warehouse
+        WHERE
+          cloud_host_config_model_id = #{config_model_id}
+    </select>
+</mapper>

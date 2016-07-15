@@ -289,7 +289,7 @@ public class SysTenantController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.tenant_host_start)){
             return new MethodResult(MethodResult.FAIL,"您没有启动主机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHost(id, "1");
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "1",false,0);
         return mr;
     }
     /**
@@ -303,7 +303,7 @@ public class SysTenantController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.tenant_host_shut_down)){
             return new MethodResult(MethodResult.FAIL,"您没有强制关闭主机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHost(id, "2");
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "2",false,0);
         return mr;
     }
     
@@ -318,7 +318,7 @@ public class SysTenantController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.tenant_host_restart)){
             return new MethodResult(MethodResult.FAIL,"您没有重启主机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHost(id, "3");
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "3",false,0);
         return mr;
     }
 
@@ -333,7 +333,7 @@ public class SysTenantController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.tenant_host_reset)){
             return new MethodResult(MethodResult.FAIL,"您没有强制重启主机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHost(id, "5");
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "5",false,0);
         return mr;
     }
     /**
@@ -347,7 +347,7 @@ public class SysTenantController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.tenant_host_halt)){
             return new MethodResult(MethodResult.FAIL,"您没有强制关机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHost(id, "4");
+        MethodResult mr = cloudHostService.operatorCloudHost(id, "4",false,0);
         return mr;
     }
     /**
@@ -868,10 +868,18 @@ public class SysTenantController {
             
             JSONObject hostResult = channel.hostQueryInfo(realHostId);
             JSONObject hostInfo = (JSONObject) hostResult.get("host");
+            
+            //码率，帖率，系统类型，操作系统
+            int codeRate = Integer.valueOf(hostInfo.get("ibt").toString());
+            int frameRate = Integer.valueOf(hostInfo.get("fram").toString());
+            int operating_type = Integer.valueOf(hostInfo.get("operating_type").toString());
+            String operating_system = hostInfo.get("operating_system").toString();
+            
             Integer[] option = JSONLibUtil.getIntegerArray(hostInfo, "option");
             if(option.length>3){
                 if(option[2] == 0){
-                    channel.hostModify(realHostId, "", 0, BigInteger.ZERO, new Integer[]{0, 1, 1}, new Integer[]{1,200}, "", "", "", BigInteger.ZERO, BigInteger.ZERO);
+                    channel.hostModify(realHostId, "", 0, BigInteger.ZERO, new Integer[]{0, 1, 1}, new Integer[]{1,200}, "", "", "", BigInteger.ZERO, BigInteger.ZERO,0,0, codeRate,
+							frameRate, operating_type, operating_system);
                 }
             }
         } catch (MalformedURLException e) {

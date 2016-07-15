@@ -408,7 +408,18 @@ public class SysDiskImageController {
     @RequestMapping(value = "/hasprivilege", method = RequestMethod.GET)
     @ResponseBody
     public MethodResult isHasPrivilege(String type, HttpServletRequest request) {
-        if ("disk".equals(type)) {
+    	
+    	//您有上传光盘镜像权限
+    	
+    	if ("disk".equals(type) || "iso".equals(type)) {
+            if (!new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.disk_image_upload)) {
+                return new MethodResult(MethodResult.FAIL, "您没有磁盘镜像上传权限");
+            } else {
+            	return new MethodResult(MethodResult.SUCCESS, "您有光盘镜像上传权限");
+            }
+        }
+    	
+        /*if ("disk".equals(type)) {
             if (!new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.disk_image_upload)) {
                 return new MethodResult(MethodResult.FAIL, "您没有磁盘镜像上传权限");
             } else {
@@ -420,7 +431,7 @@ public class SysDiskImageController {
             } else {
                 return new MethodResult(MethodResult.SUCCESS, "您有光盘镜像上传权限");
             }
-        }
+        }*/
 
         return new MethodResult(MethodResult.FAIL, "您没有权限");
     }

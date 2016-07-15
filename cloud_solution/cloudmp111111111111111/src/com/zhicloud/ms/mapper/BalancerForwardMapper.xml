@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.BalancerForwardMapper"> 
+	
+	 <resultMap type="com.zhicloud.ms.vo.BalancerForwardVO" id="BalancerForwardVO">
+		<id     column="id"                     property="id" />
+		<result column="host_id"                property="hostId" />
+		<result column="balancer_protocol"      property="balancerProtocol" />
+		<result column="balancer_protocol_port" property="balancerProtocolPort" />
+		<result column="host_protocol"          property="hostProtocol" />
+		<result column="host_protocol_port"     property="hostProtocolPort" />
+		<result column="forward_rule"           property="forwardRule" />
+		<result column="max_connect"            property="maxConnect" />
+		<result column="keepalive"              property="keepalive" />
+		<result column="connect_timeout"        property="connectTimeout" />
+		<result column="real_ip"                property="realIp" />
+		<result column="check_interval"         property="checkInterval" />
+		<result column="fall"                   property="fall" />
+		<result column="rise"                   property="rise" />
+		<result column="check_file"             property="checkFile" />
+	</resultMap>
+	 <!-- ********************* -->
+	<select id="getAll" resultMap="BalancerForwardVO">
+		select bf.id,
+			bf.host_id,
+			bf.balancer_protocol,
+			bf.balancer_protocol_port,
+			bf.host_protocol,
+			bf.host_protocol_port,
+			bf.forward_rule,
+			bf.max_connect,
+			bf.keepalive,
+			bf.connect_timeout,
+			bf.real_ip,
+			bf.check_interval,
+			bf.fall,
+			bf.rise,
+			bf.check_file
+		from balancer_forward bf
+	</select>
+	
+	<select id="getById" resultMap="BalancerForwardVO">
+		select bf.id,
+			bf.host_id,
+			bf.balancer_protocol,
+			bf.balancer_protocol_port,
+			bf.host_protocol,
+			bf.host_protocol_port,
+			bf.forward_rule,
+			bf.max_connect,
+			bf.keepalive,
+			bf.connect_timeout,
+			bf.real_ip,
+			bf.check_interval,
+			bf.fall,
+			bf.rise,
+			bf.check_file
+		from balancer_forward bf
+		where bf.id = #{id}
+	</select>
+	
+	<select id="getByHostId" resultMap="BalancerForwardVO">
+		select bf.id,
+			bf.host_id,
+			bf.balancer_protocol,
+			bf.balancer_protocol_port,
+			bf.host_protocol,
+			bf.host_protocol_port,
+			bf.forward_rule,
+			bf.max_connect,
+			bf.keepalive,
+			bf.connect_timeout,
+			bf.real_ip,
+			bf.check_interval,
+			bf.fall,
+			bf.rise,
+			bf.check_file
+		from balancer_forward bf
+		where bf.host_id = #{hostId}
+	</select>
+	<insert id="add">
+		insert into balancer_forward (id,host_id,balancer_protocol,balancer_protocol_port,host_protocol,host_protocol_port,forward_rule,max_connect,keepalive,connect_timeout,real_ip,check_interval,fall,rise,check_file) 
+		values (#{id}, #{hostId},#{balancerpProtocol}, #{balancerProtocolPort}, #{hostProtocol}, #{hostProtocolPort}, #{forwardRule}, #{maxConnect}, #{keepalive}, #{connectTimeout}, #{realIp}, #{checkInterval}, #{fall}, #{rise}, #{checkFile})
+	</insert>
+	
+	<!-- ********************* -->
+	
+	<delete id="deleteById">
+		delete
+		from balancer_forward
+		where id = #{id}
+	</delete>
+	 
+</mapper>

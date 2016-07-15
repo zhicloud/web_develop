@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="gbk"?>
+<properties>
+	
+	<property key="address_of_this_system" name="address_of_this_system" type="String" 
+		description="address_of_this_system">
+		http://182.138.102.39:40803/ms/
+	</property>
+	
+	<property key="control_server_external_address" name="control server外部地址" type="String" 
+		description="control server外部地址">
+		192.168.66.201:5901
+	</property>
+	
+	<property key="control_server_internal_address" name="control server内部地址" type="String" 
+		description="control server内部地址">
+		192.168.66.202:5901
+	</property>
+	
+	<property key="cpu_package_option_upper_limit" name="CPU套餐项上限(核数)" type="String" 
+		description="CPU套餐项上限(核数)">
+		16
+	</property>
+	
+	<property key="memory_package_option_upper_limit" name="内存套餐项上限(GB)" type="String" 
+		description="内存套餐项上限(GB)">
+		64
+	</property>
+	
+	<property key="upload_file_upper_limit" name="上传单个文件大小上限(MB)" type="String" 
+		description="上传单个文件大小上限(MB)">
+		100
+	</property>
+	
+	<property key="upload_total_file_upper_limit" name="最大可用空间(MB)" type="String" 
+		description="最大可用空间(MB)">
+		300
+	</property>
+	<property key="cash_upper_limit" name="代金券最大额度(元)" type="String" 
+		description="代金券最大额度(元)">
+		500
+	</property>
+	<property key="version_type" name="发布包类型" type="String" 
+		description="发布包类型(测试、正式或其它)">
+		测试
+	</property>
+	<property key="version_name" name="终端最新版本号" type="String" 
+		description="终端最新版本号">
+		zhicloud_client_1.0.2.exe
+	</property>
+	
+	<property key="monitor_mail" name="监控邮件" type="String" 
+		description="监控邮件">
+		zhicloud_monitor@zhicloud.com
+	</property>
+	<property key="monitor_phone1" name="监控电话1" type="String" 
+		description="监控电话1">
+		15108288184
+	</property>
+	<property key="monitor_phone2" name="监控电话2" type="String" 
+		description="监控电话2">
+		13568814609
+	</property>
+	<property key="monitor_phone3" name="监控电话3" type="String" 
+		description="监控电话3">
+		18781967579
+	</property>
+	<!--
+	<property key="http_gateway_address" name="http gateway通信地址" type="String" 
+		description="http gateway通信地址">
+		127.0.0.1:9081
+	</property>
+	-->
+	
+	<property key="http_gateway_session_refresh_time" name="http gateway会话刷新时间" type="String" 
+		description="http gateway会话刷新时间，单位分钟">
+		10
+	</property>
+	
+	<property key="invoice_type" name="发票行业类别" type="String" 
+		description="发票行业类别">
+		软件业
+	</property>
+	
+	<property key="invoice_drawer" name="发票开票人" type="String" 
+		description="发票开票人">
+		陈冬梅
+	</property>
+	
+	<property key="invoice_payee" name="发票收款人" type="String" 
+		description="发票收款人">
+		陈冬梅
+	</property>
+	
+	<property key="invoice_subject" name="项目名称" type="String" 
+		description="项目名称">
+		云服务
+	</property>
+	
+	<property key="package_price_disk" name="硬盘计费规则" type="String" 
+		description="硬盘计费规则(广州)">
+		0.8
+	</property>
+	
+	<property key="package_price_disk_2" name="硬盘计费规则" type="String" 
+		description="硬盘计费规则(成都)">
+		1.0
+	</property>
+	
+	<property key="bandwidth_less_than_5" name="5M以内" type="String" 
+		description="5M以内每M价格(广州)">
+		30
+	</property>
+	
+	<property key="bandwidth_equal_5" name="5M时的价格" type="String" 
+		description="5M时的价格(广州)">
+		150
+	</property>
+	
+	<property key="bandwidth_base" name="相乘的基数" type="String" 
+		description="相乘的基数(广州)">
+		100
+	</property>
+	
+	<property key="bandwidth_less_than_5_2" name="5M以内" type="String" 
+		description="5M以内每M价格(成都)">
+		30
+	</property>
+	
+	<property key="bandwidth_equal_5_2" name="5M时的价格" type="String" 
+		description="5M时的价格(成都)">
+		150
+	</property>
+	
+	<property key="bandwidth_base_2" name="相乘的基数" type="String" 
+		description="相乘的基数(成都)">
+		100
+	</property>
+	
+	<property key="package_price_disk_4" name="硬盘计费规则" type="String" 
+		description="硬盘计费规则(香港)">
+		1.28
+	</property>
+	
+	<property key="bandwidth_less_than_5_4" name="5M以内" type="String" 
+		description="5M以内每M价格(香港)">
+		60
+	</property>
+	
+	<property key="bandwidth_equal_5_4" name="5M时的价格" type="String" 
+		description="5M时的价格(香港)">
+		300
+	</property>
+	
+	<property key="bandwidth_base_4" name="相乘的基数" type="String" 
+		description="相乘的基数(香港)">
+		150
+	</property>
+	
+	<property key="dataDiskMin" name="硬盘最小值(G)" type="String" 
+		description="硬盘最小值">
+		10
+	</property>
+	
+	<property key="dataDiskMax" name="硬盘最大值(G)" type="String" 
+		description="硬盘最大值">
+		1000
+	</property>
+	
+	<property key="bandwidthMin_1" name="广州带宽最小值(M)" type="String" 
+		description="广州带宽最小值(M)">
+		1
+	</property>
+	<property key="bandwidthMin_2" name="成都带宽最小值(M)" type="String" 
+		description="成都带宽最小值(M)">
+		1
+	</property>
+	<property key="bandwidthMin_4" name="香港带宽最小值(M)" type="String" 
+		description="香港带宽最小值(M)">
+		1
+	</property>
+	<property key="bandwidthMax_1" name="广州带宽最大值(M)" type="String" 
+		description="广州带宽最大值(M)">
+		1000
+	</property>
+	<property key="bandwidthMax_2" name="成都带宽最大值(M)" type="String" 
+		description="成都带宽最大值(M)">
+		1000
+	</property>
+	<property key="bandwidthMax_4" name="香港带宽最大值(M)" type="String" 
+		description="香港带宽最大值(M)">
+		10
+	</property>
+	
+	<property key="address_of_recharge" name="银联充值跳转页面" type="String" 
+		description="银联充值跳转页面">
+		http://172.16.2.7:8080/op111/
+	</property>
+	<property key="notification_on_off" name="是否开启故障监控信息通知" type="String" 
+		description="是否开启故障监控信息通知">
+		yes
+	</property>
+	<property key="cd_max_ports" name="成都主机开通最大端口数" type="String" 
+		description="成都主机开通最大端口数">
+		50
+	</property>
+	<property key="version" name="version" type="String" 
+		description="version">
+		【云桌面1.2】20160405-1
+	</property>
+	<property key="black_white_list" name="黑白名单开关" type="String" description="黑白名单开关">
+		3
+	</property>
+</properties>

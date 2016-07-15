@@ -40,7 +40,7 @@ public class HostResetProgressPoolManager {
 					try {
 						handler.wait(10 * 60 * 1000);
 					} catch (InterruptedException exception) {
-						logger.error("the timeout thread in host reset progress pool manager fail to wait.", exception);
+						logger.error("the timeout thread in hostMigrate reset progress pool manager fail to wait.", exception);
 					}
 				}// 10分钟扫描一次
 				HostResetProgressData[] list = HostResetProgressPoolManager.this.pool.getAll();

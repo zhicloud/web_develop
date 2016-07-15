@@ -3,12 +3,18 @@ package com.zhicloud.ms.controller;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoExt;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPool;
 import com.zhicloud.ms.app.pool.computePool.ComputeInfoPoolManager;
+import com.zhicloud.ms.app.pool.host.migration.MigrationProgressData;
+import com.zhicloud.ms.app.pool.host.migration.MigrationProgressPool;
+import com.zhicloud.ms.app.pool.host.migration.MigrationProgressPoolManager;
 import com.zhicloud.ms.app.pool.storage.StorageManager;
 import com.zhicloud.ms.app.pool.storage.StorageResult;
+import com.zhicloud.ms.constant.AppInconstant;
 import com.zhicloud.ms.constant.MonitorConstant;
+import com.zhicloud.ms.exception.AppException;
 import com.zhicloud.ms.httpGateway.HttpGatewayAsyncChannel;
 import com.zhicloud.ms.httpGateway.HttpGatewayChannelExt;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
+import com.zhicloud.ms.httpGateway.HttpGatewayResponseHelper;
 import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.*;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
@@ -32,6 +38,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -46,6 +53,9 @@ public class ResourcePoolController {
 
     @Resource
     private ICloudHostService cloudHostService;
+    
+    @Resource
+    private IHostMigrateionService hostMigrateionService;
 
     @Resource
     private IComputePoolService computePoolService;
@@ -58,7 +68,6 @@ public class ResourcePoolController {
 
     @Resource
     private SharedMemoryService sharedMemoryService;
- 
 
  
     /**
@@ -93,6 +102,13 @@ public class ResourcePoolController {
                 }
                 int status = computerObject.getInt("status");
                 Integer cpuCount = computerObject.getInt("cpu_count");
+                String hostCount = computerObject.getString("host");
+                String host = hostCount.substring(1, hostCount.length()-1);
+                String[] num = host.split(",");
+                int hostNumber =0;
+                for(int q=0;q<num.length-1;q++){
+                	hostNumber =hostNumber+Integer.valueOf(num[q]);
+                }
                 BigDecimal cpuUsage = new BigDecimal(computerObject.getString("cpu_usage"));
                 BigDecimal memoryUsage = new BigDecimal(computerObject.getString("memory_usage"));
                 BigDecimal diskUsage = new BigDecimal(computerObject.getString("disk_usage"));
@@ -137,6 +153,7 @@ public class ResourcePoolController {
                 computer.setStatus(status);
                 computer.setUuid(uuid);
                 computer.setRegion(1);
+                computer.setHostCount(hostNumber+"");
                 cList.add(computer);
                 pool.putToComputePool(uuid, computer);
             }
@@ -154,6 +171,7 @@ public class ResourcePoolController {
     /**
      * 跳转到资源(节点)列表页
      * @param uuid
+     * @param curNum 主机资源池节点下的电脑数量
      * @param model
      * @param request
      * @return
@@ -164,6 +182,8 @@ public class ResourcePoolController {
             return "not_have_access";
         }
         String searchName = request.getParameter("sn");
+        String curNum = request.getParameter("curNum");
+        
         try {
             List<ComputeInfoExt> cList = new ArrayList<>();
             List<ComputeInfoExt> curList = new ArrayList<>();
@@ -182,6 +202,7 @@ public class ResourcePoolController {
                         String ip = computerObject.getString("ip");
                         int status = computerObject.getInt("status");
                         Integer cpuCount = computerObject.getInt("cpu_count");
+                        String hostCount = computerObject.getString("host");
                         BigDecimal cpuUsage = new BigDecimal(computerObject.getString("cpu_usage"));
                         BigDecimal memoryUsage = new BigDecimal(computerObject.getString("memory_usage"));
                         BigDecimal diskUsage = new BigDecimal(computerObject.getString("disk_usage"));
@@ -208,6 +229,7 @@ public class ResourcePoolController {
                         computer.setName(name);
                         computer.setStatus(status);
                         computer.setIp(ip);
+                        computer.setHostCount(hostCount);
                         cList.add(computer);
                     }
                     if(searchName!=null && searchName!="" && cList.size()>0){
@@ -219,9 +241,9 @@ public class ResourcePoolController {
                     }else{
                         curList = cList;
                     }
-                    JSONObject remainNode = channel.computePoolQueryResource("");
-                    JSONArray remainList = remainNode.getJSONArray("compute_resources");
-                    if(remainList.size()>0) {
+//                    JSONObject remainNode = channel.computePoolQueryResource(uuid);
+//                    JSONArray remainList = remainNode.getJSONArray("compute_resources");
+                    if(computerList.size()>0) {
                         flag = "yes";
                     }
                 }
@@ -229,6 +251,7 @@ public class ResourcePoolController {
             model.addAttribute("remain",flag);
             model.addAttribute("computerPoolDetail", curList);
             model.addAttribute("poolId", uuid);
+            model.addAttribute("curNum", curNum);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -236,6 +259,7 @@ public class ResourcePoolController {
         }
         return "resourcepool/resource_pool_manage_detail";
     }
+    
     
     /**
      * 跳转到主机列表页
@@ -253,14 +277,20 @@ public class ResourcePoolController {
                  List<CloudHostVO> cList = new ArrayList<>();
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){
-                    JSONObject result = channel.hostQuery(uuid);
+                	JSONObject result = null;
+                	result = channel.hostQuery(uuid,"",0);
+                	/*if("1".equals(name))
+                		result = channel.hostQuery(uuid,"",0);
+                	else
+                		result = channel.hostQuery(uuid,name,2);*/
+                    
                     if("success".equals(result.get("status"))){
                         
                         JSONArray computerList = result.getJSONArray("hosts");
                         for (int i = 0; i < computerList.size(); i ++) {
                             JSONObject computerObject = computerList.getJSONObject(i);
                             String hostName = computerObject.getString("name");
-                            String uid = computerObject.getString("uuid");
+                            String uid = computerObject.getString("name");
                             int status = computerObject.getInt("status");
                             Integer cpuCount = computerObject.getInt("cpu_count");
                             BigDecimal cpuUsage = new BigDecimal(computerObject.getString("cpu_usage"));
@@ -296,8 +326,10 @@ public class ResourcePoolController {
                             computer.setHostName(hostName);
                             computer.setDisplayName(hostName);
                             computer.setStatus(status);
-                            computer.setId(uid);
-                            computer.setRealHostId(uid);
+                            if(!"".equals(uid)){
+                            	computer.setId(uid.substring(0, uid.length()-1));
+                                computer.setRealHostId(uid.substring(0, uid.length()-1));
+                            }
                             if(hostIps!=null && hostIps.length == 1){
                                 computer.setInnerIp(hostIps[0]);
                             }else if(hostIps!=null && hostIps.length == 2){
@@ -326,6 +358,112 @@ public class ResourcePoolController {
                 }
             model.addAttribute("hostPoolDetail", cList);
             model.addAttribute("uuid", uuid);
+            int poolType = 0;// 0表示默认
+            if(name.contains("server_pool")){
+                poolType = 1; //1表示云服务器的资源池
+            }else if(name.contains("desktop_pool")){
+                poolType = 2; // 2表示云桌面的资源池
+                //筛选仓库
+                model.addAttribute("wareHoseList",CloudHostWarehouseService.getAll());
+            }
+            model.addAttribute("poolType", poolType);
+ 
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "desktop/host_pool_detail";
+    }
+    
+    @RequestMapping(value="/{uuid}/{name}/hpdetails",method=RequestMethod.GET)
+    public String hostPoolDetails(@PathVariable("uuid") String uuid,@PathVariable("name") String name,Model model,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_host_query)){
+            return "not_have_access";
+        }
+        try {
+                 List<CloudHostVO> cList = new ArrayList<>();
+                HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
+                if(channel!=null){
+                	JSONObject result = null;
+                	result = channel.hostQuery(uuid,name,2);
+                    
+                    if("success".equals(result.get("status"))){
+                        
+                        JSONArray computerList = result.getJSONArray("hosts");
+                        for (int i = 0; i < computerList.size(); i ++) {
+                            JSONObject computerObject = computerList.getJSONObject(i);
+                            String hostName = computerObject.getString("name");
+                            String uid = computerObject.getString("name");
+                            int status = computerObject.getInt("status");
+                            Integer cpuCount = computerObject.getInt("cpu_count");
+                            BigDecimal cpuUsage = new BigDecimal(computerObject.getString("cpu_usage"));
+                            BigDecimal memoryUsage = new BigDecimal(computerObject.getString("memory_usage"));
+                            BigDecimal diskUsage = new BigDecimal(computerObject.getString("disk_usage"));
+                            
+                            JSONArray memoryList = computerObject.getJSONArray("memory");
+                            BigInteger[] mcount = new BigInteger[memoryList.size()];
+                            for(int j=0;j<memoryList.size();j++){
+                                mcount[j] = new BigInteger(memoryList.getString(j));
+                            }
+                            
+                            JSONArray diskList = computerObject.getJSONArray("disk_volume");
+                            BigInteger[] dcount = new BigInteger[diskList.size()];
+                            for(int j=0;j<diskList.size();j++){
+                                dcount[j] = new BigInteger(diskList.getString(j));
+                            }
+                            
+                            JSONArray ips = computerObject.getJSONArray("ip");
+                            String[] hostIps = new String[ips.size()];
+                            for(int j=0;j<ips.size();j++){
+                                hostIps[j] = ips.getString(j);
+                            }
+                            CloudHostVO computer = new CloudHostVO();
+                            computer.setCpuCore(cpuCount);
+                            computer.setCpuUsage(cpuUsage.doubleValue());
+                            computer.setDiskUsage(diskUsage.doubleValue());
+                            computer.setRemainMemory(mcount[1].subtract(mcount[0]));
+                            computer.setSysDisk(dcount[1]);
+                            computer.setRemainDisk(dcount[1].subtract(dcount[0]));
+                            computer.setMemory(mcount[1]);
+                            computer.setMemoryUsage(memoryUsage.doubleValue());
+                            computer.setHostName(hostName);
+                            computer.setDisplayName(hostName);
+                            computer.setStatus(status);
+                            if(!"".equals(uid)){
+                            	computer.setId(uid.substring(0, uid.length()-1));
+                            	computer.setRealHostId(uid.substring(0, uid.length()-1));
+                            }
+                            
+                            if(hostIps!=null && hostIps.length == 1){
+                                computer.setInnerIp(hostIps[0]);
+                            }else if(hostIps!=null && hostIps.length == 2){
+                                computer.setInnerIp(hostIps[0]);
+                                computer.setOuterIp(hostIps[1]);                                
+                            }
+                             cList.add(computer);
+                        }
+                    }
+                    if ("fail".equals(result.getString("status"))){
+                        logger.error("ResourcePoolController.hostPoolDetail>>>获取资源池失败");
+                        return "not_responsed";
+                    }
+                }
+                
+                if(cList.size()>0){
+                    for(CloudHostVO cp : cList){
+                        CloudHostVO cloudHost = cloudHostService.getByRealHostId(cp.getRealHostId());
+                        if(cloudHost!=null){
+                            // 设置主机显示名称和类型
+                            cp.setDisplayName(cloudHost.getDisplayName());
+                            cp.setType(cloudHost.getType());
+                        } 
+                        
+                    }
+                }
+            model.addAttribute("hostPoolDetail", cList);
+            model.addAttribute("uuid", uuid);
+            model.addAttribute("name", name);
             int poolType = 0;// 0表示默认
             if(name.contains("server_pool")){
                 poolType = 1; //1表示云服务器的资源池
@@ -431,7 +569,7 @@ public class ResourcePoolController {
         
         return "resourcepool/resource_pool_add";
     }
-
+    
     /**
      * 创建资源池
      * @param computeInfoExt
@@ -869,7 +1007,7 @@ public class ResourcePoolController {
             }
                 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
                 if(channel!=null){
-                    JSONObject result = channel.hostQuery(poolId);
+                    JSONObject result = channel.hostQuery(poolId,"",0);
                     if("success".equals(result.get("status"))){
                         //查询资源池中的所以主机
                         JSONArray computerList = result.getJSONArray("hosts");
@@ -898,8 +1036,400 @@ public class ResourcePoolController {
         }
         return new MethodResult(MethodResult.FAIL,"资源删除失败");
     }
-     /**
+    
+    /**
      * 
+    * @Title: deleteHosts 
+    * @Description: 批量操作主机，关机重启，开机
+    * @param @param ids
+    * @param @param request
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    @RequestMapping(value="/cloudhost/batchHosts",method=RequestMethod.POST)
+    @ResponseBody
+    public MethodResult BatchHosts(String ids,String operatorType,HttpServletRequest request){
+        if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_host_manage_delete)){
+            return new MethodResult(MethodResult.FAIL,"您没有操作主机的权限，请联系管理员");
+        }
+        if(StringUtil.isBlank(ids)){
+            return new MethodResult(MethodResult.FAIL, "未选择主机");            
+        }
+        
+        String [] hostIds = ids.split(",");
+        //String [] curIds = cur_ids.split(",");
+        MethodResult mr = null;
+        //循环操作
+        for(String id:hostIds){
+        	//operatorType1:开机  2:关机   3:重启
+        	mr = cloudHostService.operatorCloudHostByRealHostId(id, operatorType,false,0);
+        }
+        
+        return mr;
+    }
+    
+    /**
+     * 
+     * @Title: startCloudHost 
+     * @Description: 主机迁移页面
+     * @param @param id
+     * @param @param request
+     * @param @return      
+     * @return MethodResult     
+     * @throws
+     */
+    @RequestMapping(value="/{id}/{uid}/{poolUuid}/hostMigration",method=RequestMethod.GET)
+    public String hostMigration(@PathVariable("id") String id,@PathVariable("uid") String uid,@PathVariable("poolUuid") String poolUuid,HttpServletRequest request,Model model){
+    	if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_host_query)){
+            return "not_have_access";
+        }
+    	
+    	CloudHostVO cloudHost = cloudHostService.getById(id);
+    	String nodeName = request.getParameter("nodeName");
+    	 model.addAttribute("cloudHost", cloudHost);
+    	 model.addAttribute("uuid", uid);
+    	 model.addAttribute("poolUuid", poolUuid);
+    	 String nameList = "";
+    	 
+    	 try {
+    		 List<ComputeInfoExt> cList = new ArrayList<>();
+         	 HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
+             if(channel!=null){
+             	JSONObject result = channel.computePoolQueryResource(poolUuid);
+                if ("fail".equals(result.getString("status"))){
+                	logger.error("ResourcePoolController.getAll>>>获取资源池失败");
+                    return "not_responsed";
+                }
+             
+                JSONArray computerList = result.getJSONArray("compute_resources");
+                for (int i = 0; i < computerList.size(); i ++) {
+                    JSONObject computerObject = computerList.getJSONObject(i);
+                    String name = computerObject.getString("name");
+                    
+                    if(nodeName.equals(name))
+                    	continue;
+                    
+                    String ip = computerObject.getString("ip");
+                    int status = computerObject.getInt("status");
+                    Integer cpuCount = computerObject.getInt("cpu_count");
+                    BigDecimal cpuUsage = new BigDecimal(computerObject.getString("cpu_usage"));
+                    BigDecimal memoryUsage = new BigDecimal(computerObject.getString("memory_usage"));
+                    BigDecimal diskUsage = new BigDecimal(computerObject.getString("disk_usage"));
+                    
+                    JSONArray memoryList = computerObject.getJSONArray("memory");
+                    BigInteger[] mcount = new BigInteger[memoryList.size()];
+                    for(int j=0;j<memoryList.size();j++){
+                        mcount[j] = new BigInteger(memoryList.getString(j));
+                    }
+                    
+                    JSONArray diskList = computerObject.getJSONArray("disk_volume");
+                    BigInteger[] dcount = new BigInteger[diskList.size()];
+                    for(int j=0;j<diskList.size();j++){
+                        dcount[j] = new BigInteger(diskList.getString(j));
+                    }
+                    
+                    ComputeInfoExt computer = new ComputeInfoExt();
+                    computer.setCpuCount(cpuCount);
+                    computer.setCpuUsage(cpuUsage);
+                    computer.setDiskUsage(diskUsage);
+                    computer.setDiskVolume(dcount);
+                    computer.setMemory(mcount);
+                    computer.setMemoryUsage(memoryUsage);
+                    computer.setName(name);
+                    computer.setStatus(status);
+                    computer.setIp(ip);
+                    nameList = nameList + name+",";
+                    cList.add(computer);
+                }
+             }
+             
+             model.addAttribute("nameList", nameList.substring(0, nameList.length()-1));
+             model.addAttribute("computerPool", cList);
+         } catch (MalformedURLException e) {
+             e.printStackTrace();
+         } catch (IOException e) {
+             e.printStackTrace();
+         }
+    	 
+    	 if(!"".equals(id))
+    		 model.addAttribute("typeString", "1");
+    	 else
+    		 model.addAttribute("typeString", "0");
+    	 
+    	 model.addAttribute("realHostId", id);
+    	 
+    	return "desktop/hostMigration";
+    }
+    
+    /**
+     * 调整到主机迁移记录页面
+     * @param id
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping(value="/{id}/queryHostMigration",method=RequestMethod.GET)
+    public String queryHostMigration(@PathVariable("id") String id,HttpServletRequest request,Model model){
+    	 model.addAttribute("typeString", id);
+    	 
+    	 List<HostMigrationVO> hmlist = hostMigrateionService.getHostMigration();
+    	 model.addAttribute("hmlist", hmlist);
+    	return "desktop/hostMigrationList";
+    }
+    
+    /**
+     * 迁移主机记录删除
+     * @param id
+     * @param model
+     * @param request
+     * @return
+     */
+    @RequestMapping(value="/{id}/delMigration",method=RequestMethod.GET)
+    @ResponseBody
+    public MethodResult delMigration(@PathVariable("id") String id,@PathVariable("time") String time,Model model,HttpServletRequest request){
+    	
+    	MethodResult mr = new MethodResult(MethodResult.FAIL,"删除失败");
+        
+        if(!"".equals(id) && null !=id){
+        	if(hostMigrateionService.delById(id,time)>0){
+        		mr = new MethodResult(MethodResult.SUCCESS,"删除成功");
+        	}
+        }
+        
+        return mr;
+    }
+    
+    /**
+     * 主机迁移提交
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping(value="/toMigration",method=RequestMethod.POST)
+    @ResponseBody
+    public MethodResult toMigrate(HttpServletRequest request,Model model){
+    	if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_pool_host_start)){
+            return new MethodResult(MethodResult.FAIL,"您没有迁移的权限，请联系管理员");
+        }
+    	
+    	String ids = request.getParameter("id");
+    	String realHostId = request.getParameter("realHostId");
+    	String localhostNC = request.getParameter("innerIp");
+    	String uuid1 = request.getParameter("uuid");
+    	String nodeName = request.getParameter("nodeName");
+    	Integer hostType = 0;
+    	
+    	Map<String,Object> condition = new LinkedHashMap<String, Object>();
+    	condition.put("id", StringUtil.generateUUID());
+    	condition.put("realHostId", realHostId);
+    	condition.put("hostName", nodeName);
+    	condition.put("localhostNC", localhostNC);
+//    	condition.put("toNC", localhostNC);
+    	condition.put("time", StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"));
+    	condition.put("status", hostType);
+    	
+    	String sessionId = null;
+    	
+    	MigrationProgressPool mpoo = MigrationProgressPoolManager.singleton().getPool();
+    	MigrationProgressData data =mpoo.get(realHostId);
+    	
+    	if(data!=null &&data.getResetStatus()!=null&& data.getResetStatus() ==1 ) {
+            operLogService.addLog("云主机", "迁移主机"+data.getDisplayName()+"失败", "1", "2", request);
+            return new MethodResult(MethodResult.FAIL, "正在迁移中 请完成后再进行此操作");
+        }
+    	
+        
+    	MethodResult mr = null;
+    	if(ids!=null && !"".equals(ids)){
+    		String toNC = "";
+			CloudHostVO host = cloudHostService.queryCloudHostById(uuid1);
+			HttpGatewayChannelExt channel = HttpGatewayManager.getChannel(1);
+            if(channel!=null){
+            	JSONObject result;
+				try {
+					result = channel.hostQuery(ids,"",0);
+					
+					if("success".equals(result.get("status"))){
+						JSONArray computerList = result.getJSONArray("hosts");
+						for (int i = 0; i < computerList.size(); i ++) {
+                            JSONObject computerObject = computerList.getJSONObject(i);
+                            JSONArray ips = computerObject.getJSONArray("ip");
+                            String[] hostIps = new String[ips.size()];
+                            for(int j=0;j<ips.size();j++){
+                                hostIps[j] = ips.getString(j);
+                            }
+                            if(hostIps!=null && hostIps.length > 0){
+                            	toNC = hostIps[0];
+                            }
+                            if(!"".equals(toNC)){
+                            	condition.put("toNC",toNC);
+                            	break;
+                            }
+						}
+
+					}
+					
+					sessionId = this.migrate(request,realHostId, nodeName, hostType,condition);
+					if (sessionId == null) {
+		                logger.warn("CloudHostServiceImpl.toMigrate() > [" + Thread.currentThread().getId()
+		                    + "] rest migrate failed");
+		                operLogService.addLog("云主机", "迁移主机"+host.getDisplayName()+"失败", "1", "2", request);
+		                throw new AppException("迁移主机命令发送失败");
+		            }else{
+		            	mr = new MethodResult(MethodResult.SUCCESS, "迁移命令发送成功");
+		            }
+					
+					//存入缓存
+		            Map<String, Object> temporaryData = new LinkedHashMap<String, Object>();
+		            temporaryData.put("uuid", realHostId);
+		            temporaryData.put("session_id", sessionId);
+		            
+		            AppInconstant.migrateProgress.put(realHostId + "_migrate_progress", temporaryData);
+		            operLogService.addLog("云主机", "迁移主机"+host.getDisplayName()+"成功", "1", "1", request);
+		            
+		            model.addAttribute("realHostId", realHostId);
+		            model.addAttribute("sessionId", sessionId);
+					
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+            }
+    		
+    	}else{
+    		return new MethodResult(MethodResult.FAIL, "迁移失败");
+    	}
+    	
+    	return mr;
+    }
+    
+    /**
+     * 
+     * @param uuid 云主机uuid
+     * @param node_name 目的nc的node_name，可以为空
+     * @param type 迁移类型；0=cold<默认>，1=warn，2=hot
+     * @param callback http_gateway回推异步消息url地址，推送消息类型：“migrate_host_ack”，“migrate_host_report”，“migrate_host_result”（具体消息格式请参考消息推送章节）
+     * @return
+     * @throws MalformedURLException
+     */
+	public String migrate(HttpServletRequest request,String uuid, String node_name, int type,Map<String,Object> condition) throws MalformedURLException, IOException {
+		HttpGatewayAsyncChannel channel = HttpGatewayManager.getAsyncChannel(1);
+		try {
+
+			JSONObject result = channel.hostFlushDiskMigration(uuid, node_name, type);
+			if (HttpGatewayResponseHelper.isSuccess(result) == true) {
+				System.err.println("success to send flush disk migrate request.");
+				MigrationProgressPool pool = MigrationProgressPoolManager.singleton().getPool();
+				MigrationProgressData migrate = pool.get(uuid);
+				
+				if(null ==migrate){
+					migrate = new MigrationProgressData();
+					migrate.setRealHostId(uuid);
+					migrate.setSessionId(null);
+					migrate.setResetStatus(1);
+				}
+				//修改状态，迁移中;
+				condition.put("status", 1);
+				cloudHostService.operatorMigration(uuid, condition);
+				
+				return channel.getSessionId();
+			} else {
+				condition.put("status", 3);
+				cloudHostService.operatorMigration(uuid, condition);
+				System.err.println("fail to send flush disk migrate request.");
+				channel.release();
+			}
+		} catch (Exception e) {
+			System.err.println("fail to send flush disk migrate request.");
+			channel.release();
+			throw e;
+		}
+		return null;
+	}
+	
+	/**
+     * 调整到主机迁移记录页面
+     * @param id
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping(value="/{id}/getostMigrationPree",method=RequestMethod.GET)
+    public String getostMigrationPree(@PathVariable("id") String id,HttpServletRequest request,Model model){
+    	 model.addAttribute("realHostId", id);
+    	return "desktop/flush_disk_migration";
+    }
+    
+    /**
+     * 
+    * @Title: getFlushHostResult 
+    * @Description: 获取迁移进度
+    * @param @param uuid
+    * @param @return      
+    * @return MethodResult     
+    * @throws
+     */
+    @RequestMapping(value="/cloudserver/getflushprogress",method=RequestMethod.GET)
+    @ResponseBody
+    public MethodResult getFlushHostResult(HttpServletRequest request,String uuid) {
+        MethodResult result = new MethodResult(MethodResult.SUCCESS, "迁移成功");
+
+        try {
+            /*@SuppressWarnings("unchecked") 
+            Map<String, Object> temporaryData = (Map<String, Object>) AppInconstant.migrateProgress.get(uuid + "_migrate_progress");
+            
+            if (temporaryData == null) {
+                throw new AppException("无法获取迁移信息");
+            }*/
+
+            MigrationProgressPool pool = MigrationProgressPoolManager.singleton().getPool();
+
+            MigrationProgressData data = pool.get(uuid);
+            if (data == null) {
+                MethodResult message = new MethodResult(MethodResult.FAIL, "迁移还未开始");
+                return message;
+            }
+            else if(data.getResetStatus() == 0 ){
+                if(data.isSuccess()){
+                    result.put("progress", 100);
+                    result.put("migrate_status", true);
+                    return result;
+ 
+                }else{
+                    result.put("migrate_status", false);
+                    return result;
+                }
+            }
+
+            if (data.isReady()) {
+                if (data.isFinished()) {
+                    if (data.isSuccess()) {
+                        result.put("progress", 100);
+                        result.put("migrate_status", true);
+                        //迁移完成后修改状态
+                        cloudHostService.updateHostMigrationById(uuid,StringUtil.dateToString(new Date(), "yyyyMMddHHmmssSSS"),2);
+                    } else {
+                        result.put("migrate_status", false);
+                    }
+                } else {
+                    result.put("progress", data.getProgress());
+                }
+                return result;
+            }
+
+            MethodResult message = new MethodResult(MethodResult.FAIL, "迁移还未开始");
+            return message;
+        } catch (AppException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new AppException(e);
+        }
+    }
+    
+    /**
+    * 
     * @Title: startCloudHost 
     * @Description: 主机开机
     * @param @param id
@@ -907,14 +1437,14 @@ public class ResourcePoolController {
     * @param @return      
     * @return MethodResult     
     * @throws
-     */
+    */
     @RequestMapping(value="/{id}/start",method=RequestMethod.GET)
     @ResponseBody
     public MethodResult startCloudHost(@PathVariable("id") String id,HttpServletRequest request){
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_pool_host_start)){
             return new MethodResult(MethodResult.FAIL,"您没有开机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "1");
+        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "1",false,0);
         return mr;
     }
     /**
@@ -933,7 +1463,7 @@ public class ResourcePoolController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_pool_host_stop)){
             return new MethodResult(MethodResult.FAIL,"您没有关机的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "2");
+        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "2",false,0);
         return mr;
     }
     /**
@@ -952,7 +1482,7 @@ public class ResourcePoolController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_pool_host_restart)){
             return new MethodResult(MethodResult.FAIL,"您没有重启的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "3");
+        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "3",false,0);
         return mr;
     }
     /**
@@ -971,7 +1501,7 @@ public class ResourcePoolController {
         if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_resource_pool_host_halt)){
             return new MethodResult(MethodResult.FAIL,"您没有强制的权限，请联系管理员");
         }
-        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "4");
+        MethodResult mr = cloudHostService.operatorCloudHostByRealHostId(id, "4",false,0);
         return mr;
     }
     /**

@@ -8,7 +8,12 @@
     <title>控制台-${productName}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8" />
-
+	<script src="<%=request.getContextPath() %>/js/plugins/artDialog/artDialog.js?skin=chrome"></script>
+	<script src="<%=request.getContextPath() %>/js/plugins/artDialog/jquery.artDialog.source.js"></script>
+	<script src="<%=request.getContextPath() %>/js/plugins/artDialog/plugins/iframeTools.js?skin=chrome"></script>
+	<script src="<%=request.getContextPath() %>/js/plugins/artDialog/plugins/iframeTools.source.js"></script>
+	
+	
     <link rel="icon" type="image/ico" href="<%=request.getContextPath()%>/assets/images/favicon.ico" />
     <!-- Bootstrap -->
     <link href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -214,7 +219,7 @@
                       </div>
                      <div class="form-group form-footer footer-white">
                         <div class="col-sm-offset-4 col-sm-8">
-                          <button type="button" class="btn btn-greensea" onclick="saveForm();"><i class="fa fa-plus"></i>
+                          <button type="button" class="btn btn-greensea" onclick="gotodialog();"><i class="fa fa-plus"></i>
                               <span> 保 存 </span></button>
                           <button type="reset" class="btn btn-red" onclick="window.location.reload();"><i class="fa fa-refresh"></i>
                               <span> 重 置 </span></button>
@@ -369,11 +374,20 @@
 					 -$("body #content .tile .tile-widget.color.transparent-black.nobg .tabdrop li").eq(3).width()
 					 -1);
 		});
+    })
     
-      
-      
-      
-    });
+    
+    function gotodialog(){
+	   	var url = '<%=request.getContextPath()%>/backresume/gotodialog?runningStatus=runBack';
+	   	art.dialog.open(url, {
+	       	id:"dialogBack",
+	           title:'系统提示',
+	           width: 480,
+	           height: 200,
+	           lock: true
+	       });
+	}
+    
     function saveForm(){
 		jQuery.ajax({
 	        url: path+'/main/checklogin',

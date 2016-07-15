@@ -259,7 +259,16 @@ public class HttpGatewayHelper
     
     //----------------
     
-    public JSONObject hostQuery(String pool) throws MalformedURLException, IOException
+    /**
+     * 
+     * @param pool 资源池uuid（仅在range=0或不传入，target为空或不传入时，有效）
+     * @param target 资源池uuid/server id/资源节点name
+     * @param range 查询范围类型，0=计算资源池，1=宿主机/server，2=资源节点
+     * @return
+     * @throws MalformedURLException
+     * @throws IOException
+     */
+    public JSONObject hostQuery(String pool,String target,Integer range) throws MalformedURLException, IOException
     {
         String url = this.baseUrl + "host?";
         url += "command=query&";
@@ -273,6 +282,8 @@ public class HttpGatewayHelper
         // 参数
         Map<String, String> postDataMap = new LinkedHashMap<String, String>();
         postDataMap.put("pool", StringUtil.trim(pool));
+        postDataMap.put("target", StringUtil.trim(target));
+        postDataMap.put("range", StringUtil.trim(range));
         byte[] encryptParam = encrypt(postDataMap);
         
         // 发送http消息，并取得返回的数据
@@ -337,7 +348,8 @@ public class HttpGatewayHelper
     public JSONObject hostCreate(
             String name, String pool, Integer cpu_count, BigInteger memory, Integer[] option, String image, 
             BigInteger[] disk_volume, Integer[] port, String user, String group, String display, String authentication, 
-            String network, BigInteger inbound_bandwidth, BigInteger outbound_bandwidth
+            String network, BigInteger inbound_bandwidth, BigInteger outbound_bandwidth,int codeRate,int frameRate,
+            int operating_type,String operating_system
             ) throws MalformedURLException, IOException
     {
         String url = this.baseUrl + "host?";
@@ -366,6 +378,12 @@ public class HttpGatewayHelper
         postDataMap.put("network", StringUtil.trim(network));
         postDataMap.put("inbound_bandwidth", StringUtil.trim(inbound_bandwidth));
         postDataMap.put("outbound_bandwidth", StringUtil.trim(outbound_bandwidth));
+        //在此添加码率和帧率
+        postDataMap.put("bit", StringUtil.trim(codeRate));
+        postDataMap.put("frame", StringUtil.trim(frameRate));
+        postDataMap.put("catalog", StringUtil.trim(operating_type));
+        postDataMap.put("operating_system", StringUtil.trim(operating_system));
+        
         byte[] encryptParam = encrypt(postDataMap);
         
         // 发送http消息，并取得返回的数据
@@ -461,7 +479,8 @@ public class HttpGatewayHelper
      * @param authentication: string 监控验证密码
      * @param network: string 连接的虚拟网络（预留）
      * @param inbound_bandwidth: uint 入口带宽，单位：字节
-     * @param outbound_bandwidth: uint 出口带宽，单位：字节
+     * @param outbound_bandwidth: uint 出口带宽，单位：字节  0:Windows; 1：Linux; 2：others
+
      */
     public JSONObject hostModify(   String uuid, 
                                     String name,
@@ -473,7 +492,9 @@ public class HttpGatewayHelper
                                     String authentication, 
                                     String network, 
                                     BigInteger inbound_bandwidth, 
-                                    BigInteger outbound_bandwidth) throws MalformedURLException, IOException
+                                    BigInteger outbound_bandwidth,
+                                    int codeRate,int frameRate,
+                                    int operating_type,String operating_system) throws MalformedURLException, IOException
     {
         String url = this.baseUrl + "host?";
         url += "command=modify&";
@@ -497,6 +518,11 @@ public class HttpGatewayHelper
         postDataMap.put("network",            StringUtil.trim(network));
         postDataMap.put("inbound_bandwidth",  StringUtil.trim(inbound_bandwidth));
         postDataMap.put("outbound_bandwidth", StringUtil.trim(outbound_bandwidth));
+        
+        postDataMap.put("bit", StringUtil.trim(codeRate));
+        postDataMap.put("frame", StringUtil.trim(frameRate));
+        postDataMap.put("catalog", String.valueOf(operating_type));
+        postDataMap.put("operating_system", String.valueOf(operating_system));
         
         byte[] encryptParam = encrypt(postDataMap);
         
@@ -541,7 +567,9 @@ public class HttpGatewayHelper
         BigInteger inbound_bandwidth,
         BigInteger outbound_bandwidth,
         int maxIops,
-        int cpuPriority) throws MalformedURLException, IOException
+        int cpuPriority,
+        int codeRate,int frameRate,
+        int operating_type,String operating_system) throws MalformedURLException, IOException
     {
         String url = this.baseUrl + "host?";
         url += "command=modify&";
@@ -565,6 +593,10 @@ public class HttpGatewayHelper
         postDataMap.put("outbound_bandwidth", StringUtil.trim(outbound_bandwidth));
         postDataMap.put("io", String.valueOf(maxIops));
         postDataMap.put("priority", String.valueOf(cpuPriority));
+        postDataMap.put("bit", String.valueOf(codeRate));
+        postDataMap.put("frame", String.valueOf(frameRate));
+        postDataMap.put("catalog", String.valueOf(operating_type));
+        postDataMap.put("operating_system", String.valueOf(operating_system));
         byte[] encryptParam = encrypt(postDataMap);
         // 发送http消息，并取得返回的数据
         Map<String, String> requestProperties = new LinkedHashMap<String, String>();
@@ -601,8 +633,7 @@ public class HttpGatewayHelper
         return json;
     }
     
-
-    public JSONObject hostRestart(String uuid, Integer boot, String image) throws MalformedURLException, IOException
+    public JSONObject hostRestart(String uuid, Integer boot, String image,Boolean option, Integer time) throws MalformedURLException, IOException
     {
         String url = this.baseUrl + "host?";
         url += "command=restart&";
@@ -618,6 +649,11 @@ public class HttpGatewayHelper
         postDataMap.put("uuid", StringUtil.trim(uuid));
         postDataMap.put("boot", StringUtil.trim(boot));
         postDataMap.put("image", StringUtil.trim(image));
+        postDataMap.put("option", StringUtil.trim(option));
+        if(option && time<11)
+        	postDataMap.put("time", StringUtil.trim(10));
+        else
+        	postDataMap.put("time", StringUtil.trim(time));
         
         byte[] encryptParam = encrypt(postDataMap);
         
@@ -630,7 +666,7 @@ public class HttpGatewayHelper
     }
     
 
-    public JSONObject hostStop(String uuid) throws MalformedURLException, IOException
+    public JSONObject hostStop(String uuid,Boolean option, Integer time) throws MalformedURLException, IOException
     {
         String url = this.baseUrl + "host?";
         url += "command=stop&";
@@ -644,6 +680,11 @@ public class HttpGatewayHelper
         // 参数
         Map<String, String> postDataMap = new LinkedHashMap<String, String>();
         postDataMap.put("uuid", StringUtil.trim(uuid));
+        postDataMap.put("option", StringUtil.trim(option));
+        if(option && time<11)
+        	postDataMap.put("time", StringUtil.trim(10));
+        else
+        	postDataMap.put("time", StringUtil.trim(time));
         
         byte[] encryptParam = encrypt(postDataMap);
         
@@ -653,6 +694,36 @@ public class HttpGatewayHelper
         
         JSONObject json = HttpUtil.post(url, encryptParam, requestProperties, new DefaultResponseHanlder());
         return json;
+    }
+    
+    public JSONObject operatorMigration(String uuid, String node_name, Integer type) throws MalformedURLException, IOException
+    {
+    	String url = this.baseUrl + "host?";
+    	url += "command=migrate&";
+    	url += "session_id="+this.sessionId+"&";
+    	
+    	if( logger.isDebugEnabled() )
+    	{
+    		logger.info("operatorMigration() -> url=["+url+"]");
+    	}
+    	
+    	String callBackUrl = "callback?session_id="+this.sessionId;
+    	
+    	// 参数
+    	Map<String, String> postDataMap = new LinkedHashMap<String, String>();
+    	postDataMap.put("host", StringUtil.trim(uuid));
+    	postDataMap.put("target", StringUtil.trim(node_name));
+    	postDataMap.put("type", StringUtil.trim(type));
+    	postDataMap.put("callback", StringUtil.trim(callBackUrl));
+    	
+    	byte[] encryptParam = encrypt(postDataMap);
+    	
+    	// 发送http消息，并取得返回的数据
+    	Map<String, String> requestProperties = new LinkedHashMap<String, String>();
+    	requestProperties.put("Content-type", "application/x-www-form-urlencoded/encryption");
+    	
+    	JSONObject json = HttpUtil.post(url, encryptParam, requestProperties, new DefaultResponseHanlder());
+    	return json;
     }
     
 
@@ -3083,6 +3154,37 @@ public class HttpGatewayHelper
         JSONObject json = HttpUtil.post(url, encryptParam, requestProperties, new DefaultResponseHanlder());
         
         return json;
+    }
+    
+    /**
+     * 
+     * @param uuid 云主机uuid
+     * @param node_name 目的nc的node_name，可以为空
+     * @param type 迁移类型；0=cold<默认>，1=warn，2=hot
+     * @param callback http_gateway回推异步消息url地址，推送消息类型：“migrate_host_ack”，“migrate_host_report”，“migrate_host_result”（具体消息格式请参考消息推送章节）
+     * @return
+     * @throws MalformedURLException
+     * @throws IOException
+     */
+    public JSONObject hostFlushDiskMigration(String uuid, String node_name, int type, String callback) throws MalformedURLException, IOException {
+    	String url = this.baseUrl + "host?";
+    	url += "command=migrate&";
+    	url += "session_id=" + this.sessionId + "&";
+    	
+    	Map<String, String> postDataMap = new LinkedHashMap<String, String>();
+    	postDataMap.put("host", uuid);
+    	postDataMap.put("target", StringUtil.trim(node_name));
+    	postDataMap.put("type", StringUtil.trim(type));
+    	postDataMap.put("callback", callback);
+    	
+    	byte[] encryptParam = encrypt(postDataMap);
+    	
+    	Map<String, String> requestProperties = new LinkedHashMap<String, String>();
+    	requestProperties.put("Content-type", "application/x-www-form-urlencoded/encryption");
+    	
+    	JSONObject json = HttpUtil.post(url, encryptParam, requestProperties, new DefaultResponseHanlder());
+    	
+    	return json;
     }
     
     public JSONObject hostBackup(String uuid, int mode, int disk, String callback) throws MalformedURLException, IOException {

@@ -1149,7 +1149,7 @@ public class CheckServerRoomsListener implements ServletContextListener {
                 for (int i = 0; i < pools.size(); i++) {
                     // 单个资源池
                     JSONObject pool = pools.getJSONObject(i);
-                    JSONObject object_host = channel.hostQuery(pool.getString("uuid"));
+                    JSONObject object_host = channel.hostQuery(pool.getString("uuid"),"",0);
                     // 将主机信息+资源池ID存入内存常量
                     JSONArray hosts;
                     try {

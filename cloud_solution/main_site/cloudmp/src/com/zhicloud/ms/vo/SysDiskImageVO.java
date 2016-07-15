@@ -14,17 +14,41 @@ public class SysDiskImageVO implements JSONBean
 {
  
 	private String id;
+	/*
+	 * 真实镜像id
+	 */
  	private String realImageId;
+ 	/*
+ 	 * 镜像名称
+ 	 */
  	private String name;
+ 	/*
+ 	 * 镜像显示名称
+ 	 */
  	private String displayName;
+ 	/*
+ 	 * 主机id
+ 	 */
  	private String fromHostId;
  	private String tag;
+ 	/*
+ 	 * 镜像显示名称描述
+ 	 */
 	private String description;
  	private String groupId;
  	private String userId;
  	private Integer sort;
+ 	/*
+ 	 * 1=未验证;2=已验证
+ 	 */
  	private Integer status;
+ 	/*
+ 	 * 0=系统默认;1=从主机创建;2=镜像上传
+ 	 */
 	private Integer type;
+	/*
+	 * 1=广州;2=成都;4=香港
+	 */
 	private Integer region = 1;
 	private String typeName;
 	private String createTime;

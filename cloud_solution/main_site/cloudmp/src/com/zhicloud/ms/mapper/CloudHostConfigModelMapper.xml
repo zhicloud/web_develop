@@ -16,6 +16,9 @@
 		<result column="type"           property="type"/>
 		<result column="support_h264"   property="supportH264"/>
 		<result column="file_type"      property="fileType"/>
+		<result column="code_rate"      property="codeRate"/>
+		<result column="frame_rate"     property="frameRate"/>
+		<result column="operationSystem"     property="operationSystem"/>
 	</resultMap>
 	<select id="getAll" resultMap="CloudHostConfigModel">
 		select  chcm.id,
@@ -30,7 +33,10 @@
 				chcm.create_time,
 				chcm.modified_time,
 				chcm.support_h264,
-				sdi.file_type
+				sdi.file_type,
+				chcm.code_rate,
+				chcm.frame_rate,
+				chcm.operationSystem 
 		from cloud_host_config_model chcm
 		left join sys_disk_image sdi
 		on chcm.sys_image_id = sdi.id
@@ -50,7 +56,10 @@
 				chcm.create_time,
 				chcm.modified_time,
 				chcm.support_h264,
-				sdi.file_type
+				chcm.file_type,
+				chcm.code_rate,
+				chcm.frame_rate,
+				chcm.operationSystem 
 		from cloud_host_config_model chcm
 		left join sys_disk_image sdi
 		on chcm.sys_image_id = sdi.id
@@ -69,7 +78,10 @@
 				chcm.sys_image_name,
 				chcm.create_time,
 				chcm.modified_time,
-				chcm.support_h264
+				chcm.support_h264,
+				chcm.code_rate,
+				chcm.frame_rate,
+				chcm.operationSystem 
 		from cloud_host_config_model chcm
 		where chcm.id = #{id}
 	</select>
@@ -85,7 +97,10 @@
 				chcm.sys_image_name,
 				chcm.create_time,
 				chcm.modified_time,
-				chcm.support_h264
+				chcm.support_h264,
+				chcm.code_rate,
+				chcm.frame_rate,
+				chcm.operationSystem 
 		from cloud_host_config_model chcm
 		where chcm.sys_image_id = #{imageId}
 		and chcm.type = 1
@@ -102,7 +117,10 @@
 				chcm.sys_image_name,
 				chcm.create_time,
 				chcm.modified_time,
-				chcm.support_h264
+				chcm.support_h264,
+				chcm.code_rate,
+				chcm.frame_rate,
+				chcm.operationSystem 
 		from cloud_host_config_model chcm
 		where chcm.name = #{name}
 		and chcm.type = 1
@@ -110,8 +128,8 @@
 	</select>
 	
 	<insert id="addType">
-		insert into cloud_host_config_model (id,name,cpu_core,memory,sys_image_id,sys_disk,data_disk,bandwidth,sys_image_name,create_time,modified_time,type,support_h264) 
-		values (#{id},#{name},#{cpuCore},#{memory},#{sysImageId},#{sysDisk},#{dataDisk},#{bandwidth},#{sysImageName},#{createTime},#{modifiedTime},#{type},#{supportH264})
+		insert into cloud_host_config_model (id,name,cpu_core,memory,sys_image_id,sys_disk,data_disk,bandwidth,sys_image_name,create_time,modified_time,type,support_h264,code_rate,frame_rate,operationSystem) 
+		values (#{id},#{name},#{cpuCore},#{memory},#{sysImageId},#{sysDisk},#{dataDisk},#{bandwidth},#{sysImageName},#{createTime},#{modifiedTime},#{type},#{supportH264},#{codeRate},#{frameRate},#{operationSystem})
 		
 	</insert>
 	
@@ -132,7 +150,10 @@
 				bandwidth = #{bandwidth},
 				sys_image_name = #{sysImageName},
 				modified_time = #{modifiedTime},
-				support_h264 = #{supportH264}
+				support_h264 = #{supportH264},
+				code_rate = #{codeRate},
+				frame_rate = #{frameRate},
+				operationSystem = #{operationSystem}
 			</set>
 		where id = #{id}
 	</update>

@@ -292,8 +292,16 @@ public interface CloudHostMapper {
     * @throws
      */
     public int updateStautsByName(Map<String, Object> data);
- 
-
+    
+    /**
+     * 主机创建成功更新status和runningStatus状态
+     * <p>Title: updateStautsAndRunningStatusByName</p> 
+     * <p>Description: </p> 
+     * @param name 
+     * @see com.zhicloud.ms.service.ICloudHostService#updateHostStatusToFailByName(java.lang.String)
+     */
+    public int updateStautsAndRunningStatusByName(Map<String, Object> data);
+    
     /**
      * @function 查询已分配且未参与定时任务的主机
      * @author 张翔

@@ -86,9 +86,13 @@ import java.util.*;
 					cloudHostData.put("sysDisk",chcm.getSysDisk());
 					cloudHostData.put("dataDisk",chcm.getDataDisk());
 					cloudHostData.put("bandwidth",chcm.getBandwidth());
+					cloudHostData.put("sysImageId",chcm.getSysImageId());
 					cloudHostData.put("sysImageName",chcm.getSysImageName());
 					cloudHostData.put("type",1);
 					cloudHostData.put("poolId",chw.getPoolId());
+					
+					cloudHostData.put("codeRate",chcm.getCodeRate());
+					cloudHostData.put("frameRate",chcm.getFrameRate());
 					chMapper.insertCloudHost(cloudHostData);
 				}
 			}
@@ -256,6 +260,8 @@ import java.util.*;
 				cloudHostData.put("status",0);
 				cloudHostData.put("type",1);
 				cloudHostData.put("poolId",poolId);
+				cloudHostData.put("codeRate",chcm.getCodeRate());
+				cloudHostData.put("frameRate",chcm.getFrameRate());
 				chMapper.insertCloudHost(cloudHostData);
 			}
 		}
