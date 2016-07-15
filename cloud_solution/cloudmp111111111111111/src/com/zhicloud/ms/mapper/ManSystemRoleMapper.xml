@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.transform.mapper.ManSystemRoleMapper">
+
+
+	<resultMap type="com.zhicloud.ms.transform.vo.ManSystemRoleVO" id="SystemRoleVO">
+		<id     column="billid"       property="billid" />
+		<result column="name" property="name" />
+		<result column="code" property="code" />
+		<result column="insert_date" property="insert_date" jdbcType="DATE"/>
+		<result column="insert_user" property="insert_user" />
+		<result column="userid" property="userid" />
+		<result column="roleid" property="roleid" />		
+	</resultMap>
+
+	<select id="getAll" resultMap="SystemRoleVO">
+		select 	billid,
+				name,
+				code,
+				date_format(insert_date,'%Y-%m-%d %H:%i:%s') as insert_date,
+				insert_user
+		from man_system_role
+		order by insert_date desc
+	</select>
+	
+	<select id="getAllGroup" resultMap="SystemRoleVO">
+		select 	billid,
+				name,
+				date_format(insert_date,'%Y-%m-%d %H:%i:%s') as insert_date,
+				insert_user
+		from man_system_group
+		order by insert_date desc
+	</select>	
+	
+	<select id="validateRoleIsExists" resultMap="SystemRoleVO">
+		select 	a.billid,
+				a.name,
+				a.code,
+				a.insert_date,
+				a.insert_user
+		from man_system_role a
+		where a.name=#{name} or a.code=#{code}
+	</select>	
+	
+	<select id="validateGroupIsExists" resultMap="SystemRoleVO">
+		select 	a.billid,
+				a.name,
+				a.insert_date,
+				a.insert_user
+		from man_system_group a
+		where a.name=#{name}
+	</select>		
+	
+	<insert id="addSystemRole">
+		insert into man_system_role (billid, name, code,insert_date, insert_user) values
+		(#{billid}, #{name}, #{code},#{insert_date}, #{insert_user})
+	</insert>
+	
+	<insert id="addSystemGroup">
+		insert into man_system_group (billid, name,insert_date, insert_user) values
+		(#{billid}, #{name},#{insert_date}, #{insert_user})
+	</insert>	
+	
+	<update id="updateSystemRole">
+		update man_system_role 
+		<set>
+			<if test="name!=null and name!=''">
+				name = #{name},
+			</if>
+			<if test="code!=null and code!=''">
+				code = #{code}
+			</if>
+		</set>
+		where billid = #{billid}
+	</update>	
+	
+	<update id="updateSystemGroup">
+		update man_system_group 
+		<set>
+			<if test="name!=null and name!=''">
+				name = #{name}
+			</if>
+		</set>
+		where billid = #{billid}
+	</update>	
+		
+	<delete id="deleteSystemRoleByIds">
+		delete
+		from man_system_role
+		where billid in
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>	
+	
+	<delete id="deleteSystemGroupByIds">
+		delete
+		from man_system_group
+		where billid in
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>		
+	
+	<select id="getRoleById" resultMap="SystemRoleVO">
+		select 	a.billid,
+				a.name,
+				a.code,
+				date_format(a.insert_date,'%Y-%m-%d %H:%i:%s') as insert_date,
+				a.insert_user
+		from man_system_role a 
+		where a.billid = #{billid}
+	</select>
+	
+	<select id="getGroupById" resultMap="SystemRoleVO">
+		select 	a.billid,
+				a.name,
+				date_format(a.insert_date,'%Y-%m-%d %H:%i:%s') as insert_date,
+				a.insert_user
+		from man_system_group a 
+		where a.billid = #{billid}
+	</select>	
+	
+	<select id="validateRoleIsExistsMod" resultMap="SystemRoleVO">
+		select 	a.billid,
+				a.name,
+				a.code,
+				a.insert_date,
+				a.insert_user
+		from man_system_role a
+		where (a.name=#{name} or a.code=#{code}) and a.billid != #{billid}
+	</select>	
+	
+	<select id="validateGroupIsExistsMod" resultMap="SystemRoleVO">
+		select 	a.billid,
+				a.name,
+				a.insert_date,
+				a.insert_user
+		from man_system_group a
+		where a.name=#{name} and a.billid != #{billid}
+	</select>	
+	
+	<delete id="deleteUserRole">
+		delete
+		from man_system_userrole
+		where roleid = #{roleid}
+	</delete>		
+	
+	<insert id="saveUserRole">
+		insert into man_system_userrole (billid, userid, roleid) values
+		(#{billid}, #{userid}, #{roleid})
+	</insert>	
+	
+	<select id="queryGroupInRoleID" resultMap="SystemRoleVO">
+		select  a.billid,
+				a.name,
+				b.billid as code,
+				date_format(a.insert_date,'%Y-%m-%d %H:%i:%s') as insert_date,
+				a.insert_user
+		from man_system_group a 
+		left join man_system_rolegroup b on a.billid = b.groupid
+		and b.roleid = #{billid}
+		order by a.insert_date desc
+	</select>		
+	
+	<delete id="deleteRoleGroup">
+		delete
+		from man_system_rolegroup
+		where roleid = #{roleid}
+	</delete>		
+	
+	<insert id="saveRoleGroup">
+		insert into man_system_rolegroup (billid, roleid, groupid) values
+		(#{billid}, #{roleid}, #{groupid})
+	</insert>	
+	
+	<delete id="deleteUserGroup">
+		delete
+		from man_system_usergroup
+		where groupid = #{groupid}
+	</delete>		
+	
+	<insert id="saveUserGroup">
+		insert into man_system_usergroup (billid, userid, groupid) values
+		(#{billid}, #{userid}, #{groupid})
+	</insert>		
+	
+	<select id="queryRoleInGroupID" resultMap="SystemRoleVO">
+		select  a.billid,
+				a.name,
+				a.code,
+				b.billid as groupid,
+				date_format(a.insert_date,'%Y-%m-%d %H:%i:%s') as insert_date,
+				a.insert_user
+		from man_system_role a 
+		left join man_system_rolegroup b on a.billid = b.roleid
+		and b.groupid = #{billid}
+		order by a.insert_date desc
+	</select>	
+	
+	<delete id="deleteGroupRole">
+		delete
+		from man_system_rolegroup
+		where groupid = #{groupid}
+	</delete>	
+	
+	<delete id="deleteRoleRightByRole">
+		delete from man_system_roleright
+		where roleid = #{roleid}
+	</delete>	
+	
+	<delete id="deleteRoleRightByRight">
+		delete from man_system_roleright
+		where rightid = #{rightid}
+	</delete>	
+	
+	<insert id="saveRoleRight">
+		insert into man_system_roleright (billid, roleid, rightid) values
+		(#{billid}, #{roleid}, #{rightid})
+	</insert>			
+	
+	<select id="queryRoleByRoleAndMenu" resultMap="SystemRoleVO">
+		select billid from
+		man_system_rolemenu
+		where menuid = #{menuid} and roleid = #{roleid}
+	</select>
+	
+	<delete id="deleteRoleMenuByRole">
+		delete from man_system_rolemenu
+		where roleid = #{roleid}
+	</delete>	
+
+	<insert id="saveRoleMenu">
+		insert into man_system_rolemenu (billid, roleid, menuid) values
+		(#{billid}, #{roleid}, #{menuid})
+	</insert>			
+
+	<delete id="deleteUserRoleByRoleID">
+		delete from man_system_userrole where roleid = #{roleid}
+	</delete>
+	
+	<delete id="deleteRoleGroupByRoleID">
+		delete from man_system_rolegroup where roleid = #{roleid}
+	</delete>
+
+					
+</mapper>

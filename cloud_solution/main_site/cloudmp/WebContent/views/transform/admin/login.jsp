@@ -288,6 +288,11 @@ function reset(){
 	$("#errorinfo").html("");
 	$("#errorinfo").hide();
 }
+
+//调整找回密码页面
+function toFindPage(){
+	window.location.href = "<%=request.getContextPath()%>/transform/findPwdPage";
+}
 </script>
 </head>
 
@@ -324,7 +329,7 @@ function reset(){
 								<input type="checkbox" id="remember"/>
 								<label for="remember">记住密码</label>
 							</div>
-							<a class="psw-forget" href="javascript:;" style="font-size: 12px; display: block; float:right; color: rgba(255, 255, 255, 0.6);">忘记密码?</a>
+							<a class="psw-forget" href="javascript:toFindPage();" style="font-size: 12px; display: block; float:right; color: rgba(255, 255, 255, 0.6);">忘记密码?</a>
 						</div>
 						<div class="novice-guide">
 							<a class="c-dsk-client" href="${pageContext.request.contextPath}/download/btngrad.png">云桌面客户端下载</a>

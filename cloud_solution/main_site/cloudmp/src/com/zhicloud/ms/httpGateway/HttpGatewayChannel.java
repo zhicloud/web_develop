@@ -146,14 +146,22 @@ public class HttpGatewayChannel
     
     //----------------
     
-    
-    public synchronized JSONObject hostQuery(String pool) throws MalformedURLException, IOException
+    /**
+     * 
+     * @param pool 资源池uuid（仅在range=0或不传入，target为空或不传入时，有效）
+     * @param target 资源池uuid/server id/资源节点name
+     * @param range 查询范围类型，0=计算资源池，1=宿主机/server，2=资源节点
+     * @return
+     * @throws MalformedURLException
+     * @throws IOException
+     */
+    public synchronized JSONObject hostQuery(String pool,String target,Integer range) throws MalformedURLException, IOException
     {
         try
         {
             logger.info("HttpGatewayChannel.hostQuery() > ["+Thread.currentThread().getId()+"] pool:["+pool+"]");
             checkSessionRefresh();
-            JSONObject result = helper.hostQuery(pool);
+            JSONObject result = helper.hostQuery(pool,target,range);
             if( HttpGatewayReturnCode.SESSION_NOT_FOUND.equals(HttpGatewayResponseHelper.getReturnCode(result)) )
             {
                 helper = null;
@@ -231,7 +239,8 @@ public class HttpGatewayChannel
     public synchronized JSONObject hostCreate(
         String name, String pool, Integer cpu_count, BigInteger memory, Integer[] option, String image,
         BigInteger[] disk_volume, Integer[] port, String user, String group, String display, String authentication,
-        String network, BigInteger inbound_bandwidth, BigInteger outbound_bandwidth
+        String network, BigInteger inbound_bandwidth, BigInteger outbound_bandwidth,int codeRate,int frameRate,
+        int operating_type,String operating_system
     ) throws MalformedURLException, IOException
     {
         try
@@ -251,11 +260,15 @@ public class HttpGatewayChannel
                 "authentication=[******], "+
                 "network=["+network+"], "+
                 "inbound_bandwidth=["+inbound_bandwidth+"], "+
-                "outbound_bandwidth=["+outbound_bandwidth+"]");
+                "outbound_bandwidth=["+outbound_bandwidth+"]"+
+                "frameRate=["+frameRate+"]"+
+                "frameRate=["+frameRate+"]"+
+                "catalog=["+operating_type+"]"+
+                "operating_system=["+operating_system+"]");
             checkSessionRefresh();
             JSONObject result = helper.hostCreate( name, pool, cpu_count, memory, option, image,
                 disk_volume, port, user, group, display, authentication,
-                network, inbound_bandwidth, outbound_bandwidth );
+                network, inbound_bandwidth, outbound_bandwidth,codeRate,frameRate,operating_type,operating_system);
             if( HttpGatewayReturnCode.SESSION_NOT_FOUND.equals(HttpGatewayResponseHelper.getReturnCode(result)) )
             {
                 helper = null;
@@ -359,7 +372,7 @@ public class HttpGatewayChannel
     /**
      * 修改云主机名
      */
-    public synchronized JSONObject hostModifyName( String uuid, String name,Integer[] port) throws MalformedURLException, IOException
+    public synchronized JSONObject hostModifyName( String uuid, String name,Integer[] port,Integer codeRate,Integer frameRate,Integer operating_type,String operating_system) throws MalformedURLException, IOException
     {
         return helper.hostModify(   uuid, 
                                     name, 
@@ -371,7 +384,13 @@ public class HttpGatewayChannel
                                     "", 
                                     "", 
                                     BigInteger.ZERO, 
-                                    BigInteger.ZERO);
+                                    BigInteger.ZERO,
+                                    0, 
+                                    0,
+                                    codeRate,
+                                    frameRate,
+                                    operating_type,
+                                    operating_system);
     }
     
     
@@ -411,7 +430,11 @@ public class HttpGatewayChannel
                                                 String authentication, 
                                                 String network, 
                                                 BigInteger inbound_bandwidth, 
-                                                BigInteger outbound_bandwidth) throws MalformedURLException, IOException
+                                                BigInteger outbound_bandwidth,
+                                                Integer codeRate,
+                                                Integer frameRate,
+                                                Integer operating_type,
+                                                String operating_system) throws MalformedURLException, IOException
     {
         try
         {
@@ -425,7 +448,9 @@ public class HttpGatewayChannel
                                                             +"], authentication:["+authentication
                                                             +"], network:["+network
                                                             +"], inbound_bandwidth:["+inbound_bandwidth
-                                                            +"], outbound_bandwidth:["+outbound_bandwidth
+                                                            +"], codeRate:["+codeRate
+                                                            +"], frameRate:["+frameRate
+                                                            +"], frameRate:["+frameRate
                                                             +"]");
             checkSessionRefresh();
             JSONObject result = helper.hostModify(  uuid, 
@@ -438,7 +463,11 @@ public class HttpGatewayChannel
                                                     authentication, 
                                                     network, 
                                                     inbound_bandwidth, 
-                                                    outbound_bandwidth);
+                                                    outbound_bandwidth,
+                                                    codeRate,
+                                                    frameRate,
+                                                    operating_type,
+                                                    operating_system);
             if( HttpGatewayReturnCode.SESSION_NOT_FOUND.equals(HttpGatewayResponseHelper.getReturnCode(result)) )
             {
                 helper = null;
@@ -492,7 +521,11 @@ public class HttpGatewayChannel
         BigInteger inbound_bandwidth,
         BigInteger outbound_bandwidth,
         int maxIops,
-        int cpuPriority) throws MalformedURLException, IOException
+        int cpuPriority,
+        Integer codeRate,
+        Integer frameRate,
+        Integer operating_type,
+        String operating_system) throws MalformedURLException, IOException
     {
         try
         {
@@ -521,7 +554,11 @@ public class HttpGatewayChannel
                 inbound_bandwidth,
                 outbound_bandwidth,
                 maxIops,
-                cpuPriority);
+                cpuPriority,
+                codeRate,
+                frameRate,
+                operating_type,
+                operating_system);
             if( HttpGatewayReturnCode.SESSION_NOT_FOUND.equals(HttpGatewayResponseHelper.getReturnCode(result)) )
             {
                 helper = null;
@@ -547,7 +584,8 @@ public class HttpGatewayChannel
     {
         try
         {
-            logger.info("HttpGatewayChannel.hostStart() > ["+Thread.currentThread().getId()+"] uuid:["+uuid+"], boot:["+boot+"], image:["+image+"]");
+			logger.info("HttpGatewayChannel.hostStart() > [" + Thread.currentThread().getId() + "] uuid:[" + uuid
+					+ "], boot:[" + boot + "], image:[" + image + "]");
             checkSessionRefresh();
             JSONObject result = helper.hostStart(uuid, boot, image);
             if( HttpGatewayReturnCode.SESSION_NOT_FOUND.equals(HttpGatewayResponseHelper.getReturnCode(result)) )
@@ -572,13 +610,13 @@ public class HttpGatewayChannel
      * @throws MalformedURLException
      * @throws IOException
      */
-    public synchronized JSONObject hostRestart(String uuid, Integer boot, String image) throws MalformedURLException, IOException
+    public synchronized JSONObject hostRestart(String uuid, Integer boot, String image,Boolean option, Integer time) throws MalformedURLException, IOException
     {
         try
         {
             logger.info("HttpGatewayChannel.hostRestart() > ["+Thread.currentThread().getId()+"] uuid:["+uuid+"], boot:["+boot+"], image:["+image+"]");
             checkSessionRefresh();
-            JSONObject result = helper.hostRestart(uuid, boot, image);
+            JSONObject result = helper.hostRestart(uuid, boot, image,option,time);
             if( HttpGatewayReturnCode.SESSION_NOT_FOUND.equals(HttpGatewayResponseHelper.getReturnCode(result)) )
             {
                 helper = null;
@@ -593,12 +631,12 @@ public class HttpGatewayChannel
     }
     
 
-    public synchronized JSONObject hostStop(String uuid) throws MalformedURLException, IOException
+    public synchronized JSONObject hostStop(String uuid,Boolean option, Integer time) throws MalformedURLException, IOException
     {
         try
         {
             checkSessionRefresh();
-            JSONObject result = helper.hostStop(uuid);
+            JSONObject result = helper.hostStop(uuid,option,time);
             if( HttpGatewayReturnCode.SESSION_NOT_FOUND.equals(HttpGatewayResponseHelper.getReturnCode(result)) )
             {
                 helper = null;
@@ -610,6 +648,25 @@ public class HttpGatewayChannel
             helper = null;
             throw e;
         }
+    }
+    
+    public synchronized JSONObject operatorMigration(String uuid, String node_name, Integer type) throws MalformedURLException, IOException
+    {
+    	try
+    	{
+    		checkSessionRefresh();
+    		JSONObject result = helper.operatorMigration(uuid,node_name,type);
+    		if( HttpGatewayReturnCode.SESSION_NOT_FOUND.equals(HttpGatewayResponseHelper.getReturnCode(result)) )
+    		{
+    			helper = null;
+    		}
+    		return result;
+    	}
+    	catch (IOException e)
+    	{
+    		helper = null;
+    		throw e;
+    	}
     }
     
     
@@ -2357,6 +2414,31 @@ public class HttpGatewayChannel
         } catch (IOException e) {
             throw e;
         }
+    }
+    
+    /**
+    * 
+    * @param uuid 云主机uuid
+    * @param node_name 目的nc的node_name，可以为空
+    * @param type 迁移类型；0=cold<默认>，1=warn，2=hot
+    * @param callback http_gateway回推异步消息url地址，推送消息类型：“migrate_host_ack”，“migrate_host_report”，“migrate_host_result”（具体消息格式请参考消息推送章节）
+    * @return
+    * @throws MalformedURLException
+    * @throws IOException
+    */
+    public synchronized JSONObject hostFlushDiskMigration(String uuid, String node_name, int type, String callback) throws MalformedURLException, IOException {
+    	try {
+    		this.checkSessionRefresh();
+    		JSONObject result = helper.hostFlushDiskMigration(uuid, node_name, type, callback);
+    		
+    		if (HttpGatewayReturnCode.SESSION_NOT_FOUND.equals(HttpGatewayResponseHelper.getReturnCode(result))) {
+    			helper = null;
+    		}
+    		
+    		return result;
+    	} catch (IOException e) {
+    		throw e;
+    	}
     }
     
     public synchronized JSONObject hostBackup(String uuid, int mode, int disk, String callback) throws MalformedURLException, IOException {

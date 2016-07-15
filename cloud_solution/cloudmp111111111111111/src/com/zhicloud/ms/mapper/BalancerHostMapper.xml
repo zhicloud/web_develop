@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.BalancerHostMapper"> 
+	
+	 <resultMap type="com.zhicloud.ms.vo.BalancerHostVO" id="BalancerHostVO">
+		<id     column="id"                  property="id" />
+		<result column="balancer_host_id"    property="balancerHostId" />
+		<result column="associated_host_id"  property="associatedHostId" />
+		
+	</resultMap>
+	 <!-- ********************* -->
+	<select id="getAll" resultMap="BalancerHostVO">
+		select bh.id,
+			bh.balancer_host_id,
+			bh.associated_host_id
+		from balancer_host bh
+	</select>
+	
+	<select id="getById" resultMap="BalancerHostVO">
+		select bh.id,
+			bh.balancer_host_id,
+			bh.associated_host_id
+		from balancer_host bh
+		where bh.id = #{id}
+	</select>
+	
+	<select id="getByHostId" resultMap="BalancerHostVO">
+		select bh.id,
+			bh.balancer_host_id,
+			bh.associated_host_id
+		from balancer_host bh
+		where bh.host_id = #{hostId}
+	</select>
+	<insert id="add">
+		insert into balancer_host (id,balancer_host_id,associated_host_id) 
+		values (#{id}, #{balancerHostId},#{associatedHostId})
+	</insert>
+	
+	<!-- ********************* -->
+	
+	<delete id="deleteById">
+		delete
+		from balancer_host
+		where id = #{id}
+	</delete>
+	 
+</mapper>

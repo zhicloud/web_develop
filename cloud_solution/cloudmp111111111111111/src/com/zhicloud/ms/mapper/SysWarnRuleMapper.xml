@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.SysWarnRuleMapper">
+
+
+	<resultMap type="com.zhicloud.ms.vo.SysWarnRuleVO" id="SysWarnRuleVO">
+		<id     column="id"       property="id" />
+		<result column="name" property="name" />
+		<result column="code" property="code" />
+		<result column="content" property="content" />
+		<result column="ruletype" property="ruletype" />
+		<result column="isnotify" property="isnotify" />
+		<result column="realtime" property="realtime" />
+		<result column="sendtime" property="sendtime" />
+		<result column="notify_phone" property="notify_phone" />
+		<result column="notify_email" property="notify_email" />
+		<result column="insert_user" property="insert_user" />
+		<result column="insert_date" property="insert_date" />
+		<result column="frequency" property="frequency" />
+		<result column="sampletime" property="sampletime" />
+	</resultMap>
+	
+	<select id="queryPageCount" resultType="int">
+		select count(1)
+		from sys_warnrule u
+		<where>
+			1=1
+			<if test="ruletype!=null and ruletype!=''">
+				and u.ruletype = #{ruletype}
+			</if>
+			<if test="realtime!=null and realtime!=''">
+				and u.realtime = #{realtime}
+			</if>
+			<if test="notify_phone!=null and notify_phone!='%%'">
+				and u.notify_phone like #{notify_phone}
+			</if>
+			<if test="notify_email!=null and notify_email!='%%'">
+				and u.notify_email like #{notify_email}
+			</if>			
+		</where>
+	</select>
+
+	<select id="queryPage" resultMap="SysWarnRuleVO">
+		select 
+			u.id,
+			u.name,
+			u.code,
+			u.content,
+			u.ruletype,
+			u.isnotify,
+			u.realtime,
+			u.sendtime,
+			u.notify_phone,
+			u.notify_email,
+			u.insert_user,
+			date_format(u.insert_date,'%Y-%m-%d %H:%i:%s') as insert_date,
+			a.name username,
+			u.frequency,
+			u.sampletime
+		from sys_warnrule u
+		left join operator a on u.insert_user = a.id
+		<where>
+			1=1
+			<if test="ruletype!=null and ruletype!=''">
+				and u.ruletype = #{ruletype}
+			</if>
+			<if test="realtime!=null and realtime!=''">
+				and u.realtime = #{realtime}
+			</if>
+			<if test="notify_phone!=null and notify_phone!=''">
+				and u.notify_phone like #{notify_phone}
+			</if>
+			<if test="notify_email!=null and notify_email!=''">
+				and u.notify_email like #{notify_email}
+			</if>			
+		</where>
+		order by u.insert_date desc
+		limit #{start_row}, #{row_count}
+	</select>	
+	
+	<select id="getById" resultMap="SysWarnRuleVO">
+		select 
+			u.id,
+			u.name,
+			u.code,
+			u.content,
+			u.ruletype,
+			u.isnotify,
+			u.realtime,
+			u.sendtime,
+			u.notify_phone,
+			u.notify_email,
+			u.insert_user,
+			date_format(u.insert_date,'%Y-%m-%d %H:%i:%s') as insert_date,
+			u.frequency,
+			u.sampletime
+		from sys_warnrule u
+		where u.id = #{id}
+	</select>
+
+	<select id="getByName" resultMap="SysWarnRuleVO">
+		select 
+			u.id,
+			u.name,
+			u.code,
+			u.content,
+			u.ruletype,
+			u.isnotify,
+			u.realtime,
+			u.sendtime,
+			u.notify_phone,
+			u.notify_email,
+			u.insert_user,
+			date_format(u.insert_date,'%Y-%m-%d %H:%i:%s') as insert_date,
+			u.frequency,
+			u.sampletime
+		from sys_warnrule u
+		where u.name = #{name}
+	</select>
+	
+	<select id="getByCode" resultMap="SysWarnRuleVO">
+		select 
+			u.id,
+			u.name,
+			u.code,
+			u.content,
+			u.ruletype,
+			u.isnotify,
+			u.realtime,
+			u.sendtime,
+			u.notify_phone,
+			u.notify_email,
+			u.insert_user,
+			date_format(u.insert_date,'%Y-%m-%d %H:%i:%s') as insert_date,
+			u.frequency,
+			u.sampletime
+		from sys_warnrule u
+		where u.code = #{code}
+	</select>	
+	
+	<select id="getAll" resultMap="SysWarnRuleVO">
+		select 
+			u.id,
+			u.name,
+			u.code,
+			u.content,
+			u.ruletype,
+			u.isnotify,
+			u.realtime,
+			u.sendtime,
+			u.notify_phone,
+			u.notify_email,
+			u.insert_user,
+			date_format(u.insert_date,'%Y-%m-%d %H:%i:%s') as insert_date,
+			u.frequency,
+			u.sampletime
+		from sys_warnrule u
+		order by insert_date desc
+	</select>
+	
+	<insert id="addSysWarnRule">
+		insert into sys_warnrule (id, name,code, content,ruletype, isnotify, realtime,sendtime,notify_phone,notify_email,insert_user,insert_date,frequency,sampletime) values
+		(#{id}, #{name}, #{code},#{content},#{ruletype}, #{isnotify}, #{realtime},#{sendtime},#{notify_phone},#{notify_email},#{insert_user},#{insert_date},#{frequency},#{sampletime})
+	</insert>
+
+	<update id="updateSysWarnRule">
+		update sys_warnrule 
+		<set>
+			<if test="name!=null and name!=''">
+				name = #{name},
+			</if>
+			<if test="code!=null and code!=''">
+				code = #{code},
+			</if>	
+			<if test="sampletime!=null and sampletime!=''">
+				sampletime = #{sampletime},
+			</if>					
+			<if test="content!=null and content!=''">
+				content = #{content},
+			</if>
+			<if test="isnotify!=null">
+				isnotify = #{isnotify},
+			</if>	
+			<if test="realtime!=null and realtime!=''">
+				realtime = #{realtime},
+			</if>	
+			<if test="sendtime!=null and sendtime!=''">
+				sendtime = #{sendtime},
+			</if>
+			<if test="ruletype!=null and ruletype!=''">
+				ruletype = #{ruletype},
+			</if>
+			<if test="frequency!=null and frequency!=''">
+				frequency = #{frequency}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="deleteSysWarnRule">
+		delete
+		from sys_warnrule
+		where id in
+		<foreach collection="array" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+
+</mapper>

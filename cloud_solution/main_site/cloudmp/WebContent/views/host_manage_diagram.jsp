@@ -45,7 +45,7 @@
     <div id="wrap">
       <!-- Make page fluid -->
       <div class="row">
-        <%@include file="/views/common/common_menus.jsp" %>
+        <%@include file="/views/common/common_menus2.jsp" %>
         <!-- Page content -->
         <div id="content" class="col-md-12">
           <!-- page header -->

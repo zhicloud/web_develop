@@ -196,7 +196,7 @@ $(function(){
 	setMenu(temproleid);
 	$("#table-responsive").niceScroll({
 		cursoropacitymin:0.5,
-		cursorcolor:"#424242",  
+		cursorcolor:"#black",  
 		cursoropacitymax:0.5,  
 		touchbehavior:false,  
 		cursorwidth:"8px",  

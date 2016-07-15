@@ -118,21 +118,33 @@
                         <form class="form-horizontal form1" role="form" parsley-validate>
                       
                           <div class="form-group">
-                            <label for="fullname" class="col-sm-2 control-label">专属云名称 *</label>
+                            <label for="displayName" class="col-sm-2 control-label">专属云名称 *</label>
                             <div class="col-sm-10">
                               <input type="text" class="form-control" id="displayName" parsley-trigger="change" parsley-required="true" parsley-minlength="4" parsley-validation-minlength="1">
                             </div>
                           </div>
 
                           <div class="form-group">
-                            <label for="password" class="col-sm-2 control-label">申请IP个数 *</label>
+                            <label for="ipAmount" class="col-sm-2 control-label">申请IP个数 *</label>
                             <div class="col-sm-10">
                               <input type="text" class="form-control" id="ipAmount" name="ipAmount" parsley-trigger="change" parsley-required="true" parsley-max="100" parsley-minlength="1" parsley-type="number" parsley-validation-minlength="1">
                             </div>
                           </div>
 
+                            <div class="form-group">
+                                <label for="group_id" class="col-sm-2 control-label">所属分组</label>
+                                <div class="col-sm-4" id="selectbox">
+                                    <select class="chosen-select chosen-transparent form-control" id = "group_id" name="groupId" parsley-error-container="#selectbox">
+                                        <option value="">请选择群组</option>
+                                        <c:forEach items="${sys_group_list }" var="sys_groups">
+                                            <option value="${sys_groups.id}">${sys_groups.groupName}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+
                           <div class="form-group">
-                            <label for="passwordconfirm" class="col-sm-2 control-label">描述 </label>
+                            <label for="description" class="col-sm-2 control-label">描述 </label>
                             <div class="col-sm-10">
                               <input type="text" class="form-control" id="description" name="description" parsley-trigger="change" parsley-minlength="0" parsley-validation-minlength="1">
                             </div>
@@ -478,6 +490,7 @@
             	}else{
             		var display_name = $("#displayName").val();
             		var ip_amount = $("#ipAmount").val();
+                    var group_id = $("#group_id").val();
             		var description = $("#description").val();
             		var checked = $("#contact :checkbox:checked");
             		var hosts = [];
@@ -493,7 +506,7 @@
             		jQuery.ajax({
 						url: path+'/vpc/add',
 						type: 'post', 
-						data:{displayName:display_name,ipAmount:ip_amount,description:description,hosts:hosts},
+						data:{displayName:display_name,ipAmount:ip_amount,groupId:group_id,description:description,hosts:hosts},
 						dataType: 'json',
 						timeout: 10000,
 						async: false,

@@ -117,12 +117,12 @@
                       <table  class="table table-datatable table-custom" id="basicDataTable">
                         <thead>
                           <tr>
-<!-- 						    <th class="no-sort"> -->
-<!--                             <div class="checkbox check-transparent"> -->
-<!--                               <input type="checkbox" value="1" id="allchck"> -->
-<!--                               <label for="allchck"></label> -->
-<!--                             </div> -->
-<!--                           </th> -->
+ 						    <th class="no-sort">
+                             <div class="checkbox check-transparent">
+                               <input type="checkbox" value="1" id="allchck">
+                               <label for="allchck"></label>
+                             </div>
+                           </th>
                             <th class="sort-alpha">云主机名称</th>
                             <th class="sort-alpha">CPU核数</th>
                             <th class="sort-alpha">CPU使用率</th>
@@ -140,12 +140,12 @@
                         <c:forEach items="${hostPoolDetail}" var="hostList">
                         
                           <tr class="odd gradeX">
-<!-- 						          <td> -->
-<!-- 									<div class="checkbox check-transparent"> -->
-<%-- 									  <input type="checkbox" name="idcheck" value="${hostList.id}" id="${hostList.id}"> --%>
-<%-- 									  <label for="${hostList.id}"></label> --%>
-<!-- 									</div> -->
-<!--                                  </td> -->
+ 						          <td>
+ 									<div class="checkbox check-transparent">
+ 									  <input type="checkbox" name="idcheck" value="${hostList.id}" id="${hostList.id}">
+ 									  <label for="${hostList.id}"></label>
+ 									</div>
+                                  </td> 
                                   <td class="cut">
                                   	${hostList.displayName}
                                   </td>
@@ -189,6 +189,7 @@
 	                                    <c:if test="${poolType==2 && hostList.type == null}">
 	                                        <li><a href="#" onclick="operatorHost('${hostList.realHostId}','6');">设置成桌面主机</a></li> 	                                        
 	                                    </c:if>
+	                                    <li><a href="<%=request.getContextPath() %>/cdrpm/${hostList.realHostId}/${hostList.displayName}/${uuid}/hostMigration?nodeName=${name}">主机迁移</a></li>
 	                                  </ul>
 	                              </div>
 	                            </td>
@@ -204,18 +205,23 @@
                   </div>
                   <!-- /tile body -->
                   
-                  <!-- <div class="col-sm-2" style="margin-top: -40px;">
+                  <div class="col-sm-2" style="margin-top: -40px;">
                         <div class="input-group table-options">
                           <select id="oper_select" class="chosen-select form-control">
                             <option value="">批量操作</option> 
-                            <option value="del">删除</option>
-                            <option value="assign">分配</option>
+                              <option value="start">开机</option>
+		                      <option value="shutdown">关机</option>
+		                      <option value="restart">重启</option>
+		                      <!-- <option value="hostRome_oper">主机迁移</option> -->
+		                      <option value="del">删除</option>
                           </select>
                           <span class="input-group-btn">
                             <button class="btn btn-default" type="button" id="save_oper">提交</button>
                           </span>
                         </div>
-                      </div> -->
+                        
+                      </div> 
+                     
 				 <div class="tile-body">
 
                     <a href="#modalDialog" id="dia" role="button"  data-toggle="modal"> </a>
@@ -375,6 +381,7 @@
     <script>
     var path = '<%=request.getContextPath()%>'; 
     var uuid =  '${uuid}' ;
+    var curIds;
     $(function(){
 
       // Add custom class to pagination div
@@ -415,10 +422,6 @@
         }
       });
       
-     
- 
- 
-
       /* Get the rows which are currently selected */
       function fnGetSelected(oTable01Local){
         return oTable01Local.$('tr.row_selected');
@@ -428,68 +431,59 @@
 		  addHosts(warehouseId,sysImageName);
  	  });
 	  
+	  //del绑定click 事件
 	  jQuery("#save_oper").click(function(){
 		  	var option = jQuery("#oper_select").val();
-		  	if(option=="del"){
-				 var ids = "";
-				 var datatable = $("#basicDataTable").find("tbody tr input[type=checkbox]:checked");
-				 $(datatable).each(function(){
-					 if(!(jQuery(this).attr("realHostId")=="" && jQuery(this).attr("status")==1)){
-						ids += jQuery(this).val()+","
-					 }
-				 });
-// 				 jQuery("input[name='idcheck']:checkbox").each(function(){ 
-// 		            if(jQuery(this).attr("checked")){
-// 		                ids += jQuery(this).val()+","
-// 		            }
-// 		        })
-		        if(ids == ""){
-		        	$("#tipscontent").html("请选择要删除的主机(创建中的主机无法删除)");
-					$("#dia").click();
-		       	 	return;
-		        } 
-				curIds = ids;
-				$("#confirmcontent").html("确定要删除所选主机吗？");
-		    	$("#confirm_btn").attr("onclick","deleteMultHost();");
-		    	$("#con").click();
-		  	}else if(option=="assign"){
-		  		var ids = [];
-		    	var flag = false;
-		    	var datatable = $("#basicDataTable").find("tbody tr input[type=checkbox]:checked");
-				 $(datatable).each(function(){
-					 if(jQuery(this).attr("isAssigned")!='' || jQuery(this).attr("realHostId")==''){
-			            	$("#tipscontent").html('请选择有效的云主机进行分配');
-							$("#dia").click();
-			            	flag = true;
-			            	return false;
-			            }
-			            ids.push(jQuery(this).val());
-				 });
-				if(flag){
-					return;
-				}
-		        if(ids.length<1){
-		        	$("#tipscontent").html('请至少选择一台主机进行分配');
-					$("#dia").click();
-		        	return;
-		        }else{
-		        	hostIds = ids;
-		        	jQuery.ajax({
-						url: path+'/warehouse/assign',
-						type: 'post', 
-						data:{warehouseId:warehouseId,ids:ids},
-						dataType: 'json',
-						timeout: 10000,
-						async: false,
-						success:function(data){
-							if(data.status == "success"){
-								location.href=path +"/views/warehouse_manage_assign.jsp"; 
-							}else if(data.status == "fail"){
-								return;
-							}
-						}
-					});
-		        }
+		  	if(option=="start"){
+		  		  var ids = getCheckBoxIds(); //获取选中文档的值
+		  	      if (ids == "") {
+		  	          $("#tipscontent").html("请至少选择一台主机进行开机");
+		  	          $("#dia").click();
+		  	          return;
+		  	      }
+		  	      $("#confirmcontent").html("确定要所选主机开机？");
+		  	      $("#confirm_btn").attr("onclick", "operatorHostBatch('" + ids + "','1');");
+		  	      $("#con").click();
+		  	}else if(option=="shutdown"){
+		  		  var ids = getCheckBoxIds(); //获取选中文档的值
+		  	      if (ids == "") {
+		  	          $("#tipscontent").html("请至少选择一台主机进行关机");
+		  	          $("#dia").click();
+		  	          return;
+		  	      }
+		  	      $("#confirmcontent").html("确定要所选主机关机？");
+		  	      $("#confirm_btn").attr("onclick", "operatorHostBatch('" + ids + "','2');");
+		  	      $("#con").click();
+		  	}else if(option=="restart"){
+		  		var ids = getCheckBoxIds(); //获取选中文档的值
+			      if (ids == "") {
+			          $("#tipscontent").html("请至少选择一台主机进行重启");
+			          $("#dia").click();
+			          return;
+			      }
+			      $("#confirmcontent").html("确定要所选主机重启？");
+			      $("#confirm_btn").attr("onclick", "operatorHostBatch('" + ids + "','3');");
+			      $("#con").click();
+		  	}else if(option=="hostRome_oper"){
+		  		  var ids = getCheckBoxIds(); //获取选中文档的值
+		  	      if (ids == "") {
+		  	          $("#tipscontent").html("请至少选择一台主机进行重启");
+		  	          $("#dia").click();
+		  	          return;
+		  	      }
+		  	      $("#confirmcontent").html("确定要所选主机重启？");
+		  	      $("#confirm_btn").attr("onclick", "operatorHostBatch('" + ids + "','3');");
+		  	      $("#con").click();
+		  	}else if(option=="del"){
+		  		 var ids = getCheckBoxIds(); //获取选中文档的值
+		  	      if (ids == "") {
+		  	          $("#tipscontent").html("请选择要删除的主机(创建中的主机无法删除)");
+		  	          $("#dia").click();
+		  	          return;
+		  	      }
+		  	      $("#confirmcontent").html("确定要删除所选主机吗？");
+		  	      $("#confirm_btn").attr("onclick", "deleteMultHost();");
+		  	      $("#con").click();
 		  	}
 	     });
 	  	//分配给单个用户
@@ -519,9 +513,62 @@
 	    	  $("#cmount_input").val("");
 	      });
 	    
-	    
+	  //del绑定click 事件
+		  jQuery("#start_oper").click(function() {
+		      var ids = getCheckBoxIds(); //获取选中文档的值
+		      if (ids == "") {
+		          $("#tipscontent").html("请至少选择一台主机进行开机");
+		          $("#dia").click();
+		          return;
+		      }
+		      $("#confirmcontent").html("确定要所选主机开机？");
+		      $("#confirm_btn").attr("onclick", "operatorHostBatch('" + ids + "','1');");
+		      $("#con").click();
+		  });
+
+		  jQuery("#shutdown_oper").click(function() {
+		      var ids = getCheckBoxIds(); //获取选中文档的值
+		      if (ids == "") {
+		          $("#tipscontent").html("请至少选择一台主机进行关机");
+		          $("#dia").click();
+		          return;
+		      }
+		      $("#confirmcontent").html("确定要所选主机关机？");
+		      $("#confirm_btn").attr("onclick", "operatorHostBatch('" + ids + "','2');");
+		      $("#con").click();
+		  });
+
+		  jQuery("#restart_oper").click(function() {
+		      var ids = getCheckBoxIds(); //获取选中文档的值
+		      if (ids == "") {
+		          $("#tipscontent").html("请至少选择一台主机进行重启");
+		          $("#dia").click();
+		          return;
+		      }
+		      $("#confirmcontent").html("确定要所选主机重启？");
+		      $("#confirm_btn").attr("onclick", "operatorHostBatch('" + ids + "','3');");
+		      $("#con").click();
+		  });
        
     })
+    
+    function getCheckBoxIds(){
+		 var ids = "";
+		 var datatable = $("#basicDataTable").find("tbody tr input[type=checkbox]:checked");
+		 $(datatable).each(function(){
+			 if(!(jQuery(this).attr("realHostId")=="" && jQuery(this).attr("status")==1)){
+				ids += jQuery(this).val()+","
+			 }
+		 });
+		 jQuery("input[name='idcheck']:checkbox").each(function(){ 
+           if(jQuery(this).attr("checked")){
+               ids += jQuery(this).val()+","
+           }
+       })
+       curIds = ids;
+		return ids;
+	  }
+  	  
     function operatorHost(id,type){
     	currentId = id;
     	if(type == 1){
@@ -547,45 +594,18 @@
     	}else if(type == 6){
      		$("#adddesktop").click();
      		 $("#wareHostId_chosen").css("width","250px");
-    	}
+    	}else if(type == 7){
+    		$("#adddesktop").attr("action",path +"/cdrpm/"+id+"/hostMigration");
+     		$("#hostmove").click();
+    		 $("#wareHostId_chosen").css("width","250px");
+   		}
     	
     }
-     
-	    
-      function deleteHost(){
-    	jQuery.get(path + "/warehouse/cloudhost/"+currentId+"/delete",function(data){
-			if(data.status == "success"){   
-	    		window.location.reload();
-			}else{  
-				$("#tipscontent").html(data.message);
-				$("#dia").click();
-			}
-		});
-    }
-    function startHost(){
-    	jQuery.get(path + "/cdrpm/"+currentId+"/start",function(data){
-			if(data.status == "success"){   
-	    		window.location.reload();
-			}else{  
-				$("#tipscontent").html(data.message);
-				$("#dia").click();
-			}
-		});
-    }
-    function restartHost(){
-    	jQuery.get(path + "/cdrpm/"+currentId+"/restart",function(data){
-			if(data.status == "success"){   
-	    		window.location.reload();
-			}else{  
-				$("#tipscontent").html(data.message);
-				$("#dia").click();
-			}
-		});
-    }
+      
     function shutdownHost(){
     	jQuery.get(path + "/cdrpm/"+currentId+"/stop",function(data){
 			if(data.status == "success"){   
-	    		window.location.reload();
+				window.location.href=window.location.href;
 			}else{  
 				$("#tipscontent").html(data.message);
 				$("#dia").click();
@@ -596,13 +616,35 @@
     function haltHost(){
     	jQuery.get(path + "/cdrpm/"+currentId+"/halt",function(data){
 			if(data.status == "success"){   
-	    		window.location.reload();
+				window.location.href=window.location.href;
 			}else{  
 				$("#tipscontent").html(data.message);
 				$("#dia").click();
 			}
 		});
     }
+    
+    function startHost(){
+    	jQuery.get(path + "/cloudhost/"+currentId+"/start",function(data){
+			if(data.status == "success"){   
+				window.location.href=window.location.href;
+			}else{  
+				$("#tipscontent").html(data.message);
+				$("#dia").click();
+			}
+		});
+    }
+    function restartHost(){
+    	jQuery.get(path + "/cloudhost/"+currentId+"/restart?trigerTime="+trigerTime,function(data){
+			if(data.status == "success"){   
+				window.location.href=window.location.href;
+			}else{  
+				$("#tipscontent").html(data.message);
+				$("#dia").click();
+			}
+		});
+    }
+    
     function addServer(){
     	jQuery.get(path + "/cdrpm/"+currentId+"/addserver",function(data){
 			if(data.status == "success"){   
@@ -620,7 +662,7 @@
 			var wareHostId = $("#wareHostId").val();
 	    	jQuery.get(path + "/cdrpm/"+currentId+"/"+wareHostId+"/"+uuid+"/adddesktop",function(data){
 				if(data.status == "success"){   
-		    		window.location.reload();
+					window.location.href=window.location.href;
 				}else{  
 					$("#tipscontent").html(data.message);
 					$("#dia").click();
@@ -642,7 +684,7 @@
 	        success: function(result)	        
 	        {  
 	        	if(result.status=="success"){
-	    			window.location.reload();
+	        		window.location.href=window.location.href;
 	        	}
 	        	else{
 		        	$("#tipscontent").html(result.message);

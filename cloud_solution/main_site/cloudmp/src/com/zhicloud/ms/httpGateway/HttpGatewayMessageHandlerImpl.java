@@ -7,10 +7,10 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
-import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.constant.AppInconstant;
 import com.zhicloud.ms.controller.HttpGatewayMessageController;
 import com.zhicloud.ms.exception.AppException;
+import com.zhicloud.ms.remote.MethodResult;
 import com.zhicloud.ms.service.ICloudHostService;
 
 public class HttpGatewayMessageHandlerImpl
@@ -47,8 +47,10 @@ public class HttpGatewayMessageHandlerImpl
 			{
 				// 创建云主机成功
 				
-				JSONObject hostQueryInfoResult = receiveChannel.hostQueryInfo(realHostId);
-//				CoreSpringContextManager.getCloudHostService().handleNewlyCreatedCloudHost(receiveChannel.getRegion(), realHostId, hostName, hostQueryInfoResult);
+				//JSONObject hostQueryInfoResult = receiveChannel.hostQueryInfo(realHostId);
+				// 同步每个region的云主机列表  
+	             MethodResult result = cloudHostService.fetchNewestCloudHostFromHttpGateway();
+//				cloudHostService.updateStautsAndRunningStatusByName(hostName);
 			}
 			else
 			{

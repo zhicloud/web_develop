@@ -125,7 +125,7 @@
                           
                           <div class="panel-body">
                           <p><strong>UUID：<br>${cp.uuid }</strong></p>
-                          <p><strong>计算节点：</strong><a href="javascript:void(0);" cur_id="${cp.uuid }" class="query_detail"><span class="badge badge-greensea">${cp.getAllNode()}</span></a>节点</p>
+                          <p><strong>计算节点：</strong><a href="javascript:void(0);" cur_id="${cp.uuid }"  cur_num="${cp.getAllHost()}" class="query_detail"><span class="badge badge-greensea">${cp.getAllNode()}</span></a>节点</p>
                            <p><strong>资源池名：</strong>${cp.name }</p>
                               <p><strong>网络模式：</strong>
                                   <c:choose>
@@ -218,7 +218,7 @@
                                   <%--</c:choose>--%>
                               <%--</p>--%>
                            <p><strong>运行状态：${cp.getStatusText() }</strong></p>
-                           <p><strong>云主机数量：</strong><a href="javascript:void(0);" cur_id="${cp.uuid }" cur_name="${cp.name }"  class="query_host_detail"><span class="badge badge-greensea">${cp.getAllHost()}</span></a>台</p>
+                           <p><strong>云主机数量：</strong><a href="javascript:void(0);" cur_id="${cp.uuid }" cur_name="${cp.name }"  class="query_host_detail"><span class="badge badge-greensea">${cp.hostCount}</span></a>台</p>
                            
                            <div class="progress-list">
                       <div class="details">
@@ -264,7 +264,7 @@
                         操作 <span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu" role="menu">
-                          <li><a href="javascript:void(0);" cur_id="${cp.uuid }" class="query_detail">查看资源节点</a></li>
+                          <li><a href="javascript:void(0);" cur_id="${cp.uuid }" cur_num="${cp.getAllHost()}" class="query_detail">查看资源节点</a></li>
                           <%--<li><a href="#">新增资源节点</a></li>--%>
                           <li><a href="javascript:void(0);" cur_id="${cp.uuid }" class="modify_resource_pool" host_count = "${cp.getAllHost()}">编辑该资源池</a></li>
                           <li><a href="javascript:void(0);" cur_id="${cp.uuid }" class="delete_resource_pool">删除该资源池</a></li>
@@ -433,6 +433,7 @@
     	//查看节点详情
     	jQuery(".query_detail").click(function(){
 	    	var uuid = jQuery(this).attr("cur_id");
+	    	//var num = jQuery(this).attr("cur_num");
 	    	window.location.href = path+"/cdrpm/"+uuid+"/rd";
 	    });	
     	//查看主机详情

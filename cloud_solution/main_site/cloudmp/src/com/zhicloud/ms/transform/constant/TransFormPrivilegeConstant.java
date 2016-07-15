@@ -135,6 +135,8 @@ public class TransFormPrivilegeConstant {
     public static final String desktop_resource_pool_add = "desktop_resource_pool_add";     //增加主机资源池
     public static final String desktop_resource_pool_mod = "desktop_resource_pool_mod";           //修改资源池
     public static final String desktop_resource_pool_remove = "desktop_resource_pool_remove";     //删除资源池
+    public static final String desktop_resource_pool_hostMigration_remove = "hostMigrationList";     //删除迁移记录数据
+    public static final String desktop_resource_pool_hostmigrate_start = "desktop_resource_pool_hostmigrate_start";     //资源池主机迁
 
     public static final String desktop_resource_pool_host_start = "desktop_resource_pool_host_start";     //资源池主机开机
     public static final String desktop_resource_pool_host_stop = "desktop_resource_pool_host_stop";     //资源池主机关机

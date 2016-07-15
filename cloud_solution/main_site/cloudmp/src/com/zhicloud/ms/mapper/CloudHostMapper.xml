@@ -37,6 +37,8 @@
 		<result column="pool_id"     property="poolId"/>
 		<result column="tenant_id"     property="tenantId"/>
 		<result column="tenant_name"     property="tenantName"/>
+		<result column="codeRate"     property="codeRate"/>
+		<result column="frameRate"     property="frameRate"/>
 	</resultMap>
 	
 	
@@ -49,6 +51,7 @@
 			ch.account,
 			ch.password,
 			ch.display_name,
+			ch.sys_image_id,
 			ch.sys_image_name,
 			ch.host_name,  
 			ch.cpu_core,
@@ -63,6 +66,8 @@
 			ch.outer_ip, 
 			ch.outer_port,
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			u.username userAccount
 		from cloud_host ch 
 		left join sys_user u
@@ -97,6 +102,8 @@
 			ch.outer_ip, 
 			ch.outer_port,
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			u.username userAccount
 		from cloud_host ch 
 		left join sys_user u
@@ -130,6 +137,8 @@
 			ch.outer_port,
 			u.username userAccount,
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			m.name modelName,
 			ch.assign_time
 		from cloud_host ch 
@@ -163,6 +172,8 @@
         ch.outer_port,
         u.username userAccount,
         ch.type,
+        ch.codeRate,
+		ch.frameRate,
         m.name modelName,
         ch.assign_time
         FROM cloud_host ch
@@ -198,6 +209,7 @@
 			ch.account,
 			ch.password,
 			ch.display_name,
+			ch.sys_image_id,
 			ch.sys_image_name,
 			ch.host_name,  
 			ch.cpu_core,
@@ -214,6 +226,8 @@
 			u.username userAccount,
 			ch.assign_time,
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			ch.create_time
 		from cloud_host ch 
 		left join sys_user u
@@ -246,6 +260,8 @@
 			ch.outer_port,
 			ch.assign_time,
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			ch.create_time 
 		from cloud_host ch 
 		where ch.real_host_id = #{realHostId} 
@@ -267,6 +283,8 @@
 			ch.running_status, 
 			ch.status,  
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			ch.inner_ip,
 			ch.is_auto_start
 		from cloud_host ch
@@ -291,6 +309,8 @@
 			ch.running_status, 
 			ch.status,  
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			ch.inner_ip 
 		from cloud_host ch
 		left join sys_user su on ch.user_id = su.id
@@ -315,6 +335,8 @@
 			ch.status,
 			ch.password,
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			ch.account,
 			ch.pool_id,
 			chcm.support_h264 supportH264
@@ -343,6 +365,8 @@
 			ch.bandwidth, 
 			ch.running_status, 
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			ch.status 
 		from cloud_host ch
 		where ch.user_id is null 
@@ -367,6 +391,8 @@
 			ch.inner_port, 
 			ch.outer_ip,
 			ch.outer_port,
+			ch.codeRate,
+			ch.frameRate,
 			ch.type
 		from cloud_host ch  
 	</select>
@@ -393,6 +419,8 @@
 			ch.outer_ip, 
 			ch.outer_port,
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
  			ch.assign_time
 		from cloud_host ch  
 		where ch.user_id = #{userId}
@@ -421,6 +449,8 @@
 			ch.outer_ip, 
 			ch.outer_port,
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
  			ch.assign_time
 		from cloud_host ch  
 		where ch.display_name = #{displayName}
@@ -449,6 +479,8 @@
 			ch.outer_ip, 
 			ch.outer_port,
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
  			ch.assign_time,
  			ch.sys_image_id
 		from cloud_host ch  
@@ -481,6 +513,8 @@
 			ch.outer_port,
 			u.username userAccount,
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			m.name modelName,
 			ch.assign_time
 		from cloud_host ch 
@@ -516,6 +550,8 @@
 			ch.outer_port,
 			u.username userAccount,
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			m.name modelName,
 			ch.assign_time
 		from cloud_host ch 
@@ -550,6 +586,8 @@
 			ch.outer_port,
 			u.username userAccount,
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			m.name modelName,
 			ch.assign_time
 		from cloud_host ch 
@@ -584,6 +622,8 @@
 			ch.outer_port,
 			u.username userAccount,
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			m.name modelName,
 			ch.assign_time
 		from cloud_host ch 
@@ -620,8 +660,10 @@
 			ch.inner_port,
 			ch.outer_ip, 
 			ch.outer_port, 
-			ch.type, 
-			ch.assign_time
+			ch.type,
+			ch.codeRate,
+			ch.frameRate,
+			ch.assign_time 
 		from cloud_host ch 
    		join host_timer_relationship ship on ch.id = ship.host_id
 		where  ch.running_status = 2 and ship.timer_key = #{timerKey} 
@@ -649,8 +691,10 @@
 			ch.inner_port,
 			ch.outer_ip, 
 			ch.outer_port, 
-			ch.type, 
-			ch.assign_time
+			ch.type,
+			ch.codeRate,
+			ch.frameRate,
+			ch.assign_time 
 		from cloud_host ch 
    		join host_timer_relationship ship on ch.id = ship.host_id
 		where ch.running_status = 1 and ship.timer_key = #{timerKey} 
@@ -684,6 +728,14 @@
 		update cloud_host
 		<set>
 			status = #{status}
+ 		</set>
+		where host_name = #{hostName}
+	</update>
+	<update id="updateStautsAndRunningStatusByName">
+		update cloud_host
+		<set>
+			status = #{status},
+			running_status = #{runningStatus} 			
  		</set>
 		where host_name = #{hostName}
 	</update>
@@ -766,8 +818,8 @@
 	</update>
 	 
 	<insert id="insertCloudHost">
-		insert into cloud_host (id,real_host_id,user_id,warehouse_id,host_name,display_name,account,password,cpu_core,memory,sys_image_id,sys_disk,data_disk,bandwidth,running_status,status,inner_ip,inner_port,sys_image_name,create_time,modified_time,outer_ip,outer_port,type,pool_id,is_auto_start) 
-			values (#{id},#{realHostId},#{userId},#{warehouseId},#{hostName},#{displayName},#{account},#{password},#{cpuCore},#{memory},#{sysImageId},#{sysDisk},#{dataDisk},#{bandwidth},#{runningStatus},#{status},#{innerIp},#{innerPort},#{sysImageName},#{createTime},#{modifiedTime},#{outerIp},#{outerPort},#{type},#{poolId},#{isAutoStartup})
+		insert into cloud_host (id,real_host_id,user_id,warehouse_id,host_name,display_name,account,password,cpu_core,memory,sys_image_id,sys_disk,data_disk,bandwidth,running_status,status,inner_ip,inner_port,sys_image_name,create_time,modified_time,outer_ip,outer_port,type,pool_id,is_auto_start,codeRate,frameRate) 
+			values (#{id},#{realHostId},#{userId},#{warehouseId},#{hostName},#{displayName},#{account},#{password},#{cpuCore},#{memory},#{sysImageId},#{sysDisk},#{dataDisk},#{bandwidth},#{runningStatus},#{status},#{innerIp},#{innerPort},#{sysImageName},#{createTime},#{modifiedTime},#{outerIp},#{outerPort},#{type},#{poolId},#{isAutoStartup},#{codeRate},#{frameRate})
 	</insert>
 	
 	<insert id="addHostIntoTimer">
@@ -807,7 +859,6 @@
 			ch.password,
 			ch.display_name,
 			ch.sys_image_name,
-			ch.sys_image_id,
 			ch.host_name,  
 			ch.cpu_core,
 			ch.memory, 
@@ -821,6 +872,8 @@
 			ch.outer_ip, 
 			ch.outer_port,
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			c.id tenant_id,
 			c.name tenant_name
 		from cloud_host ch 
@@ -841,6 +894,7 @@
 			ch.account,
 			ch.password,
 			ch.display_name,
+			ch.sys_image_id,
 			ch.sys_image_name,
 			ch.host_name,  
 			ch.cpu_core,
@@ -855,7 +909,9 @@
 			ch.outer_ip, 
 			ch.outer_port,
 			ch.pool_id,
-			ch.type
+			ch.type,
+			ch.codeRate,
+			ch.frameRate 
 		from cloud_host ch 
 		where ch.id = #{id}
 		order by ch.create_time desc
@@ -866,7 +922,9 @@
 			<set>
 				cpu_core = #{cpuCore},
 				memory = #{memory} ,
-				bandwidth = #{bandwidth}
+				bandwidth = #{bandwidth},
+				codeRate = #{codeRate},
+				frameRate = #{frameRate} 
 			</set>
 		where id = #{id}
 	</update>
@@ -895,6 +953,8 @@
         ch.outer_port,
         u.username userAccount,
         ch.type,
+        ch.codeRate,
+		ch.frameRate,
         m.name modelName,
         ch.assign_time
         FROM cloud_host ch
@@ -936,6 +996,8 @@
         ch.outer_port,
         u.username userAccount,
         ch.type,
+        ch.codeRate,
+		ch.frameRate,
         m.name modelName,
         ch.assign_time
         FROM cloud_host ch
@@ -962,6 +1024,8 @@
 			ch.host_name, 
 			ch.display_name, 
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			ch.cpu_core,
 			ch.memory, 
 			ch.sys_disk,
@@ -991,6 +1055,8 @@
 			ch.host_name, 
 			ch.display_name, 
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			ch.cpu_core,
 			ch.memory, 
 			ch.sys_disk,
@@ -1039,6 +1105,8 @@
 			ch.status,
 			ch.password,
 			ch.type,
+			ch.codeRate,
+			ch.frameRate,
 			ch.account,
 			ch.pool_id,
 			chcm.support_h264 supportH264

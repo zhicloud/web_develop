@@ -28,8 +28,8 @@ import com.zhicloud.ms.app.helper.RegionHelper;
 import com.zhicloud.ms.app.helper.RegionHelper.RegionData;
 import com.zhicloud.ms.app.propeties.AppProperties;
 import com.zhicloud.ms.common.util.json.JSONLibUtil;
+import com.zhicloud.ms.constant.AppConstant;
 import com.zhicloud.ms.constant.AppInconstant;
-import com.zhicloud.ms.httpGateway.HttpGatewayActiveAsyncChannelPool;
 import com.zhicloud.ms.httpGateway.HttpGatewayAsyncChannel;
 import com.zhicloud.ms.httpGateway.HttpGatewayManager;
 import com.zhicloud.ms.httpGateway.HttpGatewayReceiveChannel;
@@ -38,10 +38,14 @@ import com.zhicloud.ms.service.IDictionaryService;
 import com.zhicloud.ms.service.IOperLogService;
 import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
 import com.zhicloud.ms.transform.constant.TransformConstant;
+import com.zhicloud.ms.transform.mapper.ManSystemUserMapper;
 import com.zhicloud.ms.transform.service.ManSysUserService;
+import com.zhicloud.ms.transform.util.SendMail;
 import com.zhicloud.ms.transform.util.TransFormLoginHelper;
 import com.zhicloud.ms.transform.util.TransFormLoginInfo;
 import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
+import com.zhicloud.ms.transform.vo.ManSystemUserVO;
+import com.zhicloud.ms.util.NumberUtil;
 import com.zhicloud.ms.vo.DictionaryVO;
 
 /**
@@ -283,4 +287,88 @@ public class TransFormAdminController extends TransFormBaseAction{
     	return new MethodResult(MethodResult.SUCCESS, "修改成功");
     }
     
+    /**
+     * @Description:跳转找回密码界面
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping("/transform/findPwdPage")
+    public String FindPwdPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        logger.debug("TransFormAdminController.findPwdPage()");
+        return TransformConstant.transform_jsp_findpassword;
+    }
+    
+    /**
+     * @Description:验证用户名和绑定邮箱
+     * @param request
+     * @param response
+     * @throws ServletException 
+     * @throws IOExcept7ion
+     */
+    @RequestMapping("/transform/cheackuNameAndEmail")
+    @ResponseBody
+    public void cheackuNameAndEmail(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String usercount = request.getParameter("username");
+        String email = request.getParameter("email");
+        ManSystemUserVO  ManSystemUserVO = null;
+        if(null != usercount && !"".equals(usercount) && null != email && !"".equals(email)){
+        	ManSystemUserVO = manSysUserService.getUserByIdAndEamel(usercount,email);
+        	//查询到用户信息将验证码code以邮件发送出去
+        	if(null != ManSystemUserVO){
+        		if(usercount.equals(ManSystemUserVO.getUsercount()) && email.equals(ManSystemUserVO.getEmail())){
+        			Map<String, Object> user = new LinkedHashMap<String, Object>();
+            		SendMail sMail = new SendMail();
+            		user.put("email", ManSystemUserVO.getEmail());
+            		String code = NumberUtil.getCode();
+            		ManSystemUserVO.setPassword(code);
+            		user.put("code", code);//随机生成的4个数字
+            		//发送邮件
+            		sMail.resetPasswordEmailCode(user);
+        		}else{
+        			printWriter(response, JSONLibUtil.toJSONString(ManSystemUserVO));
+        		}
+        	}
+        	
+            printWriter(response, JSONLibUtil.toJSONString(ManSystemUserVO));
+        }else{
+        	printWriter(response, JSONLibUtil.toJSONString(ManSystemUserVO));
+        }
+        
+        
+    }
+    
+    /**
+     * @Description:跳转重置密码页面
+     * @param request
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping("/transform/toSetPasswordPage")
+    public String toSetPasswordPage(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        logger.debug("TransFormAdminController.toSetPasswordPage()");
+        String uid = request.getParameter("uid");
+        request.setAttribute("uid", uid);
+        return TransformConstant.transform_jsp_tosetpwd;
+    }
+    
+    /**
+     * @Description:找回密码
+     * @param request
+     * @param response
+     * @throws ServletException 
+     * @throws IOExcept7ion
+     */
+    @RequestMapping("/transform/findUserPassWord")
+    @ResponseBody
+    public void findUserPassWord(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String billid = request.getParameter("uid");
+        String respassword = request.getParameter("password");
+        Map<String, String> condition = new LinkedHashMap<String, String>();
+        condition.put("billid", billid);
+        condition.put("password", respassword);
+        String result = manSysUserService.resPasswordById(billid, respassword);
+        printWriter(response, JSONLibUtil.toJSONString(result));
+        //return TransformConstant.transform_jsp_findpassword;
+    }
 }

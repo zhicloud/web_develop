@@ -8,7 +8,11 @@
     <title>控制台-${productName}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8" />
-
+    <script src="<%=request.getContextPath() %>/js/artDialog/artDialog.js?skin=chrome"></script>
+	<script src="<%=request.getContextPath() %>/js/artDialog/jquery.artDialog.source.js"></script>
+	<script src="<%=request.getContextPath() %>/js/artDialog/plugins/iframeTools.js?skin=chrome"></script>
+	<script src="<%=request.getContextPath() %>/js/artDialog/plugins/iframeTools.source.js"></script>
+	
     <link rel="icon" type="image/ico" href="<%=request.getContextPath()%>/assets/images/favicon.ico" />
     <!-- Bootstrap -->
     <link href="<%=request.getContextPath()%>/assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
@@ -129,6 +133,7 @@
                             <option value="">请选择主机</option> 
                             <c:forEach items="${hostList }" var="sdi">
                                  	<c:if test="${sdi.realHostId!=null }">
+                                 		<!-- <option value="${sdi.realHostId }">${sdi.userAccount}-${sdi.displayName }</option> -->
                                  		<option value="${sdi.realHostId }">${sdi.userAccount}-${sdi.displayName }</option>
                                  	</c:if>
                              </c:forEach>   
@@ -172,7 +177,7 @@
 
                      <div class="form-group form-footer footer-white">
                         <div class="col-sm-offset-4 col-sm-8">
-                          <button type="button" class="btn btn-greensea" onclick="saveForm();"><i class="fa fa-plus"></i>
+                          <button type="button" class="btn btn-greensea" onclick="gotodialog();"><i class="fa fa-plus"></i>
                               <span> 创 建 </span></button>
                           <button type="reset" class="btn btn-red" onclick="window.location.reload();"><i class="fa fa-refresh"></i>
                               <span> 重 置 </span></button>
@@ -318,6 +323,24 @@
       
       
     });
+    
+    function gotodialog(){
+    	var run = $("#fromHostId  option:selected").val();
+    	if($("#fromHostId  option:selected").text() == '请选择主机'){
+    		alert("请选择主机");
+    		return false;
+    	}else{
+    		var url = '<%=request.getContextPath()%>/backresume/gotodialog?runningStatus='+run;
+        	art.dialog.open(url, {
+            	id:"dialogBack",
+                title:'系统提示',
+                width: 420,
+                height: 200,
+                lock: true
+            });
+    	}
+    }
+    
     function saveForm(){
 		if(isCommited){
      		return false;
@@ -366,7 +389,7 @@
 	     }); 
 		
 	}
-      
+    
     </script>
   </body>
 </html>

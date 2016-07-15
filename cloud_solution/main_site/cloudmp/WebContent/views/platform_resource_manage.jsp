@@ -554,11 +554,11 @@ $(function(){
 			shadowSize: 0
 		},
 		yaxis: { 
-			tickColor: 'rgba(50,50,50,.2)',
+			tickColor: 'rgba(255,255,255,.2)',
 			min: 0,
 			max: maxY,
 			font :{
-				color: 'rgba(50,50,50,.8)'
+				color: 'rgba(255,255,255,.8)'
 			}
 		},  
 		grid: { 
@@ -568,7 +568,7 @@ $(function(){
 				bottom: 1,
 				left: 1
 			},
-			color :  'rgba(50,50,50,.2)' 
+			color :  'rgba(255,255,255,.2)' 
 		},
 		tooltip: false,
 		xaxis: { 
@@ -671,8 +671,8 @@ $(function(){
 		min: 0,
 		max: 100,
 		title: "全局内存占用率(%)",
-		titleFontColor : "rgba(50,50,50,.6)",
-		valueFontColor:  "rgba(50,50,50,.8)"
+		titleFontColor : "rgba(255,255,255,.6)",
+		valueFontColor:  "rgba(255,255,255,.8)"
 	});
 
 	var g02 = new JustGage({
@@ -682,8 +682,8 @@ $(function(){
 		min: 0,
 		max: 100,
 		gaugeWidthScale: .4,
-		titleFontColor : "rgba(50,50,50,.6)",
-		valueFontColor:  "rgba(50,50,50,.8)"
+		titleFontColor : "rgba(255,255,255,.6)",
+		valueFontColor:  "rgba(255,255,255,.8)"
 	});
 
 	var g03 = new JustGage({
@@ -693,8 +693,8 @@ $(function(){
 		min: 0,
 		max: 100,
 		gaugeWidthScale: .4,
-		titleFontColor : "rgba(50,50,50,.6)",
-		valueFontColor:  "rgba(50,50,50,.8)"
+		titleFontColor : "rgba(255,255,255,.6)",
+		valueFontColor:  "rgba(255,255,255,.8)"
 	});
 
 	//update instance every 5 sec

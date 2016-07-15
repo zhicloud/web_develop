@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+ 
+<mapper namespace="com.zhicloud.ms.mapper.HostMigrateionMapper">
+
+	<resultMap type="com.zhicloud.ms.vo.HostMigrationVO" id="HostMigrationVO">
+		<id     column="id"            property="id" />
+		<id     column="realHostId"    property="realHostId" />
+		<result column="hostName"      property="hostName" /> 
+		<result column="localhostNC"   property="localhostNC" /> 
+		<result column="toNC"          property="toNC" />
+		<result column="time"     	   property="time" />
+		<result column="status"        property="status" />
+	</resultMap>
+	
+	
+	<select id="queryHostMigration" resultMap="HostMigrationVO">
+		select 
+			ch.id,
+			ch.realHostId,
+			ch.hostName,
+			ch.localhostNC,
+			ch.toNC,
+			ch.time,
+			ch.status 
+		from cloud_host_migartion ch 
+		where ch.status != 0
+	</select>
+	
+	
+	<select id="queryById" resultMap="HostMigrationVO">
+		select 
+			ch.id,
+			ch.realHostId,
+			ch.hostName,
+			ch.localhostNC,
+			ch.toNC,
+			ch.time,
+			ch.status 
+		from cloud_host_migartion ch 
+		where ch.id = #{id}
+		and ch.status != 0
+	</select>
+	
+	<update id="updateById">
+		update cloud_host_migartion
+		<set>
+			status = #{status} 
+		</set>
+		where id = #{id}
+	</update>
+	 
+	
+	<insert id="addHostMigration">
+		insert into cloud_host_migartion (id,realHostId, hostName,localhostNC, toNC,time,status) values (#{id},#{realHostId}, #{hostName}, #{localhostNC}, #{toNC},#{time},#{status})
+	</insert>
+	
+	<delete id="delById">
+		delete from cloud_host_migartion where id=#{id}
+	</delete>
+	
+</mapper>

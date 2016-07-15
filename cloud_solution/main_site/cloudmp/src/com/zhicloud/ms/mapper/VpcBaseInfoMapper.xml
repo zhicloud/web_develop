@@ -5,8 +5,10 @@
 
 	<resultMap type="com.zhicloud.ms.vo.VpcBaseInfoVO" id="VpcBaseInfoVO">
 		<id     column="id"               property="id" />
-		<result column="real_vpc_id"      property="realVpcId" /> 
-		<result column="user_id"          property="userId" />
+		<result column="real_vpc_id"      property="realVpcId" />
+        <result column="group_id"         property="groupId" />
+        <result column="group_name"       property="groupName" />
+        <result column="user_id"          property="userId" />
 		<result column="create_time"      property="createTime" />
 		<result column="modified_time"    property="modifiedTime" />
 		<result column="name"             property="name" />
@@ -25,19 +27,20 @@
 			vbi.user_id,
 			vbi.name,
 			vbi.display_name,
+			g.group_name,
 			vbi.description,
 			vbi.status,
 			vbi.host_amount,
 			vbi.ip_amount,
 			vbi.create_time,
 			vbi.modified_time
-		from vpc_base_info vbi
-		where vbi.status != 3 
+		from vpc_base_info vbi, sys_group g
+		where vbi.status != 3 AND vbi.group_id = g.id
 	</select>
 	
 	<insert id="addVpc" >
-		insert into vpc_base_info (id,real_vpc_id,user_id,name,display_name,description,status,host_amount,ip_amount,create_time) 
-		values (#{id},#{realVpcId},#{userId},#{name},#{displayName},#{description},#{status},#{hostAmount},#{ipAmount},#{createTime})
+		insert into vpc_base_info (id,real_vpc_id,user_id,group_id, name,display_name,description,status,host_amount,ip_amount,create_time)
+		values (#{id},#{realVpcId},#{userId},#{groupId},  #{name},#{displayName},#{description},#{status},#{hostAmount},#{ipAmount},#{createTime})
 	</insert>
 	
 	<update id="updateVpcIpAmount">

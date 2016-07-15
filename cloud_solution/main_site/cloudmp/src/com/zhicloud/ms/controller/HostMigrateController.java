@@ -129,7 +129,6 @@ public class HostMigrateController {
             return new MethodResult(MethodResult.FAIL,"您没有迁移的权限，请联系管理员");
         }
         String sessionId = null;
-        Map<String, Object> parameter = new LinkedHashMap<String, Object>();
         CloudHostVO host = cloudHostService.getById(hostId);
           
         try{
@@ -137,7 +136,7 @@ public class HostMigrateController {
             sessionId = channel.getSessionId(); 
             JSONObject result = channel.hostMigrate(host.getRealHostId(), nodeName, type);
             if (HttpGatewayResponseHelper.isSuccess(result) == true) {
-                AppInconstant.cloudHostMigreateSessionId.put(sessionId, hostId);
+                AppInconstant.migrateProgress.put(sessionId, hostId);
                 AppInconstant.cloudHostMigrate.put(hostId, 0);
                  return new MethodResult(MethodResult.SUCCESS,"迁移开始");
             } else {

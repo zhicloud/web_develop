@@ -1,9 +1,9 @@
 package com.zhicloud.ms.vo; 
 
-import java.text.ParseException;
-
 import com.zhicloud.ms.util.DateUtil;
 import com.zhicloud.ms.util.json.JSONBean;
+
+import java.text.ParseException;
 
 /**
  * @author ZYFTMX
@@ -17,7 +17,26 @@ public class VpcBaseInfoVO implements JSONBean{
 	private String modifiedTime;
 	private String realVpcId;
 	private String name;
-	private String displayName;
+    private String groupId;
+    private String groupName;
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    private String displayName;
 	private String description;
 	private Integer status;
 	private Integer hostAmount;

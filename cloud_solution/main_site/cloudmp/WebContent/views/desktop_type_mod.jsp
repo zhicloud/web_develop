@@ -31,6 +31,9 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+    .displayDiv{display: none;}
+    </style>
   </head>
   <body class="bg-1">
 
@@ -229,23 +232,23 @@
                         <div class="col-sm-8"> 
                           <div class="radio radio-transparent col-md-2">
                             <input type="radio" name="bandwidth" id="optionsRadios43" value="1" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
-                            <label for="optionsRadios43">1M</label>
+                            <label for="optionsRadios43">1Mb</label>
                           </div>
                           <div class="radio radio-transparent col-md-2">
                             <input type="radio" name="bandwidth" id="optionsRadios38" value="2" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
-                            <label for="optionsRadios38">2M</label>
+                            <label for="optionsRadios38">2Mb</label>
                           </div>
                           <div class="radio radio-transparent col-md-2">
                             <input type="radio" name="bandwidth" id="optionsRadios39" value="4" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
-                            <label for="optionsRadios39">4M</label>
+                            <label for="optionsRadios39">4Mb</label>
                           </div>
                           <div class="radio radio-transparent col-md-2">
                             <input type="radio" name="bandwidth" id="optionsRadios40" value="6" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
-                            <label for="optionsRadios40">6M</label>
+                            <label for="optionsRadios40">6Mb</label>
                           </div>
                           <div class="radio radio-transparent col-md-4">
                             <input type="radio" name="bandwidth" id="optionsRadios41" value="10" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
-                            <label for="optionsRadios41">10M</label>
+                            <label for="optionsRadios41">10Mb</label>
                           </div> 
                           <div class="radio radio-transparent col-md-2">
                             <input type="radio" name="bandwidth" id="optionsRadios42" value="" onclick="$('#bandwidthdiy').removeAttr('disabled')">
@@ -327,6 +330,42 @@
                         </div>
                       </div>
                       
+                      <div class="form-group">
+                        <label for="input01" class="col-sm-2 control-label">操作系统 *</label>
+                        <div class="col-sm-4" id="operationSystemSelectbox">
+                           <select class="chosen-select chosen-transparent form-control" name="operationSystem" id="operationSystem" parsley-trigger="change" parsley-required="true" parsley-error-container="#operationSystemSelectbox">
+                           
+                           <c:if test="${chcm.getOperationSystem()=='Windows_7_32'}">
+	                           <option value="Windows_7_32">Windows_7_32</option>
+	                           <option value="Windows_7_64">Windows_7_64</option>
+	                           <option value="CentOS_6_32">CentOS_6_3</option>
+	                           <option value="CentOS_6_64">CentOS_7_32</option>
+                           </c:if>
+                           
+                           <c:if test="${chcm.getOperationSystem()=='Windows_7_64'}">
+                          	   <option value="Windows_7_64">Windows_7_64</option>
+	                           <option value="Windows_7_32">Windows_7_32</option>
+	                           <option value="CentOS_6_32">CentOS_6_3</option>
+	                           <option value="CentOS_6_64">CentOS_7_32</option>
+                           </c:if>
+                           
+                           <c:if test="${chcm.getOperationSystem()=='CentOS_6_32'}">
+                           	   <option value="CentOS_6_32">CentOS_6_3</option>
+                          	   <option value="Windows_7_64">Windows_7_64</option>
+	                           <option value="Windows_7_32">Windows_7_32</option>
+	                           <option value="CentOS_6_64">CentOS_7_32</option>
+                           </c:if>
+                           
+                           <c:if test="${chcm.getOperationSystem()=='CentOS_7_32'}">
+                           	   <option value="CentOS_6_64">CentOS_7_32</option>
+                          	   <option value="Windows_7_64">Windows_7_64</option>
+	                           <option value="Windows_7_32">Windows_7_32</option>
+	                           <option value="CentOS_6_32">CentOS_6_3</option>
+                           </c:if>
+                         </select>
+                          </div>
+                          
+                      </div>
                       
                       <div class="form-group">
                         <label for="input01" class="col-sm-2 control-label">编码格式 *</label>
@@ -339,13 +378,55 @@
                           </div>
                           
                       </div>
+                      <input id="sH264" type="hidden" value="${chcm.supportH264}"/>
+                      <div id="supportH264CheackId" class="displayDiv">
+	                      <div class="form-group" id="h264">
+		                      <div class="form-group">
+			                      <label for="input01" class="col-sm-2 control-label">码率 *</label>
+			                      <div class="col-sm-8"> 
+			                        <div class="radio radio-transparent col-md-2">
+			                          <input type="radio" name="codeRate" id="optionsRadios50" value="2" checked onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+			                          <label for="optionsRadios50">2M</label>
+			                        </div>
+			                        <div class="radio radio-transparent col-md-2">
+			                          <input type="radio" name="codeRate" id="optionsRadios51" value="4" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+			                          <label for="optionsRadios51">4M</label>
+			                        </div>
+			                        <div class="radio radio-transparent col-md-2">
+			                          <input type="radio" name="codeRate" id="optionsRadios52" value="8" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+			                          <label for="optionsRadios52">8M</label>
+			                        </div>
+			                        <div class="radio radio-transparent col-md-2">
+			                          <input type="radio" name="codeRate" id="optionsRadios53" value="10" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+			                          <label for="optionsRadios53">10M</label>
+			                        </div>
+			                     </div>
+		                     </div>
+		                        
+		                     <div class="form-group">
+		                     	<label for="input01" class="col-sm-2 control-label">帧率 *</label>
+		                     	<div class="col-sm-8"> 
+		                       		<div class="radio radio-transparent col-md-2">
+		                         		<input type="radio" name="frameRate" id="optionsRadios46" value="15" checked onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+		                         		<label for="optionsRadios46">15帧</label>
+		                       		</div>
+			                       		<div class="radio radio-transparent col-md-2">
+			                          	<input type="radio" name="frameRate" id="optionsRadios47" value="20" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+			                          	<label for="optionsRadios47">20帧</label>
+		                            </div>
+		                       	    <div class="radio radio-transparent col-md-2">
+			                           	<input type="radio" name="frameRate" id="optionsRadios48" value="25" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+			                           	<label for="optionsRadios48">25帧</label>
+		                            </div>
+		                            <div class="radio radio-transparent col-md-2">
+			                          	<input type="radio" name="frameRate" id="optionsRadios49" value="30" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+			                          	<label for="optionsRadios49">30帧</label>
+		                            </div>
+		                    	</div>
+		                     </div>
+	                     </div>
+	                 </div>
                        
-                      
-                       
-                      
-
-                       
-
                      <div class="form-group form-footer footer-white">
                         <div class="col-sm-offset-4 col-sm-8">
                           <button type="button" class="btn btn-greensea" onclick="saveForm();"><i class="fa fa-plus"></i>
@@ -491,10 +572,24 @@
         if('${chcm.sysImageId}'==''){
         	$("#empty_system").click();
         }
-      
+        var h264 = $("#sH264").val();
+        divDisplay(h264); 
+
+        $('#supportH264').change(function() {
+        	divDisplay($("#supportH264  option:selected").val());
+		})
        
       
     });
+    
+    function divDisplay(id){
+    	if(id ==1){
+        	$("#supportH264CheackId").removeClass("displayDiv");
+        }else{
+        	$("#supportH264CheackId").addClass("displayDiv");
+        }
+    }
+    
     function saveForm(){
 		jQuery.ajax({
 	        url: path+'/main/checklogin',
@@ -536,22 +631,25 @@
 	}
     
     function initData(){
-    	$('input[name="bandwidth"]').removeAttr("checked");
-    	$('input[name="dataDisk"]').removeAttr("checked");
+    	//$('input[name="bandwidth"]').removeAttr("checked");
+    	//$('input[name="dataDisk"]').removeAttr("checked");
         $("input[name='bandwidth'][value='${chcm.bandwidthText}']").attr("checked","checked");
         $("input[name='cpuCore'][value='${chcm.cpuCore}']").attr("checked","checked");
         $("input[name='memory'][value='${chcm.memoryText}']").attr("checked","checked"); 
         $("input[name='dataDisk'][value='${chcm.dataDiskText}']").attr("checked","checked");
+        $("input[name='codeRate'][value='${chcm.codeRate}']").attr("checked","checked");
+        $("input[name='frameRate'][value='${chcm.frameRate}']").attr("checked","checked");
+        
         if($('input[name="dataDisk"]:checked').val()==null){
-      	  $("#optionsRadios37").click();
-      	  $("#optionsRadios37").attr("checked","checked");
-      	  $("#diskdiy").val('${chcm.dataDiskText}');
+      	     $("#optionsRadios37").click();
+      	     $("#optionsRadios37").attr("checked","checked");
+      	     $("#diskdiy").val('${chcm.dataDiskText}');
         }
         if($('input[name="bandwidth"]:checked').val()==null){
-      	  $("#optionsRadios42").click();
-      	  $("#optionsRadios42").attr("checked","checked");
-      	  $("#bandwidthdiy").val('${chcm.bandwidthText}');
-        }  
+      	    $("#optionsRadios42").click();
+      	    $("#optionsRadios42").attr("checked","checked");
+      	    $("#bandwidthdiy").val('${chcm.bandwidthText}');
+        }
     }
       
     </script>

@@ -29,6 +29,16 @@ public class CloudHostWarehouse {
 	
     private String pool_name;// 资源池名称
     private Integer max_creating;// 最大创建数
+    
+    /**
+	 * 码率，默认为0
+	 */
+	private Integer codeRate;
+	
+	/**
+	 * 帧率 ,默认为0
+	 */
+	private Integer frameRate;
 	
 	public String getId() {
 		return id;
@@ -156,6 +166,18 @@ public class CloudHostWarehouse {
     public void setMax_creating(Integer max_creating) {
         this.max_creating = max_creating;
     }
+	public Integer getCodeRate() {
+		return codeRate;
+	}
+	public void setCodeRate(Integer codeRate) {
+		this.codeRate = codeRate;
+	}
+	public Integer getFrameRate() {
+		return frameRate;
+	}
+	public void setFrameRate(Integer frameRate) {
+		this.frameRate = frameRate;
+	}
     
 	
 }

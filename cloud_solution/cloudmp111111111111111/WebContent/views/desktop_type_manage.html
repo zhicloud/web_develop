@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html>
+<!-- desktop_type_manage.html -->
+  <head>
+    <title>控制台-${productName}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+
+    <link rel="icon" type="image/ico" href="assets/images/favicon.ico" />
+    <!-- Bootstrap -->
+    <link href="assets/css/vendor/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/vendor/animate/animate.min.css">
+    <link type="text/css" rel="stylesheet" media="all" href="assets/js/vendor/mmenu/css/jquery.mmenu.all.css" />
+    <link rel="stylesheet" href="assets/js/vendor/videobackground/css/jquery.videobackground.css">
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap-checkbox.css">
+
+    <link rel="stylesheet" href="assets/js/vendor/rickshaw/css/rickshaw.min.css">
+    <link rel="stylesheet" href="assets/js/vendor/morris/css/morris.css">
+    <link rel="stylesheet" href="assets/js/vendor/tabdrop/css/tabdrop.css">
+    <link rel="stylesheet" href="assets/js/vendor/summernote/css/summernote.css">
+    <link rel="stylesheet" href="assets/js/vendor/summernote/css/summernote-bs3.css">
+    <link rel="stylesheet" href="assets/js/vendor/chosen/css/chosen.min.css">
+    <link rel="stylesheet" href="assets/js/vendor/chosen/css/chosen-bootstrap.css">
+
+    <link href="assets/css/zhicloud.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="assets/js/html5shiv.js"></script>
+      <script src="assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body class="bg-1">
+
+ 
+
+    <!-- Preloader -->
+    <div class="mask"><div id="loader"></div></div>
+    <!--/Preloader -->
+
+    <!-- Wrap all page content here -->
+    <div id="wrap">
+
+      
+
+
+      <!-- Make page fluid -->
+      <div class="row">
+        
+
+
+
+
+        <!-- Fixed navbar -->
+        <div class="navbar navbar-default navbar-fixed-top navbar-transparent-black mm-fixed-top" role="navigation" id="navbar">
+          
+
+
+          <!-- Branding -->
+          <div class="navbar-header col-md-2">
+            <a class="navbar-brand" href="index.html">
+              <strong>致云</strong>云平台管理中心
+            </a>
+            <div class="sidebar-collapse">
+              <a href="#">
+                <i class="fa fa-bars"></i>
+              </a>
+            </div>
+          </div>
+          <!-- Branding end -->
+
+
+          <!-- .nav-collapse -->
+          <div class="navbar-collapse">
+                        
+            <!-- Page refresh -->
+            <ul class="nav navbar-nav refresh">
+              <li class="divided">
+                <a href="#" class="page-refresh"><i class="fa fa-refresh"></i></a>
+              </li>
+            </ul>
+            <!-- /Page refresh -->
+
+            <!-- Search -->
+            <div class="search" id="main-search">
+              <i class="fa fa-search"></i> <input type="text" placeholder="关键字">
+            </div>
+            <!-- Search end -->
+
+            <!-- Quick Actions -->
+            <ul class="nav navbar-nav quick-actions">
+              
+
+              <li class="dropdown divided">
+                
+                <a class="dropdown-toggle button" data-toggle="dropdown" href="#">
+                  <i class="fa fa-envelope"></i>
+                  <span class="label label-transparent-black">2</span>
+                </a>
+
+                <ul class="dropdown-menu wider arrow nopadding messages">
+                  <li><h1>您有 <strong>2</strong> 个新的短消息</h1></li>
+                  <li>
+                    <a class="cyan" href="#">
+                      <div class="profile-photo">
+                        <img src="assets/images/profile-photo.png" alt />
+                      </div>
+                      <div class="message-info">
+                        <span class="sender">董孔明</span>
+                        <span class="time">12 分钟前</span>
+                        <div class="message-content">172.168.1.2云服务器网络访问很慢，请看看时什么原因？谢谢</div>
+                      </div>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a class="green" href="#">
+                      <div class="profile-photo">
+                        <img src="assets/images/minimal-logo.png" alt />
+                      </div>
+                      <div class="message-info">
+                        <span class="sender">系统消息</span>
+                        <span class="time">1 小时前</span>
+                        <div class="message-content">自动检测并加入一台宿主机节点，自动分配IP 172.168.1.239</div>
+                      </div>
+                    </a>
+                  </li>
+
+                  <li class="topborder"><a href="#">查看全部短消息 <i class="fa fa-angle-right"></i></a></li>
+                </ul>
+
+              </li>
+
+              <li class="dropdown divided">
+                
+                <a class="dropdown-toggle button" data-toggle="dropdown" href="#">
+                  <i class="fa fa-bell"></i>
+                  <span class="label label-transparent-black">2</span>
+                </a>
+
+                <ul class="dropdown-menu wide arrow nopadding bordered">
+                  <li><h1>你有 <strong>2</strong> 个新告警消息</h1></li>
+                  
+
+                  <li>
+                    <a href="#">
+                      <span class="label label-red"><i class="fa fa-power-off"></i></span>
+                      NC节点：172.168.1.239停止服务.
+                      <span class="small">27 分钟前</span>
+                    </a>
+                  </li>
+
+                  <li>
+                    <a href="#">
+                      <span class="label label-orange"><i class="fa fa-power-off"></i></span>
+                      DS节点：172.168.1.219停止服务.
+                      <span class="small">1 小时前</span>
+                    </a>
+                  </li>
+
+                 
+
+                   <li><a href="#">查看全部告警消息 <i class="fa fa-angle-right"></i></a></li>
+                </ul>
+
+              </li>
+
+              <li class="dropdown divided user" id="current-user">
+                <div class="profile-photo">
+                  <img src="assets/images/profile-photo.png" alt />
+                </div>
+                <a class="dropdown-toggle options" data-toggle="dropdown" href="#">
+                  平台管理员 <i class="fa fa-caret-down"></i>
+                </a>
+                
+                <ul class="dropdown-menu arrow settings">
+
+                  <li>
+                    
+                    <h3>更换主题风格:</h3>
+                    <ul id="color-schemes">
+                      <li><a href="#" class="bg-1"></a></li>
+                      <li><a href="#" class="bg-2"></a></li>
+                      <li><a href="#" class="bg-3"></a></li>
+                      <li><a href="#" class="bg-4"></a></li>
+                      <li><a href="#" class="bg-5"></a></li>
+                      <li><a href="#" class="bg-6"></a></li>
+                    </ul>
+
+                    
+
+                  </li>
+
+                  <li class="divider"></li>
+
+                  <li>
+                    <a href="#"><i class="fa fa-user"></i> 账号管理</a>
+                  </li>
+
+
+                  <li>
+                    <a href="#"><i class="fa fa-envelope"></i> 短消息 <span class="badge badge-red" id="user-inbox">2</span></a>
+                  </li>
+
+                  <li class="divider"></li>
+
+                  <li>
+                    <a href="login.html"><i class="fa fa-power-off"></i> 退出登录</a>
+                  </li>
+                </ul>
+              </li>
+
+           
+            </ul>
+            <!-- /Quick Actions -->
+
+
+
+            <!-- Sidebar -->
+            <ul class="nav navbar-nav side-nav" id="sidebar">
+              
+              <li class="collapsed-content"> 
+                <ul>
+                  <li class="search"><!-- Collapsed search pasting here at 768px --></li>
+                </ul>
+              </li>
+
+              <li class="navigation" id="navigation">
+                <a href="#" class="sidebar-toggle" data-toggle="#navigation">平 台 控 制 面 板<i class="fa fa-angle-up"></i></a>
+                
+                <ul class="menu">
+                  
+                  <li class="dropdown" >
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <i class="fa fa-tachometer"></i> 状态监控<b class="fa fa-plus dropdown-plus"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li >
+                        <a href="index.html">
+                          <i class="fa fa-caret-right"></i> 全局实时状态
+                        </a>
+                      </li>
+                      <li>
+                        <a href="server_status.html">
+                          <i class="fa fa-caret-right"></i> 服务器状态
+                        </a>
+                      </li>
+                      <li>
+                        <a href="cluster_status.html">
+                          <i class="fa fa-caret-right"></i> 集群状态
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+
+
+
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <i class="fa fa-sitemap"></i> 平台架构 <b class="fa fa-plus dropdown-plus"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a href="room_manage.html">
+                          <i class="fa fa-caret-right"></i> 机房清单管理
+                        </a>
+                      </li>
+                      <li>
+                        <a href="rack_manage.html">
+                          <i class="fa fa-caret-right"></i> 机架清单管理
+                        </a>
+                      </li>
+                      <li>
+                        <a href="server_manage.html">
+                          <i class="fa fa-caret-right"></i> 服务器清单管理
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <i class="fa fa-support"></i> 资源池 <b class="fa fa-plus dropdown-plus"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a href="computing_pool.html">
+                          <i class="fa fa-caret-right"></i> 计算资源池
+                        </a>
+                      </li>
+                      <li>
+                        <a href="storage_pool.html">
+                          <i class="fa fa-caret-right"></i> 存储资源池
+                        </a>
+                      </li>
+                      <li>
+                        <a href="ip_pool.html">
+                          <i class="fa fa-caret-right"></i> IP地址资源池
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+
+				  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <i class="fa fa-server"></i> 云服务器 <b class="fa fa-plus dropdown-plus"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li >
+                        <a href="host_manage.html">
+                          <i class="fa fa-caret-right"></i> 云服务器管理
+                        </a>
+                      </li>
+                      <li>
+                        <a href="host_add.html">
+                          <i class="fa fa-caret-right"></i> 创建云服务器
+                        </a>
+                      </li>
+                      <li>
+                        <a href="image_manage.html">
+                          <i class="fa fa-caret-right"></i> 镜像管理
+                        </a>
+                      </li>
+                      <li>
+                        <a href="templet_manage.html">
+                          <i class="fa fa-caret-right"></i> 模板管理
+                        </a>
+                      </li>
+                      <li>
+                        <a href="host_pool_manage.html">
+                          <i class="fa fa-caret-right"></i> 资源池管理
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  
+                  
+
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <i class="fa fa-database"></i> 云存储 <b class="fa fa-plus dropdown-plus"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a href="disk_manage.html">
+                          <i class="fa fa-caret-right"></i> 云磁盘管理
+                        </a>
+                      </li>
+                      <li>
+                        <a href="disk_add.html">
+                          <i class="fa fa-caret-right"></i> 创建云磁盘
+                        </a>
+                      </li>
+                      <li>
+                        <a href="snapshot_manage.html">
+                          <i class="fa fa-caret-right"></i> 快照管理
+                        </a>
+                      </li>
+                      <li>
+                        <a href="disk_pool_manage.html">
+                          <i class="fa fa-caret-right"></i> 存储资源池管理
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+
+
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <i class="fa fa-cloud"></i> 专属云 <b class="fa fa-plus dropdown-plus"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a href="vpc_manage.html">
+                          <i class="fa fa-caret-right"></i> 专属云管理
+                        </a>
+                      </li>
+                      <li>
+                        <a href="vpc_add.html">
+                          <i class="fa fa-caret-right"></i> 创建专属云
+                        </a>
+                      </li>
+                      <li>
+                        <a href="vpc_pool_manage.html">
+                          <i class="fa fa-caret-right"></i> 资源池管理
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  
+
+				  <li class="dropdown  active open">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <i class="fa fa-desktop"></i> 云桌面 <b class="fa fa-plus dropdown-plus"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a href="desktop_manage.html">
+                          <i class="fa fa-caret-right"></i> 主机管理
+                        </a>
+                      </li>
+                      <li>
+                        <a href="box_manage.html">
+                          <i class="fa fa-caret-right"></i> 终端盒子管理
+                        </a>
+                      </li>
+                      <li  class="active">
+                        <a href="desktop_type_manage.html">
+                          <i class="fa fa-caret-right"></i> 主机配置管理
+                        </a>
+                      </li>
+                      <li>
+                        <a href="desktop_image_manage.html">
+                          <i class="fa fa-caret-right"></i> 镜像管理
+                        </a>
+                      </li>
+
+                      <li>
+                        <a href="desktop_pool_manage.html">
+                          <i class="fa fa-caret-right"></i> 资源池管理
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+
+                  
+
+				  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <i class="fa fa-bar-chart"></i> 统计报表 <b class="fa fa-plus dropdown-plus"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a href="physical_chart.html">
+                          <i class="fa fa-caret-right"></i> 运行状况（物理资源）
+                        </a>
+                      </li>
+                      <li>
+                        <a href="virtual_chart.html">
+                          <i class="fa fa-caret-right"></i> 服务状况（虚拟资源）
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  
+				  
+				  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                      <i class="fa fa-th-large"></i> 平台配置 <b class="fa fa-plus dropdown-plus"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                    <li>
+                        <a href="configure.html">
+                          <i class="fa fa-caret-right"></i> 平台配置管理
+                        </a>
+                      </li>
+                      <li>
+                        <a href="user_manage.html">
+                          <i class="fa fa-caret-right"></i> 用户管理
+                        </a>
+                      </li>
+                      <li>
+                        <a href="group_manage.html">
+                          <i class="fa fa-caret-right"></i> 群组管理
+                        </a>
+                      </li>
+                      <li>
+                        <a href="role_manage.html">
+                          <i class="fa fa-caret-right"></i> 角色管理
+                        </a>
+                      </li>
+                      <li>
+                        <a href="right_manage.html">
+                          <i class="fa fa-caret-right"></i> 权限管理
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  
+                </ul>
+
+              </li>
+
+
+              <li class="settings" id="general-settings">
+                <a href="#" class="sidebar-toggle underline" data-toggle="#general-settings">数据同步配置 <i class="fa fa-angle-up"></i></a>
+
+                <div class="form-group">
+                  <label class="col-xs-8 control-label">实时数据显示</label>
+                  <div class="col-xs-4 control-label">
+                    <div class="onoffswitch greensea">
+                      <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch-on" checked="">
+                      <label class="onoffswitch-label" for="switch-on">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>         
+
+              </li>
+
+              
+            </ul>
+            <!-- Sidebar end -->
+          </div>
+          <!--/.nav-collapse -->
+
+
+
+
+
+        </div>
+        <!-- Fixed navbar end -->
+
+        
+        <!-- Page content -->
+        <div id="content" class="col-md-12">
+          
+
+
+          <!-- page header -->
+          <div class="pageheader">
+            
+
+            <h2><i class="fa fa-desktop"></i> 云桌面管理</h2>
+            
+
+          </div>
+          <!-- /page header -->
+          
+
+          <!-- content main container -->
+          <div class="main">
+
+
+
+            
+
+
+            <!-- row -->
+            <div class="row">
+              
+              
+              <!-- col 6 -->
+          <div class="col-md-12">
+
+				  <section class="tile color transparent-black">
+
+
+ 
+                  <!-- tile header -->
+                  <div class="tile-header"> 
+
+                    <div class="controls">
+                      <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
+                    </div>
+                   
+                  </div>
+                  <!-- /tile header -->
+
+                        
+                    
+                       
+                  <div class="tile-body no-vpadding"> 
+                   
+                    <div class="table-responsive">
+                    
+                      <table  class="table table-datatable table-custom" id="basicDataTable">
+                        <thead>
+                          <tr>
+						    <th>
+                            <div class="checkbox check-transparent">
+                              <input type="checkbox" value="1" id="allchck">
+                              <label for="allchck"></label>
+                            </div>
+                          </th>
+                            <th class="sort-alpha">主机配置名称</th>
+                            <th class="sort-alpha">镜像</th>
+                            <th class="sort-amount">CPU</th>
+                            <th class="sort-numeric">内存</th>
+							<th class="sort-amount">硬盘</th>
+                            <th class="sort-amount">带宽</th>
+                            <th class="sort-alpha">创建时间</th>  
+                            <th>操作</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="odd gradeX">
+						          <td>
+									<div class="checkbox check-transparent">
+									  <input type="checkbox" value="1" id="chck05">
+									  <label for="chck05"></label>
+									</div>
+                                 </td>
+                                  <td>windows7高配</td>
+                                  <td>windows7纯净32位版</td>
+                                  <td>4核</td>
+                                  <td class="text-center"> 4G</td>
+								  <td>500G</td>
+									<td>4M</td>
+									<td>2015-01-02 09：00:00</td> 
+                                  <td> 
+                              <div class="btn-group">
+                                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                    操作 <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu" role="menu"> 
+                                    <li><a href="#">修改</a></li> 
+                                    <li class="divider"></li>
+                                    <li><a href="#">删除</a></li>
+                                  </ul>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr class="even gradeC">
+						          <td>
+									<div class="checkbox check-transparent">
+									  <input type="checkbox" value="1" id="chck05">
+									  <label for="chck05"></label>
+									</div>
+                                 </td>
+                                  <td>Trident</td>
+                                  <td>Internet
+                                           Explorer 5.0</td>
+                                  <td>Win 95+</td>
+                                  <td class="text-center">5</td>
+								  <td>500G</td>
+									<td>4M</td>
+									<td>2015-01-02 09：00:00</td> 
+                                  <td> 
+                              <div class="btn-group">
+                                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                    操作 <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu" role="menu"> 
+                                    <li><a href="#">修改</a></li> 
+                                    <li class="divider"></li>
+                                    <li><a href="#">删除</a></li>
+                                  </ul>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr class="odd gradeA">
+						          <td>
+									<div class="checkbox check-transparent">
+									  <input type="checkbox" value="1" id="chck05">
+									  <label for="chck05"></label>
+									</div>
+                                 </td>
+                                  <td>Trident</td>
+                                  <td>Internet
+                                           Explorer 5.5</td>
+                                  <td>Win 95+</td>
+                                  <td class="text-center">5.5</td>
+								  <td>500G</td>
+									<td>4M</td>
+									<td>2015-01-02 09：00:00</td> 
+                                  <td> 
+                              <div class="btn-group">
+                                  <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+                                    操作 <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu" role="menu"> 
+                                    <li><a href="#">修改</a></li> 
+                                    <li class="divider"></li>
+                                    <li><a href="#">删除</a></li>
+                                  </ul>
+                              </div>
+                            </td>
+                          </tr>
+                           
+                        </tbody>
+                      </table>
+                      
+                    </div>
+                    
+                    
+                    
+                  </div>
+                  <!-- /tile body -->
+
+ 
+                </section>
+
+
+                
+                
+              </div>
+           
+                           
+
+
+
+            </div>
+            <!-- /row -->
+
+
+            
+
+
+
+          </div>
+          <!-- /content container -->
+
+
+
+
+
+
+        </div>
+        <!-- Page content end -->
+
+
+
+
+      </div>
+      <!-- Make page fluid-->
+
+
+
+
+    </div>
+    <!-- Wrap all page content end -->
+
+
+
+    <section class="videocontent" id="video"></section>
+
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="assets/js/vendor/bootstrap/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="assets/js/vendor/mmenu/js/jquery.mmenu.min.js"></script>
+    <script type="text/javascript" src="assets/js/vendor/sparkline/jquery.sparkline.min.js"></script>
+    <script type="text/javascript" src="assets/js/vendor/nicescroll/jquery.nicescroll.min.js"></script>
+    <script type="text/javascript" src="assets/js/vendor/animate-numbers/jquery.animateNumbers.js"></script>
+    <script type="text/javascript" src="assets/js/vendor/videobackground/jquery.videobackground.js"></script>
+    <script type="text/javascript" src="assets/js/vendor/blockui/jquery.blockUI.js"></script>\
+
+    <script src="assets/js/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="assets/js/vendor/datatables/ColReorderWithResize.js"></script>
+    <script src="assets/js/vendor/datatables/colvis/dataTables.colVis.min.js"></script>
+    <script src="assets/js/vendor/datatables/tabletools/ZeroClipboard.js"></script>
+    <script src="assets/js/vendor/datatables/tabletools/dataTables.tableTools.min.js"></script>
+    <script src="assets/js/vendor/datatables/dataTables.bootstrap.js"></script>
+
+    <script src="assets/js/vendor/chosen/chosen.jquery.min.js"></script>
+
+    <script src="assets/js/minimal.min.js"></script>
+
+    <script>
+    $(function(){
+
+      // Add custom class to pagination div
+      $.fn.dataTableExt.oStdClasses.sPaging = 'dataTables_paginate pagination-sm paging_bootstrap paging_custom';
+	  var oper = '<div class="col-sm-2" style="width:20%;"><div class="input-group table-options">'+
+                          '<select class="chosen-select form-control" style= "padding-top: 0px; padding-bottom: 0px; height: 25px;">'+
+                            '<option>批量操作</option>'+
+                            '<option>删除</option>'+
+                          '</select>'+
+                          '<span class="input-group-btn">'+
+                           '<button class="btn btn-default" type="button">提交</button>'+
+                          '</span>'+
+                        '</div>'+
+                      '</div>';
+	  var add = '<button type="button" class="btn btn-red delete">'+
+                              '<i class="fa fa-plus"></i>'+
+                              '<span> 新增主机配置 </span>'+
+                    '</button> ';
+ 
+      /*************************************************/
+      /**************** BASIC DATATABLE ****************/
+      /*************************************************/
+
+      /* Define two custom functions (asc and desc) for string sorting */
+      jQuery.fn.dataTableExt.oSort['string-case-asc']  = function(x,y) {
+          return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+      };
+       
+      jQuery.fn.dataTableExt.oSort['string-case-desc'] = function(x,y) {
+          return ((x < y) ?  1 : ((x > y) ? -1 : 0));
+      };
+ 
+
+      /* Build the DataTable with third column using our custom sort functions */
+      var oTable01 = $('#basicDataTable').dataTable({
+        "sDom":
+          "R<'row'<'col-md-6'l><'col-md-6'f>r>"+
+          "t"+
+          "<'row'<'col-md-4 sm-center'i><'col-md-4'><'col-md-4 text-right sm-center'p>>",
+        "oLanguage": {
+          "sSearch": "搜索"
+        },
+        "aaSorting": [ [0,'asc'], [1,'asc'] ],
+        "aoColumns": [
+		  null,
+          null,
+          null,
+          { "sType": 'string-case' },
+          null,
+          null,
+		  null,
+		  null,
+		  null
+        ],
+        "fnInitComplete": function(oSettings, json) { 
+          $('.dataTables_filter input').attr("placeholder", "Search");
+        }
+      });
+ 
+ 
+
+      /* Get the rows which are currently selected */
+      function fnGetSelected(oTable01Local){
+        return oTable01Local.$('tr.row_selected');
+      };
+	  $("div[class='col-md-4 text-right sm-center']").prepend(oper);
+	    $("div[class='col-md-4 text-right sm-center']").attr("class","tile-footer text-right");
+	  $("#basicDataTable_length").html(add);
+
+       
+      
+    })
+      
+    </script>
+    
+  </body>
+</html>
+      

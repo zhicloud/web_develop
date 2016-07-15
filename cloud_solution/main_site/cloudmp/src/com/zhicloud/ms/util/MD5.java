@@ -104,10 +104,28 @@ public class MD5 {
 	    }
 	    return result;
 	  }
+	public static void stringReplace(String text) {
+		text = text.replace('j', 'i');
+	}
+
+	public static void bufferReplace(StringBuffer text) {
+		text = text.append("C");
+	}
+
+
 	
 	public static void main(String[] args) {
-		System.out.println(MD5.md5("username", "password"));
-		System.out.println(MD5.md5("usernamepassword"));
-		System.out.println(MD5.md5_16("usernamepassword"));
+//		System.out.println(MD5.md5("username", "password"));
+//		System.out.println(MD5.md5("usernamepassword"));
+//		System.out.println(MD5.md5_16("usernamepassword"));
+		String textString = new String("java");
+		StringBuffer textBuffer = new StringBuffer("java");
+
+		stringReplace(textString);
+		bufferReplace(textBuffer);
+
+		System.out.println(textString + textBuffer);
+
+
 	}
 }

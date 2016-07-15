@@ -131,7 +131,7 @@
                         <label for="input01" class="col-sm-2 control-label">主机类型选择*</label>
                         <div class="col-sm-4" id="selectbox"> 
                             <div class="col-sm-16" >
-                            	<select name="cloudHostConfigModelId" class="chosen-select chosen-transparent form-control" id="cloudHostConfigModelId" style="width:216px;" parsley-required="true" parsley-error-container="#selectbox">
+                            	<select name="cloudHostConfigModelId" class="chosen-select chosen-transparent form-control" id="cloudHostConfigModelId" style="width:137px;" parsley-required="true" parsley-error-container="#selectbox">
                                 <option value="" selected="selected">请选择</option>
                                 <c:forEach items="${cloudHostConfigModeList }" var="chcm"> 
                                 	<c:if test="${chcm.fileType != 1}">
@@ -145,11 +145,11 @@
                         </div>
                       </div>
                       
-                      <div class="form-group" id="qcw2" >
+                      <div class="form-group" id="qcw2">
                         <label for="input01" class="col-sm-2 control-label">主机类型选择*</label>
                         <div class="col-sm-4" id="selectbox"> 
-                            <div class="col-sm-16" >
-                            	<select name="cloudHostConfigModelId" class="chosen-select chosen-transparent form-control" id="cloudHostConfigModelId" style="width:216px;" parsley-required="true" parsley-error-container="#selectbox">
+                            <div class="col-sm-16">
+                            	<select name="cloudHostConfigModelId" class="chosen-select chosen-transparent form-control" id="cloudHostConfigModelId" style="width:137px;" parsley-required="true" parsley-error-container="#selectbox">
                                 <option value="" selected="selected">请选择</option>
                                 <c:forEach items="${cloudHostConfigModeList }" var="chcm">
                                    <c:if test="${chcm.fileType == 1 && chcm.sysImageId != null}">

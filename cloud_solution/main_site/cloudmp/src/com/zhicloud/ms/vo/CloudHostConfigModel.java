@@ -56,6 +56,21 @@ public class CloudHostConfigModel {
 	//镜像类型
 	private Integer fileType;
 	
+	/**
+	 * 码率，默认为0
+	 */
+	private Integer codeRate;
+	
+	/**
+	 * 帧率 ,默认为0
+	 */
+	private Integer frameRate;
+	
+	/**
+	 * 操作系统类型      如：{版本_版本号_os位数}， 如CentOS_6_32
+	 */
+	private String operationSystem;
+	
 	public String getId() {
 		return id;
 	}
@@ -265,8 +280,25 @@ public class CloudHostConfigModel {
     public void setFileType(Integer fileType) {
         this.fileType = fileType;
     }
+	public Integer getCodeRate() {
+		return codeRate;
+	}
+	public void setCodeRate(Integer codeRate) {
+		this.codeRate = codeRate;
+	}
+	public Integer getFrameRate() {
+		return frameRate;
+	}
+	public void setFrameRate(Integer frameRate) {
+		this.frameRate = frameRate;
+	}
+	public String getOperationSystem() {
+		return operationSystem;
+	}
+	public void setOperationSystem(String operationSystem) {
+		this.operationSystem = operationSystem;
+	}
 	
-    
-    
+	
 
 }

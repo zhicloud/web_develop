@@ -22,6 +22,7 @@ public class ComputeInfoExt extends ComputeInfo implements JSONBean{
     private int asyncStatus = -1;   // 异步通讯状态，-1：正在等待回调，0：操作失败，1：操作成功
     private String path; 			//共享存储/NAS专用，需要连接的共享存储路径
     private String crypt;			//共享存储/NAS专用，共享存储连接信息
+    private String hostCount;       //节点主机主机数量
 
 
 	  public String getIp() {
@@ -189,8 +190,15 @@ public class ComputeInfoExt extends ComputeInfo implements JSONBean{
         this.crypt = crypt;
     }
 
+    public String getHostCount() {
+		return hostCount;
+	}
 
-    public ComputeInfoExt clone() {
+	public void setHostCount(String hostCount) {
+		this.hostCount = hostCount;
+	}
+
+	public ComputeInfoExt clone() {
         ComputeInfoExt duplication = new ComputeInfoExt();
         duplication.setUuid(this.getUuid());
         duplication.setName(this.getName());
@@ -207,6 +215,7 @@ public class ComputeInfoExt extends ComputeInfo implements JSONBean{
         duplication.setMode3(this.getMode3());
         duplication.setPath(this.path);
         duplication.setCrypt(this.crypt);
+        duplication.setHostCount(this.hostCount);
 
         return duplication;
     }

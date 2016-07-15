@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"
+default-lazy-init="true">
+	
+	<context:component-scan base-package="com.zhicloud.ms"></context:component-scan>
+	<!-- 引入jdbc配置文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties" />
+
+    <!-- 开启@AspectJ AOP代理 -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!-- 任务调度器 -->
+    <task:scheduler id="scheduler" pool-size="10"/>
+
+    <!-- 任务执行器 -->
+    <task:executor id="executor" pool-size="10"/>
+
+    <!--开启注解调度支持 @Async @Scheduled-->
+    <task:annotation-driven executor="executor" scheduler="scheduler" proxy-target-class="true"/>
+
+
+    <!--创建jdbc数据源 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${driverClassName}" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${username}" />
+		<property name="password" value="${password}" />
+        <property name="validationQuery" value="select 1 from dual"/>
+    </bean>
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+	 	<property name="messageConverters">
+		  	<list>
+		   	<bean
+		    	class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+		  	</list>
+	 	</property>
+	</bean>
+	<!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" mode="proxy"/>
+	<!-- 创建SqlSessionFactory，同时指定数据源 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描mapping.xml文件 -->
+		<property name="mapperLocations"  value="classpath:com/zhicloud/ms/mapper/*.xml"></property>
+	</bean>
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="cloudHostService" class="com.zhicloud.ms.service.impl.CloudHostServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="hostMigrateService" class="com.zhicloud.ms.service.impl.HostMigrateServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="sysDiskImageService" class="com.zhicloud.ms.service.impl.SysDiskImageServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="dictionaryService" class="com.zhicloud.ms.service.impl.DictionaryServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="cloudHostWarehouseService" class="com.zhicloud.ms.service.impl.CloudHostWarehouseServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	
+	<bean id="backUpDetailService" class="com.zhicloud.ms.service.impl.BackUpDetailServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+
+    <bean id="setTimeOperationDetailService" class="com.zhicloud.ms.service.impl.SetTimeOperationDetailServiceImpl">
+        <property name="sqlSession" ref="sqlSession"></property>
+    </bean>
+
+    <bean id="emailConfigService" class="com.zhicloud.ms.service.impl.EmailConfigServiceImpl">
+        <property name="sqlSession" ref="sqlSession"></property>
+    </bean>
+    <bean id="emailTemplateService" class="com.zhicloud.ms.service.impl.EmailTemplateServiceImpl">
+        <property name="sqlSession" ref="sqlSession"></property>
+    </bean>
+    <bean id="smsConfigService" class="com.zhicloud.ms.service.impl.SmsConfigServiceImpl">
+        <property name="sqlSession" ref="sqlSession"></property>
+    </bean>
+    <bean id="smsTemplateService" class="com.zhicloud.ms.service.impl.SmsTemplateServiceImpl">
+        <property name="sqlSession" ref="sqlSession"></property>
+    </bean>
+    <bean id="messageRecordService" class="com.zhicloud.ms.service.impl.MessageRecordServiceImpl">
+        <property name="sqlSession" ref="sqlSession"></property>
+    </bean>
+    <bean id="timerInfoService" class="com.zhicloud.ms.service.impl.TimerInfoServiceImpl">
+        <property name="sqlSession" ref="sqlSession"></property>
+    </bean>
+    <bean id="platformResourceService" class="com.zhicloud.ms.service.impl.PlatformResourceServiceImpl">
+    </bean>
+    <bean id="imageUploadAddressService" class="com.zhicloud.ms.service.impl.ImageUploadAddressServiceImpl">
+        <property name="sqlSession" ref="sqlSession"></property>
+    </bean>
+
+
+	<!-- transform start -->
+		
+	<bean id="manSysLogService" class="com.zhicloud.ms.transform.serviceimpl.ManSysLogServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="manSysMenuService" class="com.zhicloud.ms.transform.serviceimpl.ManSysMenuServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="manSysRightService" class="com.zhicloud.ms.transform.serviceimpl.ManSysRightServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>
+	<bean id="manSysRoleService" class="com.zhicloud.ms.transform.serviceimpl.ManSysRoleServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>		
+	<bean id="ManSysUserService" class="com.zhicloud.ms.transform.serviceimpl.ManSysUserServiceImpl">
+		<property name="sqlSession" ref="sqlSession"></property>
+	</bean>				
+	<!-- transform end -->
+	<bean id="monitorService" class="com.zhicloud.ms.service.impl.MonitorServiceImpl">
+	</bean>		
+	<bean id="sysWarnService" class="com.zhicloud.ms.service.impl.SysWarnServiceImpl">
+	</bean>		
+	<bean id="computePoolService" class="com.zhicloud.ms.service.impl.ComputePoolServiceImpl">
+ 	</bean>	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+      <!-- set the max upload size100MB -->  
+      <property name="maxUploadSize">  
+           <value>21474836480</value>  
+      </property>  
+      <property name="maxInMemorySize">  
+          <value>4096</value>  
+      </property>  
+	</bean>
+
+	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+<!-- 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"> -->
+<!-- 		<property name="basePackage" value="com.zhicloud.ms.dao" /> -->
+<!-- 	</bean>	 -->
+</beans>

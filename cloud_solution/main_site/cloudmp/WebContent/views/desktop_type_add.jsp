@@ -30,6 +30,9 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+    <style type="text/css">
+    .displayDiv{display: none;}
+    </style>
   </head>
   <body class="bg-1">
 
@@ -108,7 +111,7 @@
                       <div class="form-group">
                         <label for="input01" class="col-sm-2 control-label">配置名称 *</label>
                         <div class="col-sm-4">
-                          <input type="text" class="form-control" id="name" name="name"  parsley-trigger="change" parsley-required="true" parsley-checkdesktoptypename="true" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
+                          <input type="text" class="form-control" id="name" name="name" style="color:rgba(0, 0, 0, 0.5);" parsley-trigger="change" parsley-required="true" parsley-checkdesktoptypename="true" parsley-minlength="2" parsley-maxlength="50" parsley-validation-minlength="1">
                         </div>
                       </div>
                       
@@ -254,7 +257,22 @@
                         </div>
                         </div>
                       </div>
-                         
+                    
+                    <div class="form-group">
+                        <label for="input01" class="col-sm-2 control-label">操作系统 *</label>
+                        <div class="col-sm-4" id="operationSystemSelectbox">
+                           <select class="chosen-select chosen-transparent form-control" name="operationSystem" id="operationSystem" parsley-trigger="change" parsley-required="true" parsley-error-container="#operationSystemSelectbox">
+                           <option value="1">请选择操作系统</option> 
+                           <option value="Windows_7_32">Windows_7_32</option>
+                           <option value="Windows_7_64">Windows_7_64</option>
+                           <option value="CentOS_6_32">CentOS_6_3</option>
+                           <option value="CentOS_6_64">CentOS_7_32</option>
+                         </select>
+                          </div>
+                          
+                      </div>
+                    
+                    
                     <div class="form-group my_div">
                         <label for="input01" class="col-sm-2 control-label">系统磁盘</label>
                         <div class="col-sm-10">
@@ -303,8 +321,54 @@
                           
                       </div>
                       
-
-                       
+                      <div id="supportH264CheackId" class="displayDiv">
+	                      <div class="form-group">
+	                        <label for="input01" class="col-sm-2 control-label">码率 *</label>
+	                        <div class="col-sm-8"> 
+	                          <div class="radio radio-transparent col-md-2">
+	                            <input type="radio" name="codeRate" id="optionsRadios50" value="2" checked onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+	                            <label for="optionsRadios50">2M</label>
+	                          </div>
+	                          <div class="radio radio-transparent col-md-2">
+	                            <input type="radio" name="codeRate" id="optionsRadios51" value="4" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+	                            <label for="optionsRadios51">4M</label>
+	                          </div>
+	                          <div class="radio radio-transparent col-md-2">
+	                            <input type="radio" name="codeRate" id="optionsRadios52" value="8" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+	                            <label for="optionsRadios52">8M</label>
+	                          </div>
+	                          <div class="radio radio-transparent col-md-2">
+	                            <input type="radio" name="codeRate" id="optionsRadios53" value="10" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+	                            <label for="optionsRadios53">10M</label>
+	                          </div>
+	                        </div>
+	                        </div>
+	                        
+	                        <div class="form-group">
+	                        	<label for="input01" class="col-sm-2 control-label">帧率 *</label>
+	                        	<div class="col-sm-8"> 
+	                          		<div class="radio radio-transparent col-md-2">
+	                            		<input type="radio" name="frameRate" id="optionsRadios54" value="15" checked onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+	                            		<label for="optionsRadios54">15帧</label>
+	                          		</div>
+	                          		<div class="radio radio-transparent col-md-2">
+		                            	<input type="radio" name="frameRate" id="optionsRadios55" value="20" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+		                            	<label for="optionsRadios55">20帧</label>
+		                            </div>
+	                          		<div class="radio radio-transparent col-md-2">
+			                            <input type="radio" name="frameRate" id="optionsRadios56" value="25" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+			                            <label for="optionsRadios56">25帧</label>
+		                            </div>
+		                            <div class="radio radio-transparent col-md-2">
+		                            	<input type="radio" name="frameRate" id="optionsRadios57" value="30" onclick="$('#bandwidthdiy').attr('disabled','disabled');$('#bandwidthdiy').val('')">
+		                            	<label for="optionsRadios57">30帧</label>
+		                            </div>
+	                       		</div>
+	                        </div>
+	                      </div>
+	                    </div>
+                      </div>
+                      
 
                      <div class="form-group form-footer footer-white">
                         <div class="col-sm-offset-4 col-sm-8">
@@ -451,10 +515,21 @@
     
       $('#slider').Link('lower').to($('#emptyDisk'));
       $('#slider').Link('lower').to($('#now'), 'html');
-      
-      
+      divDisplay('1'); 
+      $('#supportH264').change(function() {
+      	divDisplay($("#supportH264  option:selected").val());
+		})
       
     });
+    
+    function divDisplay(id){
+    	if(id ==1){
+        	$("#supportH264CheackId").removeClass("displayDiv");
+        }else{
+        	$("#supportH264CheackId").addClass("displayDiv");
+        }
+    }
+    
     function saveForm(){
 
 		jQuery.ajax({

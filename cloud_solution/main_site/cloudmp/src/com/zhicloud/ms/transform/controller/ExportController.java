@@ -276,7 +276,7 @@ public class ExportController {
     }
     
     /**
-     * @Description:主机管理导出数据
+     * @Description:主机仓库管理导出数据
      * @param request
      * @param response
      */
@@ -288,7 +288,7 @@ public class ExportController {
             response.setContentType("text/json; charset=utf-8");
             String[][] columns = new String[][] { {"仓库名称", "Name" }, {"主机类型", "HostTypeName" }, {"数量", "TotalAmount" },
                     {"已分配", "AssignedAmount" }, {"未分配", "RemainAmount" }, {"创建时间", "Insert_date" } };
-            ExportExcelUtils.export(request, response, cloudHostWarehouseService.getAll(), "主机管理数据", columns,
+            ExportExcelUtils.export(request, response, cloudHostWarehouseService.getAll(), "主机仓库管理数据", columns,
                     CloudHostWarehouse.class);
             operLogService.addLog("主机管理", "导出主机管理数据成功", "1", "1", request);
         } catch (Exception e) {

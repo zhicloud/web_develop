@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.OperLogMapper"> 
+	
+	 <resultMap type="com.zhicloud.ms.vo.OperLogVO" id="OperLogVO">
+		<id     column="id"           property="id" />
+		<result column="user_id"      property="userId" />
+		<result column="oper_time"    property="operTime" />
+		<result column="user_ip"      property="userIp" />
+		<result column="module"       property="module" />
+		<result column="content"      property="content" />
+		<result column="status"       property="status" />
+		<result column="level"        property="level" />
+	</resultMap>
+	 <!-- ********************* -->
+	<select id="getAll" resultMap="OperLogVO">
+		select o.id,
+			o.user_id,
+			s.usercount username,
+			o.oper_time,
+			o.user_ip,
+			o.module,
+			o.content,
+			o.status,
+			o.level
+		from oper_log o
+		left join man_system_user s
+			on o.user_id = s.billid
+		<where>
+			o.status != 5
+			<if test="username!=null and username!=''">
+				and s.usercount like #{username}
+			</if>
+			<if test="status!=null and status!=''">
+				and o.status = #{status}
+			</if>
+			<if test="level!=null and level!=''">
+				and o.level = #{level}
+			</if>
+		</where>
+		order by o.oper_time desc
+	</select>
+
+    <select id="queryByPage" resultMap="OperLogVO">
+        select o.id,
+        o.user_id,
+        s.usercount username,
+        o.oper_time,
+        o.user_ip,
+        o.module,
+        o.content,
+        o.status,
+        o.level
+        from oper_log o
+        left join man_system_user s
+        on o.user_id = s.billid
+        <where>
+            o.status != 5
+            <if test="param!=null and param!=''">
+                AND (s.usercount LIKE #{param} OR o.module LIKE #{param} OR o.content LIKE #{param})
+            </if>
+            <if test="status!=null and status!=''">
+                and o.status = #{status}
+            </if>
+            <if test="level!=null and level!=''">
+                and o.level = #{level}
+            </if>
+        </where>
+        order by o.oper_time desc
+        limit #{start_row}, #{row_count}
+    </select>
+
+    <select id="queryPageCount" resultType="int">
+        select count(o.id)
+        from oper_log o
+        left join man_system_user s
+        on o.user_id = s.billid
+        <where>
+            o.status != 5
+            <if test="param!=null and param!=''">
+                and (s.usercount like #{param} OR o.module LIKE #{param} OR o.content LIKE #{param} )
+            </if>
+            <if test="status!=null and status!=''">
+                and o.status = #{status}
+            </if>
+            <if test="level!=null and level!=''">
+                and o.level = #{level}
+            </if>
+        </where>
+    </select>
+	
+	<select id="getByUserId" resultMap="OperLogVO">
+		select o.id,
+			o.user_id,
+			o.oper_time,
+			o.user_ip,
+			o.module,
+			o.content,
+			o.status,
+			o.level
+		from oper_log o
+		where o.user_id = #{userId}
+		order by o.oper_time desc
+	</select>
+	
+	<insert id="add">
+		insert into oper_log (id,user_id,oper_time,user_ip,module,content,status,level) 
+		values (#{id}, #{userId},#{operTime}, #{userIp}, #{module}, #{content}, #{status}, #{level})
+	</insert>
+	
+	<!-- ********************* -->
+	<delete id="deleteById">
+		delete
+		from oper_log
+		where id = #{id}
+	</delete>
+	
+	<delete id="deleteIds">
+		delete
+		from oper_log
+		where id in
+		<foreach collection="list" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	 
+</mapper>

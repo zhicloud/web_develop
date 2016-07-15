@@ -94,6 +94,9 @@ public class CloudHostConfigModelServiceImpl implements CloudHostConfigModelServ
 		condition.put("createTime", DateUtil.dateToString(new Date(),"yyyyMMddHHmmssSSS"));
 		condition.put("type", 1);
 		condition.put("supportH264",chcm.getSupportH264());
+		condition.put("codeRate",chcm.getCodeRate());
+		condition.put("frameRate",chcm.getFrameRate());
+		condition.put("operationSystem",chcm.getOperationSystem());
 		
 		chcmMapper.addType(condition);
 		return id;
@@ -206,6 +209,9 @@ public class CloudHostConfigModelServiceImpl implements CloudHostConfigModelServ
        }
 		condition.put("modifiedTime", DateUtil.dateToString(new Date(),"yyyyMMddHHmmssSSS"));
 	    condition.put("supportH264",chcm.getSupportH264());
+	    condition.put("codeRate",chcm.getCodeRate());
+	    condition.put("frameRate",chcm.getFrameRate());
+	    condition.put("operationSystem",chcm.getOperationSystem());
 
 		int n = chcmMapper.updateById(condition);
 		return n;

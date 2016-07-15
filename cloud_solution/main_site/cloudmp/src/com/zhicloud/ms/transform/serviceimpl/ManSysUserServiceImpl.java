@@ -858,6 +858,41 @@ public class ManSysUserServiceImpl implements ManSysUserService {
         }
     }
     
+    /**
+     * @Description:重置密码操作
+     * @param billid
+     * @param respassword 重置密码
+     * @return
+     */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public String resPasswordById(String billid, String respassword) {
+        logger.debug("SysUserServiceImpl.resPasswordById()");
+        try {
+            ManSystemUserMapper systemUserMapper = this.sqlSession.getMapper(ManSystemUserMapper.class);
+            // 先比较旧密码和数据中的密码是否一致
+            ManSystemUserVO manSystemUserVO = systemUserMapper.getUserById(billid);
+
+            LinkedHashMap<String, Object> condition = new LinkedHashMap<String, Object>();
+            condition.put("password", TransFormLoginHelper.md5(AppConstant.PASSWORD_MD5_STR, respassword));
+            condition.put("billid", billid);
+            condition.put("tenant_id", manSystemUserVO.getTenant_id());            
+            systemUserMapper.updateSystemUser(condition);
+
+            // 添加日志信息
+            Map<String, Object> operatorData = new LinkedHashMap<String, Object>();
+            operatorData.put("billid", StringUtil.generateUUID());
+            operatorData.put("operateid", billid);
+            operatorData.put("content", "重置了用户 " + manSystemUserVO.getUsercount() + " 密码");
+            operatorData.put("operate_date", StringUtil.dateToString(new Date(), "yyyy-MM-dd HH:mm:ss"));
+            operatorData.put("type", TransformConstant.transform_log_user);
+            this.addSystemLogInfo(operatorData);
+            return TransformConstant.success;
+        } catch (Exception e) {
+            logger.error(e);
+            throw new AppException("添加失败");
+        }
+    }
+    
 
     /**
      * @Description:设置用户状态
@@ -1008,5 +1043,22 @@ public class ManSysUserServiceImpl implements ManSysUserService {
             logger.error(e);
             throw new AppException("添加失败");
         }
+    }
+    
+    /**
+     * @Description:根据用户id和email查询用户信息
+     * @param usercount 用户Id
+     * @param email 绑定邮箱
+     * @return ManSystemUserVO
+     */
+    @Override
+    public ManSystemUserVO getUserByIdAndEamel(String usercount,String email){
+    	ManSystemUserMapper systemUserMapper = this.sqlSession.getMapper(ManSystemUserMapper.class);
+        // 判断账户是否已经存在
+        LinkedHashMap<String, Object> condition = new LinkedHashMap<String, Object>();
+        condition.put("usercount", usercount);
+        condition.put("email", email);
+         // 验证该账号和邮箱是否已经存在
+        return systemUserMapper.validateUserIsExists(condition);
     }
 }

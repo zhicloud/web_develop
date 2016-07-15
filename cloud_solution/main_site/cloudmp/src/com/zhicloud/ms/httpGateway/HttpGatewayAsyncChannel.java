@@ -146,6 +146,20 @@ public class HttpGatewayAsyncChannel extends HttpGatewayChannelExt {
     public synchronized JSONObject hostFlushDiskImage(String uuid, int disk, int mode, String image) throws MalformedURLException, IOException {
         return this.hostFlushDiskImage(uuid, disk, mode, image, this.callback);
     }
+    
+    /**
+     * 
+     * @param uuid 云主机uuid
+     * @param node_name 目的nc的node_name，可以为空
+     * @param type 迁移类型；0=cold<默认>，1=warn，2=hot
+     * @param callback http_gateway回推异步消息url地址，推送消息类型：“migrate_host_ack”，“migrate_host_report”，“migrate_host_result”（具体消息格式请参考消息推送章节）
+     * @return
+     * @throws MalformedURLException
+     * @throws IOException
+     */
+    public synchronized JSONObject hostFlushDiskMigration(String uuid, String node_name, int type) throws MalformedURLException, IOException {
+    	return this.hostFlushDiskMigration(uuid, node_name, type, this.callback);
+    }
 
 	public synchronized JSONObject hostBackup(String uuid, int mode, int disk) throws MalformedURLException, IOException {
 		return this.hostBackup(uuid, mode, disk, this.callback);

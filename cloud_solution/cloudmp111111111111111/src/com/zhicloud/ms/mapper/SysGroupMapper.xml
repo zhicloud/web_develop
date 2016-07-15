@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhicloud.ms.mapper.SysGroupMapper">
+	
+	<resultMap id="SysGroupVO" type="com.zhicloud.ms.vo.SysGroupVO">
+		<id     property="id"        column="id" />
+		<result property="groupName" column="group_name" />
+		<result property="description" column="description" />
+		<result property="parentId" column="parent_id" />
+		<result property="createTime" column="create_time" />
+		<result property="modifiedTime" column="modified_time" />
+		<result property="parentName" column="parent_name" />
+	</resultMap>
+	
+	<!-- ********************* -->
+	
+	<select id="getAll" resultMap="SysGroupVO" flushCache = "true" useCache = "false">
+		select p.group_name as parent_name, g.*
+		from sys_group g
+		left join sys_group p on g.parent_id = p.id
+		order by g.modified_time desc
+	</select>
+	
+	<select id="getById" resultMap="SysGroupVO">
+		select g.*, '' as parent_name
+		from sys_group g
+		where id=#{id}
+	</select>
+	
+	<select id="queryByParentId" resultMap="SysGroupVO">
+		select g.*, '' as parent_name
+		from sys_group g
+		where parent_id=#{parent_id}
+	</select>
+	
+	
+	<select id="queryGroupByGroupName" resultMap="SysGroupVO">
+		select g.*, '' as parent_name
+		from sys_group g
+		where group_name=#{group_name}
+		limit 1
+	</select>
+	
+	<!-- ********************* -->
+	
+	<insert id="addSysGroup">
+		insert into sys_group (id, group_name,  parent_id, description,  create_time, modified_time) 
+		values (#{id}, #{group_name}, #{parent_id}, #{description}, #{create_time}, #{modified_time})
+	</insert>
+	
+	<update id="updateSysGroupById">
+		update sys_group set 
+			parent_id = #{parent_id},
+			group_name = #{group_name},
+			description = #{description},
+			modified_time = #{modified_time}
+		where id = #{id}
+	</update>
+	
+	<!-- ********************* -->
+	
+	
+	<delete id="deleteSysGroupById">
+		delete g.*
+		from sys_group g
+		where id = #{id}
+	</delete>
+	
+	<delete id="deleteSysGroupByIds">
+		delete g.*
+		from sys_group g
+		where id in 
+		<foreach collection="list" item="item" open="(" close=")" separator=", ">
+			#{item}
+		</foreach>
+	</delete>
+	
+	
+</mapper>

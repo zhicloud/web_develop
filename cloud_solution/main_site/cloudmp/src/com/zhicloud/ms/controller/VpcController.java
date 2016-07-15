@@ -1,34 +1,21 @@
 package com.zhicloud.ms.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.zhicloud.ms.constant.AppConstant;
+import com.zhicloud.ms.remote.MethodResult;
+import com.zhicloud.ms.service.*;
+import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
+import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
+import com.zhicloud.ms.vo.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import com.zhicloud.ms.constant.AppConstant;
-import com.zhicloud.ms.remote.MethodResult;
-import com.zhicloud.ms.service.ICloudHostService;
-import com.zhicloud.ms.service.IOperLogService;
-import com.zhicloud.ms.service.ISysDiskImageService;
-import com.zhicloud.ms.service.IVpcService;
-import com.zhicloud.ms.transform.constant.TransFormPrivilegeConstant;
-import com.zhicloud.ms.transform.util.TransFormPrivilegeUtil;
-import com.zhicloud.ms.vo.CloudHostVO;
-import com.zhicloud.ms.vo.SysDiskImageVO;
-import com.zhicloud.ms.vo.VpcBaseInfoVO;
-import com.zhicloud.ms.vo.VpcBindPortVO;
-import com.zhicloud.ms.vo.VpcOuterIpVO;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 @Controller
@@ -44,6 +31,8 @@ public class VpcController {
 	ISysDiskImageService sysDiskImageService;
 	@Resource
 	ICloudHostService cloudHostService;
+    @Resource
+    ISysGroupService sysGroupService;
 	@Resource
     private IOperLogService operLogService;
 	/**
@@ -68,7 +57,9 @@ public class VpcController {
 			return "not_have_access";
 		}
 		List<SysDiskImageVO> list = sysDiskImageService.queryAllSysDiskImage();
+      List<SysGroupVO> sysGroupVOList = sysGroupService.queryAll();
 		model.addAttribute("imageList",list);
+      model.addAttribute("sys_group_list", sysGroupVOList);
 		return "vpc_manage_add";
 	}
 	
@@ -85,10 +76,11 @@ public class VpcController {
 	@ResponseBody
 	public MethodResult addVpc(@RequestParam("displayName") String displayName,
 			@RequestParam("ipAmount") String ipAmount,
+      @RequestParam("groupId") String groupId,
 			@RequestParam("description") String description,
 			@RequestParam("hosts[]") String[] hosts,
 			HttpServletRequest request){
-		MethodResult mr = vpcService.addVpc(displayName, ipAmount, description, hosts, request);
+		MethodResult mr = vpcService.addVpc(displayName, ipAmount, groupId, description, hosts, request);
 		if(mr.isSuccess()){
 		    operLogService.addLog("专属云", "新增专属云"+displayName+"成功", "1", "1", request);
 		}else{
@@ -387,7 +379,7 @@ public class VpcController {
 		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_start)){
 			return new MethodResult(MethodResult.FAIL,"您没有启动主机的权限，请联系管理员");
 		}
-		MethodResult mr = cloudHostService.operatorCloudHost(id, "1"); 
+		MethodResult mr = cloudHostService.operatorCloudHost(id, "1",false,0); 
 		return mr;
 	}
 	/**
@@ -401,7 +393,7 @@ public class VpcController {
 		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_shut_down)){
 			return new MethodResult(MethodResult.FAIL,"您没有强制关闭主机的权限，请联系管理员");
 		}
-		MethodResult mr = cloudHostService.operatorCloudHost(id, "2");
+		MethodResult mr = cloudHostService.operatorCloudHost(id, "2",false,0);
 		return mr;
 	}
 	
@@ -416,7 +408,7 @@ public class VpcController {
 		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_restart)){
 			return new MethodResult(MethodResult.FAIL,"您没有重启主机的权限，请联系管理员");
 		}
-		MethodResult mr = cloudHostService.operatorCloudHost(id, "3");
+		MethodResult mr = cloudHostService.operatorCloudHost(id, "3",false,0);
 		return mr;
 	}
 	/**
@@ -430,7 +422,7 @@ public class VpcController {
 		if( ! new TransFormPrivilegeUtil().isHasPrivilege(request, TransFormPrivilegeConstant.desktop_warehouse_host_shut_down)){
 			return new MethodResult(MethodResult.FAIL,"您没有强制关机的权限，请联系管理员");
 		}
-		MethodResult mr = cloudHostService.operatorCloudHost(id, "4");
+		MethodResult mr = cloudHostService.operatorCloudHost(id, "4",false,0);
 		return mr;
 	}
 	

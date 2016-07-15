@@ -309,7 +309,7 @@ public class InterfaceController {
 			ServiceUtil.writeFailMessage(response.getOutputStream(), "operator_type is required"); 
 		}
 		
-		MethodResult resultInfo = cloudHostService.operatorCloudHost(cloudHostId, operatorType);
+		MethodResult resultInfo = cloudHostService.operatorCloudHost(cloudHostId, operatorType,false,0);
 		if(resultInfo != null){
 			if(resultInfo.isSuccess()){
 				ServiceUtil.writeSuccessMessage(response.getOutputStream(), "success");

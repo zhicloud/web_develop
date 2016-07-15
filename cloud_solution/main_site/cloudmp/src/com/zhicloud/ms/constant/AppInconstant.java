@@ -42,7 +42,8 @@ public class AppInconstant {
 	public static Map<String, Object> hostResetProgress = Collections.synchronizedMap(new LinkedHashMap<String, Object>()); 
 	
 	//主机迁移
-	public static Map<String, String> cloudHostMigreateSessionId = Collections.synchronizedMap(new LinkedHashMap<String, String>()); 
+	public static Map<String, Object> migrateProgress = Collections.synchronizedMap(new LinkedHashMap<String, Object>()); 
+	
     public static Map<String, Object> cloudHostMigrate = Collections.synchronizedMap(new LinkedHashMap<String, Object>()); 
 
 	
